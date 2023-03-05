@@ -1,0 +1,18 @@
+[
+ {
+   "InventoryNo": "",
+   "AssetNo": "S-15012",
+   "SubNo": "0|0",
+   "AssetType": "",
+   "AssetSub-Type": "",
+   "CapitalizationDate": "10/9/2019 ",
+   "Cost": 2000,
+   "WDV": 123,
+   "Plant": "Kolhapur",
+   "AssetClass": "Laptop",
+   "AssetName": "Laptop",
+   "AssetDescription": "",
+   "AssetCondition": "Fit For Purpose",
+   "AssetCriticality": "Normal"
+ }
+]

@@ -1,0 +1,134 @@
+// .mat-toolbar.mat-primary {
+//   background:#0C3057 !important;;
+//   color: white !important;
+// }
+
+// .example-spacer {
+//     flex: 1 1 auto;
+//   }
+//   .md-dialog-content{
+//       margin-left: 35px;
+      
+//   }
+//   .mat-dialog-actions .btn{
+//     background-color: rgb(93, 218, 124); 
+//   }
+//   .mat-toolbar{
+//     background-color: rgb(56, 131, 175);  
+  
+//   }
+  
+//   .example-form {
+//     min-width: 150px;
+//     max-width: 500px;
+//     width: 100%;
+//   }
+//   .example-chip-list{
+//     min-width: 150px;
+//     max-width: 800px;
+//     width: 100%;
+//   }
+//   .example-full-width {
+//     width: 100%;
+//   }
+//   .mat-dialog-container {
+//     display: block;
+//     padding: 0px;
+//     overflow: hidden !important;
+//   }
+
+
+.example-spacer {
+  flex: 1 1 auto;
+}
+
+
+.md-dialog-container{
+  margin: -24px;
+  overflow: auto;
+}
+.example-icon{
+  background-color: none;
+}
+
+.mat-input-wrapper{
+  background-color: lightgray;
+}
+/*.mat-tab-header{
+  position:fixed;
+}*/
+.mat-tab-label-container{
+  font-size: 0.9em;
+  margin-top: -10px;
+}
+.mat-dialog-content{
+  margin: -25px 0px 0px 0px;
+  padding:0px 12px;
+  overflow:auto;
+}
+
+.example-form {
+  min-width: 150px;
+  max-width: 500px;
+  width: 100%;
+}
+.example-chip-list{
+  min-width: 150px;
+  max-width: 800px;
+  width: 100%;
+}
+.example-full-width {
+  width: 100%;
+}
+.mat-dialog-container {
+  display: block;
+  padding: 0px;
+  overflow: hidden !important;
+}
+
+.example-spacer {
+  flex: 1 1 auto;
+}
+.md-dialog-content{
+    margin-left: 10%;
+    
+}
+
+.mat-toolbar{
+  background-color: rgb(56, 131, 175);  
+
+}
+
+.cdk-overlay-pane {
+
+  width: 50% !important;
+
+}
+
+
+ ///////////////////// Dropdown Placeholder and After select value /////////////////////
+
+ :host ::ng-deep .mat-select-value-text {
+  // font-size: 14px !important;
+  // font-weight: 600;
+
+  font-size: 13px !important;
+  font-weight: 450;
+}
+
+:host ::ng-deep .mat-form-field-appearance-legacy .mat-form-field-label {
+  
+  color: gray!important;
+  font-style: italic;
+}
+.success{
+  background-color: green;
+  color: white;
+}
+
+///////////////////// Dropdown Placeholder and After select value /////////////////////
+.asterisk_input::after 
+{
+    content:" *"; 
+    color: red;
+}

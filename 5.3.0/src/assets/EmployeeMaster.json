@@ -1,0 +1,38 @@
+[
+ {
+   "EmployeeId": 1,
+   "EmployeeEmail": "sunny@arhata.com",
+   "FirstName": "Sunny",
+   "LastName": "Shah",
+   "ContactNo": "",
+   "Plant": "",
+   "ActivationStatus": true
+ },
+ {
+   "EmployeeId": 2,
+   "EmployeeEmail": "sunny.shah@assetcues.com",
+   "FirstName": "Sunny Shah",
+   "LastName": "Assetcues",
+   "ContactNo": "",
+   "Plant": "",
+   "ActivationStatus": true
+ },
+ {
+   "EmployeeId": 3,
+   "EmployeeEmail": "falgun@arhata.com",
+   "FirstName": "Falgun",
+   "LastName": "Shah",
+   "ContactNo": "",
+   "Plant": "",
+   "ActivationStatus": true
+ },
+ {
+   "EmployeeId": 4,
+   "EmployeeEmail": "aakash.s@assetcues.com",
+   "FirstName": "Aakash",
+   "LastName": "S",
+   "ContactNo": "",
+   "Plant": "",
+   "ActivationStatus": true
+ }
+]

@@ -1,0 +1,82 @@
+
+<div class="md-dialog-container" cdkDrag cdkDragRootElement=".cdk-overlay-pane">
+    <mat-toolbar  cdkDragHandle class="mat-toolbar"  style="background-color:rgb(12, 48, 87);color:white">      
+      <span style="position: relative;left: 40%;">{{ Headers.MissingAssetDetailsAssetClassWise }}</span>
+      <span class="example-spacer"></span>
+      <button mat-icon-button class="example-icon" aria-label="Example icon-button with close icon" (click)="dialogRef.close(false)">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-toolbar><br><br>
+    <mat-dialog-content>      
+    <div class="example-container mat-elevation-z8 mt-8">
+      <table mat-table #table [dataSource]="dataSource" matSort>
+        <ng-container matColumnDef="select">
+          <th mat-header-cell *matHeaderCellDef>
+              <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="selection.hasValue() && isAllSelected()"
+                  [indeterminate]="selection.hasValue() && !isAllSelected()">
+              </mat-checkbox>
+          </th>
+          <td mat-cell *matCellDef="let row let i=index">
+              <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null"
+                  [checked]="selection.isSelected(row)">
+              </mat-checkbox>
+          </td>
+      </ng-container>
+
+        <ng-container matColumnDef="Name" >
+          <th mat-sort-header mat-header-cell *matHeaderCellDef  [ngClass]="'w-100'">{{Headers.AssetCategory}}</th>
+          <td mat-cell *matCellDef="let element"  [ngClass]="'w-100'">{{element.AssetCategory}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="Count" >
+          <th mat-sort-header mat-header-cell *matHeaderCellDef  [ngClass]="'w-150'">{{Headers.Count}} </th>
+          <td mat-cell *matCellDef="let element"  [ngClass]="'w-150'">{{element.Count}}</td>
+        </ng-container>
+    
+        <ng-container matColumnDef="Cost" >
+          <th mat-sort-header mat-header-cell *matHeaderCellDef  [ngClass]="'w-150'">{{Headers.ActualCost }} </th>
+          <td mat-cell *matCellDef="let element"  [ngClass]="'w-150'">{{element.Cost | number : '1.2-2'}}</td>
+        </ng-container>
+    
+        <ng-container matColumnDef="WDV" >
+          <th mat-sort-header mat-header-cell *matHeaderCellDef  [ngClass]="'w-100'">{{Headers.WDV}}</th>
+          <td mat-cell *matCellDef="let element"  [ngClass]="'w-100'">{{element.WDV | number : '1.2-2'}}</td>
+        </ng-container>
+       
+       
+    
+        <tr mat-header-row *matHeaderRowDef="displayedColumns;sticky: true "></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    </div>
+    <form [formGroup]="dialogForm"> 
+      <div fxLayout="row wrap" style="padding-top: 10px;">
+        <div fxFlex="100" fxFlex.gt-xs="75" class="pr-1">
+          <!-- <mat-form-field class="full-width" appearance="outline">
+            <mat-label class="label asterisk_input" style="font-size: 15px !important;" >{{ Headers.Message }}</mat-label>
+            <textarea matInput   formControlName="msgCtrl" maxlength="250" style="height: 90px;"  class="bg-transparente"></textarea>          
+          </mat-form-field> -->
+          <div [innerHTML]="msg"></div>
+        </div>  
+        <div fxFlex="100" fxFlex.gt-xs="20" class="pr-1" style="text-align: right;margin-top: 80px;">         
+          <button mat-raised-button color="primary" class="pr-1" [disabled]="selection.selected.length == 0" (click)="Submit()">Send Mail</button>           
+        </div> 
+      </div>   
+      <!-- <div fxLayout="row wrap" style="padding-top: 10px;">
+        <div fxFlex="100" fxFlex.gt-xs="25" class="pr-1">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label class="label asterisk_input" style="font-size: 15px !important;" >{{ Headers.CC }}</mat-label>
+            <input matInput   formControlName="CCmail1"   class="bg-transparente">          
+          </mat-form-field>
+        </div> 
+      </div> -->
+    </form>
+   
+    </mat-dialog-content>
+    </div>
+    
+    
+
+
+
+

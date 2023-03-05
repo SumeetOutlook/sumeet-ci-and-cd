@@ -1,0 +1,99 @@
+<h3><strong style=" color:#008bd0 !important;"> {{menuheader['Create Software Inventory']}}</strong> </h3>
+<div fxLayout="row wrap" fxLayout.lt-sm="column">  
+    <span   matTooltip="Create Asset" [matTooltipDisabled]="false" (click)="openCSIDialog()" >
+    <button mat-raised-button class="minibtn" style="margin-left: 8px !important;margin-top: 10px;">
+      <mat-icon style="color: white;">add</mat-icon>
+    </button></span>
+
+
+  <span class="example-spacer"></span>
+
+  <mat-form-field style="margin-top: 6px !important;">
+    <button mat-icon-button matSuffix class="example-icon"
+      style="background-color:white;margin-top: 0px;width:30px;height: 30px;"
+      aria-label="Example icon-button with close icon">
+      <mat-icon style="color:white; font-size: 25px;color:#0C3057;cursor:pointer">search</mat-icon>
+    </button>
+    <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search">
+  </mat-form-field>
+  <mat-panel-description style="float: right;">
+    <mat-icon [matMenuTriggerFor]="msgMenu" (click)="$event.stopPropagation()" class="text-muted">
+      more_vert</mat-icon>
+    <mat-menu #msgMenu="matMenu">
+      <!-- <button mat-menu-item  style="height: 40px !important;" >
+        <mat-icon style="margin-right: 6px;color: #0c3057;"> filter_list
+        </mat-icon> Create Filter
+      </button>
+      <button mat-menu-item  style="height: 40px !important;">
+        <mat-icon style="margin-right: 6px;color: #0c3057;"> download
+        </mat-icon> Export
+      </button> -->
+      <button mat-menu-item style="height: 40px !important;">
+        <mat-icon style="margin-right: 6px;color: #0c3057;"> view_column
+        </mat-icon> Edit Grid Display
+      </button>
+    </mat-menu>
+  </mat-panel-description>
+</div>
+
+<div class="example-container mat-elevation-z2">
+  <table mat-table #table [dataSource]="datasource" matSort>
+ 
+    <ng-container matColumnDef="SrNo">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> {{displayedHeaders[0]}}</th>
+      <td mat-cell *matCellDef="let row;let i=index">{{i+1}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="FileName">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> {{displayedHeaders[1]}}</th>
+      <td mat-cell *matCellDef="let row">{{row.FileName}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="UploadedOn">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> {{displayedHeaders[2]}}</th>
+      <td mat-cell *matCellDef="let row">{{row.UploadDateTime | date: "dd-MMM-yyyy  h:mm:ss:a"}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="UploadedBy">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> {{displayedHeaders[3]}}</th>
+      <td mat-cell *matCellDef="let row">{{row.UserName}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="TotalAssets">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> {{displayedHeaders[4]}}</th>
+      <td mat-cell *matCellDef="let row">{{row.TotalAssets}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="TotalImportedAssets">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> {{displayedHeaders[5]}}</th>
+      <td mat-cell *matCellDef="let row">{{row.ImportedSuccessfully}}</td>
+    </ng-container>
+   
+    <ng-container matColumnDef="Status">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> {{displayedHeaders[6]}}</th>
+      <td mat-cell *matCellDef="let row">{{row.LocationId}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="DownloadFile">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header> {{displayedHeaders[7]}}</th>
+      <td mat-cell *matCellDef="let row"><a style="color:#008bd0 !important;cursor: pointer;">
+        <a style="cursor: pointer; color: blue;" title="Download File" (click)="donloadexcels(row)">Download</a></a>
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns;sticky: true "></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+  <div style="text-align: center;" *ngIf="DataForGrid.length === 0">{{message.NoDataAvailable}}</div>
+
+</div>
+<!-- <mat-paginator #paginator class="expedientes-paginator" [pageSizeOptions]="[50, 100, 200,500]" showFirstLastButtons>
+</mat-paginator> -->
+<div style="margin-top: 8px;">
+<mat-paginator  class="expedientes-paginator"  [showFirstLastButtons]="true" [length]="paginationParams.totalCount"
+[pageSize]="paginationParams.pageSize"
+[pageSizeOptions]="[50, 100, 200,500]"
+(page)="handlePage($event)">
+</mat-paginator>
+</div>
+<!-- </div> -->

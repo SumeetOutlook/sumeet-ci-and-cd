@@ -1,0 +1,351 @@
+<h3><strong style=" color:#008bd0 !important;"> {{menuheader['User Role Rights Mapping']}}</strong> </h3>
+
+<form [formGroup]="userForm">
+  <div fxLayout="row wrap" class="mt-0" style="margin-bottom: -12px !important;">
+    <div fxFlex="100" fxFlex.gt-xs="12" class="pr-1">
+      <mat-form-field class="formfield full-width" color="primary">
+          <mat-select disableOptionCentering  [(ngModel)]="cityMultiCtrl" [ngModelOptions]="{standalone: true}" placeholder="{{header[HeaderLayerText]}}" [multiple]="true" #multiSelect>
+              <mat-option>
+                  <ngx-mat-select-search [placeholderLabel]="'Search'" [formControl]="cityMultiFilterCtrl">
+                  </ngx-mat-select-search>
+              </mat-option>
+              <mat-option value="" [disabled]="!!cityMultiCtrl"> {{header.All}} </mat-option>
+              <div class="select-all">
+                <mat-checkbox [checked]="cityMultiCtrl.length === ListOfSBU.length ? true : false" [indeterminate]="cityMultiCtrl.length < ListOfSBU.length ? true : false"
+                                (change)="toggleSelectAllCity($event)">Select All</mat-checkbox>
+              </div>
+              <mat-option [disabled]="!cityMultiCtrl" *ngFor="let type of filteredCityMulti | async" [value]="type[Layertext]" (click)="onchangeSBU(type[Layertext])">
+                  {{type[Layertext]}}
+              </mat-option>
+          </mat-select>
+      </mat-form-field>
+      </div>
+    <div fxFlex="100" fxFlex.gt-xs="12" class="pr-1">	
+      <mat-form-field class="formfield full-width" color="primary">	
+        <mat-select disableOptionCentering [(ngModel)]="plantMultiCtrl" [ngModelOptions]="{standalone: true}" 	
+          placeholder="{{ header.Location }}" [multiple]="true"  #multiSelect (infiniteScroll)="getFilterPlantType()" [complete]="offset2 === ListOfLoc.length" msInfiniteScroll>	
+          <mat-option>	
+            <ngx-mat-select-search [placeholderLabel]="'Search'"  [formControl]="plantMultiFilterCtrl">	
+            </ngx-mat-select-search>	
+          </mat-option>	
+          <mat-option value="" [disabled]="!!plantMultiCtrl"> {{header.All}} </mat-option>	
+          <div class="select-all">	
+            <mat-checkbox [checked]="plantMultiCtrl.length === ListOfLoc.length ? true : false" [indeterminate]="plantMultiCtrl.length < ListOfLoc.length ? true : false"	
+                            (change)="toggleSelectAll($event)">Select All</mat-checkbox>	
+          </div>	
+          <mat-option [disabled]="!plantMultiCtrl" *ngFor="let type of filteredPlantsMulti | async" [value]="type" (click)="CategoryGetdata()">	
+            {{type.LocationName}}	
+          </mat-option>	
+        </mat-select>	
+      </mat-form-field>	 
+    </div>
+    <div fxFlex="100" fxFlex.gt-xs="12" class="pr-1">
+      <mat-form-field class="formfield full-width" color="primary" >
+          <mat-select disableOptionCentering  [(ngModel)]="categoryMultiCtrl" [ngModelOptions]="{standalone: true}"  placeholder="{{ header.AssetCategory}}" [multiple]="true" #multiSelect>
+              <mat-option>
+                  <ngx-mat-select-search [placeholderLabel]="'Search'" noEntriesFoundLabel="{{header.NoRecordFound}}" [showToggleAllCheckbox]="false"
+                      (toggleAll)="toggleSelectAllcategory($event)" [formControl]="categoryFilterCtrl">
+                  </ngx-mat-select-search>
+              </mat-option>
+              <mat-option value="" [disabled]="!!categoryMultiCtrl"> {{header.All}} </mat-option>
+              <div class="select-all">
+                <mat-checkbox [checked]="categoryMultiCtrl.length === ListOfCategory.length ? true : false" [indeterminate]="categoryMultiCtrl.length < ListOfCategory.length ? true : false"
+                                (change)="toggleSelectAllcategory($event)">Select All</mat-checkbox>
+              </div> 
+              <mat-option [disabled]="!categoryMultiCtrl" *ngFor="let type of filteredcategoryMulti| async" [value]="type">
+                  {{type.AssetCategoryName}}
+              </mat-option>
+          </mat-select>
+      </mat-form-field>
+      </div>
+    <div fxFlex="100" fxFlex.gt-xs="12" class="pr-1 ml-12">
+      <mat-form-field class="full-width">
+        <mat-select disableOptionCentering placeholder="Type" (selectionChange)=onChangeMappingType($event.value)>
+          <mat-option *ngFor="let type of mappingTypes" [value]="type.id">
+            {{type.value}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div fxFlex="100" fxFlex.gt-xs="25" class="pr-1" *ngIf="userpanel">
+      <mat-form-field class="full-width">
+        <mat-label class="label asterisk_input">User Name</mat-label>
+        <mat-select disableOptionCentering  (selectionChange)="selectedUser($event.value)"
+          [formControl]="userForm.controls['userEmail']" (infiniteScroll)="getFilterUser()" [complete]="offset === UserData.length" msInfiniteScroll>
+          <mat-option>
+            <ngx-mat-select-search [placeholderLabel]="'Search'" noEntriesFoundLabel="{{header.NoRecordFound}}" [formControl]="userForm.controls['UserFilter']">
+            </ngx-mat-select-search>
+          </mat-option>
+          <mat-option *ngFor="let user of filteredUsers  | async" [value]="user.UserId">
+            {{user.UserName}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="submitted || f.userEmail.errors || f.userEmail.dirty || f.userEmail.touched">
+          <span *ngIf="f.userEmail.errors?.required"> User is required
+          </span>
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div fxFlex="100" fxFlex.gt-xs="25" class="pr-1" *ngIf="rolepanel">
+      <mat-form-field class="full-width">
+        <mat-label class="label asterisk_input">Role Name</mat-label>
+        <mat-select disableOptionCentering (selectionChange)="selectedRole($event.value)"
+          [formControl]="userForm.controls['roleName']">
+          <!-- <mat-option *ngFor="let role of RoleData" [value]="role.RoleId"> {{role.RoleName}}
+          </mat-option> -->
+          <mat-option>
+            <ngx-mat-select-search [placeholderLabel]="'Search'" noEntriesFoundLabel="{{header.NoRecordFound}}"  [formControl]="userForm.controls['RoleFilter']">
+            </ngx-mat-select-search>
+          </mat-option>
+          <mat-option *ngFor="let role of filteredRoles  | async" [value]="role.RoleId">
+            {{role.RoleName}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="submitted || f.roleName.errors || f.roleName.dirty || f.roleName.touched">
+          <span *ngIf="f.roleName.errors?.required"> Role is required
+          </span>
+        </mat-error>
+      </mat-form-field>
+    </div>
+    
+    <!-- <div fxFlex="100" fxFlex.gt-xs="5" class="pr-1" *ngIf="rolepanel">
+      <button mat-icon-button color="primary" class="mx-4" title="Show Permission">
+        <mat-icon>help</mat-icon>
+      </button>
+    </div> -->
+
+    <!-- <p *ngIf="showAddBtn" style="margin-top: 21px;">
+      <a style="color:#008bd0 !important;cursor: pointer !important;" (click)="openDialogRole('insert')">Add New
+        Role</a>
+    </p>
+
+    <p *ngIf="showAddBtnForuser" style="margin-top: 21px;">
+      <a style="color:#008bd0 !important;cursor: pointer !important;" (click)="openDialogUser('insert')">Add New
+        User</a>
+    </p> -->
+
+
+  </div>
+
+  <mat-card *ngIf="userTablepanel" style="padding: 0px;">
+    <mat-card-content>
+      <mat-card-header>
+        <mat-card-title>Existing Assignments</mat-card-title>
+        <span  matTooltip="Add New Role" [matTooltipDisabled]="false">
+          <button mat-raised-button  class="minibtn" style="margin-left: 8px !important;" (click)="openDialogRole('insert')"> <mat-icon style="color: white;">add</mat-icon> </button>
+        </span>
+        <span  matTooltip="Remove" [matTooltipDisabled]="false">
+          <button mat-raised-button  class="minibtn" style="margin-left: 8px !important;" (click)="HideAllCheckBox()" > <mat-icon style="color: white;">delete</mat-icon> </button>
+        </span>
+      </mat-card-header>
+
+      <div fxLayout="row wrap">
+        <mat-accordion class="example-headers-align" *ngFor="let data of UserRoleBindData;let k=index"
+          style="width: 100%;">
+          <mat-expansion-panel [expanded]="panelOpenState[k]" (opened)="setStep(k)" (closed)="changeState(k)"
+            hideToggle>
+            <mat-expansion-panel-header (keydown.Space)="$event.stopPropagation();" class="prevent-click" style="height: 42px !important;">
+              <mat-panel-title>
+                <div>
+                  <mat-checkbox class="authorize-click icon" *ngIf="!!HideEvent" (click)="$event.preventDefault()"  (click)="deleteMapping(data,'','')"></mat-checkbox>
+                  <!-- <mat-icon style="color: red;cursor: pointer;" class="authorize-click icon" (click)="deleteMapping(data,'','')">delete</mat-icon> -->
+                </div>
+                <div >
+                  <mat-icon  [style.fontSize]="'26px'" style="color: #1d3478 !important;padding-right: 10px;"
+                    class="authorize-click icon" (click)="SelectUserRole('UserRoles',data)" *ngIf="!panelOpenState[k]">
+                    add</mat-icon>
+                </div>
+                <div>
+                  <mat-icon [style.fontSize]="'26px'" style="color: #1d3478 !important;padding-right: 10px;"
+                    class="authorize-click icon" *ngIf="panelOpenState[k]">remove</mat-icon>
+                </div>
+                <span style="color: #1d3478 !important;">{{data.RoleName}}</span>
+                
+              </mat-panel-title> 
+              <div style="float: right;margin-top: -15px;" *ngIf="panelOpenState[k]" (click)="$event.stopPropagation()">
+                <mat-form-field  class="margin_bottom">
+                  <button  mat-icon-button matSuffix class="example-icon authorize-click icon" style="background-color:white;margin-top: 0px;width:30px;height: 30px;" aria-label="Example icon-button with close icon">
+                  <mat-icon style="color:white; font-size: 25px;color:#0C3057;cursor:pointer">search</mat-icon>
+                  </button>
+                  <input matInput class="authorize-click icon" (keyup)="applyLocationFilter($event,'UserRoles',data)" placeholder="Search" >
+                </mat-form-field>
+              </div>                
+            </mat-expansion-panel-header>       
+             
+            <div class="example-container mat-elevation-z8 mt-8" infinite-scroll (scrolled)="onScrollDown('UserRoles',data)" [scrollWindow]="false">
+              <div fxLayout="row wrap" fxLayout.lt-sm="column" *ngFor="let m of data.locationList;let i=index">
+
+              <div fxLayout="row wrap" fxLayout.lt-sm="column" fxFlex="100" fxFlex.gt-xs="100">
+                <mat-checkbox class="authorize-click icon" *ngIf="!!HideEvent" (click)="$event.preventDefault()" (click)="deleteMapping(data,m.LocationId,'')"></mat-checkbox>
+                <!-- <mat-icon style="color: red;cursor: pointer;" class="authorize-click icon" (click)="deleteMapping(data,m.LocationId,'')">delete</mat-icon> -->
+                <div fxFlex="20" fxFlex.gt-xs="20" class="pr-1"
+                  style="font-size: 14px;font-weight: bold;margin-left: 58px !important;">
+                  <div style="margin-bottom: 0px !important;">
+                    <!-- <mat-checkbox class="givemargin" [checked]="m.isCheck" (click)="$event.stopPropagation()"></mat-checkbox> -->
+                    {{m.LocationName}}
+                  </div>
+                </div>
+              </div>
+              <br>
+              <div fxLayout="row wrap" fxFlex="100" fxFlex.gt-xs="100"  fxLayout.lt-sm="column" class="child"
+                style="padding-top: 5px;">
+                <!-- <div fxFlex="25" fxFlex.gt-xs="25" *ngFor="let c of m.categoryList;let j=index" style="font-size: 13px;" class="pr-1">                                                       
+                              <div style="margin-bottom: 10px !important;">  
+                                <mat-checkbox class="givemargin" [checked]="c.isCheck"  (click)="$event.stopPropagation()"></mat-checkbox>        
+                                <span style="font-style:italic;display: inline;">{{c.AssetCategoryName}}</span>
+                              </div>
+                          </div> -->
+                <div fxFlex="25" fxFlex.gt-xs="25" *ngFor="let c of categories;let j=index" style="font-size: 13px;" class="pr-1">
+                  <div style="margin-bottom: 10px !important;" *ngIf="m.AssetCategoryIds.indexOf(c.AssetCategoryId) > -1">
+                    <mat-checkbox class="givemargin" *ngIf="!!HideEvent" [checked]="m.AssetCategoryIds.indexOf(c.AssetCategoryId) > -1"
+                      [disabled]="m.AssetCategoryIds.indexOf(c.AssetCategoryId) < 0" (click)="$event.preventDefault()" (click)="deleteMapping(data,m.LocationId,c.AssetCategoryId)">
+                    </mat-checkbox>
+                    <span style="font-size: 12px;font-style:italic;display: inline;" class="ellipsis" title="{{c.AssetCategoryName}}">{{c.AssetCategoryName}}</span>
+                  </div>
+                </div>
+              </div>
+              <br>
+            </div>
+            </div>
+           
+          </mat-expansion-panel>
+        </mat-accordion>
+
+        <!-- <table mat-table [dataSource]="dataSourceForUser" matSort>
+
+          <ng-container matColumnDef="RoleName">
+            <th mat-sort-header="RoleName" mat-header-cell *matHeaderCellDef>{{displayedHeadersForUser[0]}}</th>
+            <td mat-cell *matCellDef="let element">{{element.RoleName}}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="SBUName">
+            <th mat-sort-header="SBUName" mat-header-cell *matHeaderCellDef>{{displayedHeadersForUser[1]}}</th>
+            <td mat-cell *matCellDef="let element">{{element.SBUName}}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="LocationName">
+            <th mat-sort-header="LocationName" mat-header-cell *matHeaderCellDef>{{displayedHeadersForUser[2]}}</th>
+            <td mat-cell *matCellDef="let element">
+              {{element.LocationName}}
+            </td>
+          </ng-container>
+
+          <ng-container matColumnDef="AssetCategoryName">
+            <th mat-sort-header="AssetCategoryName" mat-header-cell *matHeaderCellDef>{{displayedHeadersForUser[3]}}</th>
+            <td mat-cell *matCellDef="let element">
+              {{element.AssetCategoryName}}
+            </td>
+          </ng-container>
+         
+          <ng-container matColumnDef="Actions">
+            <th mat-header-cell *matHeaderCellDef>{{displayedHeadersForUser[4]}}</th>
+            <td mat-cell *matCellDef="let row;let i=index,let element" >             
+              <span style="margin-left: 10px !important;"> <mat-icon (click)="deleteMapping('UserTablePanel',element)" style="color: red !important;cursor: pointer !important;font-size: 22px !important;" matTooltip="Delete">delete</mat-icon></span>
+            </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumnsForUser;sticky:true"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumnsForUser;"></tr>
+        </table> -->
+
+      </div>
+      <!-- <mat-paginator #paginatorForUser class="expedientes-paginator" [showFirstLastButtons]="true" [pageSize]="50"
+          [pageSizeOptions]="[50, 100, 200,500]">
+        </mat-paginator>-->
+    </mat-card-content>
+  </mat-card>
+
+  <mat-card *ngIf="roleTablepanel" style="padding: 0px;">
+    <mat-card-content>
+      <mat-card-header>
+        <mat-card-title>Existing Assignments</mat-card-title> 
+        <span  matTooltip="Add New User" [matTooltipDisabled]="false">
+          <button mat-raised-button  class="minibtn" style="margin-left: 8px !important;" (click)="openDialogUser('insert')"> <mat-icon style="color: white;">add</mat-icon> </button>
+        </span>
+        <span  matTooltip="Remove" [matTooltipDisabled]="false">
+          <button mat-raised-button  class="minibtn" style="margin-left: 8px !important;" (click)="HideAllCheckBox()"> <mat-icon style="color: white;">delete</mat-icon> </button>
+        </span>
+      </mat-card-header>
+
+      <div fxLayout="row wrap">
+        <mat-accordion class="example-headers-align" *ngFor="let data of UserRoleBindData;let k=index"
+          style="width: 100%;">
+          <mat-expansion-panel [expanded]="panelOpenState[k]" (opened)="setStep(k)" (closed)="changeState(k)" hideToggle>
+            <mat-expansion-panel-header (keydown.Space)="$event.stopPropagation();" class="prevent-click" style="height: 42px !important;">
+              <mat-panel-title>
+                <div>
+                  <mat-checkbox class="authorize-click icon"  *ngIf="!!HideEvent" (click)="$event.preventDefault()" (click)="deleteMapping(data,'','')"></mat-checkbox>
+                  <!-- <mat-icon style="color: red;cursor: pointer;" class="authorize-click icon" (click)="deleteMapping(data,'','')">delete</mat-icon> -->
+                </div>
+                <div>
+                  <mat-icon [style.fontSize]="'26px'" style="color: #1d3478 !important;padding-right: 10px;"
+                    class="authorize-click icon" (click)="SelectUserRole('RoleUsers',data)" *ngIf="!panelOpenState[k]">
+                    add</mat-icon>
+                </div>
+                <div>
+                  <mat-icon [style.fontSize]="'26px'" style="color: #1d3478 !important;padding-right: 10px;"
+                    class="authorize-click icon" *ngIf="panelOpenState[k]">remove</mat-icon>
+                </div>
+                <!-- <mat-checkbox class="authorize-click givemargin" [checked]="data.isCheck" ></mat-checkbox> -->
+                <span style="color: #1d3478 !important;">{{data.UserName}}</span>
+              </mat-panel-title>
+              <div style="float: right;margin-top: -15px;" *ngIf="panelOpenState[k]" (click)="$event.stopPropagation()">
+                <mat-form-field  class="margin_bottom">
+                  <button  mat-icon-button matSuffix class="example-icon authorize-click icon" style="background-color:white;margin-top: 0px;width:30px;height: 30px;" aria-label="Example icon-button with close icon">
+                  <mat-icon style="color:white; font-size: 25px;color:#0C3057;cursor:pointer">search</mat-icon>
+                  </button>
+                  <input matInput class="authorize-click icon" (keyup)="applyLocationFilter($event,'UserRoles',data)" placeholder="Search" >
+                </mat-form-field>
+              </div> 
+            </mat-expansion-panel-header>
+            <!-- <div style="float: right;">
+              <mat-form-field  class="margin_bottom">
+                <button  mat-icon-button matSuffix class="example-icon" style="background-color:white;margin-top: 0px;width:30px;height: 30px;" aria-label="Example icon-button with close icon">
+                <mat-icon style="color:white; font-size: 25px;color:#0C3057;cursor:pointer">search</mat-icon>
+                </button>
+                <input matInput (keyup)="applyLocationFilter($event,'RoleUsers',data)" placeholder="Search" >
+              </mat-form-field>
+            </div>  -->
+            <div class="example-container mat-elevation-z8 mt-8" infinite-scroll (scrolled)="onScrollDown('RoleUsers',data)" [scrollWindow]="false">
+              <div fxLayout="row wrap" fxLayout.lt-sm="column" *ngFor="let m of data.locationList;let i=index">
+                <div fxLayout="row wrap" fxLayout.lt-sm="column" fxFlex="100" fxFlex.gt-xs="100">
+                  <mat-checkbox class="authorize-click icon" *ngIf="!!HideEvent" (click)="$event.preventDefault()"  (click)="deleteMapping(data,m.LocationId,'')"></mat-checkbox>
+                  <!-- <mat-icon style="color: red;cursor: pointer;" class="authorize-click icon" (click)="deleteMapping(data,m.LocationId,'')" >delete</mat-icon> -->
+                  <div fxFlex="20" fxFlex.gt-xs="20" class="pr-1"
+                    style="font-size: 14px;font-weight: bold;margin-left: 58px !important;">
+                    <div style="margin-bottom: 0px !important;">
+                      <!-- <mat-checkbox class="givemargin" [checked]="m.isCheck" (click)="$event.stopPropagation()"></mat-checkbox> -->
+                      {{m.LocationName}}
+                    </div>
+                  </div>
+                </div>
+                <br>
+                <div fxLayout="row wrap" fxFlex="100" fxFlex.gt-xs="100" fxLayout.lt-sm="column" class="child" style="padding-top: 5px;">
+                  <!-- <div fxFlex="25" fxFlex.gt-xs="25" *ngFor="let c of m.categoryList;let j=index" style="font-size: 13px;" class="pr-1">                                                       
+                                <div style="margin-bottom: 10px !important;">  
+                                  <mat-checkbox class="givemargin" [checked]="c.isCheck"  (click)="$event.stopPropagation()"></mat-checkbox>        
+                                  <span style="font-style:italic;display: inline;">{{c.AssetCategoryName}}</span>
+                                </div>
+                            </div> -->
+                  <div fxFlex="25" fxFlex.gt-xs="25" *ngFor="let c of categories;let j=index" style="font-size: 13px;" class="pr-1">
+                    <div style="margin-bottom: 10px !important;" *ngIf="m.AssetCategoryIds.indexOf(c.AssetCategoryId) > -1">
+                      <mat-checkbox class="givemargin" *ngIf="!!HideEvent" [checked]="m.AssetCategoryIds.indexOf(c.AssetCategoryId) > -1"
+                        [disabled]="m.AssetCategoryIds.indexOf(c.AssetCategoryId) < 0" (click)="$event.preventDefault()" (click)="deleteMapping(data,m.LocationId,c.AssetCategoryId)">
+                      </mat-checkbox>
+                      <span style="font-size: 12px;font-style:italic;display: inline;" class="ellipsis" title="{{c.AssetCategoryName}}">{{c.AssetCategoryName}}</span>
+                    </div>
+                  </div>
+                </div>
+                <br>
+              </div>
+            </div>            
+          </mat-expansion-panel>
+        </mat-accordion>
+
+      </div>
+    </mat-card-content>
+  </mat-card>
+  
+
+</form>

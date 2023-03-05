@@ -1,0 +1,87 @@
+<div class="md-dialog-container" *ngIf="tabEnabled" cdkDrag cdkDragRootElement=".cdk-overlay-pane">
+  <mat-toolbar cdkDragHandle class="mat-toolbar" style="background-color:rgb(12, 48, 87) !important;color:white">
+    <span>Asset Details</span>
+    <span class="example-spacer"></span>
+    <button mat-icon-button class="example-icon" aria-label="Example icon-button with close icon"
+      (click)="onclosetab()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-toolbar><br><br>
+  <mat-dialog-content>
+    <div class="md-dialog-content">      
+      <mat-tab-group [selectedIndex]="selectedIndex" (selectedTabChange)="tabChanged($event)" *ngIf="!ReportFlag">
+        <mat-tab *ngFor="let tab of CategoryViewTable; let index = index" [label]="tab.ViewName">
+          <div class="md-label" style="display: flex; flex-flow: wrap;padding-left:15px !important;">
+            <div fxLayout="row wrap" *ngFor="let column of tab.FieldData">
+              <div fxFlex="100" fxFlex.gt-xs="40" class="pr-1" *ngIf="column != 'CustodianDetails' && column != 'UserEmailId' && column != 'UserDetails'">
+                <mat-form-field class="full-width" appearance="outline" style="width: 350px !important;">
+                  <mat-label class="label">{{Headers[column]}} </mat-label>
+                  <input matInput [(ngModel)]="bindData[column]" [ngModelOptions]="{standalone: true}"
+                    style="color: black !important; width: 320px !important;" autocomplete="off" [disabled]='true'>
+
+                </mat-form-field>
+              </div>
+              <div fxFlex="100" fxFlex.gt-xs="40" class="pr-1"  *ngIf="column == 'CustodianDetails' || column == 'UserEmailId' || column == 'UserDetails'">
+                <mat-form-field class="full-width" appearance="outline" style="width: 350px !important;" >
+                  <mat-label class="label">{{Headers[column]}} </mat-label>
+                  <input matInput [(ngModel)]="bindData[column]" [ngModelOptions]="{standalone: true}" title="{{bindData[column]}}"
+                    style="color: black !important; width: 320px !important;" autocomplete="off" [disabled]='true'>
+
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+        </mat-tab>
+        <mat-tab label="Installed Softwares" *ngIf="InstalledSoftwaresFlag">
+          <div class="md-label">            
+              <div fxLayout="row wrap" fxLayout.lt-sm="column"> 
+                <div class=" example-container mat-elevation-z8">
+                  <table mat-table #table [dataSource]="datasourceI" matSort>
+                    <ng-container [matColumnDef]="column" *ngFor="let column of displayedColumnsI; index as i ">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>                          
+                        <span>
+                          {{column}}
+                        </span>
+                      </th>
+                      <td mat-cell *matCellDef="let element; let i = index;">                         
+                        <span>
+                          {{element[column]}}
+                        </span>
+                      </td>
+                    </ng-container>
+                    <tr mat-header-row *matHeaderRowDef="displayedColumnsI; sticky: true"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumnsI;"></tr>
+                  </table>
+                  <div style="text-align: center;" *ngIf="datasourceI?.data?.length === 0"></div>
+                </div>
+              </div>             
+          </div>
+        </mat-tab>
+      </mat-tab-group>
+      <mat-tab-group [selectedIndex]="selectedIndex" (selectedTabChange)="tabChanged($event)" *ngIf="ReportFlag">
+        <mat-tab *ngFor="let tab of CategoryViewTable; let index = index" [label]="tab.ViewName">
+          <div class="md-label" style="display: flex; flex-flow: wrap;padding-left:15px !important;">
+            <div fxLayout="row wrap" *ngFor="let column of tab.FieldData">
+              <div fxFlex="100" fxFlex.gt-xs="40" class="pr-1" *ngIf="column != 'CustodianDetails' && column != 'UserEmailId' && column != 'UserDetails'">
+                <mat-form-field class="full-width" appearance="outline" style="width: 350px !important;">
+                  <mat-label class="label">{{Headers[column]}} </mat-label>
+                  <input matInput [(ngModel)]="bindData[Headers[column]]" [ngModelOptions]="{standalone: true}"
+                    style="color: black !important; width: 320px !important;" autocomplete="off" [disabled]='true'>
+
+                </mat-form-field>
+              </div>
+              <div fxFlex="100" fxFlex.gt-xs="40" class="pr-1"  *ngIf="column == 'CustodianDetails' || column == 'UserEmailId' || column == 'UserDetails'">
+                <mat-form-field class="full-width" appearance="outline" style="width: 350px !important;" >
+                  <mat-label class="label">{{Headers[column]}} </mat-label>
+                  <input matInput [(ngModel)]="bindData[Headers[column]]" [ngModelOptions]="{standalone: true}" title="{{bindData[column]}}"
+                    style="color: black !important; width: 320px !important;" autocomplete="off" [disabled]='true'>
+
+                </mat-form-field>
+              </div>
+            </div>
+          </div>
+        </mat-tab>
+      </mat-tab-group>
+    </div>
+  </mat-dialog-content>
+</div>

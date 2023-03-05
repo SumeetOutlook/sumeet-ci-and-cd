@@ -1,0 +1,58 @@
+
+<div class="md-dialog-container" cdkDrag cdkDragRootElement=".cdk-overlay-pane">
+  <mat-toolbar cdkDragHandle class="mat-toolbar"  style="background-color:rgb(12, 48, 87);color:white">
+    <span style="position: relative;left: 40%;">Edit Period</span>
+    <span class="example-spacer"></span>
+    <button mat-icon-button class="example-icon" aria-label="Example icon-button with close icon" (click)="onclosetab()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-toolbar>
+  <div mat-dialog-content class="p-1 m-0"   >
+  
+    <form [formGroup]="PeriodForm" (ngSubmit)="onSubmit()">
+      <div fxLayout="row wrap" fxLayout.lt-sm="column">
+       
+        <div fxFlex="100" >
+          <div fxFlex="50" >
+
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">Display Name</mat-label>
+              <input matInput name="displayName" [formControl]="PeriodForm.controls['displayName']" >
+            </mat-form-field>
+
+          </div>
+          <div fxFlex="50" class="pl-1">
+        
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">Period Start Date</mat-label>
+              <input matInput [matDatepicker]="picker2"   (click)="picker2.open();" [min]="periodmindate"  [max]="periodmaxdate"  readonly name="periodStartDate"  
+              [formControl]="PeriodForm.controls['periodStartDate']" autocomplete="off">
+              <mat-datepicker-toggle matSuffix [for]="picker2" disabled></mat-datepicker-toggle>
+              <mat-datepicker #picker2 disabled readonly></mat-datepicker>
+            </mat-form-field>
+        
+          </div>
+        </div>
+
+        <div fxFlex="100" >
+          <div fxFlex="50" >
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">Period End Date1</mat-label>
+              <input matInput  [matDatepicker]="period" (click)="period.open();" name="periodEndDate" [min]="periodmindate" [max]="periodEndmaxdate" [formControl]="PeriodForm.controls['periodEndDate']" autocomplete="off">
+              <mat-datepicker-toggle matSuffix [for]="period"></mat-datepicker-toggle>
+              <mat-datepicker #period></mat-datepicker> 
+            </mat-form-field>
+          
+          </div>
+       
+      </div>
+       
+        <div fxFlex="100" >
+          <button mat-raised-button color="primary" style="float:right !important;">Save</button>
+         
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+

@@ -1,0 +1,403 @@
+<h3><strong style=" color:#008bd0 !important;"> {{menuheader['Additional Assets']}}</strong>
+  <span *ngIf="numSelected > 0" style="margin-left: 245px !important;font: italic;"><i>{{numSelected}} assets selected
+    </i></span><span *ngIf="numSelected > 0"><a
+      style="color:#008bd0 !important;margin-left: 5px !important;cursor: pointer;"
+      (click)="viewSelected()"><u>View</u></a></span><span *ngIf="numSelected > 0"><a
+      style="color:red !important;margin-left: 5px !important;cursor: pointer;"
+      (click)="clearSelectedView()">Clear</a></span>
+  <span *ngIf="appliedfilters.length > 0" style="margin-left: 200px !important;font: italic;"><span>other filters
+      applied<i *ngFor="let fil of appliedfilters;let i=index" style="font-weight: 700;"> {{fil}}<i
+          *ngIf="i!=appliedfilters.length-1">/</i> </i></span></span><span *ngIf="appliedfilters.length > 0"><a
+      style="color:red !important;margin-left: 15px !important;cursor: pointer;"
+      (click)="clearfilter()">Clear</a></span>
+</h3>
+
+<span class="example-spacer"></span>
+
+<div class="layout" fxLayout='row wrap' fxLayoutAlign="space-between" fxLayout.lt-sm="column" style="min-height: fit-content;">
+  <div fxFlex="100" fxFlex.gt-xs="12" class="pr-1">
+
+  <mat-form-field class="formfield full-width" color="primary">
+    <mat-label class="label asterisk_input">Additional Type</mat-label>
+    <mat-select disableOptionCentering [(ngModel)]="additionalMultiCtrl" 
+      placeholder="Additional Type" (selectionChange)="Onchangeadditionaltype($event.value)"  [formControl]="ReportForm.controls['additionaltiFilterCtrl']">
+      <mat-option *ngFor="let additional of additionaltypedata | async" [value]="additional.id">
+        {{additional.name}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  </div>
+  <div fxFlex="100" fxFlex.gt-xs="12" class="pr-1" *ngIf="showlocation">
+    <mat-form-field class="formfield full-width" color="primary">
+      <mat-label class="label asterisk_input">Location Type</mat-label>
+    <mat-select disableOptionCentering [(ngModel)]="locationtypeCtrl" [formControl]="ReportForm.controls['locationtiFilterCtrl']"
+      placeholder="Location Type" (selectionChange)="Onchangelocationtype($event.value)">
+      <mat-option *ngFor="let location of locationtypedata| async" [value]="location.id">
+        {{location.name}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  </div>
+  <div fxFlex="100" fxFlex.gt-xs="12" class="pr-1">
+
+  <mat-form-field class="formfield full-width" color="primary">
+    <mat-select disableOptionCentering [(ngModel)]="SBUMultiCtrl" [ngModelOptions]="{standalone: true}"
+      placeholder="{{Headers[HeaderLayerText]}}" [multiple]="true" #multiSelect>
+      <mat-option>
+        <ngx-mat-select-search [placeholderLabel]="'Search'" [showToggleAllCheckbox]="false"
+          [formControl]="SBUMultiFilterCtrl">
+        </ngx-mat-select-search>
+      </mat-option>
+      <!-- <mat-option [value]="" (click)="onchangeSBU('')">{{Headers.Select}}</mat-option> -->
+      <mat-option *ngFor="let type of filteredSBUMulti | async" [value]="type[Layertext]" (click)="onchangeSBU(type[Layertext])">
+        {{type[Layertext]}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  </div>
+  <div fxFlex="100" fxFlex.gt-xs="12" class="pr-1">
+  <mat-form-field class="formfield full-width" color="primary">
+    <mat-label class="label asterisk_input">{{ Headers.Location }}</mat-label> 
+    <mat-select disableOptionCentering [(ngModel)]="plantMultiCtrl" [multiple]="true" #multiSelect  (infiniteScroll)="getFilterPlantType()"  #multiSelect [complete]="offset === PlantList.length" msInfiniteScroll  [formControl]="ReportForm.controls['plantMultiFilterCtrl']">
+      <mat-option>
+        <ngx-mat-select-search [placeholderLabel]="'Search'" noEntriesFoundLabel="{{Headers.NoRecordFound}}"
+        [formControl]="plantMultiFilterCtrl">
+        </ngx-mat-select-search>
+      </mat-option>
+      <mat-option value="" [disabled]="!!plantMultiCtrl" (click)="onChangePlant($event.value)"> {{Headers.All}} </mat-option>
+      <div class="select-all">
+        <mat-checkbox [checked]="plantMultiCtrl.length === PlantList.length ? true : false" [indeterminate]="plantMultiCtrl.length < PlantList.length ? true : false"  (change)="toggleSelectAll($event)"      >Select All</mat-checkbox>
+      </div> 
+      <!-- <mat-option [value]="">{{Headers.Select}}</mat-option> -->
+      <mat-option [disabled]="!plantMultiCtrl" *ngFor="let type of filteredPlantsMulti | async" [value]="type" (click)="onChangePlant(type.LocationId)">
+        {{type.LocationName}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  </div>
+  <div fxFlex="100" fxFlex.gt-xs="12" class="pr-1">
+   <mat-form-field class="formfield full-width" color="primary">
+    <mat-select disableOptionCentering [(ngModel)]="projectidMultiCtrl" [ngModelOptions]="{standalone: true}"
+    placeholder="{{Headers.ProjectName}}" [multiple]="true" #multiSelect>
+    <mat-option>
+      <ngx-mat-select-search [placeholderLabel]="'Search'" [formControl]="projectidFilterCtrl">
+      </ngx-mat-select-search>
+    </mat-option>
+    <mat-option *ngFor="let projectid of filteredprojectidMulti| async" [value]="projectid" (click)="OnchangeProjectId(projectid)">
+      {{projectid.Name}}
+    </mat-option>
+  </mat-select>
+   </mat-form-field>
+  </div>
+  <div fxFlex="100" fxFlex.gt-xs="35" >
+    <button  mat-raised-button class="submitbtn" (click)="GetNewAddtionalAssetDetailsListPartOfProject()"> <mat-icon class="matbtn" >shortcut</mat-icon>Submit </button>
+    <span  matTooltip="Delete" [matTooltipDisabled]="false">
+      <button mat-raised-button class="minibtn"  style="margin-left: 6px !important;" *ngIf="displaybtn "
+        [disabled]="getselectedIds.length == 0" (click)="DeleteAdditionalAssets()">
+        <mat-icon style="color: white;">delete</mat-icon>
+      </button></span>
+  </div>
+  <div fxFlex="100" fxFlex.gt-xs="12" *ngIf="!showlocation"></div>
+
+  <div class="icon" fxFlex="100" fxFlex.gt-xs="40">
+
+  <!-- <button mat-icon-button mat-sm-button class="mr-24" (click)="GetNewAddtionalAssetDetailsListPartOfProject()"
+    *ngIf="!!additionalMultiCtrl && !!plantMultiCtrl && !!loocationtypesCheckValidation">
+    <mat-icon class="example-icon MatBtnClass" style="font-size: 50px;height: 30px;width: 35px;"><img
+        style="height: 38px;width:40px;padding-top: 6px;" src="assets/images/assetrak/23_10_2020/GO 5.png" />
+    </mat-icon>
+  </button> -->
+  
+   
+  <!-- <mat-icon class="example-icon" [style.fontSize]="'24px'" (click)="GetNewAddtionalAssetDetailsListPartOfProject()" style="height: 30px;width: 35px;margin-left: -10px;"><img style="height: 38px;width:40px;" src="assets/images/assetrak/23_10_2020/GO 5.png" /></mat-icon> -->
+
+  <!-- <button mat-icon-button mat-sm-button class="mr-1" (click)="NewApproveAdditionalAssets()"
+    *ngIf="selection.selected.length > 0 && (additionalMultiCtrl == 'Project Location Asset') && (locationtypeCtrl == 'Location')">
+    <mat-icon matTooltip="{{ Headers.MapAgainstMissing }}" class="example-icon MatBtnClass"
+      style="font-size: 50px;height: 40px;width: 40px;cursor: pointer;"><img
+        src="assets/images/assetrak/Archive/Approve.png" /></mat-icon>
+  </button> -->
+
+
+  <!-- <span class="example-spacer"></span>
+
+  <mat-icon class="example-icon FixBtnClass" matTooltip="Filter" [style.fontSize]="'24px'"
+    style="margin-bottom: -2px;cursor: pointer;"><img src="assets/images/assetrak/Latest/FilterNew.png" /></mat-icon>
+  <mat-icon class="example-icon FixBtnClass" matTooltip="Export" [style.fontSize]="'24px'"
+    style="margin-left: -5px;margin-bottom: -2px;cursor: pointer;"><img
+      src="assets/images/assetrak/Latest/ExportNew.png" /></mat-icon>
+  <mat-icon (click)="editGridpop()" class="example-icon FixBtnClass" matTooltip="Edit Grid Display"
+    [style.fontSize]="'24px'" style="margin-left: -5px;margin-bottom: -2px;cursor: pointer;"><img
+      src="assets/images/assetrak/Latest/GridDisplayNew.png" /></mat-icon> -->
+      <!-- <span class="example-spacer"></span> -->
+      <mat-panel-description style="float: right;">
+        <!--<mat-icon style="margin-right: 6px;color: #0c3057;cursor: pointer;"  title="Advanced Search" (click)="multiSearchAdd()"> filter_alt
+        </mat-icon>-->
+        <mat-icon [matMenuTriggerFor]="msgMenu" (click)="$event.stopPropagation()" class="text-muted">
+          more_vert</mat-icon>
+        <mat-menu #msgMenu="matMenu">
+          <button mat-menu-item  style="height: 40px !important;" *ngIf="setflag">
+            <mat-icon style="margin-right: 6px;color: #0c3057;"> filter_list
+            </mat-icon> Create Filter
+          </button>
+          <button mat-menu-item  (click)="openExportPopup()" style="height: 40px !important;">
+            <mat-icon style="margin-right: 6px;color: #0c3057;"> download
+            </mat-icon> Export
+          </button>
+          <button mat-menu-item (click)="editGridpop()" style="height: 40px !important;">
+            <mat-icon style="margin-right: 6px;color: #0c3057;"> view_column
+            </mat-icon> Edit Grid Display
+          </button>
+        </mat-menu>
+      </mat-panel-description>
+      </div>
+</div>
+<div fxLayout="row wrap" *ngIf="showmultiSearch && displayTable">
+  <mat-accordion class="example-headers-align"
+    style="width: 100%;">
+    <mat-expansion-panel [expanded]="panelOpenState" (opened)="setStep()" (closed)="changeState()" style="margin-bottom: 10px;"
+      hideToggle>
+      <mat-expansion-panel-header (keydown.Space)="$event.stopPropagation();" class="prevent-click" style="height: 42px !important;">
+        <mat-panel-title>
+          <!-- <div >
+            <mat-icon  [style.fontSize]="'26px'" style="color: #1d3478 !important;padding-right: 10px;"
+              class="authorize-click icon"  *ngIf="!panelOpenState">
+              add</mat-icon>
+          </div>
+          <div>
+            <mat-icon [style.fontSize]="'26px'" style="color: #1d3478 !important;padding-right: 10px;"
+              class="authorize-click icon" *ngIf="panelOpenState">remove</mat-icon>
+          </div> -->
+          <span style="color: #1d3478 !important;">Advanced Search ({{searchCount}})</span>
+          <span *ngIf="multiSearch.length > 0" ><a style="color:red !important;margin-left: 5px !important;cursor: pointer;font-style: italic;text-decoration: underline;" (click)="clearSearchData()">Clear</a></span>
+        </mat-panel-title> 
+      </mat-expansion-panel-header>
+        <div>
+
+          <div *ngFor="let item of multiSearch; let i=index">
+            <div fxLayout='row wrap'>
+              <div fxFlex="100" fxFlex.gt-xs="12" class="pr-1">
+                <mat-form-field class="formfield full-width" color="primary">
+                  <mat-label *ngIf="i==0"> Field Name</mat-label>
+                  <mat-select disableOptionCentering  [multiple]="false" [(ngModel)]="item.fieldname" [ngModelOptions]="{standalone: true}">              
+                    <mat-option [value]="hdr.FieldName" *ngFor="let hdr of searchColumns" (click)="SelectionColumn(hdr , item)"
+                      [ngStyle]="{ display : Headers[hdr.FieldName]=='Select' || !Headers[hdr.FieldName] ? 'none' : 'block' }">
+                      {{Headers[hdr.FieldName]}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+        
+              <div fxFlex="100" fxFlex.gt-xs="15" class="pr-1">
+                <mat-form-field class="formfield full-width" color="primary">
+                  <mat-label *ngIf="i==0"> Condition</mat-label>
+                  <mat-select disableOptionCentering [(ngModel)]="item.Condition" [ngModelOptions]="{standalone: true}"  [multiple]="false">            
+                    <mat-option value="LIKE" *ngIf="item.OptionType == 3 || item.OptionType == 2" (click)="clearInput(item)">
+                      Contains
+                    </mat-option>
+                    <mat-option value="IN" (click)="clearInput(item)" *ngIf="item.OptionType == 3 || item.OptionType == 2">
+                      Contains (Multiple Value)
+                    </mat-option>                     
+                    <mat-option value="NOT LIKE" *ngIf="item.OptionType == 3 || item.OptionType == 2" (click)="clearInput(item)">
+                      Does not contain
+                    </mat-option>
+                    <mat-option value="=" *ngIf="item.OptionType == 3 || item.OptionType == 2" (click)="clearInput(item)">
+                      Equals
+                    </mat-option>
+                    <mat-option value="<" *ngIf="item.OptionType == 2" (click)="clearInput(item)">
+                      Less than
+                    </mat-option>
+                    <mat-option value=">" *ngIf="item.OptionType == 2" (click)="clearInput(item)">
+                      Greater than
+                    </mat-option>
+                    <mat-option value="BETWEEN" *ngIf="item.OptionType == 1" (click)="clearInput(item)">
+                      Ranges
+                    </mat-option>                      
+                  </mat-select>
+                </mat-form-field>
+              </div>
+              <!--<div fxFlex="100" fxFlex.gt-xs="15" class="pr-1" *ngIf="registerflag">
+                <mat-form-field class="formfield full-width" color="primary">
+                  <mat-label *ngIf="i==0"> Condition</mat-label>
+                  <mat-select disableOptionCentering [(ngModel)]="item.Condition" [ngModelOptions]="{standalone: true}"  [multiple]="false">            
+                    <mat-option value="2" (click)="clearInput(item)">
+                    GRN
+                    </mat-option>
+                    <mat-option value="1">
+                    FAR
+                    </mat-option>
+                    <mat-option value="3">
+                   NONFAR 
+                    </mat-option>               
+                  </mat-select>
+                </mat-form-field>
+              </div>-->
+        
+              <div fxFlex="100" fxFlex.gt-xs="12" class="pr-1" *ngIf="!!item.Condition">
+                <mat-form-field class="formfield full-width" color="primary" *ngIf="item.Condition != 'BETWEEN'">
+                  
+                  <mat-label *ngIf="item.Condition != 'BETWEEN' && i==0">Value</mat-label>
+                  <input matInput  [(ngModel)]="item.HighValue" [disabled]="!!item.Condition && item.Condition == 'IN'" [ngModelOptions]="{standalone: true}" (ngModelChange)="onChangeAdvancedSearch()" style="overflow:auto hidden;">
+                  <mat-icon style="margin-right: 6px;color: #0c3057;cursor: pointer;"  title="Insert multiple search values"
+                  *ngIf="!!item.Condition && item.Condition == 'IN'" matSuffix (click)="openMultiSearchDialog(item)">manage_search</mat-icon>
+                </mat-form-field>
+                <mat-form-field class="formfield full-width" color="primary" *ngIf="!!item.Condition && item.Condition == 'BETWEEN'">
+                  <mat-label *ngIf="item.Condition == 'BETWEEN'">From Date</mat-label>                    
+                  <input matInput [matDatepicker]="picker2" [(ngModel)]="item.HighValue" (dateChange)="changeStartDate($event)" [ngModelOptions]="{standalone: true}"
+                      (click)="picker2.open();" [min]="today" readonly autocomplete="off">
+                  <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                  <mat-datepicker #picker2></mat-datepicker>
+                </mat-form-field>
+              </div>
+        
+              <div fxFlex="100" fxFlex.gt-xs="12" class="pr-1" *ngIf="!!item.Condition && item.Condition == 'BETWEEN'">
+                <mat-form-field class="formfield full-width" color="primary">
+                  <mat-label>To Date</mat-label>
+                  <input matInput [matDatepicker]="picker1" [(ngModel)]="item.LowValue" (dateChange)="changeEndDate($event)" [ngModelOptions]="{standalone: true}"
+                  (click)="picker1.open();" [min]="Enddate" readonly autocomplete="off">
+                  <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                  <mat-datepicker #picker1></mat-datepicker>
+                  <!-- <input matInput  [(ngModel)]="item.LowValue" [ngModelOptions]="{standalone: true}"  style="overflow:auto hidden;"> -->
+                </mat-form-field>
+              </div>                
+              <div fxFlex="100" fxFlex.gt-xs="20" class="pr-1" >
+                <span matTooltip="Search" [matTooltipDisabled]="false" *ngIf="((i + 1) == multiSearch.length)">
+                  <mat-icon style="margin-right: 6px;color: #0c3057;cursor: pointer;padding-top: 10px;font-weight: bold;" (click)="onMultiSearchClick()">search</mat-icon>
+                    <!-- <button (click)="GetAssetListBySelection()" mat-raised-button class="minibtn" style="margin-left: 8px !important;">
+                      <mat-icon style="color: white;">search</mat-icon>
+                    </button> -->
+                </span>
+                <span matTooltip="Add New Condition" [matTooltipDisabled]="false" *ngIf="((i + 1) == multiSearch.length)">
+                  <mat-icon style="margin-right: 6px;color: #0c3057;cursor: pointer;padding-top: 10px;font-weight: bold;" (click)="addSearch()">add</mat-icon>
+                  <!-- <button (click)="addSearch()" mat-raised-button class="minibtn" style="margin-left: 8px !important;">
+                    <mat-icon style="color: white;">add</mat-icon>
+                  </button> -->
+                </span>
+                <span matTooltip="Add New Condition" [matTooltipDisabled]="false" *ngIf="i > 0">
+                  <mat-icon style="margin-right: 6px;color: #0c3057;cursor: pointer;padding-top: 10px;font-weight: bold;" (click)="removeSearch(i)">remove</mat-icon>
+                  <!-- <button (click)="removeSearch(i)" mat-raised-button class="minibtn" style="margin-left: 8px !important;">
+                    <mat-icon style="color: white;">remove</mat-icon>
+                  </button> -->
+                </span>
+              </div>
+             
+            </div>
+          </div>
+        </div>
+
+    </mat-expansion-panel>
+  </mat-accordion>
+</div>
+
+<div class=" example-container mat-elevation-z8" *ngIf="displayTable">
+  <table mat-table #table [dataSource]="dataSource" matSort>
+    <ng-container [matColumnDef]="column" *ngFor="let column of displayedColumns; index as i">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>
+        <span *ngIf="column === 'Select'">
+          <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="selection.hasValue() && isAllSelected"
+            [indeterminate]="selection.hasValue() && !isAllSelected">
+          </mat-checkbox>
+        </span>
+        <span *ngIf="column === 'Icon'"></span>
+        <span *ngIf="column === 'AssetId'">
+          <span *ngIf="this.isButtonVisible == false"> {{ Headers.AssetId }} </span>
+          <span *ngIf="this.isButtonVisible == true">
+            <mat-form-field
+              style="padding-bottom: 0px !important;margin-bottom: -9px !important;margin-top: -7px !important;">
+              <input matInput class="form-field" [formControl]="AssetNoFilter" placeholder="{{ Headers.AssetId }}">
+            </mat-form-field>
+          </span>
+          <mat-icon *ngIf="this.isButtonVisible == false" class="maticon searchicon"
+            (click)="this.isButtonVisible= !this.isButtonVisible"
+            style="height: 17px;width: 24px;font-size:17px;color:#1d3478;margin-right: -7px;">search</mat-icon>
+          <mat-panel-description *ngIf="this.isButtonVisible == true">
+            <mat-icon [matMenuTriggerFor]="msgMenu" (click)="$event.stopPropagation()" class="text-muted">
+              more_vert</mat-icon>
+            <mat-menu #msgMenu="matMenu">
+              <button mat-menu-item (click)="opentablePopup('position')" *ngIf="setflag" style="height: 40px !important;">
+                <mat-icon style="margin-right: 6px;"> <img src="assets/images/assetrak/23_10_2020/Multiple.png" />
+                </mat-icon> Multiple Search
+              </button>
+              <button mat-menu-item (click)="this.isButtonVisible= !this.isButtonVisible"
+                style="height: 40px !important;">
+                <mat-icon style="margin-right: 6px;"> <img src="assets/images/assetrak/23_10_2020/Cross.png" />
+                </mat-icon> Clear Search
+              </button>
+            </mat-menu>
+          </mat-panel-description>
+        </span>
+        <span *ngIf="column != 'AssetId' && column != 'Select' && column != 'Icon'">
+          {{Headers[column]}}
+        </span>
+      </th>
+      <td mat-cell *matCellDef="let element">
+        <span *ngIf="column === 'Select'">
+          <mat-checkbox (click)="$event.stopPropagation()" (dblclick)="$event.stopPropagation()"  (change)="$event ? isSelected(element) : null"
+            [checked]="getselectedIds.indexOf(element.PreFarId) > -1">
+          </mat-checkbox>
+        </span>
+        <span *ngIf="column === 'Icon'">
+          <mat-icon *ngIf="element.TaggingStatus === 9" matTooltip="Retired Asset" [style.fontSize]="'19px'" style="color: #e67e4a !important;font-weight: bold;cursor: pointer;">delete</mat-icon>
+          <mat-icon *ngIf="(element.MergeId != null && element.MergeId != 0)&&  (element.MergeId === element.PreFarId) && element.TaggingStatus!=9" matTooltip="Parent Asset" [style.fontSize]="'19px'" style="color: #e67e4a !important;font-weight: bold;cursor: pointer;" (click)="GetSubGroupJson(element)">person</mat-icon>
+          <mat-icon *ngIf="(element.MergeId != null && element.MergeId != 0 )&& ( element.MergeId != element.PreFarId) && element.TaggingStatus!=9" matTooltip="Child Asset" [style.fontSize]="'19px'" style="color: #e67e4a !important;font-weight: bold;cursor: pointer;" (click)="GetSubGroupJson(element)">groups</mat-icon>
+          <mat-icon *ngIf="(element.MergeId2 != null && element.MergeId2 != 0 ) &&  (element.MergeId === null || element.MergeId === 0 ) && ( element.MergeId2 === element.PreFarId) && element.TaggingStatus!=9" matTooltip="Parent Asset" [style.fontSize]="'19px'" style="color: #e67e4a !important;font-weight: bold;cursor: pointer;" (click)="GetSubGroupJson(element)">person</mat-icon>
+          <mat-icon *ngIf="(element.MergeId2 != null && element.MergeId2 != 0 )  &&  (element.MergeId === null || element.MergeId === 0 ) && ( element.MergeId2 != element.PreFarId) && element.TaggingStatus!=9" matTooltip="Child Asset" [style.fontSize]="'19px'" style="color: #e67e4a !important;font-weight: bold;cursor: pointer;" (click)="GetSubGroupJson(element)">groups</mat-icon>
+          <mat-icon *ngIf="element.IsQtySplit === true && (element.MergeId == null || element.MergeId == 0) && (element.MergeId2 == null || element.MergeId2 == 0)" matTooltip="Quantity Split Asset" [style.fontSize]="'19px'" style="color: #e67e4a !important;font-weight: bold;cursor: pointer;">format_list_numbered_rtl</mat-icon>
+        </span>
+        <span *ngIf="column === 'AssetId'"  style="float: left;padding-left: 10px;padding-right: 10px;">
+          {{element.AssetId}}
+        </span>
+        <span *ngIf="column === 'AcquisitionDate' || column === 'WDVDate' || column === 'ProposedRetireDate'" style="margin-left: 20%;">
+          {{element[column] | date:'dd-MMM-yyyy'}}
+        </span>
+        <span *ngIf="column === 'AcquisitionCost'" style="float: right;padding-left: 10px;padding-right: 10px;">
+          {{element.AcquisitionCost | number}}
+        </span>
+        <span *ngIf="column === 'WDV'" style="float: right;padding-left: 10px;padding-right: 10px;">
+          {{element.WDV | number}}
+        </span>
+        <span *ngIf="column === 'Barcode'" style="float: left;padding-left: 10px;padding-right: 10px;">
+          {{element[column]}}
+        </span>
+        <span *ngIf="column === 'SubAssetId'" style="float: left;padding-left: 10px;padding-right: 10px;">
+          {{element[column]}}
+        </span>
+        <span *ngIf="column === 'NotFoundNote'">
+          <mat-select [(ngModel)]="element.TpMissingStatus" [ngModelOptions]="{standalone: true}"
+            placeholder="{{Headers.Project}}">
+            <mat-option *ngFor="let type of missingNote " [value]="type.AllocationType"
+              (click)="SetMissingStatus(element)">
+              {{type.AllocationType}}
+            </mat-option>
+          </mat-select>
+        </span>
+        <span *ngIf="column === 'Upload'">
+          <input type="file" (change)="fileChange($event)" placeholder="Upload file" class="uploadSelectClass" />
+          <button mat-icon-button mat-sm-button class="mr-24" (click)="upload(element)">
+            <mat-icon [style.fontSize]="'30px'" matTooltip="Revert"
+              style="color: #1d3478 !important;margin-top:-6px;margin-bottom:-6px" class="authorize-click icon">add
+            </mat-icon>
+          </button>
+        </span>
+        <span *ngIf="column === 'ViewDocument'">
+          <a style="color:#008bd0 !important;cursor: pointer;" *ngIf="!!element.FileName"
+            (click)="viewDocument(element)"> View Document</a>
+        </span>
+        <span
+          *ngIf="column != 'AssetId' && column != 'Select' && column != 'Icon' && column != 'AcquisitionDate' && column != 'WDVDate' && column != 'AcquisitionCost' && column != 'WDV' && column != 'ProposedRetireDate' && column != 'NotFoundNote' && column != 'Upload' && column != 'ViewDocument'&& column != 'Barcode' && column != 'SubAssetId'">
+          {{element[column]}}
+        </span>
+
+      </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;" ></tr>
+
+  </table>
+  <div style="text-align: center;" *ngIf="dataSource.data.length === 0">{{message.NoDataAvailable}}</div>
+</div>
+<div [hidden]="!displayTable" style="margin-top: 8px;"> 
+<mat-paginator class="expedientes-paginator" [showFirstLastButtons]="true" [length]="paginationParams.totalCount"
+  [pageSize]="paginationParams.pageSize" [pageSizeOptions]="[50, 100, 200,500]" (page)="handlePage($event)">
+</mat-paginator>
+</div>

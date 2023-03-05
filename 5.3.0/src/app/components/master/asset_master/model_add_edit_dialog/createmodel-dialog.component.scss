@@ -1,0 +1,118 @@
+.example-spacer {
+    flex: 1 1 auto;
+  }
+
+
+.md-dialog-container{
+    margin: -24px;
+    overflow: hidden;
+}
+.example-icon{
+    background-color: none;
+}
+
+.mat-input-wrapper{
+    background-color: lightgray;
+}
+/*.mat-tab-header{
+    position:fixed;
+}*/
+.mat-tab-label-container{
+    font-size: 0.9em;
+    margin-top: -10px;
+}
+.mat-dialog-content{
+    margin: -25px 0px 0px 0px;
+    //padding:0px 12px;
+    padding: 12px 12px 0px 12px !important;
+    overflow:hidden;
+}
+/*.mat-tab-body-wrapper{
+    max-height:60vh;
+    min-height:30vh;
+    overflow: auto;
+    padding-bottom: 20px;
+}*/
+/*.egret-navy .mat-form-field-appearance-outline.mat-form-field-disabled .mat-form-field-outline{
+    background-color: rgb(249, 250, 246);
+}*/
+.egret-navy .mat-tab-group.mat-primary .mat-ink-bar{
+    height:8px;
+}
+/*.egret-navy .mat-toolbar{
+    background-color:rgba(3, 3, 61, 0.863);  
+    color: white;   
+}*/
+.mat-tab-label{
+    font-size:13px;
+    font-weight:700;
+}
+.egret-navy .mat-icon-button{
+    background:none;
+}
+.md-label{
+    max-height:60vh;
+    min-height:30vh;
+    overflow: auto;
+    padding-bottom: 20px;
+}
+.mat-form-field-appearance-outline .mat-form-field-infix{
+    padding: 0.6em 1em 0.6em;
+}
+.full{
+    margin-top: 15px;
+}
+.egret-navy .mat-input-element:disabled{
+    color: rgba(0, 0, 0, 0.87);
+    font-size: 12px;
+}
+.label{
+   color: rgba(0, 0, 0, 0.54);
+   font-weight: 700;
+   font-size: 14px !important;
+}
+
+.mat-form-field-appearance-outline .mat-form-field-infix{
+    padding: 0.3em 1em 0;
+}
+
+:host ::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline {
+    display: flex;
+    position: absolute;
+    top: 1.25em !important;
+  }
+  
+  :host ::ng-deep .mat-form-field-appearance-outline .mat-form-field-flex {
+    padding: 0 .75em 0 0.75em;
+    margin-top: -1.25em !important;
+    position: relative;
+  }
+  .egret-navy .mat-form-field-appearance-outline .mat-form-field-outline-thick{
+    color:lightblue;
+}
+
+ ///////////////////// Dropdown Placeholder and After select value /////////////////////
+
+ :host ::ng-deep .mat-select-value-text {
+    // font-size: 14px !important;
+    // font-weight: 600;
+  
+    font-size: 13px !important;
+    font-weight: 450;
+  }
+  
+  :host ::ng-deep .mat-form-field-appearance-legacy .mat-form-field-label {
+    
+    color: gray!important;
+    font-style: italic;
+  }
+  .success {
+    background-color: green;
+    color: white;
+  }
+  .asterisk_input::after 
+  {
+      content:" *"; 
+      color: red;
+  }
+  ///////////////////// Dropdown Placeholder and After select value /////////////////////

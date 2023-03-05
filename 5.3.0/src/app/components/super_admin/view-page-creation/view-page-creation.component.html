@@ -1,0 +1,36 @@
+<h3><strong style=" color:#008bd0 !important;"> View Page Creation </strong> </h3>
+<mat-card class="example-card">
+  <mat-card-content>
+    <form>
+
+      <div class="mr-05 pb-1">
+
+        <div fxLayout="row wrap" class="example-container mat-elevation-z8">
+
+          <table mat-table [dataSource]="dataSource">
+
+            <ng-container matColumnDef="Pages">
+              <th mat-header-cell *matHeaderCellDef>{{displayedHeader[0]}}</th>
+              <td mat-cell *matCellDef="let element">{{element.ModuleName}}</td>
+            </ng-container>
+
+
+            <ng-container matColumnDef="AvailableFilters">
+      
+            </ng-container>
+            <ng-container matColumnDef="AvailableFields">
+              <th mat-header-cell *matHeaderCellDef> {{displayedHeader[1]}}</th>
+              <td mat-cell *matCellDef="let element" >{{element.AvailableFields}}
+                <a style="color: blue;cursor: pointer;margin-left: 35px  !important;" (click)="openFields(element)">View</a> 
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumns;sticky:true"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          </table>
+        </div>
+
+      </div>
+    </form>
+  </mat-card-content>
+</mat-card>

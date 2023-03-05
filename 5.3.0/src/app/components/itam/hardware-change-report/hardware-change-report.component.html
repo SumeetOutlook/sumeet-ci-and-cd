@@ -1,0 +1,351 @@
+
+<div fxLayout='row wrap' fxLayoutAlign='space-between' fxLayout.lt-sm="column" style="min-height: fit-content;">
+  <div fxFlex="100" fxFlex.gt-xs="20">
+    <h3><strong style=" color:#008bd0 !important;">{{menuheader['Hardware Change Report']}}</strong></h3>
+  </div>
+  <div fxFlex="100" fxFlex.gt-xs="80" style="text-align: center;"><span *ngIf="arrlength > 0"><i>{{arrlength}} assets
+        selected
+      </i></span><span *ngIf="arrlength > 0"><a
+        style="color:#008bd0 !important;margin-left: 5px !important;cursor: pointer;"
+        (click)="viewSelected()"><u>View</u></a></span><span *ngIf="arrlength > 0"><a
+        style="color:red !important;margin-left: 5px !important;cursor: pointer;"
+        (click)="clearSelected()">Clear</a></span>
+    <span *ngIf="appliedfilters.length > 0" style="margin-left: 200px !important;font: italic;"><span>Other filters
+        applied<i *ngFor="let fil of appliedfilters;let i=index" style="font-weight: 700;"> {{fil}}<i
+            *ngIf="i!=appliedfilters.length-1">/</i> </i></span></span><span *ngIf="appliedfilters.length > 0"><a
+        style="color:red !important;margin-left: 15px !important;cursor: pointer;"
+        (click)="clearfilter()">Clear</a></span>
+  </div>
+</div>
+
+
+  <span class="example-spacer"></span>
+  <div fxLayout='row wrap' fxLayoutAlign='space-between' fxLayout.lt-sm="column" style="min-height: fit-content;">
+    
+    
+    <div fxFlex="100" fxFlex.gt-xs="12" class="pr-1">
+      <mat-form-field class="formfield full-width" color="primary" style="width: 110px;">
+        <mat-select disableOptionCentering [(ngModel)]="searchCtrl"
+          placeholder="{{header.SearchBy}}" [multiple]="false" #singleSelect>
+          <mat-option value="" (click)="onChangeSearchCtrl('')"> {{header.All}} </mat-option>
+          <mat-option  *ngFor="let remark of searchTypes" value="{{remark.value}}" (click)="onChangeSearchCtrl(remark.value)">
+            {{remark.name}} </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div fxFlex="100" fxFlex.gt-xs="12" class="pr-1" *ngIf="searchCtrl == '2'">
+      <mat-form-field class="full-width">
+        <mat-label class="label asterisk_input">{{header.BIOSSerialNumber}}*</mat-label>
+        <input matInput  autocomplete="off" [(ngModel)]="BIOSNoCtrl">
+      </mat-form-field>
+      </div>
+
+    <div fxFlex="100" fxFlex.gt-xs="12" class="pr-1" *ngIf="searchCtrl == '1'">
+      <mat-form-field class="formfield full-width" color="primary">
+        <mat-select disableOptionCentering [(ngModel)]="optionMultiCtrl"
+          placeholder="{{header.Option}}" [multiple]="false" #singleSelect>
+          <mat-option>
+            <ngx-mat-select-search [placeholderLabel]="'Search'" noEntriesFoundLabel="{{header.NoRecordFound}}"
+              [formControl]="optionMultiFilterCtrl">
+            </ngx-mat-select-search>
+          </mat-option>
+          <mat-option *ngFor="let option of filteredoptionMulti | async" value="{{option.value}}">{{option.name}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div fxFlex="100" fxFlex.gt-xs="12" class="pr-1" *ngIf="searchCtrl == '1'">
+      <mat-form-field class="formfield full-width" color="primary" style="width: 110px;">
+        <mat-select disableOptionCentering [(ngModel)]="hardwareCategoryCtrl"
+          placeholder="Hardware Category" [multiple]="false" #singleSelect>
+          <mat-option value=""> {{header.All}} </mat-option>
+          <mat-option  *ngFor="let remark of hardwareCategoryTypes" value="{{remark.value}}">
+            {{remark.name}} </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+    <div fxFlex="100" fxFlex.gt-xs="12" class="pr-1">
+      <mat-form-field class="full-width">
+        <mat-label class="label">{{header.FromDate}}<span class="required-asterisk">*</span></mat-label>
+        <input matInput [matDatepicker]="picker1" [(ngModel)]="fromDateCtrl"
+          (dateChange)="toDateValidation()" (click)="picker1.open();" name="freezeStartDate" autocomplete="off">
+        <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+        <mat-datepicker #picker1></mat-datepicker>
+      </mat-form-field>
+    </div>
+    <div fxFlex="100" fxFlex.gt-xs="12" class="pr-1">
+      <mat-form-field class="full-width">
+        <mat-label class="label">{{header.ToDate}}<span class="required-asterisk">*</span></mat-label>
+        <input matInput [matDatepicker]="picker2" [(ngModel)]="ToDateCtrl" [min]="minDate" [max]="maxDate"
+          (click)="picker2.open();" name="freezeStartDate" autocomplete="off">
+        <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+        <mat-datepicker #picker2></mat-datepicker>
+      </mat-form-field>
+    </div>
+    
+    <div fxFlex="100" fxFlex.gt-xs="35">
+      <button mat-raised-button class="submitbtn" (click)="showTable()">
+        <mat-icon class="matbtn">shortcut</mat-icon>Submit
+      </button>
+      <span style="margin-left: 32px !important;" ></span>
+     
+    </div>
+    <span class="example-spacer"></span>
+    <mat-panel-description style="float: right;">
+      <mat-icon [matMenuTriggerFor]="msgMenu" (click)="$event.stopPropagation()" class="text-muted">
+        more_vert</mat-icon>
+      <mat-menu #msgMenu="matMenu">
+        <button mat-menu-item style="height: 40px !important;" (click)="openFilter_PopUp()" *ngIf="setflag">
+          <mat-icon style="margin-right: 6px;color: #0c3057;"> filter_list
+          </mat-icon> Create Filter
+        </button>
+        <button mat-menu-item (click)="clickToExport()" style="height: 40px !important;">
+          <mat-icon style="margin-right: 6px;color: #0c3057;"> download
+          </mat-icon> Export
+        </button>
+        <button mat-menu-item (click)="editGridpop()" style="height: 40px !important;">
+          <mat-icon style="margin-right: 6px;color: #0c3057;"> view_column
+          </mat-icon> Edit Grid Display
+        </button>
+      </mat-menu>
+    </mat-panel-description>
+    <!-- '/.' -->
+
+    <!-- </div> -->
+  </div>
+
+<div class=" example-container mat-elevation-z8" *ngIf="displayTable">
+  <table mat-table #table [dataSource]="dataSource" matSort (matSortChange)="sortColumn($event)">
+    <ng-container [matColumnDef]="column" *ngFor="let column of displayedColumns; index as i">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>
+        <!-- {{header[column]}} -->
+        <span *ngIf="column === 'Select'">
+          <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="selection.hasValue() && isAllSelected"
+            [indeterminate]="selection.hasValue() && !isAllSelected" style="background-color: white;" [disabled]="dataSource.data.length === 0">
+          </mat-checkbox>
+        </span>
+        <span *ngIf="column === 'Icon' || column ==='Review'">
+          
+        </span>
+        
+        <span *ngIf="column === 'Barcode' " style="margin-left: -3%;">
+          <span *ngIf="this.isButtonVisibleBarCode == false"> {{header[column]}} </span>
+          <span *ngIf="this.isButtonVisibleBarCode == true">
+            <mat-form-field
+              style="padding-bottom: 0px !important;margin-bottom: -9px !important;margin-top: -7px !important;">
+              <input matInput class="form-field" [formControl]="AssetNoFilter" placeholder="{{header[column]}}"
+                (change)="SerchAssetid(column)">
+            </mat-form-field>
+          </span>
+          <mat-icon *ngIf="this.isButtonVisibleBarCode == false" class="maticon"
+            (click)="Serchicon(column,isButtonVisibleBarCode)"
+            style="height: 17px;width: 24px;font-size:17px;color:#1d3478;margin-right: -7px;">search</mat-icon>
+          <mat-panel-description *ngIf="this.isButtonVisibleBarCode == true">
+            <mat-icon [matMenuTriggerFor]="msgMenu" (click)="$event.stopPropagation()" class="text-muted">
+              more_vert</mat-icon>
+            <mat-menu #msgMenu="matMenu">
+              <button mat-menu-item (click)="opentablePopup('position')" *ngIf="setflag"
+                style="height: 40px !important;">
+                <mat-icon style="margin-right: 6px;"> <img src="assets/images/assetrak/23_10_2020/Multiple.png" />
+                </mat-icon> Multiple Search
+              </button>
+              <button mat-menu-item (click)="ClearSerch(column,isButtonVisibleBarCode)"
+                style="height: 40px !important;">
+                <mat-icon style="margin-right: 6px;"> <img src="assets/images/assetrak/23_10_2020/Cross.png" />
+                </mat-icon> Clear Search
+              </button>
+            </mat-menu>
+          </mat-panel-description>
+        </span>
+        <span *ngIf="column === 'AssetId' ">
+          <span *ngIf="this.isButtonVisible == false"> {{header[column]}} </span>
+          <span *ngIf="this.isButtonVisible == true">
+            <mat-form-field
+              style="padding-bottom: 0px !important;margin-bottom: -9px !important;margin-top: -7px !important;">
+              <input matInput class="form-field" [formControl]="AssetNoFilter" placeholder="{{header[column]}}"
+                (change)="SerchAssetid(column)">
+            </mat-form-field>
+          </span>
+          <mat-icon *ngIf="this.isButtonVisible == false" class="maticon" (click)="Serchicon(column,isButtonVisible)"
+            style="height: 17px;width: 24px;font-size:17px;color:#1d3478;margin-right: -7px;">search</mat-icon>
+          <mat-panel-description *ngIf="this.isButtonVisible == true">
+            <mat-icon [matMenuTriggerFor]="msgMenu" (click)="$event.stopPropagation()" class="text-muted">
+              more_vert</mat-icon>
+            <mat-menu #msgMenu="matMenu">
+              <button mat-menu-item (click)="opentablePopup('position')" *ngIf="setflag"
+                style="height: 40px !important;">
+                <mat-icon style="margin-right: 6px;"> <img src="assets/images/assetrak/23_10_2020/Multiple.png" />
+                </mat-icon> Multiple Search
+              </button>
+              <button mat-menu-item (click)="ClearSerch(column,isButtonVisible)" style="height: 40px !important;">
+                <mat-icon style="margin-right: 6px;"> <img src="assets/images/assetrak/23_10_2020/Cross.png" />
+                </mat-icon> Clear Search
+              </button>
+            </mat-menu>
+          </mat-panel-description>
+        </span>
+
+        <span *ngIf="column === 'User' ">
+          <span *ngIf="this.isButtonVisibleUser == false"> {{header[column]}} </span>
+          <span *ngIf="this.isButtonVisibleUser == true">
+            <mat-form-field
+              style="padding-bottom: 0px !important;margin-bottom: -9px !important;margin-top: -7px !important;">
+              <input matInput class="form-field" [formControl]="AssetNoFilter" placeholder="{{header[column]}}"
+                (change)="SerchAssetid(column)">
+            </mat-form-field>
+          </span>
+          <mat-icon *ngIf="this.isButtonVisibleUser == false" class="maticon"
+            (click)="Serchicon(column,isButtonVisibleUser)"
+            style="height: 17px;width: 24px;font-size:17px;color:#1d3478;margin-right: -7px;">search</mat-icon>
+          <mat-panel-description *ngIf="this.isButtonVisibleUser == true">
+            <mat-icon [matMenuTriggerFor]="msgMenu" (click)="$event.stopPropagation()" class="text-muted">
+              more_vert</mat-icon>
+            <mat-menu #msgMenu="matMenu">
+              <button mat-menu-item (click)="opentablePopup('position')" *ngIf="setflag"
+                style="height: 40px !important;">
+                <mat-icon style="margin-right: 6px;"> <img src="assets/images/assetrak/23_10_2020/Multiple.png" />
+                </mat-icon> Multiple Search
+              </button>
+              <button mat-menu-item (click)="ClearSerch(column,isButtonVisibleUser)" style="height: 40px !important;">
+                <mat-icon style="margin-right: 6px;"> <img src="assets/images/assetrak/23_10_2020/Cross.png" />
+                </mat-icon> Clear Search
+              </button>
+            </mat-menu>
+          </mat-panel-description>
+        </span>
+        <span *ngIf="column === 'SerialNo' ">
+          <span *ngIf="this.isButtonVisibleSerialNo == false"> {{header[column]}} </span>
+          <span *ngIf="this.isButtonVisibleSerialNo == true">
+            <mat-form-field
+              style="padding-bottom: 0px !important;margin-bottom: -9px !important;margin-top: -7px !important;">
+              <input matInput class="form-field" [formControl]="AssetNoFilter" placeholder="{{header[column]}}"
+                (change)="SerchAssetid(column)">
+            </mat-form-field>
+          </span>
+          <mat-icon *ngIf="this.isButtonVisibleSerialNo == false" class="maticon"
+            (click)="Serchicon(column,isButtonVisibleSerialNo)"
+            style="height: 17px;width: 24px;font-size:17px;color:#1d3478;margin-right: -7px;">search</mat-icon>
+          <mat-panel-description *ngIf="this.isButtonVisibleSerialNo == true">
+            <mat-icon [matMenuTriggerFor]="msgMenu" (click)="$event.stopPropagation()" class="text-muted">
+              more_vert</mat-icon>
+            <mat-menu #msgMenu="matMenu">
+              <button mat-menu-item (click)="opentablePopup('position')" *ngIf="setflag"
+                style="height: 40px !important;">
+                <mat-icon style="margin-right: 6px;"> <img src="assets/images/assetrak/23_10_2020/Multiple.png" />
+                </mat-icon> Multiple Search
+              </button>
+              <button mat-menu-item (click)="ClearSerch(column,isButtonVisibleSerialNo)"
+                style="height: 40px !important;">
+                <mat-icon style="margin-right: 6px;"> <img src="assets/images/assetrak/23_10_2020/Cross.png" />
+                </mat-icon> Clear Search
+              </button>
+            </mat-menu>
+          </mat-panel-description>
+        </span>
+        <span *ngIf="column === 'ITSerialNo' ">
+          <span *ngIf="this.isButtonVisibleITSerialNo == false"> {{header[column]}} </span>
+          <span *ngIf="this.isButtonVisibleITSerialNo == true">
+            <mat-form-field
+              style="padding-bottom: 0px !important;margin-bottom: -9px !important;margin-top: -7px !important;">
+              <input matInput class="form-field" [formControl]="AssetNoFilter" placeholder="{{header[column]}}"
+                (change)="SerchAssetid(column)">
+            </mat-form-field>
+          </span>
+          <mat-icon *ngIf="this.isButtonVisibleITSerialNo == false" class="maticon"
+            (click)="Serchicon(column,this.isButtonVisibleITSerialNo)"
+            style="height: 17px;width: 24px;font-size:17px;color:#1d3478;margin-right: -7px;">search</mat-icon>
+          <mat-panel-description *ngIf="this.isButtonVisibleITSerialNo == true">
+            <mat-icon [matMenuTriggerFor]="msgMenu" (click)="$event.stopPropagation()" class="text-muted">
+              more_vert</mat-icon>
+            <mat-menu #msgMenu="matMenu">
+              <button mat-menu-item (click)="opentablePopup('position')" *ngIf="setflag"
+                style="height: 40px !important;">
+                <mat-icon style="margin-right: 6px;"> <img src="assets/images/assetrak/23_10_2020/Multiple.png" />
+                </mat-icon> Multiple Search
+              </button>
+              <button mat-menu-item (click)="ClearSerch(column,isButtonVisibleITSerialNo)"
+                style="height: 40px !important;">
+                <mat-icon style="margin-right: 6px;"> <img src="assets/images/assetrak/23_10_2020/Cross.png" />
+                </mat-icon> Clear Search
+              </button>
+            </mat-menu>
+          </mat-panel-description>
+        </span>
+        
+        <!-- <span *ngIf="column == 'BIOSSerialNumber'">          
+          <span *ngIf="this.isButtonVisibleITSerialNo == false"> BIOS No </span>
+          <span *ngIf="this.isButtonVisibleITSerialNo == true">
+            <mat-form-field
+              style="padding-bottom: 0px !important;margin-bottom: -9px !important;margin-top: -7px !important;">
+              <input matInput class="form-field" [formControl]="AssetNoFilter" placeholder="BIOS No"
+                (change)="SerchAssetid('ITSerialNo')">
+            </mat-form-field>
+          </span>
+          <mat-icon *ngIf="this.isButtonVisibleITSerialNo == false" class="maticon"
+            (click)="Serchicon('ITSerialNo',this.isButtonVisibleITSerialNo)"
+            style="height: 17px;width: 24px;font-size:17px;color:#1d3478;margin-right: -7px;">search</mat-icon>
+          <mat-panel-description *ngIf="this.isButtonVisibleITSerialNo == true">
+            <mat-icon [matMenuTriggerFor]="msgMenu" (click)="$event.stopPropagation()" class="text-muted">
+              more_vert</mat-icon>
+            <mat-menu #msgMenu="matMenu">
+              <button mat-menu-item (click)="opentablePopup('position')" *ngIf="setflag"
+                style="height: 40px !important;">
+                <mat-icon style="margin-right: 6px;"> <img src="assets/images/assetrak/23_10_2020/Multiple.png" />
+                </mat-icon> Multiple Search
+              </button>
+              <button mat-menu-item (click)="ClearSerch('ITSerialNo',isButtonVisibleITSerialNo)"
+                style="height: 40px !important;">
+                <mat-icon style="margin-right: 6px;"> <img src="assets/images/assetrak/23_10_2020/Cross.png" />
+                </mat-icon> Clear Search
+              </button>
+            </mat-menu>
+          </mat-panel-description>
+        </span> -->
+        <span
+          *ngIf="column!='User' && column != 'AssetId' &&  column != 'Select' && column != 'Icon' && column != 'Barcode' && column != 'SerialNo' && column != 'ITSerialNo'">
+          {{header[column]}}
+        </span>
+      </th>
+      <td mat-cell *matCellDef="let element">
+
+        <span *ngIf="column === 'Select'">
+          <mat-checkbox (click)="$event.stopPropagation()" (dblclick)="$event.stopPropagation()" (change)="$event ? isSelected(element) : null"
+            [checked]="getselectedIds.indexOf(element) > -1">
+          </mat-checkbox>
+        </span>
+       
+        <span *ngIf="column === 'Review'" style="float: left;padding-left: 10px;padding-right: 10px;">
+          <!-- <mat-icon  matTooltip="To Review"  [style.fontSize]="'15px'"  style="color: #008bd0 !important;font-weight: bold;cursor: pointer;height: 15px;padding-right: 12px;">medical_services</mat-icon> -->
+          <a style="color:#0645ad !important;cursor: pointer;font-style: italic;text-decoration: underline;" (click)="reviewMapping(element)">Review</a>
+        </span>
+        <span *ngIf="column === 'Icon'">
+          <mat-icon  matTooltip="Map Hardware with Asset" *ngIf="!element.AssetId" [style.fontSize]="'19px'" (click)="mannualMapping(element)" style="color: #0645ad !important;font-weight: bold;cursor: pointer;height: 15px;padding-right: 12px;">link</mat-icon>
+          <mat-icon  matTooltip="Remove mapping" *ngIf="!!element.AssetId" [style.fontSize]="'19px'" (click)="Unmapped(element)" style="color: #0645ad !important;font-weight: bold;cursor: pointer;height: 15px;padding-right: 12px;">link_off</mat-icon>
+        </span>
+
+        <span *ngIf="column === 'SubAssetId'" style="float: left;padding-left: 10px;padding-right: 10px;">
+          {{element[column]}}
+        </span>
+        <span *ngIf="column === 'AssetId'" (click)="openPopUp(element)" style="float: left;padding-left: 10px;padding-right: 10px;">
+          <a style="color:#0645ad !important;cursor: pointer;font-style: italic;text-decoration: underline;">{{element[column]}}</a>
+        </span>
+        <span *ngIf="column === 'ChangeDate'">
+          {{element[column] | date:'dd-MMM-yyyy'}}
+         </span>
+
+        <span *ngIf="column != 'AssetId' && column != 'Select' && column != 'Icon' && column != 'SubAssetId' && column != 'HardDisk' && column != 'GeoLocation' && column != 'BIOSNo' && column != 'ChangeDate'">
+          {{element[column]}}
+        </span>
+      </td>
+
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns;sticky:true"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+  <div style="text-align: center;" *ngIf="dataSource.data.length === 0">{{message.NoDataAvailable}}</div>
+</div>
+<div [hidden]="!displayTable" style="margin-top: 8px;">
+  <mat-paginator class="expedientes-paginator" [showFirstLastButtons]="true" [length]="paginationParams.totalCount"
+    [pageSize]="paginationParams.pageSize" [pageSizeOptions]="[50, 100, 200,500]" (page)="handlePage($event)">
+  </mat-paginator>
+</div>

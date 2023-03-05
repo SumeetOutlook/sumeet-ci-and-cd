@@ -1,0 +1,364 @@
+<h3><strong style=" color:#008bd0 !important; margin-left: 10px;">View Discrepancy</strong> </h3>
+<mat-toolbar>
+  <!-- <mat-icon (click)="openDialogAdd('insert')" [style.fontSize]="'34px'" class="mr-8"
+  style="color: #1d3478 !important;cursor: pointer !important;" matTooltip="Create User">add</mat-icon>
+
+
+  <mat-icon class="example-icon FixBtnClass"  matTooltip="Export" [style.fontSize]="'30px'" style="margin-top: 18px;margin-left: 8px;cursor: pointer;width:31px !important;height: 26px !important;"><img style="height: 31px !important;" src="assets/images/assetrak/Latest/ExportNew.png" /></mat-icon>  -->
+
+  <!-- <mat-form-field class="ml-4" style="margin-top: 6px !important;margin-bottom: -6px !important;">
+    <mat-select   disableOptionCentering placeholder="{{header.FinancialYear}}" (selectionChange)="selected($event.value)" style="font-size: 12px !important;">
+      <mat-option *ngFor="let asset of CurrentList" [value]="asset">{{asset}}</mat-option>
+    </mat-select>
+   </mat-form-field> -->
+
+   <mat-form-field class="ml-4" style="margin-top: 6px !important;margin-bottom: -6px !important;">
+    <mat-select disableOptionCentering placeholder="Period Name" [formControl]="AssetInfo.controls['PeriodnameCtrl']" (selectionChange)="getperioddata($event)" 
+    
+      style="font-size: 12px !important;" required>
+      <mat-option>
+        <ngx-mat-select-search [placeholderLabel]="'Search'" noEntriesFoundLabel="{{header.NoRecordFound}}" [formControl]="AssetInfo.controls['PeriodnameFilterCtrl']">
+        </ngx-mat-select-search>
+      </mat-option>
+      <mat-option *ngFor="let data of filteredPeriodnameList | async" [value]="data">
+        {{data.Custome1}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  
+  <mat-form-field class="ml-4" style="margin-top: 6px !important;margin-bottom: -6px !important;">
+    <mat-select disableOptionCentering placeholder="File Name"  [formControl]="FilenameCtrl" (selectionChange)=getfilenamedata($event) #singleSelect
+      style="font-size: 12px !important;" required>
+      <mat-option>
+        <ngx-mat-select-search [placeholderLabel]="'Search'" [formControl]="AssetInfo.controls['FilenameFilterCtrl']">
+        </ngx-mat-select-search>
+      </mat-option>
+      <mat-option *ngFor="let data of filteredFilenameList | async" [value]="data">
+        {{data.FileName}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+
+<mat-form-field class="ml-4" style="margin-top: 6px !important;margin-bottom: -6px !important;" color="primary">
+  <mat-select disableOptionCentering [formControl]="statusMultiCtrl" placeholder="Status"
+    [multiple]="true" #multiSelect >
+    <mat-option>
+      <ngx-mat-select-search [placeholderLabel]="'Search'" [showToggleAllCheckbox]="true"
+         [formControl]="statusMultiFilterCtrl">
+      </ngx-mat-select-search>
+    </mat-option>
+    <mat-option value="">All</mat-option>
+    <mat-option value="Asset not found in Assetcues">Asset not found in Assetcues</mat-option>
+    <mat-option value="Asset not found in FAR">Asset not found in FAR</mat-option>
+    <mat-option value="Transfer discrepancy found">Transfer discrepancy found</mat-option>
+    <mat-option value="Retirement discrepancy found">Retirement discrepancy found</mat-option>
+   
+    <!-- <mat-option *ngFor="let data of filteredStatusMulti | async" [value]="data.value"> {{data.name}} </mat-option> -->
+  </mat-select>
+</mat-form-field>
+
+
+  <mat-icon *ngIf="ShowGobutton" class="example-icon" (click)="ShowviewDecrepancydata()" [style.fontSize]="'24px'"
+  style="height: 30px;width: 35px;margin-left: -10px !important;"><img style="height: 38px;width:40px;"
+    src="assets/images/assetrak/23_10_2020/GO 5.png" /></mat-icon>
+   
+      <!-- <input type="file" (change)="fileChange($event)" ng2FileSelect class="uploadSelectClass" accept=".xlx,.xlsx" /> -->
+      <!-- <input type="file" class="uploadSelectClass" (change)="fileChange($event)"  style="padding-top: 7px" placeholder="Upload file" accept=".xlx,.xlsx">
+     <mat-icon  (click)="uploadData()" [style.fontSize]="'33px'"  style="color: #1d3478 !important;cursor:pointer" matTooltip="Upload ">file_upload</mat-icon> -->
+   
+     <span class="example-spacer"></span>
+     <button mat-icon-button mat-sm-button class="mr-1" (click)="openAddRole()">
+     <mat-icon matTooltip="Back to ViewDiscrepancy" class="example-icon MatBtnClass"
+        style="font-size: 50px;height: 40px;width: 40px;cursor: pointer;"><img
+          src="assets/images/assetrak/Archive/Withdraw.png" /></mat-icon></button>
+     <!-- <span><a  style="cursor: pointer !important;color:blue !important;font-size: 14px !important;padding-right: 10px !important;" (click)="openAddRole()" >src="assets/images/assetrak/Archive/Withdraw.png"</a></span> -->
+     <!-- <span class="example-spacer"></span> -->
+     <!-- <mat-icon *ngIf="ShowExportbutton" (click)="Exportdata()" class="example-icon"  matTooltip="Export" [style.fontSize]="'30px'" style="margin-top: 18px;cursor: pointer;width:31px !important;height: 26px !important;margin-bottom: 22px !important;margin-left:5px !important;padding-right: 10px !important"><img style="height: 31px !important;" src="assets/images/assetrak/Latest/ExportNew.png"/></mat-icon>  -->
+     <mat-icon *ngIf="ShowExportbutton" (click)="Exportdata()" class="example-icon"  matTooltip="Export Discrepancy" [style.fontSize]="'30px'" style="margin-top: 18px;cursor: pointer;width:31px !important;height: 26px !important;margin-bottom: 22px !important;margin-left:25px !important;"><img style="height: 31px !important;" src="assets/images/assetrak/Latest/ExportNew.png"/></mat-icon> 
+     <mat-icon *ngIf="ShowExportbutton" (click)="ExportAssetragister()" class="example-icon"  matTooltip="Download Asset Register" [style.fontSize]="'30px'" style="margin-top: 18px;cursor: pointer;width:31px !important;height: 26px !important;margin-bottom: 22px !important;padding-left: 10px !important;padding-right: 10px !important;"><img style="height: 31px !important;" src="assets/images/assetrak/Latest/ExportNew.png"/></mat-icon>
+     <mat-icon *ngIf="ShowExportbutton" (click)="ExportFAR()" class="example-icon"  matTooltip="Download Uploaded FAR" [style.fontSize]="'30px'" style="margin-top: 18px;cursor: pointer;width:31px !important;height: 26px !important;margin-bottom: 22px !important;padding-right: 35px !important"><img style="height: 31px !important;" src="assets/images/assetrak/Latest/ExportNew.png"/></mat-icon>
+    <mat-form-field style="margin-bottom: -7px !important;">
+    <button  mat-icon-button matSuffix class="example-icon" style="background-color:white;margin-top: 0px;width:30px;height: 30px;" aria-label="Example icon-button with close icon">
+    <mat-icon style="color:white; font-size: 25px;color:#0C3057;cursor:pointer">search</mat-icon>
+    </button>
+    <!-- (keyup)="applyFilterNew($event.target.value)" -->
+    <!-- <input matInput  placeholder="Search" > -->
+    <input matInput  (change)="searchvalue($event.target.value)" placeholder="Search">
+  </mat-form-field>
+</mat-toolbar>
+
+<div class=" example-container mat-elevation-z8">
+  <table mat-table [dataSource]="dataSource" matSort>
+             
+    <ng-container matColumnDef="inventoryno">
+      <th mat-header-cell *matHeaderCellDef >{{displayedHeaders[0]}}</th>
+      <td mat-cell *matCellDef="let element" >{{element.BarCode}}</td>
+    </ng-container>
+    <ng-container matColumnDef="AssetidAt">
+      <th mat-header-cell *matHeaderCellDef >{{displayedHeaders[1]}}</th>
+      <td mat-cell *matCellDef="let element" >{{element.StorageLocation}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="Assetidfar">
+      <th mat-header-cell *matHeaderCellDef  > {{displayedHeaders[2]}}</th>
+      <td mat-cell *matCellDef="let element;let i=index" >{{element.AssetID}}
+
+        <!-- <span *ngIf="!this.DisplayName[i]">{{element.DisplayName}}</span>
+        <ng-container *ngIf="this.DisplayName[i]">
+          <mat-form-field style="width: 180px;margin-top: -2px !important;margin-bottom: -8px !important;">
+            <input matInput placeholder="Display Name" [formControl]="AssetInfo.controls['DisplayName']" autocomplete="off">
+            
+          </mat-form-field>
+        </ng-container>
+
+        <span *ngIf="!this.DisplayNameIcon[i]"><mat-icon style="margin-right: 16px;margin-left: 16px;cursor: pointer;font-size: 22px !important;"  matTooltip="Edit" (click)="showDate(element.PeriodName,'DisplayName')"  color="primary"> edit</mat-icon></span>
+        <span *ngIf="this.DisplayNameIcon[i]"><mat-icon style="margin-right: 16px;margin-left: 16px;cursor: pointer;font-weight: 600 !important;" matTooltip="Save" (click)="hideDate(element.PeriodName,'DisplayName')" color="primary"> check</mat-icon></span> -->
+
+      </td>
+    </ng-container>
+
+    <!-- <ng-container matColumnDef="subassetid">
+      <th mat-header-cell *matHeaderCellDef  >Subassetid</th>
+      <td mat-cell *matCellDef="let element"  >{{element.SubAssetID}} </td>
+    </ng-container> -->
+
+    <!-- <ng-container matColumnDef="sbu">
+      <th mat-header-cell *matHeaderCellDef>sbu</th>
+      <td mat-cell *matCellDef="let element;let i=index" >{{element.Zone}}
+        <span *ngIf="!this.periodEndDatePicker[i]">{{element.PeriodEndDate}}</span>
+      <ng-container *ngIf="this.periodEndDatePicker[i]">
+        <mat-form-field style="width: 180px;margin-top: -2px !important;margin-bottom: -8px !important;">
+          <input matInput [matDatepicker]="picker1" (click)="picker1.open();" (dateChange)="PeriodEndDateValidation()" [max]="today" name="PeriodEndDate" 
+              [formControl]="AssetInfo.controls['PeriodEndDate']" autocomplete="off">
+            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+            <mat-datepicker #picker1 ></mat-datepicker>
+        </mat-form-field>
+      </ng-container>
+
+      <span *ngIf="!this.periodEndDateIcon[i]"><mat-icon style="margin-right: 16px;margin-left: 16px;cursor: pointer;font-size: 22px !important;"  matTooltip="Edit" (click)="showDate(element.PeriodName,'PeriodEndDate')"  color="primary"> edit</mat-icon></span>
+      <span *ngIf="this.periodEndDateIcon[i]"><mat-icon style="margin-right: 16px;margin-left: 16px;cursor: pointer;font-weight: 600 !important;" matTooltip="Save" (click)="hideDate(element.PeriodName,'PeriodEndDate')" color="primary"> check</mat-icon></span>
+    </td>
+    </ng-container> -->
+    <ng-container matColumnDef="assetstage">
+      <th mat-header-cell *matHeaderCellDef  > {{displayedHeaders[3]}}</th>
+      <td mat-cell *matCellDef="let element"  >{{element.SelfCertInventoryNote}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="plant">
+      <th mat-header-cell *matHeaderCellDef>{{displayedHeaders[4]}}</th>
+      <td mat-cell  *matCellDef="let element,let i=index" >{{element.Room}}
+        <!-- <span *ngIf="!this.FreezeStartDatePicker[i]">{{element.FreezeStartDate}}</span>
+
+      <ng-container *ngIf="this.FreezeStartDatePicker[i]">
+        <mat-form-field  style="width: 180px;margin-top: -2px !important;margin-bottom: -8px !important;">
+          <input matInput [matDatepicker]="picker2" (click)="picker2.open();" (dateChange)="FreezeStartDateValidation()" [max]="today" name="FreezeStartDate" 
+              [formControl]="AssetInfo.controls['FreezeStartDate']" autocomplete="off">
+            <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+            <mat-datepicker #picker2 ></mat-datepicker>
+        </mat-form-field>
+      </ng-container>
+
+      <span  *ngIf="!this.FreezeStartDateIcon[i]"><mat-icon style="margin-right: 16px;margin-left: 16px;cursor: pointer;font-size: 22px !important;"  matTooltip="Edit" (click)="showDate(element.PeriodName,'FreezeStartDate')" color="primary"> edit</mat-icon></span>
+      <span  *ngIf="this.FreezeStartDateIcon[i]"><mat-icon style="margin-right: 16px;margin-left: 16px;cursor: pointer;font-weight: 600 !important;"  matTooltip="Save" (click)="hideDate(element.PeriodName,'FreezeStartDate')" color="primary"> check</mat-icon></span> -->
+    </td>
+    </ng-container>
+
+    <!-- <ng-container matColumnDef="location">
+      <th mat-header-cell *matHeaderCellDef >location</th>
+      <td mat-cell *matCellDef="let element,let i=index" >{{element.AssetLocation}}
+        <span *ngIf="!FreezeEndDatePicker[i]">{{element.FreezeEndDate}}</span>
+      <ng-container *ngIf="FreezeEndDatePicker[i]">
+        <mat-form-field  style="width: 180px;margin-top: -2px !important;margin-bottom: -8px !important;">
+          <input matInput [matDatepicker]="picker3" (click)="picker3.open();" (dateChange)="FreezeEndDateValidation()" [max]="today" name="FreezeEndDate" 
+              [formControl]="AssetInfo.controls['FreezeEndDate']" autocomplete="off">
+            <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+            <mat-datepicker #picker3 ></mat-datepicker>
+        </mat-form-field>
+        </ng-container>
+
+          <span *ngIf="!FreezeEndDateIcon[i]"><mat-icon style="margin-right: 16px;margin-left: 16px;cursor: pointer;font-size: 22px !important;"  matTooltip="Edit" (click)="showDate(element.PeriodName,'FreezeEndDate')" color="primary"> edit</mat-icon></span>
+          <span *ngIf="FreezeEndDateIcon[i]"><mat-icon style="margin-right: 16px;cursor: pointer;font-weight: 600 !important;"  matTooltip="Save" (click)="hideDate(element.PeriodName,'FreezeEndDate')" color="primary"> check</mat-icon></span>
+   
+      </td>
+    </ng-container> -->
+    
+    <ng-container matColumnDef="category">
+      <th mat-header-cell *matHeaderCellDef  >{{displayedHeaders[5]}} </th>
+      <td mat-cell *matCellDef="let element"  >{{element.AssetLocation}} </td>
+    </ng-container>
+    <ng-container matColumnDef="cost">
+      <th mat-header-cell *matHeaderCellDef  >{{displayedHeaders[6]}}</th>
+      <td mat-cell *matCellDef="let element"  >{{element.Building}} </td>
+    </ng-container>
+    
+    
+    <ng-container matColumnDef="discrepancy">
+      <th mat-header-cell *matHeaderCellDef  >{{displayedHeaders[7]}}</th>
+      <td mat-cell *matCellDef="let element"  >{{element.LastScanDate  | date: 'dd-MMM-yyyy'}} </td>
+    </ng-container>
+    
+    <ng-container matColumnDef="retirementfar">
+      <th mat-header-cell *matHeaderCellDef  >{{displayedHeaders[8]}}</th>
+      <td mat-cell *matCellDef="let element"  >{{element.SelfCertMissingStatus  | date: 'dd-MMM-yyyy'}} </td>
+    </ng-container>
+
+    <ng-container matColumnDef="acquisition date">
+      <th mat-header-cell *matHeaderCellDef  >{{displayedHeaders[9]}}</th>
+      <td mat-cell *matCellDef="let element"  >{{element.AcquisitionDate | date: 'dd-MMM-yyyy'}} </td>
+    </ng-container>
+    <ng-container matColumnDef="adl2">
+      <th mat-header-cell *matHeaderCellDef  >{{displayedHeaders[10]}}</th>
+      <td mat-cell *matCellDef="let element"  >{{element.ADL2  }} </td>
+    </ng-container>
+    <ng-container matColumnDef="adl3">
+      <th mat-header-cell *matHeaderCellDef  >{{displayedHeaders[11]}}</th>
+      <td mat-cell *matCellDef="let element"  >{{element.ADL3  }} </td>
+    </ng-container>
+    <ng-container matColumnDef="acquisition cost">
+      <th mat-header-cell *matHeaderCellDef  >{{displayedHeaders[12]}}</th>
+      <td mat-cell *matCellDef="let element"  >{{element.AcquisitionCost | number  }} </td>
+    </ng-container>
+    <ng-container matColumnDef="wdv1">
+      <th mat-header-cell *matHeaderCellDef  >{{displayedHeaders[13]}}</th>
+      <td mat-cell *matCellDef="let element"  >{{element.WDV | number }} </td>
+    </ng-container>  
+    <ng-container matColumnDef="wdv">
+      <th mat-header-cell *matHeaderCellDef  >{{displayedHeaders[14]}}</th>
+      <td mat-cell *matCellDef="let element"  >{{element.LastModifiedOn | date: 'dd-MMM-yyyy'}} </td>
+    </ng-container>
+    <ng-container matColumnDef="FileName">
+      <th mat-header-cell *matHeaderCellDef  >{{displayedHeaders[15]}}</th>
+      <td mat-cell *matCellDef="let element"  >{{element.Temp9 }} </td>
+    </ng-container>
+    <ng-container matColumnDef="Period">
+      <th mat-header-cell *matHeaderCellDef  > {{displayedHeaders[16]}}</th>
+      <td mat-cell *matCellDef="let element"  >{{element.Temp3}} </td>
+    </ng-container>
+    
+    <ng-container matColumnDef="fiscalyear">
+      <th mat-header-cell *matHeaderCellDef  > {{displayedHeaders[17]}}</th>
+      <td mat-cell *matCellDef="let element"  >{{element.TypeOfAsset}} </td>
+    </ng-container>
+    <ng-container matColumnDef="Discrepancy">
+      <th mat-header-cell *matHeaderCellDef  > {{displayedHeaders[18]}}</th>
+      <td mat-cell *matCellDef="let element"  >{{element.LastRemark}} </td>
+    </ng-container>
+   
+    <ng-container matColumnDef="Reason">
+      <th mat-header-cell *matHeaderCellDef  >{{displayedHeaders[19]}} </th>
+      <td mat-cell *matCellDef="let element"  >
+        <mat-form-field  class="input-field">
+          <input matInput placeholder="Input"  [(ngModel)]="element.SelfCertMissingFile" (change)="Resonmethod(element)" [ngModelOptions]="{standalone: true}">
+          <!-- <input matInput placeholder="Input"  [value]="element.SelfCertMissingFile" [formControl]="reason" (blur)="Resonmethod(element)"> -->
+      </mat-form-field>
+      </td>
+        
+        <!-- (keyup)="applyFilterNew($event.target.value)" -->
+        <!-- <input matInput  placeholder="" [formControl]="reason" SelfCertMissingFile(blur)="Resonmethod(element)">{{element.SelfCertMissingFile}}
+      </mat-form-field>  </td> -->
+    </ng-container>
+    <!-- <ng-container matColumnDef="action">
+      <th mat-header-cell *matHeaderCellDef ></th>
+      <td mat-cell *matCellDef="let element,let i=index" >
+        <mat-panel-description>
+          <mat-icon [matMenuTriggerFor]="msgMenu" class="text-muted"
+            style="margin-right: 12%;font-size: 23px !important;">more_vert
+          </mat-icon>
+          <mat-menu #msgMenu="matMenu">
+            <button mat-menu-item (click)="openDialogPeriod('edit',element)">
+              <mat-icon>edit</mat-icon>Edit Period
+            </button>
+            <button mat-menu-item (click)="openDialogFreeze('edit',element)">
+              <mat-icon>edit</mat-icon>Edit Freeze Period
+            </button>
+          </mat-menu>
+        </mat-panel-description>
+       
+      </td>
+    </ng-container> -->
+    
+    <tr mat-header-row *matHeaderRowDef="displayedColumns;sticky:true"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+  <div style="text-align: center;" *ngIf="!dataSource">{{message.NoDataAvailable}}</div>
+</div>
+<mat-paginator class="expedientes-paginator"  [showFirstLastButtons]="true" [length]="paginationParams.totalCount"
+        [pageSize]="paginationParams.pageSize"
+        [pageSizeOptions]="[50, 100, 200,500]"
+        (page)="handlePage($event)">
+       </mat-paginator>
+<!-- <mat-card class="example-card pb-0" >
+  <mat-card-content>
+    <form [formGroup]="AssetInfo">
+      <div class="mr-05 pb-1">
+        <div fxLayout="row wrap" class="example-container mat-elevation-z8">         
+        </div>  
+      </div>
+    </form>
+  </mat-card-content>
+</mat-card> -->
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 
+
+
+<div class="ml-05 mr-05 mt-05 pb-1">
+  <div class="table-responsive mat-elevation-z2">
+    <table mat-table #table  [dataSource]="datasource"  matSort>
+
+      <ng-container matColumnDef="email">
+        <th *matHeaderCellDef mat-sort-header [ngClass]="'w-50'"> Email </th>
+        <td mat-cell *matCellDef="let element;">{{element.email}}</td>     
+       </ng-container>
+
+       <ng-container matColumnDef="first_name">
+        <th *matHeaderCellDef mat-sort-header [ngClass]="'w-80'"> First Name </th>
+        <td mat-cell *matCellDef="let element;">{{element.first_name}}</td>     
+       </ng-container>
+
+       <ng-container matColumnDef="last_name">
+        <th *matHeaderCellDef mat-sort-header [ngClass]="'w-80'"> Last Name </th>
+        <td mat-cell *matCellDef="let element;">{{element.last_name}}</td>     
+       </ng-container>
+
+       <ng-container matColumnDef="status">
+        <th *matHeaderCellDef mat-sort-header [ngClass]="'w-80'"> Status </th>
+        <td mat-cell *matCellDef="let element;">{{element.status}}</td>     
+       </ng-container>
+
+       <ng-container matColumnDef="edit">
+        <th *matHeaderCellDef mat-sort-header [ngClass]="'w-80'"> Action </th>
+        <td mat-cell *matCellDef="let element;let i=index">         
+          <!-- <mat-icon (click)="editUser(element,i)" [style.fontSize]="'30px'"  style="color: #1d3478 !important;">edit</mat-icon>
+          <!-- <mat-icon (click)="deleteUser(element)" [style.fontSize]="'30px'"  style="color: #1d3478 !important;margin-left: 20px !important;">delete</mat-icon> -->
+        <!-- </td>      
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns;sticky:true;"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+        </table>
+     
+    
+
+  </div>
+
+</div> -->
+
+ 

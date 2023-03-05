@@ -1,0 +1,286 @@
+h3{   
+    font-size: 14PX;
+    margin-top: -1px;
+    margin-bottom: -1px;
+}
+
+//== peginator ======================================
+
+.mat-paginator{
+    background-color: white;
+}
+.mat-paginator-page-size {
+    height: 50px !important;
+}
+.mat-paginator-range-actions {
+    display: flex;
+    align-items: center;
+    height: 50px !important;
+}
+:host ::ng-deep .mat-paginator-container
+{
+    margin-top: -10px;
+    margin-bottom: -10px;
+    color: black !important;
+}
+:host ::ng-deep .mat-paginator-page-size {   
+    color: black !important;
+}
+
+:host ::ng-deep .mat-paginator-range-actions {   
+    color: black !important;
+}
+
+//== table =============================================
+:host ::ng-deep .mat-header-cell {
+    // color: rgb(0 0 0 / 85%) !important;
+     color:black !important;
+     background-color: #F5F5DC;//#ddd5d5; // #3a61b4
+     border-right: 1px solid rgba(0, 0, 0, 0.12);
+ }
+
+.mat-header-cell {
+    font-size: 12px !important;
+    font-weight: 700;
+}
+.mat-cell {
+    font-size: 12px !important;
+}
+ table{   
+    width:100% !important
+ }
+
+.mat-header-cell, .mat-cell {
+    padding-top: 6px;
+    padding-bottom: 6px;
+    padding-left: 43px;    
+}
+
+:host ::ng-deep .mat-header-cell, .mat-cell {
+    padding-top: 6px;
+    padding-bottom: 6px;
+    padding-left: 12px !important;
+}
+
+.mat-row:nth-child(even){
+    background-color:#ffffff;
+}
+        
+.mat-row:nth-child(odd){
+    background-color:#f9f9f9;
+}
+ .mat-cell{    
+    // border-bottom: 1px solid rgba(0, 0, 0, 0.12);
+    // border-top: 1px solid rgba(0, 0, 0, 0.12);
+    // border-left: 1px solid rgba(0, 0, 0, 0.12);
+    border-right: 1px solid rgba(0, 0, 0, 0.12);
+}
+    
+:host ::ng-deep .mat-header-cell, .mat-cell {
+        padding-top: 6px;
+        padding-bottom: 6px;
+        padding-left: 10px !important;
+        padding-right: 6px;
+}
+// :host ::ng-deep .mat-sort-header-arrow
+// {
+//     color: white;
+// }
+// =============================
+
+.mat-select-panel { min-width: 100% !important; }
+.mat-divider{
+    padding-top: 5px;
+}
+.mat-icon-button {
+    height: 50px;
+    width: 24px;
+    line-height: 24px;
+}
+.mat-row, .mat-header-row {
+    min-width: 800px;
+    white-space: nowrap;
+    height: 5px;   
+}
+.example-container {
+    display: flex;
+    flex-direction: column;
+    flex-basis: 300px;
+    box-shadow:0 0 black;
+    max-height: 500px !important;
+    background-color: rgba(255, 255, 255, 0.959);
+    overflow: auto;   
+    width:100%;
+    margin-toP:10px;
+  }
+.container{
+    background-color: white;
+    border: 1.5px solid black;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.example-icon 
+{
+    padding: 0 3px;
+}
+.example-spacer {
+    flex: 1 1 auto;
+}
+
+  .mat-toolbar-multiple-rows {
+    min-height: 48px !important;
+}
+
+.mat-toolbar {
+    background-color: white !important; //#edecec
+    color: rgba(0, 0, 0, 0.87);
+    font: 500 12px/30px Roboto, "Helvetica Neue", sans-serif;
+}
+
+.app-admin-container .rightside-content-hold {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    padding: 0.333333rem;
+    overflow-x: hidden;
+    position: relative;
+    min-height: 450px;
+    padding-top: 0px !important;
+}
+.mat-form-field {
+    margin-right: 12px;
+}
+
+.MatBtnClass
+{
+  margin-bottom: 15px;
+}
+.FixBtnClass
+{
+  margin-bottom: 15px;
+}
+
+:host ::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline {
+    display: flex;
+    position: absolute;
+    top: 1.25em !important;
+}
+
+:host ::ng-deep .mat-form-field-appearance-outline .mat-form-field-flex {
+    padding: 0 .75em 0 0.75em;
+    margin-top: -1.25em !important;
+    position: relative;
+}
+:host ::ng-deep .mat-input-element:disabled {
+    color: black !important;
+    font-size: 12px !important;
+}
+
+:host ::ng-deep .mat-input-element {
+    color: black !important;
+    font-size: 12px !important;
+}
+.mat-menu-item:hover:not([disabled])
+{
+    background:rgba(0, 0, 1, 0.2)!important;
+}
+
+:host ::ng-deep .mat-menu-item {
+    height: 40px !important;
+    line-height: 40px !important;
+}
+
+.mat-menu-content:not(:empty) {
+    padding-top: 5px !important;
+    padding-bottom: 5px !important;
+}
+
+:host ::ng-deep .mat-select-value-text {
+    font-size: 13px !important;
+    font-weight: 450;
+}
+:host ::ng-deep .mat-form-field-appearance-legacy .mat-form-field-label {
+    
+    color: gray !important; // #0074a3 !important
+    font-style: italic;
+    font-size: 13px;
+}
+.mat-toolbar-row, .mat-toolbar-single-row{
+    display: flex;
+    box-sizing: border-box;
+    padding: 0 5px;
+    padding-top: 15px;
+}
+
+:host ::ng-deep .mat-form-field-hide-placeholder .mat-select-placeholder {
+    color: transparent;
+    -webkit-text-fill-color: transparent;
+    transition: none;
+    display: block;
+    // font-size: 5px;
+}
+:host ::ng-deep .mat-select-trigger {
+    display: inline-table;
+    cursor: pointer;
+    position: relative;
+    box-sizing: border-box;
+    font-size: 15px !important;
+}
+.searchicon {
+    height: 17px;width: 24px;font-size:13px;margin-right: -7px;
+}
+.mat-raised-button.mat-warn{
+    background-color: #e67e4a;
+}
+.mat-raised-button.mat-accent{
+    background-color: white;
+}
+.submitbtn{
+    // padding-right: 8px;
+        padding-left: 7px;
+        margin-bottom: 15px;
+        border-radius: 30px;
+        border: 1px solid #e67e4a;
+        background-color: white !important;
+        color:#0c3057;
+}
+.submitbtn:hover {
+    background-color: #e67e4a !important;
+    color: white;
+}
+.matbtn{
+    font-size: 23px;   
+}
+
+.minibtn{
+    min-width: 50px;
+    margin-bottom: 15px;
+    background-color: #e67e4a; /* For browsers that do not support gradients */
+    //background-image: linear-gradient(#e67e4a, #0c3057)
+    background-image: linear-gradient(to right, rgb(255, 81, 47) 0%, rgb(240, 152, 25) 51%, rgb(255, 81, 47) 100%);
+    padding: 0 10px;
+}
+.minibtn:disabled{
+    background-color: #a19e9e!important; //#dddddd !important;
+    background-image: none;
+}
+
+.text-muted {
+    color: black !important;
+}
+.highlight{
+    background: #FFFFE0 !important; /* green */
+}
+:host ::ng-deep th.mat-header-cell
+{
+    font-size: 14px !important;
+}
+.mat-raised-button ::ng-deep .mat-button-focus-overlay {
+    background-color: transparent!important; 
+}
+.asterisk_input::after 
+{
+    content:" *"; 
+    color: red;
+}

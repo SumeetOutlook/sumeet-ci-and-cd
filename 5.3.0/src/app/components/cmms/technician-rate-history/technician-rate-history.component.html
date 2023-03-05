@@ -1,0 +1,194 @@
+<div fxLayout='row wrap' fxLayoutAlign='space-between' fxLayout.lt-sm="column" style="min-height: fit-content;">
+  <div fxFlex="100" fxFlex.gt-xs="20">
+    <h3><strong style=" color:#008bd0 !important;">Technician Rate History</strong></h3>
+  </div>
+</div>
+
+<div fxLayout='row wrap' fxLayoutAlign='space-between' fxLayout.lt-sm="column" style="min-height: fit-content;">
+  <div fxFlex="100" fxFlex.gt-xs="12" class="pr-1">
+      <mat-form-field class="formfield full-width" color="primary">
+        <mat-select disableOptionCentering [(ngModel)]="typeVal" [ngModelOptions]="{standalone: true}"
+          placeholder="Type" [multiple]="false" #singleSelect>
+          <mat-option>
+            <ngx-mat-select-search [placeholderLabel]="'Search'">
+            </ngx-mat-select-search>
+          </mat-option>
+          <!-- <mat-option value="" [disabled]="!!cityMultiCtrl"> {{Headers.All}} </mat-option>
+          <div class="select-all">
+            <mat-checkbox [checked]="cityMultiCtrl.length === ListOfSBU.length ? true : false"
+              [indeterminate]="cityMultiCtrl.length < ListOfSBU.length ? true : false"
+              (change)="toggleSelectAllCity($event)"Select All</mat-checkbox>
+          </div> -->
+          <mat-option *ngFor="let type of types" [value]="type">
+            {{type}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div fxFlex="100" fxFlex.gt-xs="12" class="pr-1" *ngIf="typeVal === 'By User'">
+      <mat-form-field class="formfield full-width" color="primary">
+        <mat-select disableOptionCentering [(ngModel)]="userVal" [ngModelOptions]="{standalone: true}"
+          placeholder="User Name" [multiple]="false" #singleSelect>
+          <mat-option>
+            <ngx-mat-select-search [placeholderLabel]="'Search'">
+            </ngx-mat-select-search>
+          </mat-option>
+          <!-- <mat-option value="" [disabled]="!!cityMultiCtrl"> {{Headers.All}} </mat-option>
+          <div class="select-all">
+            <mat-checkbox [checked]="cityMultiCtrl.length === ListOfSBU.length ? true : false"
+              [indeterminate]="cityMultiCtrl.length < ListOfSBU.length ? true : false"
+              (change)="toggleSelectAllCity($event)">Select All</mat-checkbox>
+          </div> -->
+          <mat-option *ngFor="let user of UserData" [value]="user">
+            {{user.UserName}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div fxFlex="100" fxFlex.gt-xs="12" class="pr-1" *ngIf="typeVal === 'By Role'">
+      <mat-form-field class="formfield full-width" color="primary">
+        <mat-select disableOptionCentering [(ngModel)]="roleVal" [ngModelOptions]="{standalone: true}"
+          placeholder="Role Name" [multiple]="false" #singleSelect>
+          <mat-option>
+            <ngx-mat-select-search [placeholderLabel]="'Search'">
+            </ngx-mat-select-search>
+          </mat-option>
+          <!-- <mat-option value="" [disabled]="!!cityMultiCtrl"> {{Headers.All}} </mat-option>
+          <div class="select-all">
+            <mat-checkbox [checked]="cityMultiCtrl.length === ListOfSBU.length ? true : false"
+              [indeterminate]="cityMultiCtrl.length < ListOfSBU.length ? true : false"
+              (change)="toggleSelectAllCity($event)">Select All</mat-checkbox>
+          </div> -->
+          <mat-option *ngFor="let role of roleNames" [value]="role">
+            {{role}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    
+
+  <div fxFlex="100" fxFlex.gt-xs="30">
+    <!-- <button mat-icon-button mat-sm-button class="mr-24" *ngIf="!!transfertypeMultiCtrl && !!plantMultiCtrl"
+    (click)="GetAssetForTransfser()">
+    <mat-icon class="example-icon MatBtnClass" style="font-size: 50px;height: 30px;width: 35px;" ><img
+        style="height: 38px;width:40px;padding-top: 6px;" src="assets/images/assetrak/23_10_2020/GO 5.png" /></mat-icon>
+  </button> -->
+    <button mat-raised-button class="submitbtn" (click)="getTechnicianHistory()">
+      <mat-icon class="matbtn">shortcut</mat-icon>Submit
+    </button>
+      <!-- <a mat-raised-button href="javascript:void(0)" *ngIf="displayTable" (click)="toggleTableRows()" color="primary">Toggle Rows</a> -->
+    <span   matTooltip="Create Issue" [matTooltipDisabled]="false" (click)="openTechnicialPopUp()">
+      <button mat-raised-button class="minibtn" style="margin-left: 8px !important;"
+      >
+        <mat-icon style="color: white;">add</mat-icon>
+      </button></span>
+  </div>
+    <span class="example-spacer"></span>
+    <mat-panel-description style="float: right;">
+      <mat-icon [matMenuTriggerFor]="msgMenu" (click)="$event.stopPropagation()" class="text-muted">
+        more_vert</mat-icon>
+      <mat-menu #msgMenu="matMenu">
+        <!-- <button mat-menu-item style="height: 40px !important;" *ngIf="setflag">
+          <mat-icon style="margin-right: 6px;color: #0c3057;"> filter_list
+          </mat-icon> Create Filter
+        </button> -->
+        <button mat-menu-item  style="height: 40px !important;">
+          <mat-icon style="margin-right: 6px;color: #0c3057;"> download
+          </mat-icon> Export
+        </button>
+        <button mat-menu-item style="height: 40px !important;">
+          <mat-icon style="margin-right: 6px;color: #0c3057;"> view_column
+          </mat-icon> Edit Grid Display
+        </button>
+        <!-- <button mat-menu-item (click)="multiSearchAdd()" style="height: 40px !important;" >
+          <mat-icon style="margin-right: 6px;color: #0c3057;"> search
+          </mat-icon> Multiple Search
+        </button> -->
+      </mat-menu>
+    </mat-panel-description>
+  <!-- </div> -->
+</div>
+
+<div class=" example-container mat-elevation-z8" *ngIf="displayTable">
+  <table mat-table #table [dataSource]="datasource" matSort multiTemplateDataRows>
+    <ng-container [matColumnDef]="column" *ngFor="let column of displayedColumns; index as i ">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          <span
+          *ngIf="column == 'Order Type' ">
+          {{column}}
+        </span>
+      <span
+      *ngIf="column == 'Actions' ">
+      {{column}}
+    </span>
+    <span
+    *ngIf="column == 'Photo' "> 
+      Photo 
+  </span>
+        <span
+          *ngIf="column!='Actions' && column != 'Photo' && column != 'AssetId' && column != 'Icon' && column != 'ADL2' && column != 'ADL3' && column != 'Suplier' && column != 'GRNNo' && column != 'Barcode' && column != 'SerialNo' && column != 'ITSerialNo' && column != 'PONumber'&& column != 'equipmentNo' && column != 'CPPNumber' && column != 'Select' && column != 'Order Type' && column != 'Issue Type'&& column != 'Mapping' ">
+          {{column}}
+        </span>
+      </th>
+      <td mat-cell *matCellDef="let element; let i = index;">
+          <span
+          *ngIf="column == 'Order Type' ">
+          {{element[column]}}
+        </span>
+        <!-- <span
+        *ngIf="column == 'Mapping' ">
+        {{element[column]}}
+      </span> -->
+      <span
+      *ngIf="column == 'Photo'"> 
+        <a style="color:#008bd0 !important;cursor: pointer;" target="_blank" href="https://images.unsplash.com/photo-1588127333419-b9d7de223dcf?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1169&q=80">View Photo</a> 
+    </span>
+    <span style="cursor: pointer;"
+    *ngIf="column == 'Actions' "> 
+    <mat-icon style="color: #ff3d00;" href="javascript:void()" *ngIf="typeVal === 'By Role'" (click)="element.isExpanded = !element.isExpanded">history</mat-icon>
+    <mat-icon style="color: #0a95ff;padding-right: 5px;">edit</mat-icon> 
+    <mat-icon style="color: #ff3d00;">delete</mat-icon>
+  </span>
+        <span
+          *ngIf="column!='Actions' && column != 'Photo'&&column != 'AssetId' && column != 'Icon' && column != 'Select' && column != 'AcquisitionDate' && column != 'WDVDate' && column != 'AcquisitionCost' && column != 'WDV' && column != 'Barcode' && column != 'SubAssetId'&& column != 'Order Type' && column != 'Issue Type' && column != 'Mapping'">
+          {{element[column]}}
+        </span>
+      </td>
+    </ng-container>
+    <div *ngIf="typeVal === 'By Role'">
+      <ng-container matColumnDef="expandedDetail" >
+        <td mat-cell *matCellDef="let element" [attr.colspan]="displayedStudentsColumnsList.length">
+  
+          <div class="row student-element-detail" [@detailExpand]="element.isExpanded ? 'expanded' : 'collapsed'">
+            <mat-list>
+              <div mat-subheader>Users of {{roleVal}}</div>
+              <mat-list-item *ngFor="let user of userNames">
+                <div mat-line>User Name</div>
+                <div mat-line> {{user}} | Price: Rs. 329</div>
+              </mat-list-item>
+            </mat-list>
+          </div>
+  
+        </td>
+      </ng-container>
+    </div>
+ 
+    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    <span *ngIf="typeVal === 'By Role'"><tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="student-detail-row"></tr></span>
+
+  </table>
+  <div style="text-align: center;" *ngIf="datasource?.data?.length === 0">{{message.NoDataAvailable}}</div>
+</div>
+<!-- <mat-paginator #paginator class="expedientes-paginator" [pageSizeOptions]="[50, 100, 200,500]" showFirstLastButtons>
+</mat-paginator> -->
+<div [hidden]="!displayTable">
+<mat-paginator  class="expedientes-paginator"  [showFirstLastButtons]="true" [length]="paginationParams.totalCount"
+[pageSize]="paginationParams.pageSize"
+[pageSizeOptions]="[50, 100, 200,500]"
+(page)="handlePage($event)">
+</mat-paginator>
+</div>

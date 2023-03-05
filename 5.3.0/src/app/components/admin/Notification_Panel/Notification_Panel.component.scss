@@ -1,0 +1,17 @@
+   ///////////////////// Dropdown Placeholder and After select value /////////////////////
+
+   :host ::ng-deep .mat-select-value-text {
+    // font-size: 14px !important;
+    // font-weight: 600;
+  
+    font-size: 13px !important;
+    font-weight: 450;
+  }
+  
+  :host ::ng-deep .mat-form-field-appearance-legacy .mat-form-field-label {
+    
+    color: gray!important;
+    font-style: italic;
+  }
+  
+  ///////////////////// Dropdown Placeholder and After select value /////////////////////

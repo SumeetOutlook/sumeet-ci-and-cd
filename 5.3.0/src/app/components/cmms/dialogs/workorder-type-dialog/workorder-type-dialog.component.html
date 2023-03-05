@@ -1,0 +1,236 @@
+<div class="md-dialog-container" cdkDrag cdkDragRootElement=".cdk-overlay-pane">
+    <mat-toolbar  cdkDragHandle class="mat-toolbar" style="background-color:rgb(12, 48, 87);color:white">
+      <span>{{data?'Edit':'Create'}} Work Order</span>
+      <span class="example-spacer"></span>
+      <button type="button" mat-icon-button class="example-icon" aria-label="Example icon-button with close icon"
+        (click)="onclosetab()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-toolbar>
+    <div mat-dialog-content class="p-1 m-0">
+  
+      <form [formGroup]="dialogSBUForm" (ngSubmit)="onSubmit()">
+
+        <mat-horizontal-stepper  #stepper>
+          <mat-step label="Work Order Type">
+            <div fxLayout="row wrap" fxLayout.lt-sm="column">
+              <div fxFlex="100" fxFlex.gt-xs="100" class="pr-1" >
+                  <mat-form-field class="formfield full-width" color="primary">
+                    <mat-select  [disabled]="data" disableOptionCentering [(ngModel)]="plantVal" [ngModelOptions]="{standalone: true}"
+                      placeholder="Location" [multiple]="false" #singleSelect>
+                      <mat-option>
+                        <ngx-mat-select-search [placeholderLabel]="'Search'" [formControl]="plantMultiFilterCtrl">
+                        </ngx-mat-select-search>
+                      </mat-option>
+                      <!-- <mat-option value="" [disabled]="!!cityMultiCtrl"> {{Headers.All}} </mat-option> -->
+                      <!-- <div class="select-all">
+                        <mat-checkbox [checked]="cityMultiCtrl.length === categories.length ? true : false"
+                          [indeterminate]="cityMultiCtrl.length < categories.length ? true : false"
+                          (change)="toggleSelectAllCategories($event)">Select All</mat-checkbox>
+                      </div> -->
+                      <!-- <mat-option value="">
+                        {{Headers.All}}
+                      </mat-option> -->
+                      <mat-option  *ngFor="let type of filteredPlantsMulti | async" [value]="type.LocationId" (click)="getSubLocByLocID(type.LocationId)"
+                        >
+                        {{type.LocationName}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+    
+                <div fxFlex="100" fxFlex.gt-xs="100" class="pr-1" >
+                  <mat-form-field class="formfield full-width" color="primary">
+                    <mat-select [disabled]="data" disableOptionCentering [(ngModel)]="subLocVal" [ngModelOptions]="{standalone: true}"
+                      placeholder="Sub Location" [multiple]="false" #singleSelect>
+                      <mat-option>
+                        <ngx-mat-select-search [placeholderLabel]="'Search'" [formControl]="subLocMultiFilterCtrl">
+                        </ngx-mat-select-search>
+                      </mat-option>
+                      <mat-option  *ngFor="let type of filteredSubLocMulti | async" [value]="type.RackID" 
+                        >
+                        {{type.RackName}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+
+                <div fxFlex="100" fxFlex.gt-xs="100" class="pr-1" >
+                  <mat-form-field class="formfield full-width" color="primary">
+                    <mat-label>Search Asset</mat-label>
+                    <input disabled [(ngModel)]="assetVal" [ngModelOptions]="{standalone: true}" matInput placeholder="Search Asset">
+                    <mat-icon (click)="GetPreFarByLocationId()" style="cursor: pointer;" matSuffix>search</mat-icon>
+                  </mat-form-field>
+                </div>
+
+                <div fxFlex="100" fxFlex.gt-xs="100" class="pr-1" >
+                <div class=" example-container mat-elevation-z8">
+                  <table mat-table #table [dataSource]="dataSource" matSort *ngIf="showGrid">
+                    <ng-container [matColumnDef]="column" *ngFor="let column of displayedColumns; index as i ">
+                      <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                          <span
+                          *ngIf="column == 'Order Type' ">
+                          {{column}}
+                        </span>
+                      <span
+                      *ngIf="column == 'Mapping' ">
+                      {{column}}
+                    </span>
+                    <span
+                    *ngIf="column == 'ImageUrl' "> 
+                      Photo 
+                  </span>
+                        <span
+                          *ngIf="column != 'ImageUrl' && column != 'AssetId' && column != 'Icon' && column != 'ADL2' && column != 'ADL3' && column != 'Suplier' && column != 'GRNNo' && column != 'Barcode' && column != 'SerialNo' && column != 'ITSerialNo' && column != 'PONumber'&& column != 'equipmentNo' && column != 'CPPNumber' && column != 'Select' && column != 'Order Type' && column != 'Issue Type'&& column != 'Mapping' ">
+                          {{column}}
+                        </span>
+                      </th>
+                      <td mat-cell *matCellDef="let element; let i = index;">
+                          <span
+                          *ngIf="column == 'Order Type' ">
+                          {{element[column]}}
+                        </span>
+                        <span
+                        *ngIf="column == 'select' ">
+                        <mat-radio-button [value]="element" ngDefaultControl  name="selectedAsset" [(ngModel)]="selectedAsset" [ngModelOptions]="{standalone: true}" (click)="getAssetValue(element)"></mat-radio-button>
+                      </span>
+                    <!-- <mat-radio-button value="2">Option 2</mat-radio-button> -->
+                        <span
+                        *ngIf="column == 'StatusName' " [ngStyle]="element['StatusID'] == 10 || element['StatusID'] == 17 || element['StatusID'] == 3 ?{'color': 'green'}:{'color': 'red'}">
+                        {{element[column]}}
+                      </span>
+                      <span
+                      *ngIf="column == 'OrderNumber' " style="margin: auto;">
+                        {{element['IssueCode']}}-{{element[column]}}
+                    </span>
+                        <!-- <span
+                        *ngIf="column == 'Mapping' ">
+                        {{element[column]}}
+                      </span> -->
+                      <span
+                      *ngIf="column == 'ImageUrl'"> 
+                        <a *ngIf="element[column]" style="color:#008bd0 !important;cursor: pointer;" target="_blank" [href]="'https://qaservice.assetrak.net/cmms/'+element[column]">View Photo</a> 
+                    </span>
+                    <span style="cursor: pointer;"
+                    *ngIf="column == 'Actions' ">
+                    <!-- <mat-icon style="padding-right: 5px;" (click)="openInfoDialog('view',element,i)">info</mat-icon>  -->
+                    <mat-icon *ngIf="element['StatusName']=='Information Requested'" style="color: #0a95ff;padding-right: 5px;" (click)="openUploadAssetClass('edit',element)">edit</mat-icon> 
+                    <!-- <mat-icon style="color: #ff3d00;" (click)="openInfoDialog('delete',element,i)">delete</mat-icon> -->
+                  </span>
+                        <span
+                          *ngIf="column != 'ImageUrl'&&column != 'AssetId' && column != 'Icon' && column != 'Select' && column != 'AcquisitionDate' && column != 'WDVDate' && column != 'AcquisitionCost' && column != 'WDV' && column != 'Barcode' && column != 'SubAssetId'&& column != 'Order Type' && column != 'Issue Type' && column != 'Actions' && column != 'StatusName' && column!='OrderNumber'">
+                          {{element[column]}}
+                        </span>
+                      </td>
+                    </ng-container>
+                    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                  </table>
+                  <div style="text-align: center;" *ngIf="dataSource?.data?.length === 0">{{message.NoDataAvailable}}</div>
+                </div>
+              </div>
+                <div [hidden]="!showGrid">
+                  <mat-paginator class="expedientes-paginator" [showFirstLastButtons]="true" [length]="paginationParams.totalCount"
+                    [pageSize]="paginationParams.pageSize" [pageSizeOptions]="[50, 100, 200,500]" >
+                  </mat-paginator>
+                </div>
+
+            <div fxFlex="100" class="mt-1">
+              <button style="float: left;" type="button" color="primary" mat-raised-button matStepperNext>Next</button>
+            </div>
+          </div>
+         
+          </mat-step>
+          <mat-step  label="Work Order Details">
+            <div fxLayout="row wrap" fxLayout.lt-sm="column">
+              <div fxFlex="100" fxFlex.gt-xs="100" class="pr-1" >
+                  <mat-form-field class="formfield full-width" color="primary">
+                    <mat-select disableOptionCentering [(ngModel)]="issueTypeVal" [ngModelOptions]="{standalone: true}"
+                      placeholder="Issue Types" [multiple]="false" #singleSelect>
+                      <mat-option>
+                        <ngx-mat-select-search [placeholderLabel]="'Search'" [formControl]="issuetypeFilterCtrl">
+                        </ngx-mat-select-search>
+                      </mat-option>
+                      <mat-option  *ngFor="let type of filteredissueTypeMulti | async" [value]="type.IssueTypeID" 
+                        >
+                        {{type.IssueType}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+
+                <div fxFlex="100" fxFlex.gt-xs="100" class="pr-1" [hidden]="issueTypeVal != 1 && issueTypeVal != 2">
+                  <mat-form-field class="formfield full-width" color="primary">
+                    <mat-label>Issue Text</mat-label>
+                    <input [(ngModel)]="issueText" [ngModelOptions]="{standalone: true}" matInput placeholder="Issue Text">
+                  </mat-form-field>
+                </div>
+
+                <div fxFlex="100" fxFlex.gt-xs="100" class="pr-1" >
+                  <mat-form-field class="formfield full-width" color="primary">
+                    <mat-label>Issue Description</mat-label>
+                    <input [(ngModel)]="issueDesc" [ngModelOptions]="{standalone: true}" matInput placeholder="Issue Description">
+                  </mat-form-field>
+                </div>
+
+            
+    
+                <div fxFlex="100" fxFlex.gt-xs="100" class="pr-1" >
+                  <mat-form-field class="formfield full-width" color="primary">
+                    <mat-select disableOptionCentering [(ngModel)]="pbCriticlity" [ngModelOptions]="{standalone: true}"
+                      placeholder="Problem Criticality" [multiple]="false" #singleSelect>
+                      <mat-option>
+                        <ngx-mat-select-search [placeholderLabel]="'Search'" [formControl]="criticalityMultiFilterCtrl">
+                        </ngx-mat-select-search>
+                      </mat-option>
+                      <mat-option  *ngFor="let type of filteredCriticalityMulti | async" [value]="type.CriticalityID" 
+                        >
+                        {{type.CriticalityType}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+
+             
+
+                <div fxFlex="100" fxFlex.gt-xs="50" class="pr-1" >
+                  <mat-form-field class="formfield full-width" color="primary">
+                    <mat-label>Initiated By</mat-label>
+                    <input disabled [(ngModel)]="initiatedVal" [ngModelOptions]="{standalone: true}" matInput placeholder="Initiated By">
+                  </mat-form-field>
+                </div>
+
+                <div fxFlex="100" fxFlex.gt-xs="50" class="pr-1" >
+                  <mat-form-field class="formfield full-width" color="primary">
+                    <mat-select disableOptionCentering [(ngModel)]="requestedVal" [ngModelOptions]="{standalone: true}"
+                      placeholder="Requested By" [multiple]="false" #singleSelect>
+                      <mat-option>
+                        <ngx-mat-select-search [placeholderLabel]="'Search'" [formControl]="UserFilter">
+                        </ngx-mat-select-search>
+                      </mat-option>
+                      <mat-option  *ngFor="let type of filteredUsers | async" [value]="type.UserName" 
+                        >
+                        {{type.UserName}}
+                      </mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </div>
+
+                <div fxFlex="100"  fxFlex.gt-xs="100" class="pr-1" >
+                  <!-- <input type="file" (change)="fileChange($event)" ng2FileSelect class="uploadSelectClass" accept=".xlx,.xlsx" /> -->
+                  <input  type="file" class="uploadSelectClass" 
+                    placeholder="Upload file" accept=".jpeg,.jpg">
+                </div>
+               
+            <!-- <div fxFlex="100" class="mt-1">
+              <button style="float: left;" type="button" color="primary" mat-raised-button matStepperNext>Next</button>
+            </div> -->
+          </div>
+                <button style="float: left;" type="button" mat-raised-button color="warn" matStepperPrevious>Back</button>
+                <button  mat-raised-button class="success" style="float:right !important;" 
+                ><mat-icon>check</mat-icon>{{data?'Edit':'Create'}} Work Order</button>
+          </mat-step>
+        </mat-horizontal-stepper>
+      </form>
+    </div>
+  </div>

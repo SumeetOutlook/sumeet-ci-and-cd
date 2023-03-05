@@ -1,0 +1,172 @@
+<div fxLayout='row wrap' fxLayoutAlign='space-between' fxLayout.lt-sm="column" style="min-height: fit-content;">
+    <div fxFlex="100" fxFlex.gt-xs="20">
+      <h3><strong style=" color:#008bd0 !important;"> Cost Configuration</strong></h3>
+    </div>
+    <div fxFlex="100" fxFlex.gt-xs="80" style="padding-left: 70px;"><span *ngIf="numSelected > 0"><i>{{numSelected}}
+          assets selected
+        </i></span><span *ngIf="numSelected > 0"><a
+          style="color:#008bd0 !important;margin-left: 5px !important;cursor: pointer;"
+          (click)="viewSelected()"><u>View</u></a></span><span *ngIf="numSelected > 0"><a
+          style="color:red !important;margin-left: 5px !important;cursor: pointer;"
+          (click)="clearSelectedView()">Clear</a></span>
+      <span *ngIf="appliedfilters.length > 0" style="margin-left: 200px !important;font: italic;"><span>other filters
+          applied<i *ngFor="let fil of appliedfilters;let i=index" style="font-weight: 700;"> {{fil}}<i
+              *ngIf="i!=appliedfilters.length-1">/</i> </i></span></span><span *ngIf="appliedfilters.length > 0"><a
+          style="color:red !important;margin-left: 15px !important;cursor: pointer;"
+          (click)="clearfilter()">Clear</a></span>
+    </div>
+  </div>
+  
+  
+  <div fxLayout='row wrap' fxLayoutAlign='space-between' fxLayout.lt-sm="column" style="min-height: fit-content;">
+
+    <div fxFlex="100" fxFlex.gt-xs="12" class="pr-1" >
+      <mat-form-field class="formfield full-width" color="primary">
+        <mat-select disableOptionCentering [(ngModel)]="configVal" [ngModelOptions]="{standalone: true}"
+          placeholder="Configuration Types" [multiple]="true" #multiSelect>
+          <mat-option>
+            <ngx-mat-select-search [placeholderLabel]="'Search'" [formControl]="plantMultiFilterCtrl">
+            </ngx-mat-select-search>
+          </mat-option>
+          <!-- <mat-option value="" [disabled]="!!cityMultiCtrl"> {{Headers.All}} </mat-option> -->
+          <!-- <div class="select-all">
+            <mat-checkbox [checked]="cityMultiCtrl.length === categories.length ? true : false"
+              [indeterminate]="cityMultiCtrl.length < categories.length ? true : false"
+              (change)="toggleSelectAllCategories($event)">Select All</mat-checkbox>
+          </div> -->
+          <!-- <mat-option value="">
+            {{Headers.All}}
+          </mat-option> -->
+          <mat-option  *ngFor="let type of configTypes" [value]="type" 
+            >
+            {{type}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+
+    <div fxFlex="100" fxFlex.gt-xs="12" class="pr-1" >
+      <mat-form-field class="formfield full-width" color="primary">
+        <mat-select disableOptionCentering [(ngModel)]="plantVal" [ngModelOptions]="{standalone: true}"
+          placeholder="Location" [multiple]="true" #multiSelect>
+          <mat-option>
+            <ngx-mat-select-search [placeholderLabel]="'Search'" [formControl]="plantMultiFilterCtrl">
+            </ngx-mat-select-search>
+          </mat-option>
+          <!-- <mat-option value="" [disabled]="!!cityMultiCtrl"> {{Headers.All}} </mat-option> -->
+          <!-- <div class="select-all">
+            <mat-checkbox [checked]="cityMultiCtrl.length === categories.length ? true : false"
+              [indeterminate]="cityMultiCtrl.length < categories.length ? true : false"
+              (change)="toggleSelectAllCategories($event)">Select All</mat-checkbox>
+          </div> -->
+          <!-- <mat-option value="">
+            {{Headers.All}}
+          </mat-option> -->
+          <mat-option  *ngFor="let type of filteredPlantsMulti | async" [value]="type" 
+            >
+            {{type.LocationName}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+    </div>
+  
+  
+    <div fxFlex="100" fxFlex.gt-xs="30">
+      <!-- <button mat-icon-button mat-sm-button class="mr-24" *ngIf="!!transfertypeMultiCtrl && !!plantMultiCtrl"
+      (click)="GetAssetForTransfser()">
+      <mat-icon class="example-icon MatBtnClass" style="font-size: 50px;height: 30px;width: 35px;" ><img
+          style="height: 38px;width:40px;padding-top: 6px;" src="assets/images/assetrak/23_10_2020/GO 5.png" /></mat-icon>
+    </button> -->
+      <button mat-raised-button class="submitbtn" (click)="GetAssetForTransfserBindData('')">
+        <mat-icon class="matbtn">shortcut</mat-icon>Submit
+      </button>
+      <span   matTooltip="Create Issue" [matTooltipDisabled]="false" (click)="openInfoDialog('add','',-1)">
+        <button mat-raised-button class="minibtn" style="margin-left: 8px !important;"
+        >
+          <mat-icon style="color: white;">add</mat-icon>
+        </button></span>
+    </div>
+      <span class="example-spacer"></span>
+      <mat-panel-description style="float: right;">
+        <mat-icon [matMenuTriggerFor]="msgMenu" (click)="$event.stopPropagation()" class="text-muted">
+          more_vert</mat-icon>
+        <mat-menu #msgMenu="matMenu">
+          <!-- <button mat-menu-item style="height: 40px !important;" *ngIf="setflag">
+            <mat-icon style="margin-right: 6px;color: #0c3057;"> filter_list
+            </mat-icon> Create Filter
+          </button> -->
+          <button mat-menu-item  style="height: 40px !important;">
+            <mat-icon style="margin-right: 6px;color: #0c3057;"> download
+            </mat-icon> Export
+          </button>
+          <button mat-menu-item (click)="editGridpop()" style="height: 40px !important;">
+            <mat-icon style="margin-right: 6px;color: #0c3057;"> view_column
+            </mat-icon> Edit Grid Display
+          </button>
+          <!-- <button mat-menu-item (click)="multiSearchAdd()" style="height: 40px !important;" >
+            <mat-icon style="margin-right: 6px;color: #0c3057;"> search
+            </mat-icon> Multiple Search
+          </button> -->
+        </mat-menu>
+      </mat-panel-description>
+    <!-- </div> -->
+  </div>
+  <div class=" example-container mat-elevation-z8" *ngIf="displayTable">
+    <table mat-table #table [dataSource]="dataSource" matSort (matSortChange)="sortColumn($event)">
+      <ng-container [matColumnDef]="column" *ngFor="let column of displayedColumns; index as i ">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+            <span
+            *ngIf="column == 'Order Type' ">
+            {{column}}
+          </span>
+        <span
+        *ngIf="column == 'Mapping' ">
+        {{column}}
+      </span>
+      <span
+      *ngIf="column == 'Photo' "> 
+        Photo 
+    </span>
+          <span
+            *ngIf="column != 'Photo' && column != 'AssetId' && column != 'Icon' && column != 'ADL2' && column != 'ADL3' && column != 'Suplier' && column != 'GRNNo' && column != 'Barcode' && column != 'SerialNo' && column != 'ITSerialNo' && column != 'PONumber'&& column != 'equipmentNo' && column != 'CPPNumber' && column != 'Select' && column != 'Order Type' && column != 'Issue Type'&& column != 'Mapping' ">
+            {{column}}
+          </span>
+        </th>
+        <td mat-cell *matCellDef="let element; let i = index;">
+            <span
+            *ngIf="column == 'Order Type' ">
+            {{element[column]}}
+          </span>
+          <!-- <span
+          *ngIf="column == 'Mapping' ">
+          {{element[column]}}
+        </span> -->
+        <span
+        *ngIf="column == 'Photo'"> 
+          <a style="color:#008bd0 !important;cursor: pointer;" target="_blank" href="https://images.unsplash.com/photo-1588127333419-b9d7de223dcf?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1169&q=80">View Photo</a> 
+      </span>
+      <span style="cursor: pointer;"
+      *ngIf="column == 'Mapping' ">
+      <!-- <mat-icon style="padding-right: 5px;" (click)="openInfoDialog('view',element,i)">info</mat-icon>  -->
+      <mat-icon style="color: #0a95ff;padding-right: 5px;" (click)="openInfoDialog('edit',element,i)">edit</mat-icon> 
+      <mat-icon style="color: #ff3d00;" (click)="openInfoDialog('delete',element,i)">delete</mat-icon>
+    </span>
+          <span
+            *ngIf="column != 'Photo'&&column != 'AssetId' && column != 'Icon' && column != 'Select' && column != 'AcquisitionDate' && column != 'WDVDate' && column != 'AcquisitionCost' && column != 'WDV' && column != 'Barcode' && column != 'SubAssetId'&& column != 'Order Type' && column != 'Issue Type' && column != 'Mapping'">
+            {{element[column]}}
+          </span>
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    <div style="text-align: center;" *ngIf="dataSource.data.length === 0">{{message.NoDataAvailable}}</div>
+  </div>
+  <div [hidden]="!displayTable">
+    <mat-paginator class="expedientes-paginator" [showFirstLastButtons]="true" [length]="paginationParams.totalCount"
+      [pageSize]="paginationParams.pageSize" [pageSizeOptions]="[50, 100, 200,500]" (page)="handlePage($event)">
+    </mat-paginator>
+  </div>
+  
+  
+  <!-- [showFirstLastButtons]="true" [pageSize]="50" [pageSizeOptions]="[50, 100, 200]" -->

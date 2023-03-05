@@ -1,0 +1,213 @@
+<h3><strong style=" color:#008bd0 !important; margin-left: 10px;">View/Approve Tickets</strong> </h3>
+
+<mat-toolbar style="padding-top: 5px;">
+
+  <div fxFlex="100" fxFlex.gt-xs="12" class="pr-1">
+    <mat-form-field class="formfield full-width" color="primary">
+      <mat-select disableOptionCentering [(ngModel)]="orderType" [ngModelOptions]="{standalone: true}"
+        placeholder="Order Types" [multiple]="false" #singleSelect>
+        <!-- <mat-option>
+          <ngx-mat-select-search [placeholderLabel]="'Search'" >
+          </ngx-mat-select-search>
+        </mat-option> -->
+        <!-- <mat-city value="" [disabled]="!!cityMultiCtrl"> {{Headers.All}} </mat-option>
+        <div class="select-all">
+          <mat-checkbox [checked]="cityMultiCtrl.length === ListOfSBU.length ? true : false"
+            [indeterminate]="cityMultiCtrl.length < ListOfSBU.length ? true : false"
+            (change)="toggleSelectAllCity($event)">Select All</mat-checkbox>
+        </div> -->
+        <mat-option value="">
+          {{Headers.All}}
+        </mat-option>
+        <mat-option *ngFor="let type of orderTyes" [value]="type.OrderTypeId">
+          {{type.OrderType}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    </div>
+
+  <!-- <div fxFlex="100" fxFlex.gt-xs="12" class="pr-1">
+    <mat-form-field class="formfield full-width" color="primary">
+      <mat-select disableOptionCentering [(ngModel)]="issueType" [ngModelOptions]="{standalone: true}"
+        placeholder="Part Name" [multiple]="true" #multiSelect>
+        <mat-option>
+          <ngx-mat-select-search [placeholderLabel]="'Search'" [formControl]="cityMultiFilterCtrl">
+          </ngx-mat-select-search>
+        </mat-option>
+        <mat-option value="" [disabled]="!!cityMultiCtrl"> {{Headers.All}} </mat-option>
+        <div class="select-all">
+          <mat-checkbox [checked]="cityMultiCtrl.length === ListOfSBU.length ? true : false"
+            [indeterminate]="cityMultiCtrl.length < ListOfSBU.length ? true : false"
+            (change)="toggleSelectAllCity($event)">Select All</mat-checkbox>
+        </div>
+        <mat-option  *ngFor="let type of issueTypes" [value]="type"
+          >
+          {{type}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div> -->
+  <div fxFlex="100" fxFlex.gt-xs="12" class="pr-1" >
+    <mat-form-field class="formfield full-width" color="primary">
+      <mat-select disableOptionCentering [(ngModel)]="plantVal" [ngModelOptions]="{standalone: true}"
+        placeholder="Location" [multiple]="true" #multiSelect>
+        <mat-option>
+          <ngx-mat-select-search [placeholderLabel]="'Search'" [formControl]="plantMultiFilterCtrl">
+          </ngx-mat-select-search>
+        </mat-option>
+        <!-- <mat-option value="" [disabled]="!!cityMultiCtrl"> {{Headers.All}} </mat-option> -->
+        <!-- <div class="select-all">
+          <mat-checkbox [checked]="cityMultiCtrl.length === categories.length ? true : false"
+            [indeterminate]="cityMultiCtrl.length < categories.length ? true : false"
+            (change)="toggleSelectAllCategories($event)">Select All</mat-checkbox>
+        </div> -->
+        <!-- <mat-option value="">
+          {{Headers.All}}
+        </mat-option> -->
+        <mat-option  *ngFor="let type of filteredPlantsMulti | async" [value]="type" 
+          >
+          {{type.LocationName}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+<div fxFlex="100" fxFlex.gt-xs="12" class="pr-1" >
+  <mat-form-field class="formfield full-width" color="primary">
+    <mat-select disableOptionCentering [(ngModel)]="status" [ngModelOptions]="{standalone: true}"
+      placeholder="Status" [multiple]="false" #singleSelect>
+      <!-- <mat-option>
+        <ngx-mat-select-search [placeholderLabel]="'Search'" >
+        </ngx-mat-select-search>
+      </mat-option> -->
+      <!-- <mat-option value="" [disabled]="!!categoryMultiCtrl"> {{Headers.All}} </mat-option> -->
+      <!-- <div class="select-all">
+        <mat-checkbox [checked]="categoryMultiCtrl.length === ListOfCategory.length ? true : false"
+          [indeterminate]="categoryMultiCtrl.length < ListOfCategory.length ? true : false"
+          (change)="toggleSelectAllcategory($event)">Select All</mat-checkbox>
+      </div> -->
+       <mat-option value="">
+          {{Headers.All}}
+        </mat-option>
+      <mat-option *ngFor="let type of statuses" [value]="type" >
+        {{type}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+</div>
+
+
+
+  <button mat-raised-button class="submitbtn" (click)="GetAllWorkOrders()" style="margin-right: 10px;">
+    <mat-icon class="matbtn">shortcut</mat-icon>Submit
+  </button>
+  <span *ngIf="showGrid"  matTooltip="Approve" [matTooltipDisabled]="false">
+    <button [disabled]="selectedIDS.length==0" mat-raised-button class="minibtn" style="margin-left: 8px !important;">
+      <mat-icon style="color: white;">thumbs_up_down</mat-icon>
+    </button></span>
+    <span *ngIf="showGrid" matTooltip="Request Information" [matTooltipDisabled]="false">
+    <button [disabled]="selectedIDS.length == 0"  mat-raised-button  class="minibtn" style="margin-left: 8px !important;">
+      <mat-icon style="color: white;">question_answer</mat-icon>
+    </button></span>
+
+  <span class="example-spacer"></span>
+
+  <mat-form-field style="margin-top: 6px !important;margin-bottom: -6px !important;" *ngIf="showGrid">
+    <button mat-icon-button matSuffix class="example-icon"
+      style="background-color:white;margin-top: 0px;width:30px;height: 30px;"
+      aria-label="Example icon-button with close icon">
+      <mat-icon style="color:white; font-size: 25px;color:#0C3057;cursor:pointer">search</mat-icon>
+    </button>
+    <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search">
+  </mat-form-field>
+
+  <!-- <mat-form-field class="margin_bottom">
+    <button mat-icon-button matSuffix class="example-icon"
+      style="background-color:white;margin-top: 0px;width:30px;height: 30px;"
+      aria-label="Example icon-button with close icon">
+      <mat-icon style="color:white; font-size: 25px;color:#0C3057;cursor:pointer">search</mat-icon>
+    </button>
+    <input matInput (keyup)="applyFilterCPUClass($event)" placeholder="Search">
+  </mat-form-field> -->
+
+  <mat-panel-description style="float: right;">
+    <mat-icon [matMenuTriggerFor]="msgMenu" (click)="$event.stopPropagation()" class="text-muted">
+      more_vert</mat-icon>
+    <mat-menu #msgMenu="matMenu">
+      <button mat-menu-item (click)="exportAssetClassFile()" style="height: 40px !important;">
+        <mat-icon style="margin-right: 6px;color: #0c3057;"> download
+        </mat-icon> Export
+      </button>
+    </mat-menu>
+  </mat-panel-description>
+
+</mat-toolbar>
+<div class=" example-container mat-elevation-z8">
+  <table mat-table #table [dataSource]="datasource" matSort *ngIf="showGrid">
+    <ng-container [matColumnDef]="column" *ngFor="let column of displayedColumns; index as i ">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>
+        <span
+        *ngIf="column == 'Select' ">
+        <mat-checkbox (change)="selectAllcheckBoxes()" [indeterminate]="!isAllSelected" [checked]="isAllSelected"></mat-checkbox>
+      </span>
+          <span
+          *ngIf="column == 'Order Type' ">
+          {{column}}
+        </span>
+      <span
+      *ngIf="column == 'Mapping' ">
+      {{column}}
+    </span>
+    <span
+    *ngIf="column == 'ImageUrl' "> 
+      Photo 
+  </span>
+        <span
+          *ngIf="column != 'ImageUrl' && column != 'AssetId' && column != 'Icon' && column != 'ADL2' && column != 'ADL3' && column != 'Suplier' && column != 'GRNNo' && column != 'Barcode' && column != 'SerialNo' && column != 'ITSerialNo' && column != 'PONumber'&& column != 'equipmentNo' && column != 'CPPNumber' && column != 'Select' && column != 'Order Type' && column != 'Issue Type'&& column != 'Mapping' ">
+          {{column}}
+        </span>
+      </th>
+      <td mat-cell *matCellDef="let element; let i = index;">
+          <span
+          *ngIf="column == 'Order Type' ">
+          {{element[column]}}
+        </span>
+
+        <span
+        *ngIf="column == 'StatusName' " [ngStyle]="element['StatusID'] == 10 || element['StatusID'] == 17 || element['StatusID'] == 6 ?{'color': 'green'}:{'color': 'red'}">
+        {{element[column]}}
+      </span>
+      <span
+      *ngIf="column == 'OrderNumber' " style="margin: auto;">
+        {{element['IssueCode']}}-{{element[column]}}
+    </span>
+    <span
+    *ngIf="column == 'Select' ">
+    <mat-checkbox [checked]="selectedIDS && selectedIDS.indexOf(element.WorkOrderID) > -1" (change)="selectRow(element)"></mat-checkbox>
+  </span>
+      <span
+      *ngIf="column == 'ImageUrl'"> 
+        <a *ngIf="element[column]" style="color:#008bd0 !important;cursor: pointer;" target="_blank" [href]="'https://qaservice.assetrak.net/cmms/'+element[column]">View Photo</a> 
+    </span>
+    <span style="cursor: pointer;"
+    *ngIf="column == 'Actions' ">
+    <!-- <mat-icon style="padding-right: 5px;" (click)="openInfoDialog('view',element,i)">info</mat-icon>  -->
+    <mat-icon *ngIf="element['StatusName']=='Information Requested'" style="color: #0a95ff;padding-right: 5px;" (click)="openUploadAssetClass('edit',element)">edit</mat-icon> 
+    <!-- <mat-icon style="color: #ff3d00;" (click)="openInfoDialog('delete',element,i)">delete</mat-icon> -->
+  </span>
+        <span
+          *ngIf="column != 'ImageUrl'&&column != 'AssetId' && column != 'Icon' && column != 'Select' && column != 'AcquisitionDate' && column != 'WDVDate' && column != 'AcquisitionCost' && column != 'WDV' && column != 'Barcode' && column != 'SubAssetId'&& column != 'Order Type' && column != 'Issue Type' && column != 'Actions' && column != 'StatusName' && column!='OrderNumber'">
+          {{element[column]}}
+        </span>
+      </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+  <div style="text-align: center;" *ngIf="datasource?.data?.length === 0">{{message.NoDataAvailable}}</div>
+</div>
+<div [hidden]="!showGrid">
+  <mat-paginator class="expedientes-paginator" [showFirstLastButtons]="true" [length]="paginationParams.totalCount"
+    [pageSize]="paginationParams.pageSize" [pageSizeOptions]="[50, 100, 200,500]" >
+  </mat-paginator>
+</div>
+

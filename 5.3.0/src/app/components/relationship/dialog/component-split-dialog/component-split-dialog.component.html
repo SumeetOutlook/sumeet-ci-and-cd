@@ -1,0 +1,449 @@
+<div class="md-dialog-container" cdkDrag cdkDragRootElement=".cdk-overlay-pane">
+  <mat-toolbar  cdkDragHandle class="mat-toolbar" style="background-color:rgb(12, 48, 87);color:white">
+    <span style="position: relative;left: 40%;">{{ Headers.CreateComponents }}</span>
+    <span class="example-spacer"></span>
+    <button mat-icon-button class="example-icon" aria-label="Example icon-button with close icon"
+      (click)="dialogRef.close(false)">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-toolbar><br><br>
+  <mat-dialog-content>
+
+    <div class="example-container mat-elevation-z8 mt-8">
+      <div style="font-weight: bold; color: #1d3478 !important;" >{{Headers.OriginalAsset}}</div>
+      <table mat-table #table [dataSource]="dataSource" matSort>
+
+
+        <ng-container matColumnDef="Inventory No.">
+          <th mat-sort-header mat-header-cell *matHeaderCellDef [ngClass]="'w-100'">{{Headers.BarCode}} </th>
+          <td mat-cell *matCellDef="let element" [ngClass]="'w-100'">{{element.Barcode}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="Asset No.">
+          <th mat-sort-header mat-header-cell *matHeaderCellDef [ngClass]="'w-100'">{{Headers.AssetId}} </th>
+          <td mat-cell *matCellDef="let element" [ngClass]="'w-100'">{{element.AssetId}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="Sub No.">
+          <th mat-sort-header mat-header-cell *matHeaderCellDef [ngClass]="'w-100'">{{Headers.SubAssetID}} </th>
+          <td mat-cell *matCellDef="let element" [ngClass]="'w-100'">{{element.SubAssetId}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="Asset Class">
+          <th mat-sort-header mat-header-cell *matHeaderCellDef [ngClass]="'w-150'">{{Headers.BlockOfAsset}}</th>
+          <td mat-cell *matCellDef="let element" [ngClass]="'w-150'">{{element.BlockOfAsset}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="Asset Name">
+          <th mat-sort-header mat-header-cell *matHeaderCellDef [ngClass]="'w-150'">{{Headers.ADL2}} </th>
+          <td mat-cell *matCellDef="let element" [ngClass]="'w-150'">{{element.ADL2}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="Asset Description">
+          <th mat-sort-header mat-header-cell *matHeaderCellDef [ngClass]="'w-150'">{{Headers.ADL3}}</th>
+          <td mat-cell *matCellDef="let element" [ngClass]="'w-150'">{{element.ADL3}}</td>
+        </ng-container>
+        <ng-container matColumnDef="Serial No">
+          <th mat-sort-header mat-header-cell *matHeaderCellDef [ngClass]="'w-150'">{{Headers.SerialNo}}</th>
+          <td mat-cell *matCellDef="let element" [ngClass]="'w-150'">{{element.SerialNo}}</td>
+        </ng-container>
+        <ng-container matColumnDef="IT Serial No">
+          <th mat-sort-header mat-header-cell *matHeaderCellDef [ngClass]="'w-150'">{{Headers.ITSerialNo}}</th>
+          <td mat-cell *matCellDef="let element" [ngClass]="'w-150'">{{element.ITSerialNo}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="Plant">
+          <th mat-sort-header mat-header-cell *matHeaderCellDef [ngClass]="'w-150'">{{Headers.Location}}</th>
+          <td mat-cell *matCellDef="let element" [ngClass]="'w-150'">{{element.Location}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="Cost">
+          <th mat-sort-header mat-header-cell *matHeaderCellDef [ngClass]="'w-150'">{{Headers.AcquisitionCost}}</th>
+          <td mat-cell *matCellDef="let element" [ngClass]="'w-150'">{{element.AcquisitionCost | number : '1.2-2'}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="WDV">
+          <th mat-sort-header mat-header-cell *matHeaderCellDef [ngClass]="'w-100'">{{Headers.WDV}}</th>
+          <td mat-cell *matCellDef="let element" [ngClass]="'w-100'">{{element.WDV | number : '1.2-2'}}</td>
+        </ng-container>
+        <ng-container matColumnDef="Inventory Indicator">
+          <th mat-sort-header mat-header-cell *matHeaderCellDef [ngClass]="'w-100'">{{Headers.Taggable}}</th>
+          <td mat-cell *matCellDef="let element" [ngClass]="'w-100'">{{element.Taggable}}</td>
+        </ng-container>
+        <ng-container matColumnDef="AssetCondition">
+          <th mat-sort-heade mat-header-cell *matHeaderCellDef [ngClass]="'w-100'">{{Headers.AssetCondition}}</th>
+          <td mat-cell *matCellDef="let element"> {{element.AssetCondition}} </td>
+        </ng-container>
+        <ng-container matColumnDef="AssetCriticality">
+          <th mat-sort-header mat-header-cell *matHeaderCellDef [ngClass]="'w-100'">{{Headers.AssetCriticality}}</th>
+          <td mat-cell *matCellDef="let element"> {{element.AssetCriticality}} </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns;sticky: true "></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    </div>
+
+    <div fxLayout="row wrap">
+      <div fxFlex="30" fxFlex.gt-xs="6" class="pr-1">      
+        <button matTooltip="{{ Headers.CreateComponents }}" class="btn"
+          style="background-color: #e67e4a !important;color: white !important;" mat-icon-button
+          aria-label="Example icon-button with add icon" (click)="AssertList()">
+          <mat-icon [style.fontSize]="'25px'" style="color:white">add</mat-icon>
+        </button>        
+      </div>
+      <div fxFlex="70" fxFlex.gt-xs="16" class="pr-1" style="padding-top: 19px;">
+        <span>
+          <!-- <mat-icon>arrow_right_alt</mat-icon> -->
+          <label style="font-weight: bold;color: #1d3478 !important;">{{ Headers.CreateComponents }}</label>
+        </span>
+      </div>
+      <!-- <div fxFlex="80" class="pr-1 full">       
+        <label style="color: steelblue;">{{ Headers.CreateComponents }}</label>
+      </div> -->
+    </div>
+
+    <div class="example-container mat-elevation-z8 mt-8">
+      <table mat-table #table [dataSource]="dataSource1" matSort> 
+        <ng-container [matColumnDef]="column" *ngFor="let column of displayedColumns1; index as i ">
+          <th mat-header-cell *matHeaderCellDef >  
+             <span *ngIf="column != 'Action1'">{{Headers[column]}} <span *ngIf="displayedMandatoryField.indexOf(column) > -1" style="color:red;"> * </span> </span>
+          </th>
+          <td mat-cell *matCellDef="let element"> 
+            <span *ngIf="column === 'Action1'">
+              <mat-icon [style.fontSize]="'25px'" style="color:red;cursor: pointer;" *ngIf="element.PreFarId > 1" (click)="remove(element)">highlight_off</mat-icon>
+            </span>
+            <span *ngIf="column === 'Split'">
+              <mat-checkbox [checked]="element.checked" class="column-width" (click)="$event.stopPropagation()" (change)="SplitAssertList(element)" [disabled]="(element.Quantity < 2 || element.AcquisitionCost =='0' || element.AcquisitionCost =='' || !!element.SplitFlag)"> </mat-checkbox>
+            </span>
+            <span *ngIf="column === 'Location'">
+              <mat-form-field class="full-width" appearance="outline" >
+                <mat-select [(ngModel)] = "element.Location" autocomplete="off" [disabled]="!!element.SplitFlag"> 
+                  <mat-option *ngFor="let plant of LocationList" (click)="bindSubLocation(plant)" [value]="plant">
+                    {{plant.LocationName}}
+                  </mat-option>        
+                </mat-select>
+              </mat-form-field>
+            </span>
+            <span *ngIf="column === 'Rack'">
+              <mat-form-field class="full-width" appearance="outline" >
+                <mat-select [(ngModel)] = "element.Rack" autocomplete="off" [disabled]="!!element.SplitFlag"> 
+                  <mat-option [value]=""> {{Headers.Select}} </mat-option>
+                  <mat-option *ngFor="let sublocation of allMappedRackListData" [value]="sublocation.RackName">
+                    {{sublocation.RackName}}
+                  </mat-option>       
+                </mat-select>
+              </mat-form-field>
+            </span>
+            <span *ngIf="column === 'Quantity'">
+              <mat-form-field class="full-width" appearance="outline">
+                <input type = 'text' matInput  [(ngModel)] = "element.Quantity" (blur) ="OnchangeQty(element)" [disabled]="(element.PreFarId < 1 || !!element.SplitFlag)" autocomplete="off">
+              </mat-form-field>
+            </span>
+            <span *ngIf="column === 'AcquisitionCost'">
+              <mat-form-field class="full-width" appearance="outline">
+                <input type = 'text' matInput  [(ngModel)] = "element.AcquisitionCost" (blur)="change(element)" [disabled]="(element.PreFarId < 1 || !!element.SplitFlag)" autocomplete="off">
+              </mat-form-field>
+            </span>
+            <span *ngIf="column === 'WDV'">
+              <mat-form-field class="full-width" appearance="outline">
+                <input type = 'text' matInput  value="{{element.WDV | number : '1.2-2'}}" autocomplete="off" disabled="true">
+              </mat-form-field>
+            </span>
+            <span *ngIf="column === 'BlockOfAsset'">
+              <mat-form-field class="full-width" appearance="outline">
+                <mat-select [(ngModel)] = "element.BlockOfAsset" autocomplete="off" [disabled]="!!element.SplitFlag"> 
+                  <mat-option [value]=""> {{Headers.Select}} </mat-option>
+                  <mat-option *ngFor="let assetclass of AssetClassData" [value]="assetclass.BlockName">
+                    {{assetclass.BlockName}}
+                  </mat-option>   
+                </mat-select>
+              </mat-form-field>
+            </span>
+            <span *ngIf="column === 'CategoryName'">
+              <mat-form-field class="full-width" appearance="outline">
+                <mat-select [(ngModel)] = "element.CategoryName" autocomplete="off" [disabled]="!!element.SplitFlag"> 
+                  <mat-option [value]=""> {{Headers.Select}} </mat-option>
+                  <mat-option *ngFor="let category of CategoryList" [value]="category.AssetCategoryName">
+                    {{category.AssetCategoryName}}
+                  </mat-option>  
+                </mat-select>
+              </mat-form-field>
+            </span>
+            <span *ngIf="column === 'typeOfAsset'">
+              <mat-form-field class="full-width" appearance="outline">
+                <mat-select   [(ngModel)] = "element.TAId" autocomplete="off" [disabled]="!!element.SplitFlag">
+                  <mat-option [value]=""> {{Headers.Select}} </mat-option>
+                  <mat-option *ngFor="let cate of allAssetTypeData" [value]="cate.TAId" (click)="onCategoryChange(cate.TAId , element)">{{cate.TypeOfAsset}}</mat-option>             
+                </mat-select>
+              </mat-form-field>
+            </span>
+            <span *ngIf="column === 'subTypeOfAsset'">
+              <mat-form-field class="full-width" appearance="outline">
+                <mat-select [(ngModel)] = "element.STAId" autocomplete="off" [disabled]="!element.TAId || !!element.SplitFlag">
+                  <mat-option [value]=""> {{Headers.Select}} </mat-option>
+                  <mat-option *ngFor="let subc of element.allSubtypeData" [value]="subc.STAId" >{{subc.SubTypeOfAsset}}</mat-option>                 
+                </mat-select>
+              </mat-form-field>
+            </span>
+            <span *ngIf="column === 'Unit'">
+              <mat-form-field class="full-width" appearance="outline">
+                <mat-select [(ngModel)] = "element.Unit" autocomplete="off" [disabled]="!!element.SplitFlag">      
+                  <mat-option [value]=""> {{Headers.Select}} </mat-option>              
+                  <mat-option *ngFor="let uom of UOMData" [value]="uom.Unit_Name"> {{uom.Unit_Name}} </mat-option>              
+                </mat-select>
+              </mat-form-field>
+            </span>
+            <span *ngIf="column === 'Suplier'">
+              <mat-form-field class="full-width" appearance="outline">
+                <mat-select [(ngModel)] = "element.Suplier" autocomplete="off" [disabled]="!!element.SplitFlag"> 
+                  <mat-option [value]=""> {{Headers.Select}} </mat-option>
+                  <mat-option *ngFor="let vendor of allSupplierData" [value]="vendor.SupplierName"> {{vendor.SupplierName}} </mat-option>           
+                </mat-select>
+              </mat-form-field>
+            </span>
+            <span *ngIf="column === 'AssetCondition'">
+              <mat-form-field class="full-width" appearance="outline">
+                <mat-select [(ngModel)] = "element.AssetCondition" autocomplete="off" [disabled]="!!element.SplitFlag"> 
+                  <mat-option [value]=""> {{Headers.Select}} </mat-option>
+                  <mat-option *ngFor="let assetCondition of AssetConditionData" [value]="assetCondition.AssetCondition">
+                    {{assetCondition.AssetCondition}}
+                  </mat-option>         
+                </mat-select>
+              </mat-form-field>
+            </span>
+            <span *ngIf="column === 'Building'">
+              <mat-form-field class="full-width" appearance="outline">
+                <mat-select [(ngModel)] = "element.Building" autocomplete="off" [disabled]="!!element.SplitFlag"> 
+                  <mat-option [value]=""> {{Headers.Select}} </mat-option>
+                  <mat-option *ngFor="let type of CostCenterData" [value]="type.Description">
+                    {{type.Description}}
+                  </mat-option>         
+                </mat-select>
+              </mat-form-field>
+            </span>
+            <span *ngIf="column === 'OperatingSystem'">
+              <mat-form-field class="full-width" appearance="outline">
+                <mat-select [(ngModel)] = "element.OperatingSystem" autocomplete="off" [disabled]="!!element.SplitFlag"> 
+                  <mat-option [value]=""> {{Headers.Select}} </mat-option>
+                  <mat-option *ngFor="let os of OsData " [value]="os.OperatingSystemName"> {{os.OperatingSystemName}}</mat-option>  
+                </mat-select>
+              </mat-form-field>
+            </span>
+            <span *ngIf="column === 'CPUClass'">
+              <mat-form-field class="full-width" appearance="outline">
+                <mat-select [(ngModel)] = "element.CPUClass" autocomplete="off" [disabled]="!!element.SplitFlag"> 
+                  <mat-option [value]=""> {{Headers.Select}} </mat-option>
+                  <mat-option *ngFor="let cpu of CPUClassData " [value]="cpu.CpuClassName">{{cpu.CpuClassName}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </span>
+            <span *ngIf="column === 'CPUSubClass'">
+              <mat-form-field class="full-width" appearance="outline">
+                <mat-select [(ngModel)] = "element.CPUSubClass" autocomplete="off" [disabled]="!!element.SplitFlag"> 
+                  <mat-option [value]=""> {{Headers.Select}} </mat-option>
+                  <mat-option *ngFor="let cpusubclass of CPUSubClassData" [value]="cpusubclass.CpuSubClassName">
+                    {{cpusubclass.CpuSubClassName}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </span>
+            <span *ngIf="column === 'ApplicationType'">
+              <mat-form-field class="full-width" appearance="outline">
+                <mat-select [(ngModel)] = "element.ApplicationType" autocomplete="off" [disabled]="!!element.SplitFlag"> 
+                  <mat-option [value]=""> {{Headers.Select}} </mat-option>
+                  <mat-option *ngFor="let applicationtype of ApplicationTypeData" [value]="applicationtype.ApplicationTypeName">
+                    {{applicationtype.ApplicationTypeName}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </span>
+            <span *ngIf="column === 'Model'">
+              <mat-form-field class="full-width" appearance="outline">
+                <mat-select [(ngModel)] = "element.Model" autocomplete="off" [disabled]="!!element.SplitFlag"> 
+                  <mat-option [value]=""> {{Headers.Select}} </mat-option>
+                  <mat-option *ngFor="let model of  ModelData" [value]="model.ModelName">{{model.ModelName}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </span>
+            <span *ngIf="column === 'Manufacturer'">
+              <mat-form-field class="full-width" appearance="outline">
+                <mat-select [(ngModel)] = "element.Manufacturer" autocomplete="off" [disabled]="!!element.SplitFlag">   
+                  <mat-option [value]=""> {{Headers.Select}} </mat-option>                
+                    <mat-option *ngFor="let manufacture of ManufacturerData" [value]="manufacture.ManufacturerName">
+                      {{manufacture.ManufacturerName}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </span>
+            <span *ngIf="column === 'UserEmailId'">
+              <mat-form-field class="full-width" appearance="outline">  
+                <mat-select [(ngModel)] = "element.UserEmailId" autocomplete="off" [disabled]="!!element.SplitFlag">  
+                  <mat-option [value]=""> {{Headers.Select}} </mat-option>                 
+                  <mat-option *ngFor="let option of empList" [value]="option">
+                    {{option}}</mat-option>
+               </mat-select>
+              </mat-form-field>
+            </span>
+            <span *ngIf="column === 'AssetCriticality'">
+              <mat-form-field class="full-width" appearance="outline">  
+                <mat-select [(ngModel)] = "element.AssetCriticality" autocomplete="off" [disabled]="!!element.SplitFlag">    
+                  <mat-option [value]=""> {{Headers.Select}} </mat-option>               
+                  <mat-option *ngFor="let option of AssetCriticalityData" [value]="option.AssetCriticality">
+                    {{option.AssetCriticality}}</mat-option>
+               </mat-select>
+              </mat-form-field>
+            </span>
+            <span *ngIf="column === 'ITSerialNo'">
+              <mat-form-field class="full-width" appearance="outline">
+                <input type = 'text' matInput  [(ngModel)] = "element.ITSerialNo" [disabled]="!!element.SplitFlag" maxlength="50" autocomplete="off">
+              </mat-form-field>
+            </span>
+            <span *ngIf="column === 'UsefulLife'">
+              <mat-form-field class="full-width" appearance="outline">
+                <input type = 'text' matInput  [(ngModel)] = "element.UsefulLife" [disabled]="!!element.SplitFlag" maxlength="4" autocomplete="off">
+              </mat-form-field>
+            </span>
+            <span *ngIf="column === 'expiryDate'">
+              <mat-form-field class="full-width" appearance="outline">
+                <input matInput [matDatepicker]="picker1" [min]="today" [(ngModel)] = "element.expiryDate" autocomplete="off">
+                <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                <mat-datepicker #picker1></mat-datepicker>  
+              </mat-form-field>
+            </span>
+
+            <span *ngIf="column != 'Action1' && column != 'Split' && column != 'Building' && column != 'expiryDate' && column != 'typeOfAsset' && column != 'subTypeOfAsset' && column != 'Quantity' && column != 'AcquisitionCost' && column != 'WDV' && column != 'Location' && column != 'Rack' && column != 'BlockOfAsset' && column != 'CategoryName' && column != 'Unit' && column != 'Suplier' && column != 'AssetCondition' && column != 'OperatingSystem' && column != 'CPUClass' && column != 'CPUSubClass' && column != 'ApplicationType' && column != 'Model' && column != 'Manufacturer' && column != 'UserEmailId' && column != 'AssetCriticality' && column != 'ITSerialNo' && column != 'UsefulLife'">
+              <mat-form-field class="full-width" appearance="outline">
+                <input type = 'text'  matInput  [(ngModel)] = "element[column]" [disabled]="!!element.SplitFlag" maxlength="30" autocomplete="off">
+              </mat-form-field>
+            </span>         
+          </td>
+          <td mat-footer-cell *matFooterCellDef> </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns1;sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns1;"></tr>
+        <tr mat-footer-row *matFooterRowDef="displayedColumns1; sticky: true"></tr>
+      </table>      
+    </div>
+    <mat-paginator [length]="resultsLength" *ngIf="list1.length > 0" [pageSize]="50" (page)="handlePage($event)"></mat-paginator>
+    
+
+      <!-- <table mat-table #table [dataSource]="dataSource1" matSort>
+        <ng-container matColumnDef="ADL2">
+          <th mat-sort-header mat-header-cell *matHeaderCellDef>{{Headers.ADL2}} </th>
+          <td mat-cell *matCellDef="let element">
+            <mat-form-field class="full-width" appearance="outline">
+              <input type = 'text' matInput  [(ngModel)] = "element.ADL2" autocomplete="off">
+            </mat-form-field>
+          </td>
+          <td mat-footer-cell *matFooterCellDef> </td>
+        </ng-container>
+        <ng-container matColumnDef="ADL3">
+          <th mat-sort-header mat-header-cell *matHeaderCellDef>{{Headers.ADL3}} </th>
+          <td mat-cell *matCellDef="let element">
+            <mat-form-field class="full-width" appearance="outline">
+              <input type = 'text' matInput  [(ngModel)] = "element.ADL3" autocomplete="off">
+            </mat-form-field>
+          </td>
+          <td mat-footer-cell *matFooterCellDef> </td>
+        </ng-container>
+        <ng-container matColumnDef="TAId">
+          <th mat-sort-header mat-header-cell *matHeaderCellDef>{{Headers.TypeOfAsset}} </th>
+          <td mat-cell *matCellDef="let element">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-select   [(ngModel)] = "element.TAId" autocomplete="off">
+                <mat-option *ngFor="let cate of allAssetTypeData" value="{{cate.TAId}}" (click)="onCategoryChange(cate.TAId , element)">{{cate.TypeOfAsset}}</mat-option>
+           
+                </mat-select>
+            </mat-form-field>
+          </td>
+          <td mat-footer-cell *matFooterCellDef> </td>
+        </ng-container>
+        <ng-container matColumnDef="STAId">
+          <th mat-sort-header mat-header-cell *matHeaderCellDef>{{Headers.SubTypeOfAsset}}</th>
+          <td mat-cell *matCellDef="let element">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-select [(ngModel)] = "element.STAId" autocomplete="off">
+                <mat-option *ngFor="let subc of element.allSubtypeData" value="{{subc.STAId}}" >{{subc.SubTypeOfAsset}}</mat-option>
+               
+              </mat-select>
+            </mat-form-field>
+          </td>
+          <td mat-footer-cell *matFooterCellDef> </td>
+        </ng-container>
+        <ng-container matColumnDef="SerialNo">
+          <th mat-sort-header mat-header-cell *matHeaderCellDef>{{Headers.SerialNo}}</th>
+          <td mat-cell *matCellDef="let element">
+            <mat-form-field class="full-width" appearance="outline">
+              <input type = 'text' matInput  [(ngModel)] = "element.SerialNo" autocomplete="off">
+            </mat-form-field>
+          </td>
+          <td mat-footer-cell *matFooterCellDef> </td>
+        </ng-container>
+        <ng-container matColumnDef="ITSerialNo">
+          <th mat-sort-header mat-header-cell *matHeaderCellDef>{{Headers.ITSerialNo}}</th>
+          <td mat-cell *matCellDef="let element">
+            <mat-form-field class="full-width" appearance="outline">
+              <input type = 'text' matInput  [(ngModel)] = "element.ITSerialNo" autocomplete="off">
+            </mat-form-field>
+          </td>
+          <td mat-footer-cell *matFooterCellDef> <span style="font-weight: bold;padding-left: 30px;">Total</span> </td>
+        </ng-container>
+        <ng-container matColumnDef="Quantity">
+          <th mat-sort-header mat-header-cell *matHeaderCellDef>{{Headers.Quantity}}</th>
+          <td mat-cell *matCellDef="let element">
+            <mat-form-field class="full-width" appearance="outline">
+              <input type = 'text' matInput  [(ngModel)] = "element.Quantity" (blur) ="OnchangeQty(element)" autocomplete="off">
+            </mat-form-field>
+          </td>
+          <td mat-footer-cell *matFooterCellDef><span style="font-weight: bold;padding-left: 20px;"> {{Quantitys}} </span>  </td>
+        </ng-container>
+        <ng-container matColumnDef="AcquisitionCost">
+          <th mat-sort-header mat-header-cell *matHeaderCellDef>{{Headers.AcquisitionCost}}</th>
+          <td mat-cell *matCellDef="let element">
+            <mat-form-field class="full-width" appearance="outline">
+              <input type = 'text' matInput  [(ngModel)] = "element.AcquisitionCost" (blur) ="change(element)" autocomplete="off">
+            </mat-form-field>
+          </td>
+          <td mat-footer-cell *matFooterCellDef><span style="font-weight: bold;padding-left: 20px;"> {{AcquisitionCosts | number : '1.2-2' }} </span>  </td>
+        </ng-container>
+        <ng-container matColumnDef="WDV">
+          <th mat-sort-header mat-header-cell *matHeaderCellDef>{{Headers.WDV}}</th>
+          <td mat-cell *matCellDef="let element">
+            <mat-form-field class="full-width" appearance="outline">
+              <input type = 'text' matInput  value="{{element.WDV | number : '1.2-2'}}" autocomplete="off" disabled="true">
+            </mat-form-field>
+          </td>
+          <td mat-footer-cell *matFooterCellDef> </td>
+        </ng-container>
+        <ng-container matColumnDef="Split">
+          <th mat-sort-header mat-header-cell *matHeaderCellDef>{{Headers.Split}}</th>
+          <td mat-cell *matCellDef="let element">
+            <mat-checkbox [checked]="element.checked" class="column-width" (click)="$event.stopPropagation()"
+              (change)="SplitAssertList(element)"
+              [disabled]="(element.Quantity < 2 || element.AcquisitionCost =='0' || element.AcquisitionCost =='')">
+            </mat-checkbox>
+          </td>
+          <td mat-footer-cell *matFooterCellDef> </td>
+        </ng-container>        
+        <ng-container matColumnDef="Action1">
+          <th mat-sort-header mat-header-cell *matHeaderCellDef></th>
+          <td mat-cell *matCellDef="let element">
+            <mat-icon [style.fontSize]="'25px'" style="color:red;cursor: pointer;" *ngIf="element.PreFarId > 1" (click)="remove(element)">highlight_off</mat-icon>
+          </td>
+          <td mat-footer-cell *matFooterCellDef> </td>
+        </ng-container>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns1;sticky: true "></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns1;"></tr>
+        <tr mat-footer-row *matFooterRowDef="displayedColumns1; sticky: true"></tr>
+      </table> -->
+   
+
+    <div fxLayout="row wrap">
+      <div fxFlex="100" class="pr-1 full">
+        <button mat-raised-button class="success" style="margin: 10px 0% 20px 80%;" (click)="Submit()"
+          [disabled]="btncomponents"><mat-icon>check</mat-icon> Save & Create Components</button>
+      </div>
+    </div>
+
+  </mat-dialog-content>
+</div>

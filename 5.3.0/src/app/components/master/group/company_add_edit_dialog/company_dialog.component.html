@@ -1,0 +1,188 @@
+
+<div class="md-dialog-container">
+  <mat-toolbar cdkDrag cdkDragRootElement=".cdk-overlay-pane" cdkDragHandle class="mat-toolbar"  style="background-color:rgb(12, 48, 87);color:white">
+    <span style="position: relative;left: 40%;">{{data.value==='insert'?'Add':'Edit'}} {{header.CompanyName}}</span>
+    <span class="example-spacer"></span>
+    <button mat-icon-button class="example-icon" aria-label="Example icon-button with close icon" (click)="onclosetab()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-toolbar>
+  <div mat-dialog-content class="p-1 m-0"  cdkDrag cdkDragRootElement=".cdk-overlay-pane" cdkDragHandle>
+  
+    <form [formGroup]="dialogCompanyForm" (ngSubmit)="onSubmit()">
+      <div fxLayout="row wrap" fxLayout.lt-sm="column">
+       
+        <div fxFlex="100" class="pr-1">
+          <div fxFlex="50" class="pr-1">
+
+            <mat-form-field class="full-width">
+              <mat-label class="label asterisk_input">Enter {{header.CompanyName}} Name</mat-label>
+              <input matInput companyName="companyName" [formControl]="dialogCompanyForm.controls['companyName']"  autocomplete="off" maxlength="50">
+              <mat-error *ngIf="submitted || f1.companyName.errors || f1.companyName.dirty || f1.companyName.touched || f1.companyName.hasError('whitespace')">
+                <span *ngIf="f1.companyName.errors?.required || f1.companyName.hasError('whitespace')">{{header.CompanyName}} Name is required </span>
+              </mat-error>
+            </mat-form-field>
+
+          </div>
+          <div fxFlex="50" class="pr-1">
+        
+          <mat-form-field class="full-width">
+            <mat-label class="label asterisk_input">Enter {{header.RegistrationNumber}}</mat-label>
+            <input matInput companyRegNo="companyRegNo" [formControl]="dialogCompanyForm.controls['companyRegNo']"  autocomplete="off" maxlength="30">
+            <mat-error *ngIf="submitted || f1.companyRegNo.errors || f1.companyRegNo.dirty || f1.companyRegNo.touched">
+              <span *ngIf="f1.companyRegNo.errors?.required">{{header.RegistrationNumber}} is required</span>
+            </mat-error>
+          </mat-form-field>
+          </div>
+        </div>
+
+        <div fxFlex="100" class="pr-1">
+          <div fxFlex="50" class="pr-1">
+            <mat-form-field class="full-width">
+              <mat-label class="label asterisk_input">Enter Address</mat-label>
+              <input matInput address1="address1" [formControl]="dialogCompanyForm.controls['address1']"  autocomplete="off" maxlength="70" >
+              <mat-error *ngIf="submitted && f1.address1.errors || f1.address1.dirty || f1.address1.touched">
+                <span *ngIf="f1.address1.errors?.required">Address is a required</span>
+              </mat-error>
+            </mat-form-field>
+          </div>
+       
+          <div fxFlex="50" class="pr-1">
+            <mat-form-field class="full-width">
+              <input matInput address2="address2" [formControl]="dialogCompanyForm.controls['address2']" placeholder="Enter Address 2" autocomplete="off" maxlength="70">
+            </mat-form-field>
+          </div>
+      </div>
+
+      <div fxFlex="100" class="pr-1">
+        <div fxFlex="50" class="pr-1">
+          <mat-form-field class="full-width">
+            <mat-label class="label asterisk_input">Country</mat-label>
+            <mat-select disableOptionCentering  formControlName="country">
+              <mat-option>
+                <ngx-mat-select-search [placeholderLabel]="'Search'" [formControl]="dialogCompanyForm.controls['countryFilter']" noEntriesFoundLabel="{{header.NoRecordFound}}"></ngx-mat-select-search>
+              </mat-option>
+           <mat-option *ngFor="let opt of filteredCountry  | async" [value]="opt.Country_Name" (click)="onChangeCountry(opt.Country_Id,opt.ShortCurrency)" > {{ opt.Country_Name }} </mat-option>
+            </mat-select>
+            <mat-error *ngIf="submitted && f1.country.errors || f1.country.dirty || f1.country.touched">
+              <span *ngIf="f1.country.errors?.required">Country Type is a required</span>
+            </mat-error>
+          </mat-form-field>
+        </div>
+         
+        <div fxFlex="50" class="pr-1">
+          <mat-form-field class="full-width">
+            <mat-label class="label asterisk_input">State</mat-label>
+            <mat-select disableOptionCentering  formControlName="state" (selectionChange)="onChangeState($event)">
+               <mat-option>
+                <ngx-mat-select-search [placeholderLabel]="'Search'" [formControl]="dialogCompanyForm.controls['stateFilter']" noEntriesFoundLabel="{{header.NoRecordFound}}"></ngx-mat-select-search>
+              </mat-option>
+               <mat-option *ngFor="let opt of filteredState  | async" [value]="opt.State_Name" (click)="onChangeState(opt.State_Id)"> {{ opt.State_Name }} </mat-option>
+            </mat-select>
+            <mat-error *ngIf="submitted && f1.state.errors || f1.state.dirty || f1.state.touched">
+              <span *ngIf="f1.state.errors?.required">State is a required</span>
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div fxFlex="100" class="pr-1">
+        <div fxFlex="50" class="pr-1">
+          <mat-form-field class="full-width">
+            <mat-label class="label asterisk_input">City</mat-label>
+            <mat-select disableOptionCentering  formControlName="city">
+              <mat-option>
+                <ngx-mat-select-search [placeholderLabel]="'Search'" [formControl]="dialogCompanyForm.controls['cityFilter']" noEntriesFoundLabel="{{header.NoRecordFound}}"></ngx-mat-select-search>
+              </mat-option>
+              <mat-option *ngFor="let opt of filteredCity  | async" [value]="opt.City_Name"> {{ opt.City_Name }} </mat-option>
+            </mat-select>
+            <mat-error *ngIf="submitted && f1.city.errors || f1.city.dirty || f1.city.touched">
+              <span *ngIf="f1.city.errors?.required">City Name is a required field</span>
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div fxFlex="50" class="pr-1">
+          <mat-form-field class="full-width">
+            <input matInput companyCode="companyCode" [formControl]="dialogCompanyForm.controls['companyCode']" placeholder="{{header.CompanyCode}}" autocomplete="off" maxlength="30">
+          </mat-form-field>
+        </div>
+    </div>
+
+        <div fxFlex="100" class="pr-1">
+          <div fxFlex="50" class="pr-1">
+            <mat-form-field class="full-width">
+              <mat-label class="label asterisk_input">Enter Contact No</mat-label>
+              <input matInput contactNo="contactNo" [formControl]="dialogCompanyForm.controls['contactNo']"  autocomplete="off" maxlength="10" [pattern]="contactNumberPattern">
+              <mat-error *ngIf="submitted || f1.contactNo.errors || f1.contactNo.dirty || f1.contactNo.touched">
+                <span *ngIf="f1.contactNo.errors?.required">Contact No is required </span>
+                <span *ngIf="f1.contactNo.errors?.pattern">Contact No not valid </span>
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <div fxFlex="50" class="pr-1">
+            <mat-form-field class="full-width">
+              <input matInput faxNo="faxNo" [formControl]="dialogCompanyForm.controls['faxNo']" placeholder="Enter Fax No" autocomplete="off" maxlength="10">
+            </mat-form-field>
+          </div>
+      </div>
+
+      <div fxFlex="100" class="pr-1">
+        <div fxFlex="50" class="pr-1">
+          <mat-form-field class="full-width">
+            <mat-label class="label asterisk_input">Enter ZipCode</mat-label>
+            <input matInput zipCode="zipCode" [formControl]="dialogCompanyForm.controls['zipCode']"  autocomplete="off" maxlength="8" >
+            <mat-error *ngIf="submitted || f1.zipCode.errors || f1.zipCode.dirty || f1.zipCode.touched">
+              <span *ngIf="f1.zipCode.errors?.required">ZipCode is required </span>
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+      <div fxFlex="50" class="pr-1">
+        <mat-form-field class="full-width">
+          <mat-label class="label asterisk_input">Select Currency</mat-label>
+          <mat-select disableOptionCentering  [formControl]="dialogCompanyForm.controls['currency']"  >
+            <mat-option>
+              <ngx-mat-select-search [placeholderLabel]="'Search'" [formControl]="dialogCompanyForm.controls['currencyFilter']" noEntriesFoundLabel="{{header.NoRecordFound}}"></ngx-mat-select-search>
+            </mat-option>
+            <mat-option *ngFor="let Currency of filteredCurrency | async" [value]="Currency.CurrencyId">
+              {{Currency.Currency}}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="submitted && f1.currency.errors || f1.currency.dirty || f1.currency.touched">
+            <span *ngIf="f1.currency.errors?.required">Currency is a required</span>
+          </mat-error>
+        </mat-form-field>
+      </div>
+    </div>
+
+    <div fxFlex="100" class="pr-1" *ngIf="data.value =='insert'">
+      <div fxFlex="50" class="pr-1">
+        <mat-form-field class="full-width">
+          <mat-label class="label asterisk_input">Select Employee</mat-label>
+          <mat-select disableOptionCentering  [formControl]="dialogCompanyForm.controls['employee']"  (infiniteScroll)="getFilterEmployee()" [complete]="offset === employeeData.length" msInfiniteScroll>
+            <mat-option>
+              <ngx-mat-select-search [placeholderLabel]="'Search'" [formControl]="dialogCompanyForm.controls['employeeFilter']" noEntriesFoundLabel="{{header.NoRecordFound}}"></ngx-mat-select-search>
+            </mat-option>
+            <mat-option *ngFor="let emp of filteredEmployee  | async" [value]="emp.EmployeeTableId">
+              {{emp.UserDetails}}
+            </mat-option>
+          </mat-select>
+          <mat-error *ngIf="submitted && f1.employee.errors || f1.employee.dirty || f1.employee.touched">
+            <span *ngIf="f1.employee.errors?.required">Employee is a required</span>
+          </mat-error>
+        </mat-form-field>
+      </div>
+  </div>
+   
+        <div fxFlex="100" class="mt-1">
+          <button mat-raised-button class="success" *ngIf="data.value =='insert'" style="float:right !important;" [disabled]="dialogCompanyForm.invalid"><mat-icon>check</mat-icon>Add {{header.CompanyName}}</button>
+          <button mat-raised-button class="success" *ngIf="data.value !='insert'" style="float:right !important;" [disabled]="dialogCompanyForm.invalid"><mat-icon>check</mat-icon>Save</button>
+         
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+

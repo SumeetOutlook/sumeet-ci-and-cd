@@ -1,0 +1,43 @@
+<div class="md-dialog-container" cdkDrag cdkDragRootElement=".cdk-overlay-pane">
+    <mat-toolbar class="mat-toolbar" style="background-color:rgb(12, 48, 87);color:white" cdkDragHandle >
+        <span style="position: relative;left: 40%;" >Upload Photo</span>
+        <span class="example-spacer"></span>
+        <button mat-icon-button class="example-icon" aria-label="Example icon-button with close icon"
+            (click)="onclosetab()">
+            <mat-icon>close</mat-icon>
+        </button>
+    </mat-toolbar><br><br>
+    <mat-dialog-content >
+        <div class="md-dialog-content" style="padding: 20px !important;padding-top: 8px;">
+                <div fxLayout="row wrap" fxLayout.lt-sm="column" >
+                    <div *ngFor="let file of files"  fxFlex="80">
+
+                
+                    <div fxFlex="100" class="pr-4" style="border: 0px solid lightgrey;margin-top: 4px !important;"
+                        class=" responsive">
+                        <input type="file" id="files" [(ngModel)]="file.file" [disabled]="file.file!=''" (change)="fileChange($event, file)"
+                            placeholder="Upload file" class="uploadSelectClass"  #fileInput />
+                            <label for="files" (change)="fileChange($event)" style="cursor: pointer;"> <button style="margin-left:1.5px" (click)="fileInput.click()">Select file</button> <span> {{file.name}}</span></label>
+                    </div>
+                 
+                </div>
+                <div fxFlex="15">
+                    <!-- <button class="btn success" (click)="uploadData()" [disabled]="fileList.length == 0"
+                        style="margin-left: 15px !important;" mat-raised-button>
+                        <mat-icon>file_upload</mat-icon>Upload
+                    </button> -->
+                    <span   matTooltip="Add another photo" [matTooltipDisabled]="false" (click)="addAnotherPhoto()">
+                        <button mat-raised-button class="minibtn" style="margin-left: 8px !important;">
+                            <mat-icon style="color: white;">add</mat-icon>
+                          </button></span>
+                </div>
+                <div fxFlex="100" class="mt-1">
+                    <button (click)="saveImages()" mat-raised-button class="success" style="float:right !important;" 
+                    ><mat-icon>check</mat-icon>Save</button>
+          
+                  </div>-
+            </div>
+
+        </div>
+    </mat-dialog-content>
+</div>

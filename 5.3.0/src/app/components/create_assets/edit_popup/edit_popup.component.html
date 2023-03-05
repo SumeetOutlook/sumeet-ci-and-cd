@@ -1,0 +1,1025 @@
+<h3><strong style=" color:#008bd0 !important;">Edit Asset</strong> </h3>
+<div class="md-dialog-content">
+<mat-tab-group animationDuration="200ms" [selectedIndex]="selectedIndex" (selectedTabChange)="tabChanged($event)">
+  <mat-tab label="Asset Info"> 
+    <div class="md-label">
+    <form [formGroup]="AssetInfo" class="mt-16">
+      <div fxLayout="row wrap" fxLayout.lt-sm="column">
+        <div fxFlex="33"  class="pr-1 full">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label class="label" style="font-size: 15px !important;">Inventory No</mat-label>
+            <input
+            matInput
+            name="InventoryNo"
+            [formControl]="AssetInfo.controls['InventoryNo']" class="bg-transparente">
+          </mat-form-field>
+        </div>
+    
+        <div fxFlex="33"  class="pr-1 full">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label class="label">Asset No</mat-label>
+            <input
+            matInput
+            name="AssetNo"
+            [formControl]="AssetInfo.controls['AssetNo']">
+          </mat-form-field>
+        </div>
+       
+        <div fxFlex="33"  class="pr-1 full">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label class="label">Sub No</mat-label>
+            <input
+            matInput
+            name="SubNo"
+            [formControl]="AssetInfo.controls['SubNo']">
+          </mat-form-field>
+        </div>
+    
+       <div fxFlex="33"  class="pr-1">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label class="label">Asset Class</mat-label> 
+            <input
+            matInput
+            name="AssetClass"
+            [formControl]="AssetInfo.controls['AssetClass']">
+          </mat-form-field>
+        </div>
+    
+        <div fxFlex="33"  class="pr-1">
+          <mat-form-field class="full-width">
+            <mat-label class="label">Asset Type</mat-label>
+            <mat-select  [formControl]="AssetInfo.controls['AssetType']" placeholder="Select Asset Type" #singleSelect>
+              <mat-option>
+                <ngx-mat-select-search [placeholderLabel]="'Search Asset Type'" [formControl]="AssetInfo.controls['AssetTypeFilter']"   noEntriesFoundLabel="{{Headers.NoRecordFound}}"></ngx-mat-select-search>
+              </mat-option>
+              <mat-option *ngFor="let data of filteredAssetType | async" [value]="data">
+                {{data.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div fxFlex="33"  class="pr-1">
+          <mat-form-field class="full-width">
+            <mat-label class="label">Asset Sub-Type</mat-label>
+            <mat-select  [formControl]="AssetInfo.controls['AssetSubType']" placeholder="Select Sub-Type Of Asset" #singleSelect>
+              <mat-option>
+                <ngx-mat-select-search [placeholderLabel]="'Search Asset Sub-Type'" [formControl]="AssetInfo.controls['AssetSubTypeFilter']"   noEntriesFoundLabel="{{Headers.NoRecordFound}}"></ngx-mat-select-search>
+              </mat-option>
+              <mat-option *ngFor="let data of filteredAssetSubType | async" [value]="data">
+                {{data.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div fxFlex="33"  class="pr-1">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label class="label">Capitalization Date</mat-label>
+            <input
+            matInput
+            name="CapitalizationDate"
+            [formControl]="AssetInfo.controls['CapitalizationDate']">
+          </mat-form-field>
+        </div>
+    
+       <div fxFlex="33"  class="pr-1">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label class="label">Qty</mat-label> 
+            <input
+            matInput
+            name="Qty"
+            [formControl]="AssetInfo.controls['Qty']">
+          </mat-form-field>
+        </div>
+        <div fxFlex="33"  class="pr-1">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label class="label">Plant</mat-label>
+            <input
+            matInput
+            name="Plant"
+            [formControl]="AssetInfo.controls['Plant']">
+          </mat-form-field>
+        </div>
+        <div fxFlex="33"  class="pr-1">
+          <mat-form-field class="full-width">
+            <mat-label class="label">Sub-Location</mat-label>
+            <mat-select  [formControl]="AssetInfo.controls['SubLocation']" placeholder="Select Sub Location" #singleSelect>
+              <mat-option>
+                <ngx-mat-select-search [placeholderLabel]="'Search Sub Location'" [formControl]="AssetInfo.controls['SubLocationFilter']"   noEntriesFoundLabel="{{Headers.NoRecordFound}}"></ngx-mat-select-search>
+              </mat-option>
+              <mat-option *ngFor="let data of filteredSubLocation | async" [value]="data">
+                {{data.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div fxFlex="33"  class="pr-1">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label class="label">Asset Condition</mat-label> 
+            <input
+            matInput
+            name="AssetCondition"
+            [formControl]="AssetInfo.controls['AssetCondition']">
+          </mat-form-field>
+        </div>
+    
+        <div fxFlex="33"  class="pr-1">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label class="label">Asset Cricality</mat-label>
+            <input
+            matInput
+            name="AssetCricality"
+            [formControl]="AssetInfo.controls['AssetCricality']">
+          </mat-form-field>
+        </div>
+        <div fxFlex="33"  class="pr-1">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label class="label">GRN No</mat-label>
+            <input
+            matInput
+            name="GRNNo"
+            [formControl]="AssetInfo.controls['GRNNo']">
+          </mat-form-field>
+        </div>
+        <div fxFlex="33"  class="pr-1">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label class="label">Room</mat-label>
+            <input
+            matInput
+            name="Room"
+            [formControl]="AssetInfo.controls['Room']">
+          </mat-form-field>
+        </div>
+
+        <div fxFlex="33"  class="pr-1">
+          <mat-form-field class="full-width">
+            <mat-label class="label">UOM</mat-label>
+            <mat-select  [formControl]="AssetInfo.controls['UOM']" placeholder="Select UOM" #singleSelect>
+              <mat-option>
+                <ngx-mat-select-search [placeholderLabel]="'Search UOM'" [formControl]="AssetInfo.controls['UOMFilter']"   noEntriesFoundLabel="{{Headers.NoRecordFound}}"></ngx-mat-select-search>
+              </mat-option>
+              <mat-option *ngFor="let data of filteredUOM | async" [value]="data">
+                {{data.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+
+        <div fxFlex="33"  class="pr-1">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label class="label">Asset Name</mat-label>
+            <input
+            matInput
+            name="AssetName"
+            [formControl]="AssetInfo.controls['AssetName']">
+          </mat-form-field>
+        </div>
+        <div fxFlex="33"  class="pr-1">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label class="label">Asset Description</mat-label>
+            <input
+            matInput
+            name="AssetDescription"
+            [formControl]="AssetInfo.controls['AssetDescription']">
+          </mat-form-field>
+        </div>
+        <div fxFlex="33"  class="pr-1">
+          <mat-form-field class="full-width">
+            <mat-label class="label">Vendor Name</mat-label>
+            <mat-select  [formControl]="AssetInfo.controls['VendorName']" placeholder="Select Vendor Name" #singleSelect>
+              <mat-option>
+                <ngx-mat-select-search [placeholderLabel]="'Search Vendor Name'" [formControl]="AssetInfo.controls['VendorNameFilter']"   noEntriesFoundLabel="{{Headers.NoRecordFound}}"></ngx-mat-select-search>
+              </mat-option>
+              <mat-option *ngFor="let data of filteredVendorName | async" [value]="data">
+                {{data.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div fxFlex="33"  class="pr-1">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label class="label">PO No</mat-label>
+            <input
+            matInput
+            name="PONo"
+            [formControl]="AssetInfo.controls['PONo']">
+          </mat-form-field>
+        </div>
+    
+        <div fxFlex="33"  class="pr-1">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label class="label">Invoice No</mat-label>
+            <input
+            matInput
+            name="InvoiceNo"
+            [formControl]="AssetInfo.controls['InvoiceNo']">
+          </mat-form-field>
+        </div>
+        <div fxFlex="33"  class="pr-1">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label class="label">Serial No</mat-label>
+            <input
+            matInput
+            name="SerialNo"
+            [formControl]="AssetInfo.controls['SerialNo']">
+          </mat-form-field>
+        </div>
+    
+       <div fxFlex="33"  class="pr-1">
+          <mat-form-field class="full-width">
+            <mat-label class="label">Cost Center</mat-label> 
+            <mat-select  [formControl]="AssetInfo.controls['CostCenter']" placeholder="Select Cost Center" #singleSelect>
+              <mat-option>
+                <ngx-mat-select-search [placeholderLabel]="'Search Cost Center'" [formControl]="AssetInfo.controls['CostCenterFilter']"   noEntriesFoundLabel="{{Headers.NoRecordFound}}"></ngx-mat-select-search>
+              </mat-option>
+              <mat-option *ngFor="let data of filteredCostCenter | async" [value]="data">
+                {{data.name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div fxFlex="33"  class="pr-1">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label class="label">IT Serial No</mat-label>
+            <input
+            matInput
+            name="ITSerialNo"
+            [formControl]="AssetInfo.controls['ITSerialNo']">
+          </mat-form-field>
+        </div>
+        <div fxFlex="33"  class="pr-1">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label class="label">Useful Life[Month]</mat-label>
+            <input
+            matInput
+            name="UsefulLife"
+            [formControl]="AssetInfo.controls['UsefulLife']">
+          </mat-form-field>
+        </div>
+    
+        <div fxFlex="33"  class="pr-1">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label class="label">Asset Expiry Date</mat-label>
+            <input
+            matInput
+            [matDatepicker]="picker1"
+            name="AssetExpiryDate"
+            [formControl]="AssetInfo.controls['AssetExpiryDate']">
+            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+            <mat-datepicker #picker1></mat-datepicker>
+          </mat-form-field>
+        </div>
+        <div fxFlex="33"  class="pr-1">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label class="label">User</mat-label>
+            <input
+            matInput
+            name="User"
+            [formControl]="AssetInfo.controls['User']">
+          </mat-form-field>
+        </div>
+        <div fxFlex="33"  class="pr-1">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label class="label">Custodian</mat-label>
+            <input
+            matInput
+            name="User"
+            [formControl]="AssetInfo.controls['Custodian']">
+          </mat-form-field>
+        </div>
+        <div fxFlex="33"  class="pr-1">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label class="label">Equipment Number</mat-label>
+            <input
+            matInput
+            name="EquipmentNumber"
+            [formControl]="AssetInfo.controls['EquipmentNumber']" >
+          </mat-form-field>
+        </div>
+        </div>
+        </form>
+        <button class="btn" mat-raised-button color="primary" (click)="nextStep(1)">Next</button>
+        <button class="btn" mat-raised-button color="primary" >Save & Submit For Approval</button>
+        <button class="btn" mat-raised-button color="primary" >Save</button>
+      
+        </div>
+  </mat-tab>
+  <mat-tab label="Cost">
+    <div class="md-label">
+      <form [formGroup]="CostForm" class="mt-16">
+        <div fxLayout="row wrap" fxLayout.lt-sm="column">
+          <div fxFlex="33"  class="pr-1 full">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">Cost</mat-label>
+              <input
+              matInput
+              name="Cost"
+              [formControl]="CostForm.controls['Cost']">
+            </mat-form-field>
+          </div>
+      
+          <div fxFlex="33"  class="pr-1 full">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">WDV</mat-label>
+              <input
+              matInput
+              name="WDV"
+              [formControl]="CostForm.controls['WDV']">
+            </mat-form-field>
+          </div>
+      
+         <div fxFlex="33"  class="pr-1 full">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">Depn. Run Date</mat-label> 
+              <input
+              [matDatepicker]="picker2"
+              matInput
+              name="DepnRunDate"
+              [formControl]="CostForm.controls['DepnRunDate']">
+              <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+              <mat-datepicker #picker2></mat-datepicker>
+            </mat-form-field>
+          </div>
+      
+          <div fxFlex="33"  class="pr-1">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">Residual Value(%)</mat-label>
+              <input
+              matInput
+              name="ResidualValue"
+              [formControl]="CostForm.controls['ResidualValue']">
+            </mat-form-field>
+          </div>
+          </div>
+          </form>
+          <button mat-raised-button color="warn" type="button" (click)="previousStep(0)">Previous</button>
+          <button class="btn" mat-raised-button color="primary" (click)="nextStep(2)">Next</button>
+        </div> 
+  </mat-tab>
+  <mat-tab label="Maintenance"> 
+    <div class="md-label">
+      <form [formGroup]="Maintenance" class="mt-16">
+        <div fxLayout="row wrap" fxLayout.lt-sm="column">
+          <div fxFlex="33"  class="pr-1 full">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">Insurance Start</mat-label>
+              <input
+              matInput
+              [matDatepicker]="picker3"
+              name="InsuranceStart"
+              [formControl]="Maintenance.controls['InsuranceStart']">
+              <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+              <mat-datepicker #picker3></mat-datepicker>
+            </mat-form-field>
+          </div>
+      
+          <div fxFlex="33"  class="pr-1 full">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">Insurance End</mat-label>
+              <input
+              matInput
+              [matDatepicker]="picker4"
+              name="InsuranceEnd"
+              [formControl]="Maintenance.controls['InsuranceEnd']">
+              <mat-datepicker-toggle matSuffix [for]="picker4"></mat-datepicker-toggle>
+              <mat-datepicker #picker4></mat-datepicker>
+            </mat-form-field>
+          </div>
+      
+         <div fxFlex="33"  class="pr-1 full">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">Insurance Vendor</mat-label> 
+              <input
+              matInput
+              name="InsuranceVendor"
+              [formControl]="Maintenance.controls['InsuranceVendor']">
+            </mat-form-field>
+          </div>
+      
+          <div fxFlex="33"  class="pr-1">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">AMC Start</mat-label>
+              <input
+              matInput
+              [matDatepicker]="picker5"
+              name="AMCStart"
+              [formControl]="Maintenance.controls['AMCStart']">
+              <mat-datepicker-toggle matSuffix [for]="picker5"></mat-datepicker-toggle>
+              <mat-datepicker #picker5></mat-datepicker>
+            </mat-form-field>
+          </div>
+          <div fxFlex="33"  class="pr-1">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">AMC End</mat-label>
+              <input
+              matInput
+              [matDatepicker]="picker6"
+              name="AMCEnd"
+              [formControl]="Maintenance.controls['AMCEnd']">
+              <mat-datepicker-toggle matSuffix [for]="picker6"></mat-datepicker-toggle>
+              <mat-datepicker #picker6></mat-datepicker>
+            </mat-form-field>
+          </div>
+          <div fxFlex="33"  class="pr-1">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">AMC Vendor</mat-label>
+              <input
+              matInput
+              name="AMCVendor"
+              [formControl]="Maintenance.controls['AMCVendor']">
+            </mat-form-field>
+          </div>
+      
+          <div fxFlex="33"  class="pr-1">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">Warranty Start Date</mat-label>
+              <input
+              matInput
+              [matDatepicker]="picker7"
+              name="WarrantyStartDate"
+              [formControl]="Maintenance.controls['WarrantyStartDate']">
+              <mat-datepicker-toggle matSuffix [for]="picker7"></mat-datepicker-toggle>
+              <mat-datepicker #picker7></mat-datepicker>
+            </mat-form-field>
+          </div>
+
+          <div fxFlex="33"  class="pr-1">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">Warranty End</mat-label>
+              <input
+              matInput
+              [matDatepicker]="picker8"
+              name="WarrantyEnd"
+              [formControl]="Maintenance.controls['WarrantyEnd']">
+              <mat-datepicker-toggle matSuffix [for]="picker8"></mat-datepicker-toggle>
+              <mat-datepicker #picker8></mat-datepicker>
+            </mat-form-field>
+          </div>
+      
+         <div fxFlex="33"  class="pr-1">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">Warranty Period:[Month]</mat-label> 
+              <input
+              matInput
+              name="WarrantyPeriod"
+              [formControl]="Maintenance.controls['WarrantyPeriod']" readonly>
+            </mat-form-field>
+          </div>
+          <div fxFlex="33"  class="pr-1">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">Warranty Cost</mat-label>
+              <input
+              matInput
+              name="WarrantyCost"
+              [formControl]="Maintenance.controls['WarrantyCost']" readonly>
+            </mat-form-field>
+          </div>
+      
+          <div fxFlex="33"  class="pr-1">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">Warranty Terms</mat-label>
+              <input
+              matInput
+              name="WarrantyTerms"
+              [formControl]="Maintenance.controls['WarrantyTerms']" readonly>
+            </mat-form-field>
+          </div>
+      
+         <div fxFlex="33"  class="pr-1"> 
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">Remarks(Warranty)</mat-label>
+              <input
+              matInput
+              name="Remarks"
+              [formControl]="Maintenance.controls['Remarks']" readonly>
+            </mat-form-field>
+          </div>
+          </div>
+          </form>
+          <button mat-raised-button color="warn" type="button" (click)="previousStep(1)">Previous</button>
+          <button class="btn" mat-raised-button color="primary" (click)="nextStep(3)">Next</button>
+        </div> 
+  </mat-tab>
+  <mat-tab label="Other Info"> 
+   <div class="md-label">
+    <form [formGroup]="OtherInfo" class="mt-16">
+      <div fxLayout="row wrap" fxLayout.lt-sm="column">
+        <div fxFlex="33"  class="pr-1 full">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label class="label">Is Metal</mat-label>
+            <input
+            matInput
+            name="IsMetal"
+            [formControl]="OtherInfo.controls['IsMetal']">
+          </mat-form-field>
+        </div>
+
+        <div fxFlex="33"  class="pr-1 full">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label class="label">CPP Number</mat-label>
+            <input
+            matInput
+            name="CPPNumber"
+            [formControl]="OtherInfo.controls['CPPNumber']">
+          </mat-form-field>
+        </div>
+    
+        <div fxFlex="33"  class="pr-1 full">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label class="label">AMC Comment</mat-label>
+            <input
+            matInput
+            name="AMCComment"
+            [formControl]="OtherInfo.controls['AMCComment']">
+          </mat-form-field>
+        </div>
+    
+       <div fxFlex="33"  class="pr-1">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label class="label">Budget</mat-label> 
+            <input
+            matInput
+            name="Budget"
+            [formControl]="OtherInfo.controls['Budget']">
+          </mat-form-field>
+        </div>
+    
+        <div fxFlex="33"  class="pr-1">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label class="label">GRN Date</mat-label>
+            <input
+            matInput
+            [matDatepicker]="picker9"
+            name="GRNDate"
+            [formControl]="OtherInfo.controls['GRNDate']">
+            <mat-datepicker-toggle matSuffix [for]="picker9"></mat-datepicker-toggle>
+            <mat-datepicker #picker9></mat-datepicker>
+          </mat-form-field>
+        </div>
+
+        <div fxFlex="33"  class="pr-1">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label class="label">Description</mat-label>
+            <input
+            matInput
+            name="Description"
+            [formControl]="OtherInfo.controls['Description']">
+          </mat-form-field>
+        </div>
+
+        <div fxFlex="33"  class="pr-1">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label class="label">Remark</mat-label>
+            <input
+            matInput
+            name="Remark"
+            [formControl]="OtherInfo.controls['Remark']">
+          </mat-form-field>
+        </div>
+        <div fxFlex="33"  class="pr-1">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label class="label">Accounting Status</mat-label>
+            <input
+            matInput
+            name="AccountingStatus"
+            [formControl]="OtherInfo.controls['AccountingStatus']">
+          </mat-form-field>
+        </div>
+        <div fxFlex="33"  class="pr-1">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label class="label">Division</mat-label>
+            <input
+            matInput
+            name="Division"
+            [formControl]="OtherInfo.controls['Division']">
+          </mat-form-field>
+        </div>
+    
+        <div fxFlex="33"  class="pr-1">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label class="label">Expense Account</mat-label>
+            <input
+            matInput
+            name="ExpenseAccount"
+            [formControl]="OtherInfo.controls['ExpenseAccount']">
+          </mat-form-field>
+        </div>
+    
+       <div fxFlex="33"  class="pr-1">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label class="label">Cost Account</mat-label> 
+            <input
+            matInput
+            name="CostAccount"
+            [formControl]="OtherInfo.controls['CostAccount']">
+          </mat-form-field>
+        </div>
+    
+        <div fxFlex="33"  class="pr-1">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label class="label">Reverse Account</mat-label>
+            <input
+            matInput
+            name="ReverseAccount"
+            [formControl]="OtherInfo.controls['ReverseAccount']">
+          </mat-form-field>
+        </div>
+    
+       <div fxFlex="33"  class="pr-1">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label class="label">Department</mat-label> 
+            <input
+            matInput
+            name="Department"
+            [formControl]="OtherInfo.controls['Department']">
+          </mat-form-field>
+        </div>
+        <div fxFlex="33"  class="pr-1">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label class="label">Area</mat-label>
+            <input
+            matInput
+            name="Area"
+            [formControl]="OtherInfo.controls['Area']">
+          </mat-form-field>
+        </div>
+    
+        <div fxFlex="33"  class="pr-1">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label class="label">Merchandise</mat-label>
+            <input
+            matInput
+            name="Merchandise"
+            [formControl]="OtherInfo.controls['Merchandise']">
+          </mat-form-field>
+        </div>
+    
+       <div fxFlex="33"  class="pr-1">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label class="label">Inter Company</mat-label> 
+            <input
+            matInput
+            name="InterCompany"
+            [formControl]="OtherInfo.controls['InterCompany']">
+          </mat-form-field>
+        </div>
+    
+        <div fxFlex="33"  class="pr-1">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label class="label">Service Provider</mat-label>
+            <input
+            matInput
+            name="ServiceProvider"
+            [formControl]="OtherInfo.controls['ServiceProvider']">
+          </mat-form-field>
+        </div>
+        <div fxFlex="33"  class="pr-1">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label class="label">Accumulated Depreciation</mat-label>
+            <input
+            matInput
+            name="AccumulatedDepreciation"
+            [formControl]="OtherInfo.controls['AccumulatedDepreciation']">
+          </mat-form-field>
+        </div>
+        <div fxFlex="33"  class="pr-1">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label class="label">Class</mat-label>
+            <input
+            matInput
+            name="Class"
+            [formControl]="OtherInfo.controls['Class']">
+          </mat-form-field>
+        </div>
+        <div fxFlex="33"  class="pr-1">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label class="label">Loc2</mat-label> 
+            <input
+            matInput
+            name="Loc2"
+            [formControl]="OtherInfo.controls['Loc2']">
+          </mat-form-field>
+        </div>
+    
+        <div fxFlex="33"  class="pr-1">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label class="label">Loc3</mat-label>
+            <input
+            matInput
+            name="Loc3"
+            [formControl]="OtherInfo.controls['Loc3']">
+          </mat-form-field>
+        </div>
+    
+       <div fxFlex="33"  class="pr-1">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label class="label">Loc4</mat-label> 
+            <input
+            matInput
+            name="Loc4"
+            [formControl]="OtherInfo.controls['Loc4']">
+          </mat-form-field>
+        </div>
+        <div fxFlex="33"  class="pr-1">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label class="label">Loc5</mat-label>
+            <input
+            matInput
+            name="Loc5"
+            [formControl]="OtherInfo.controls['Loc5']">
+          </mat-form-field>
+        </div>
+    
+        <div fxFlex="33"  class="pr-1">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label class="label">Future Use</mat-label>
+            <input
+            matInput
+            name="FutureUse"
+            [formControl]="OtherInfo.controls['FutureUse']">
+          </mat-form-field>
+        </div>
+    
+       <div fxFlex="33"  class="pr-1">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label class="label">Inter Unit</mat-label> 
+            <input
+            matInput
+            name="InterUnit"
+            [formControl]="OtherInfo.controls['InterUnit']">
+          </mat-form-field>
+        </div>
+    
+        <div fxFlex="33"  class="pr-1">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label class="label">Account Clearing</mat-label>
+            <input
+            matInput
+            name="AccountClearing"
+            [formControl]="OtherInfo.controls['AccountClearing']">
+          </mat-form-field>
+        </div>
+        <div fxFlex="33"  class="pr-1">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label class="label">Department Clearing</mat-label>
+            <input
+            matInput
+            name="DepartmentClearing"
+            [formControl]="OtherInfo.controls['DepartmentClearing']">
+          </mat-form-field>
+        </div>
+        <div fxFlex="33"  class="pr-1">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label class="label">Comments</mat-label>
+            <input
+            matInput
+            name="Comments"
+            [formControl]="OtherInfo.controls['Comments']">
+          </mat-form-field>
+        </div>
+        <div fxFlex="33"  class="pr-1">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label class="label">Upl</mat-label> 
+            <input
+            matInput
+            name="Upl"
+            [formControl]="OtherInfo.controls['Upl']">
+          </mat-form-field>
+        </div>
+    
+        <div fxFlex="33"  class="pr-1">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label class="label">Depreciation Reserve</mat-label>
+            <input
+            matInput
+            name="DepreciationReserve"
+            [formControl]="OtherInfo.controls['DepreciationReserve']">
+          </mat-form-field>
+        </div>
+    
+       <div fxFlex="33"  class="pr-1">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label class="label">Project</mat-label> 
+            <input
+            matInput
+            name="Project"
+            [formControl]="OtherInfo.controls['Project']">
+          </mat-form-field>
+        </div>
+        <div fxFlex="33"  class="pr-1">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label class="label">Amortization Start Date</mat-label>
+            <input
+            matInput
+            name="AmortizationStartDate"
+            [formControl]="OtherInfo.controls['AmortizationStartDate']">
+          </mat-form-field>
+        </div>
+    
+        <div fxFlex="33"  class="pr-1">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label class="label">AmortizeNBV</mat-label>
+            <input
+            matInput
+            name="AmortizeNBV"
+            [formControl]="OtherInfo.controls['AmortizeNBV']">
+          </mat-form-field>
+        </div>
+    
+       <div fxFlex="33"  class="pr-1">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label class="label">Life In Months</mat-label> 
+            <input
+            matInput
+            name="LifeInMonths"
+            [formControl]="OtherInfo.controls['LifeInMonths']">
+          </mat-form-field>
+        </div>
+    
+        <div fxFlex="33"  class="pr-1">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label class="label">Messages</mat-label>
+            <input
+            matInput
+            name="Messages"
+            [formControl]="OtherInfo.controls['Messages']">
+          </mat-form-field>
+        </div>
+        </div>
+        </form> 
+        <button  mat-raised-button color="warn" type="button" (click)="previousStep(2)">Previous</button>
+        <button class="btn" mat-raised-button color="primary" (click)="nextStep(4)">Next</button>
+    </div>  
+  </mat-tab>
+  <mat-tab label="Document"> 
+    <div class="md-label">
+      <form [formGroup]="Download" class="mt-16">
+        <div fxLayout="row wrap" fxLayout.lt-sm="column">
+          <div fxFlex="33"  class="pr-1 full">
+            <mat-form-field class="full-width">
+              <mat-label class="label">DocumentType</mat-label>
+              <mat-select  [formControl]="Download.controls['DocumentType']" placeholder="Select Document Type" #singleSelect>
+                <mat-option>
+                  <ngx-mat-select-search [placeholderLabel]="'Search Document Type'" [formControl]="Download.controls['DocumentTypeFilter']"   noEntriesFoundLabel="{{Headers.NoRecordFound}}"></ngx-mat-select-search>
+                </mat-option>
+                <mat-option *ngFor="let data of filteredDocumentType | async" [value]="data">
+                  {{data.name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div fxFlex="33"  class="pr-1">
+              <!-- <label style="margin-bottom: 5px;">File Upload</label><br> -->
+              <!-- <input type="file" ng2FileSelect style="padding-top: 7px" [formControl]="Download.controls['FileUpload']"/> -->
+             
+                <input type="file" style="padding-top: 7px;margin-top: 22px !important;" ng2FileSelect class="uploadSelectClass"  />
+              
+          </div>
+    </div>  
+    </form> 
+    <mat-table [dataSource]="datasource" matSort style="margin-bottom: 20px">
+
+      <ng-container matColumnDef="DocumentType" style="padding-left: 5%;margin-right: 5%;">
+        <mat-header-cell *matHeaderCellDef> Document Type </mat-header-cell>
+        <mat-cell *matCellDef="let row;let i=index"></mat-cell>
+      </ng-container>
+
+      <ng-container matColumnDef="DocumentName">
+        <mat-header-cell *matHeaderCellDef> Document Name </mat-header-cell>
+        <mat-cell *matCellDef="let row">No Data Available</mat-cell>
+      </ng-container>
+    
+      <ng-container matColumnDef="DeleteDocument">
+        <mat-header-cell  *matHeaderCellDef> Delete Document</mat-header-cell>
+        <mat-cell *matCellDef="let row"></mat-cell>
+        </ng-container>
+        <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+        <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+     </mat-table>
+      <button mat-raised-button color="warn" type="button" (click)="previousStep(3)">Previous</button>
+      <button style="float:right;margin-right:2%" class="btn" mat-raised-button color="primary" (click)="nextStep(5)">Next</button>
+    </div>  
+  </mat-tab>
+  <mat-tab label="Hardware Info">
+    <div class="md-label">
+      <form [formGroup]="HardwareInfo" class="mt-16">
+        <div fxLayout="row wrap" fxLayout.lt-sm="column">
+          <div fxFlex="33"  class="pr-1 full">
+            <mat-form-field class="full-width">
+              <mat-label class="label">Operating System</mat-label>
+              <mat-select  [formControl]="HardwareInfo.controls['OperatingSystem']" placeholder="Select Operating System" #singleSelect>
+                <mat-option>
+                  <ngx-mat-select-search [placeholderLabel]="'Search Operating System'" [formControl]="HardwareInfo.controls['OperatingSystemFilter']"   noEntriesFoundLabel="{{Headers.NoRecordFound}}"></ngx-mat-select-search>
+                </mat-option>
+                <mat-option *ngFor="let data of filteredOperatingSystem | async" [value]="data">
+                  {{data.name}}
+                </mat-option>
+                </mat-select>
+            </mat-form-field>
+          </div>
+      
+          <div fxFlex="33"  class="pr-1 full">
+            <mat-form-field class="full-width">
+              <mat-label class="label">CPU Class</mat-label>
+              <mat-select  [formControl]="HardwareInfo.controls['CPUClass']"  placeholder="Select CPU Class" #singleSelect>
+                <mat-option>
+                  <ngx-mat-select-search [placeholderLabel]="'Search CPU Class'" [formControl]="HardwareInfo.controls['CPUClassFilter']"   noEntriesFoundLabel="{{Headers.NoRecordFound}}"></ngx-mat-select-search>
+                </mat-option>
+                <mat-option *ngFor="let data of filteredCPUClass | async" [value]="data">
+                  {{data.name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+      
+         <div fxFlex="33"  class="pr-1 full">
+            <mat-form-field class="full-width">
+              <mat-label class="label">CPU SubClass</mat-label> 
+              <mat-select  [formControl]="HardwareInfo.controls['CPUSubClass']" placeholder="Select CPU SubClass" #singleSelect>
+                <mat-option>
+                  <ngx-mat-select-search [placeholderLabel]="'Search CPU SubClass'" [formControl]="HardwareInfo.controls['CPUSubClassFilter']"   noEntriesFoundLabel="{{Headers.NoRecordFound}}"></ngx-mat-select-search>
+                </mat-option>
+                <mat-option *ngFor="let data of filteredCPUSubClass | async" [value]="data">
+                  {{data.name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+      
+          <div fxFlex="33"  class="pr-1">
+            <mat-form-field class="full-width">
+              <mat-label class="label">Application Type</mat-label>
+              <mat-select  [formControl]="HardwareInfo.controls['ApplicationType']" placeholder="Select Application Type" #singleSelect>
+                <mat-option>
+                  <ngx-mat-select-search [placeholderLabel]="'Search Application Type'" [formControl]="HardwareInfo.controls['ApplicationTypeFilter']"   noEntriesFoundLabel="{{Headers.NoRecordFound}}"></ngx-mat-select-search>
+                </mat-option>
+                <mat-option *ngFor="let data of filteredApplicationType | async" [value]="data">
+                  {{data.name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div fxFlex="33"  class="pr-1">
+            <mat-form-field class="full-width">
+              <mat-label class="label">Model</mat-label>
+              <mat-select  [formControl]="HardwareInfo.controls['Model']" placeholder="Select Model" #singleSelect>
+                <mat-option>
+                  <ngx-mat-select-search [placeholderLabel]="'Search Model'" [formControl]="HardwareInfo.controls['ModelFilter']"   noEntriesFoundLabel="{{Headers.NoRecordFound}}"></ngx-mat-select-search>
+                </mat-option>
+                <mat-option *ngFor="let data of filteredModel | async" [value]="data">
+                  {{data.name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div fxFlex="33"  class="pr-1">
+            <mat-form-field class="full-width">
+              <mat-label class="label">Manufacturer</mat-label>
+              <mat-select  [formControl]="HardwareInfo.controls['Manufacturer']" placeholder="Select MAnufacturer" #singleSelect>
+                <mat-option>
+                  <ngx-mat-select-search [placeholderLabel]="'Search Manufacturer'" [formControl]="HardwareInfo.controls['ManufacturerFilter']"   noEntriesFoundLabel="{{Headers.NoRecordFound}}"></ngx-mat-select-search>
+                </mat-option>
+                <mat-option *ngFor="let data of filteredManufacturer | async" [value]="data">
+                  {{data.name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+      
+          <div fxFlex="33"  class="pr-1">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">Host Name</mat-label>
+              <input
+              matInput
+              name="HostName"
+              [formControl]="HardwareInfo.controls['HostName']">
+            </mat-form-field>
+          </div>
+
+          <div fxFlex="33"  class="pr-1">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">HDD</mat-label>
+              <input
+              matInput
+              name="HDD"
+              [formControl]="HardwareInfo.controls['HDD']">
+            </mat-form-field>
+          </div>
+
+          <div fxFlex="33"  class="pr-1">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">RAM</mat-label>
+              <input
+              matInput
+              name="RAM"
+              [formControl]="HardwareInfo.controls['RAM']">
+            </mat-form-field>
+          </div>
+          </div>
+          </form>
+          <button  mat-raised-button color="warn" type="button" (click)="previousStep(4)">Previous</button>
+          <button class="btn" mat-raised-button color="primary" (click)="nextStep(0)">Finish</button>
+        </div>
+  </mat-tab>
+</mat-tab-group>
+</div>
+

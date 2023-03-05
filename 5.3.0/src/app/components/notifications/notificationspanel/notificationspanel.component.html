@@ -1,0 +1,423 @@
+<mat-tab-group animationDuration="200ms" [selectedIndex]="selectedIndex" (selectedTabChange)="tabClick($event)">
+  <mat-tab label="Event Based Notifications">
+    <mat-card class="p-0" >
+      <mat-accordion *ngFor="let data of ModelwiseData">
+        <mat-expansion-panel (click)="ShowModuleData(data)" (opened)="data.open = true" (closed)="data.open = false " hideToggle>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              <div *ngIf="!(data.open)">
+                <mat-icon style="color: #e67e4a !important;padding-left: 5px;padding-right: 5px;"
+                   (click)="ShowModuleData(data)">add</mat-icon>
+              </div>
+              <div *ngIf="(data.open)">
+                <mat-icon style="color: #e67e4a !important;font-size: 22px;padding-left: 5px;padding-right: 5px;"
+                  class="authorize-click icon">remove</mat-icon>
+              </div> {{data.modulename}}
+            </mat-panel-title>
+            <mat-panel-description>
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+          <div class="example-container mat-elevation-z8 mt-8">
+            <table mat-table #table [dataSource]="data.sub" matSort>
+              <ng-container matColumnDef="Select">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> </th>
+                <td mat-cell *matCellDef="let row">
+                  <mat-checkbox class="example-margin" [checked]="getselectedIds.indexOf(row) > -1" (change)="SelectGridCheckbox(row)"></mat-checkbox>
+                </td>
+              </ng-container>
+  
+              <ng-container matColumnDef="Active">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                  Active <span  style="color:red;">  * </span>
+                </th>
+                <td mat-cell *matCellDef="let row">
+                  <mat-form-field class="ml-4" appearance="outline">
+                    <mat-select [disabled]="!row.disabled" [(ngModel)]="row.IsActive">
+                      <mat-option value="true"> Active</mat-option>
+                      <mat-option value="false">Inactive</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </td>
+              </ng-container>
+  
+              <ng-container matColumnDef="Type">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Event Name
+                </th>
+                <td mat-cell [disabled]="!row.disabled" *matCellDef="let row">{{row.EventName}}
+                </td>
+              </ng-container>
+  
+              <ng-container matColumnDef="Template">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header >Template Name <span  style="color:red;">  * </span>
+                </th>
+                <td mat-cell *matCellDef="let row" >
+                  <mat-form-field class="ml-4" appearance="outline">
+                    <mat-select [disabled]="!row.disabled" [(ngModel)]="row.TemplateCode">
+                      <mat-option *ngFor="let type of row.Templatelist" [value]="type.TemplateShortCode">
+                        {{type.TemplateName}}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </td>
+              </ng-container>
+  
+              <ng-container matColumnDef="MailTo">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header required>
+                  TO <span  style="color:red;">  * </span>
+                </th>
+                <td mat-cell *matCellDef="let row">
+                  <!-- <mat-form-field appearance="outline" style="width: 285px;">
+                    <textarea matInput [disabled]="disabled"></textarea>
+                  </mat-form-field> -->
+                  <mat-form-field class="ml-4" [disabled]="row.disabled " appearance="outline" *ngIf="!row.ToValue">
+                    <mat-select [disabled]="!row.disabled" [(ngModel)]="row.ToRoleID" [multiple]="true" #multiSelect>
+                      <mat-option *ngFor="let Roles of row.ToRoleList" [value]="Roles.RoleId">
+                        {{Roles.RoleName}}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </td>
+              </ng-container>  
+              <!-- <ng-container matColumnDef="MailCC">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header required >
+                  CC
+                </th>
+                <td mat-cell *matCellDef="let row">
+                  <mat-form-field class="ml-4" [disabled]="row.disabled" appearance="outline" *ngIf="!row.CcValue">
+                    <mat-select [disabled]="!row.disabled" [(ngModel)]="row.CCRoleId" [multiple]="true" #multiSelect>
+                      <mat-option *ngFor="let Roles of userRole" [value]="Roles.RoleId">
+                        {{Roles.RoleName}}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </td>
+              </ng-container> -->
+  
+              <ng-container matColumnDef="action">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header >Action
+                </th>
+                <td mat-cell *matCellDef="let row" >
+                  <!-- <mat-icon style="color:#1d3478;cursor:pointer;" *ngIf="disabled" (click)="edit()">edit</mat-icon>
+                  <mat-icon style="color:blue;cursor:pointer;" *ngIf="!disabled" (click)="save()">check</mat-icon> -->
+                  <!-- <button [disabled]="!row.disabled" class="submitbtn"
+                    (click)="save(row)" style="background-color: #f5f5dc;">Update</button> -->
+  
+                  <button mat-raised-button class="success" [disabled]="!row.disabled" (click)="save(row)"><mat-icon>edit</mat-icon> Update</button>
+                </td>
+              </ng-container>
+  
+              <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+          </div>
+          
+        </mat-expansion-panel>
+      </mat-accordion>
+    </mat-card>
+  </mat-tab>
+  <mat-tab label="Schedule Based Notifications">
+    <!-- <mat-form-field class="formfield" color="primary">
+      <mat-select [(ngModel)]="TypeCtrl" [ngModelOptions]="{standalone: true}" [multiple]="false" #singleSelect>
+        <mat-option *ngFor="let type of Type" [value]="type">
+          {{type.name}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field> -->
+    <mat-card class="p-0">
+      <mat-accordion *ngFor="let data of ModelwiseData1">
+        <mat-expansion-panel (click)="ShowSheduledBasedData(data)" (opened)="data.open = true" (closed)="data.open = false " hideToggle>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              <div *ngIf="!(data.open)">
+                <mat-icon style="color: #e67e4a !important;padding-left: 5px;padding-right: 5px;" (click)="ShowSheduledBasedData(data)">add</mat-icon>
+              </div>
+              <div *ngIf="(data.open)">
+                <mat-icon style="color: #e67e4a !important;font-size: 22px;padding-left: 5px;padding-right: 5px;"
+                  class="authorize-click icon">remove</mat-icon>
+              </div> {{data.modulename1}}
+            </mat-panel-title>
+            <mat-panel-description>
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+          <div class="example-container mat-elevation-z8 mt-8">
+            <table mat-table #table [dataSource]="data.sub1" matSort>
+              <ng-container matColumnDef="Select">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header > </th>
+                <td mat-cell *matCellDef="let row" >
+                  <mat-checkbox class="example-margin" [checked]="getselectedIds.indexOf(row) > -1" (change)="SelectGridCheckbox1(row)"></mat-checkbox>
+                </td>
+              </ng-container>
+  
+              <ng-container matColumnDef="Active">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Active <span  style="color:red;">  * </span></th>
+                <td mat-cell *matCellDef="let row">
+                  <mat-form-field appearance="outline">
+                    <!-- <mat-icon style="color: green;">adjust</mat-icon> -->
+                    <mat-select [disabled]="!row.disabled" [(ngModel)]="row.IsActive">
+                      <mat-option value="true"> Active</mat-option>
+                      <mat-option value="false">Inactive</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </td>
+              </ng-container>
+  
+              <ng-container matColumnDef="Type">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Event Name</th>
+                <td mat-cell [disabled]="!row.disabled" *matCellDef="let row">{{row.EventName}}
+                </td>
+              </ng-container>
+  
+              <ng-container matColumnDef="Template">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header >Template name <span  style="color:red;">  * </span></th>
+                <td mat-cell *matCellDef="let row">
+                  <mat-form-field class="ml-4" appearance="outline">
+                    <mat-select [disabled]="!row.disabled" [(ngModel)]="row.TemplateCode">
+                      <mat-option *ngFor="let type of row.Templatelist" [value]="type.TemplateShortCode">
+                        {{type.TemplateName}}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </td>
+              </ng-container>
+  
+              <ng-container matColumnDef="MailTo">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header required>TO <span  style="color:red;">  * </span></th>
+                <td mat-cell *matCellDef="let row">
+                  <mat-form-field class="ml-4" [disabled]="row.disabled" appearance="outline" *ngIf="!row.ToValue">
+                    <mat-select [disabled]="!row.disabled" [(ngModel)]="row.ToRoleID" [multiple]="true" #multiSelect>
+                      <mat-option *ngFor="let Roles of row.ToRolelist" [value]="Roles.RoleId">
+                        {{Roles.RoleName}}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </td>
+              </ng-container>
+  
+              <!-- <ng-container matColumnDef="MailCC">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header required>CC</th>
+                <td mat-cell *matCellDef="let row">
+                  <mat-form-field class="ml-4" [disabled]="row.disabled" appearance="outline" *ngIf="!row.CcValue">
+                    <mat-select [disabled]="!row.disabled" [(ngModel)]="row.CCRoleId" [multiple]="true" #multiSelect>
+                      <mat-option *ngFor="let Roles of userRole" [value]="Roles.RoleId">
+                        {{Roles.RoleName}}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </td>
+              </ng-container> -->
+  
+              <ng-container matColumnDef="Frequency">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header required>Frequency <span  style="color:red;">  * </span></th>
+                <td mat-cell *matCellDef="let row" [disabled]="!row.disabled">
+                  <!-- <mat-form-field style="width:200px;" appearance="outline">
+                    <input matInput [disabled]="disabled">
+                  </mat-form-field> -->
+                  <mat-form-field appearance="outline">
+                    <mat-select [disabled]="!row.disabled" [(ngModel)]="row.Frequency">
+                      <mat-option *ngFor="let fdata of FrequencyList" [value]="fdata.value">
+                        {{fdata.FName}}</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </td>
+              </ng-container>
+  
+              <ng-container matColumnDef="Calender">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header required>Start Date <span  style="color:red;">  * </span></th>
+                <td mat-cell *matCellDef="let row" >
+                  <mat-form-field appearance="outline">
+                    <input matInput [matDatepicker]="picker" [min]="today" placeholder="Enter Date"
+                      [disabled]="!row.disabled" [(ngModel)]="row.StartDate" autocomplete="off">
+                    <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                    <mat-datepicker #picker></mat-datepicker>
+                  </mat-form-field>
+                </td>
+              </ng-container>
+  
+              <ng-container matColumnDef="Time">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Time <span  style="color:red;">  * </span></th>
+                <td mat-cell *matCellDef="let row">
+                  <mat-form-field appearance="outline">
+                    <input matInput type="Time" [disabled]="!row.disabled" [(ngModel)]="row.StartTime" autocomplete="off">
+                  </mat-form-field>
+                </td>
+              </ng-container>
+  
+              <ng-container matColumnDef="Expirydate">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header > Expiry Date</th>
+                <td mat-cell *matCellDef="let row" >
+                  <mat-form-field appearance="outline">
+                    <input matInput [matDatepicker]="picker1" [min]="today" placeholder="Expiry Date"
+                      [disabled]="!row.disabled" [(ngModel)]="row.ExpiryDate" autocomplete="off">
+                    <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                    <mat-datepicker #picker1></mat-datepicker>
+                  </mat-form-field>
+                </td>
+              </ng-container>
+  
+              <ng-container matColumnDef="HourlyFrequency">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Hourly Frequency</th>
+                <td mat-cell *matCellDef="let row">
+                  <mat-form-field appearance="outline">
+                    <input matInput type="number" min="0" step="0.1" [disabled]="!row.disabled || row.Frequency !=1" [(ngModel)]="row.HourlyFrequency"
+                      autocomplete="off" (change)="handleChange(row);">
+                  </mat-form-field>
+                </td>
+              </ng-container>
+  
+              <ng-container matColumnDef="period">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Period <span  style="color:red;">  * </span></th>
+                <td mat-cell *matCellDef="let row">
+                  <mat-form-field appearance="outline">
+                    <input matInput type="number" min="0" numberOnly [disabled]="!row.disabled" [(ngModel)]="row.Period" autocomplete="off">
+                  </mat-form-field>
+                </td>
+              </ng-container>
+  
+              <!-- <ng-container matColumnDef="LastRunDate">
+                <mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="'w-150'">Last Run Date
+                </mat-header-cell>
+                <mat-cell [disabled]="!row.disabled" *matCellDef="let row" [ngClass]="'w-150'" [(ngModel)]="row.LastRunDateCtrl">{{row.LastRunDate}}
+                </mat-cell>
+              </ng-container> -->
+  
+              <ng-container matColumnDef="LastRunDate">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Last Run Date</th>
+                <td mat-cell *matCellDef="let row">
+                  <mat-form-field appearance="outline">
+                    <input matInput [disabled]="true" [value]="row.LastRunDateTime | date: 'dd-MMM-yyyy  h:mm:ss:a'">
+                  </mat-form-field>
+                  
+                </td>
+              </ng-container>
+  
+              <!-- <ng-container matColumnDef="NextRunDate">
+                <mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="'w-150'">Next Run Date
+                </mat-header-cell>
+                <mat-cell [disabled]="!row.disabled" *matCellDef="let row" [ngClass]="'w-150'">{{row.NextRunDate}}
+                </mat-cell>
+              </ng-container> -->
+  
+              <ng-container matColumnDef="NextRunDate">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Next Run Date</th>
+                <td mat-cell *matCellDef="let row">
+                  <mat-form-field appearance="outline">
+                    <input matInput [disabled]="true" [value]="row.NextRunDateTime | date: 'dd-MMM-yyyy  h:mm:ss:a'">
+                  </mat-form-field>
+                  
+                </td>
+              </ng-container>
+  
+              <ng-container matColumnDef="action">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header>Action</th>
+                <td mat-cell *matCellDef="let row">
+                  <!-- <mat-icon style="color:green;cursor:pointer;" *ngIf="disabled" (click)="edit()">edit</mat-icon>
+                  <mat-icon style="color:blue;cursor:pointer;" (click)="save()" *ngIf="!disabled">check</mat-icon> -->
+                  <!-- <button [disabled]="!row.disabled" class="submitbtn" 
+                    (click)="save1(row)" style="background-color: #f5f5dc;">Update</button> -->
+  
+                  <button mat-raised-button class="success" [disabled]="!row.disabled" (click)="save1(row)"><mat-icon>edit</mat-icon> Update</button>
+                </td>
+              </ng-container>
+  
+              <tr mat-header-row *matHeaderRowDef="displayedColumns1; sticky: true"></tr>
+              <tr mat-row *matRowDef="let row; columns: displayedColumns1;"></tr>
+            </table>
+          </div>
+          
+        </mat-expansion-panel>
+      </mat-accordion>
+    </mat-card>
+  </mat-tab>
+</mat-tab-group>
+  
+  <!-- <mat-tab label="Advanced">
+    <mat-form-field class="formfield" color="primary">
+      <mat-select [(ngModel)]="TypeCtrl" [ngModelOptions]="{standalone: true}" [multiple]="false" #singleSelect>
+        <mat-option *ngFor="let type of Type" [value]="type">
+          {{type.name}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-card class="p-0">
+      <mat-accordion *ngFor="let data of CreateMaster">
+        <mat-expansion-panel (opened)="data.open = true" (closed)="data.open = false" hideToggle>
+          <mat-expansion-panel-header>
+            <mat-panel-title>
+              <div *ngIf="!(data.open)">
+                <mat-icon style="color: gray !important;" class="prevent-click icon">add</mat-icon>
+              </div>
+              <div *ngIf="(data.open)">
+                <mat-icon style="color: #1d3478 !important;" class="authorize-click icon">remove</mat-icon>
+              </div> {{data.Event_Name}}
+            </mat-panel-title>
+            <mat-panel-description>
+
+            </mat-panel-description>
+          </mat-expansion-panel-header>
+          <mat-table [dataSource]="CreateMaster1" matSort>
+            <ng-container matColumnDef="Select">
+              <mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="'w-50'"> </mat-header-cell>
+              <mat-cell *matCellDef="let row" [ngClass]="'w-50'">
+                <mat-checkbox class="example-margin"></mat-checkbox>
+              </mat-cell>
+            </ng-container>
+            <ng-container matColumnDef="Type">
+              <mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="'w-150'"> Notification Type
+              </mat-header-cell>
+              <mat-cell *matCellDef="let row" [ngClass]="'w-150'">{{row.Type}}</mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="SubType">
+              <mat-header-cell style="margin-right: -80px;" *matHeaderCellDef mat-sort-header [ngClass]="'w-150'"> Sub -
+                Type</mat-header-cell>
+              <mat-cell style="margin-right: -80px;" *matCellDef="let row" [ngClass]="'w-150'">{{row.SubType}}
+              </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="Subject">
+              <mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="'w-280'">Email Subject </mat-header-cell>
+              <mat-cell *matCellDef="let row" [ngClass]="'w-150'">
+                <mat-form-field style="width: '200px';" appearance="outline">
+                  <textarea matInput [disabled]="disabled"></textarea>
+                </mat-form-field>
+              </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="Content">
+              <mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="'w-150'">Email Template </mat-header-cell>
+              <mat-cell *matCellDef="let row" [ngClass]="'w-150'">
+                <mat-form-field style="width:200px;" appearance="outline">
+                  <textarea matInput [disabled]="disabled"></textarea>
+                </mat-form-field>
+              </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="Policy">
+              <mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="'w-150'">Policy Period(in days)
+              </mat-header-cell>
+              <mat-cell *matCellDef="let row" [ngClass]="'w-150'">
+                <mat-form-field style="width:200px;" appearance="outline">
+                  <input matInput [disabled]="disabled">
+                </mat-form-field>
+              </mat-cell>
+            </ng-container>
+
+
+            <ng-container matColumnDef="Frequency">
+              <mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="'w-150'">Frequency</mat-header-cell>
+              <mat-cell *matCellDef="let row" [ngClass]="'w-150'">
+                <mat-form-field style="width:200px;" appearance="outline">
+                  <input matInput [disabled]="disabled">
+                </mat-form-field>
+              </mat-cell>
+            </ng-container>
+
+            <ng-container matColumnDef="action">
+              <mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="'w-150'">Action</mat-header-cell>
+              <mat-cell *matCellDef="let row" [ngClass]="'w-150'">
+                <mat-icon style="color:green;cursor:pointer;" *ngIf="disabled" (click)="edit()">edit</mat-icon>
+                <mat-icon style="color:blue;cursor:pointer;" (click)="save()" *ngIf="!disabled">check</mat-icon>
+              </mat-cell>
+            </ng-container>
+
+            <mat-header-row *matHeaderRowDef="displayedColumns1"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns1;"></mat-row>
+          </mat-table>
+        </mat-expansion-panel>
+      </mat-accordion>
+    </mat-card>
+  </mat-tab> -->

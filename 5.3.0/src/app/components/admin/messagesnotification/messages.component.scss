@@ -1,0 +1,217 @@
+h3{
+  //color:#008bd0;
+  font-size: 14PX;
+  margin-bottom: -3px;
+}
+ .mat-expansion-panel-content > .mat-action-row{
+    padding: 0px 8px 0px 24px;
+  }
+  
+  .mat-table {
+    width: 100%;
+    max-width: 100%;
+    min-width: 100%;
+    overflow: auto auto;
+  }
+  
+  .mat-header-cell{
+    font-size: 14px;
+    color:rgb(78, 78, 78);
+    border-bottom: 1px solid;
+    border-bottom-color: rgba(0, 0, 0, 0.12);
+    //flex:none;
+  }
+  
+  .mat-cell{
+    /*border-bottom: 0px solid;
+    border-bottom-color: rgba(0, 0, 0, 0.12);*/
+    //font-size: 12px;
+  }
+  
+  .w-100{
+    width: 100px;
+    flex:0 0 100px;
+  }
+  
+  .w-150{
+    width: 150px;
+    flex:0 0 150px;
+  }
+
+  .w-180{
+    width: 180px;
+    flex:0 0 180px;
+  }
+  
+  .w-280{
+    width:280px;
+    flex:0 0 280px;
+  }
+  
+  .mat-header-row{
+    width: 100%;
+    max-width: 100%;
+    min-width: 100%;
+    border-bottom-width: 0px;
+  }
+  
+  .mat-row{
+    border-bottom-width: 0px;
+  }
+  
+  mat-cell:first-of-type, mat-header-cell:first-of-type, mat-footer-cell:first-of-type{
+    padding-left:10px ;
+  }
+  
+  mat-cell:last-of-type, mat-header-cell:last-of-type, mat-footer-cell:last-of-type{
+    padding-right: 10px;
+  }
+  
+  .ngx-datatable .datatable-body,
+  .ngx-datatable .datatable-header {
+  width: 100% ;
+  min-width: 100%;
+  max-width: 100%;
+  }
+
+  .ngx-datatable > .datatable-footer{
+    overflow-y:hidden;
+}
+  
+  /*.drop{
+    padding: 0px;
+  }*/
+  
+  .txt{
+    padding: 20px 0px 10px 0px;
+  }
+  .icon{
+   color: rgb(247, 88, 30);
+   font-weight: 600;
+  }
+  .example-headers-align .mat-expansion-panel-header-title,
+  .example-headers-align .mat-expansion-panel-header-description {
+    flex-basis: 0;
+    font-size: 1rem;
+    font-weight:500px;
+  }
+  .prevent-click
+  {
+    pointer-events: none;
+  }
+  .authorize-click{
+    pointer-events: auto;
+  }
+  
+  .mat-card{
+    margin: 0.1rem;
+  }
+
+element.style {
+  width: 150px;
+  height: auto;
+}
+.ngx-datatable.material .datatable-body .datatable-body-row .datatable-body-cell{
+  font-size: 0.80rem;
+  padding:0.4rem 1.05rem;
+  font-weight:300px;
+  //border-right:solid 0.3px #ccc;
+  padding-left:5px;
+}
+
+.ngx-datatable.material .datatable-header .datatable-header-cell{
+font-size:0.85rem;
+color:rgb(78, 78, 78);
+font-weight: 400px;
+//border-right:solid 0.3px #ccc;
+padding-left:5px;
+}
+
+.mat-expansion-panel{
+  overflow:inherit;
+}
+
+.mat-expansion-panel-body{
+  overflow:hidden;
+}
+
+.mat-form-field-appearance-legacy .mat-form-field-underline{
+  bottom: 1em;
+}
+
+.mat-form-field-wrapper{
+  margin-top: -0.4em;
+}
+
+/*.datatable-row-center{
+  border-style: solid;
+  border-width: 0.2px;
+  border-color: #ccc;
+}*/
+  
+  .mat-expansion-panel-content > .mat-expansion-panel-body{
+    padding: 0px;
+  }
+  .mat-expansion-panel .mat-expansion-panel-spacing{
+    margin: 10px 0px;
+  }
+
+  .mat-expanded .mat-expansion-panel-header{
+    margin-bottom: 0px;
+  }
+
+  .mat-expanded .mat-expansion-panel-body{
+    height: 300px;
+    overflow: auto auto;
+  }
+
+  
+  .example-headers-align .mat-expansion-panel-header-description {
+    justify-content: space-between;
+    align-items: center;
+  }
+  
+  /*mat-form-field {
+    margin-right: 12px;
+  }*/
+  
+  
+  .data .datacolumn{
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: normal;
+  }
+
+  .ngx-datatable .datatable-row-left{
+    display: flex;
+  }
+
+  .ngx-datatable .datatable-row-center{
+    display: flex;
+  }
+
+  .ngx-datatable .datatable-row-grouping{
+    display: flex;
+  }
+
+  .ngx-datatable .datatable-row-right{
+    display: flex;
+  }
+  
+     ///////////////////// Dropdown Placeholder and After select value /////////////////////
+
+     :host ::ng-deep .mat-select-value-text {
+      // font-size: 14px !important;
+      // font-weight: 600;
+    
+      font-size: 13px !important;
+      font-weight: 450;
+    }
+    
+    :host ::ng-deep .mat-form-field-appearance-legacy .mat-form-field-label {
+      
+      color: gray!important;
+      font-style: italic;
+    }
+    
+    ///////////////////// Dropdown Placeholder and After select value /////////////////////

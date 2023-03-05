@@ -1,0 +1,99 @@
+<div class="md-dialog-container">
+
+    <mat-toolbar class="mat-toolbar" style="background-color:rgb(12, 48, 87);color:white">
+        <span style="position: relative;left: 40%;">{{Headers.Filter}}</span>
+        <span class="example-spacer"></span>
+        <button mat-icon-button class="example-icon" aria-label="Example icon-button with close icon"
+            (click)="dialogRef.close(false)">
+            <mat-icon>close</mat-icon>
+        </button>
+    </mat-toolbar><br><br>
+
+    <!-- <form [formGroup]="dialogForm" class="mt-8"> 
+        <div fxLayout="row wrap">          
+          <div fxFlex="100" fxFlex.gt-xs="25" class="pr-1">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label" style="font-size: 15px !important;" >{{ Headers.TransferType }}</mat-label>              
+              <mat-select formControlName="transferTypeCtrl" class="bg-transparente" [disabled]="true">
+                <mat-option *ngFor="let type of transfertypeList" [value]="type.Id"> {{type.DisplayName}}
+                </mat-option>
+              </mat-select>            
+            </mat-form-field>
+          </div> 
+        </div>   
+      </form> -->
+    <div fxLayout="row wrap">
+        <div fxFlex="100" fxFlex.gt-xs="100" class="pr-1 pl-1">
+            <mat-form-field class="full-width" appearance="outline">
+                <mat-label class="label" style="font-size: 15px !important;">{{Headers[HeaderLayerText]}}</mat-label>
+                <mat-select disableOptionCentering [(ngModel)]="cityMultiCtrl" [ngModelOptions]="{standalone: true}" [multiple]="true" #multiSelect (infiniteScroll)="getFilterCityType()" [complete]="offset === ListOfSBU.length" msInfiniteScroll>
+                    <mat-option>
+                        <ngx-mat-select-search [placeholderLabel]="'Search'" [showToggleAllCheckbox]="false"
+                            (toggleAll)="toggleSelectAllCity($event)" [formControl]="cityMultiFilterCtrl">
+                        </ngx-mat-select-search>
+                    </mat-option>  
+                    <mat-option value="" [disabled]="!!cityMultiCtrl"> {{Headers.All}} </mat-option>
+                    <div class="select-all">
+                      <mat-checkbox [checked]="cityMultiCtrl.length === ListOfSBU.length ? true : false" [indeterminate]="cityMultiCtrl.length < ListOfSBU.length ? true : false"
+                                      (change)="toggleSelectAllCity($event)">Select All</mat-checkbox>
+                    </div>  
+
+                    <mat-option [disabled]="!cityMultiCtrl" *ngFor="let type of filteredCityMulti | async" [value]="type[Layertext]" (click)="onchangeSBU(type[Layertext])">
+                        {{type[Layertext]}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+    </div>
+    <div fxLayout="row wrap">
+        <div fxFlex="100" fxFlex.gt-xs="100" class="pr-1 pl-1">
+            <mat-form-field class="full-width" appearance="outline">
+                <mat-label class="label" style="font-size: 15px !important;">{{ Headers.Location }}</mat-label>
+                <mat-select disableOptionCentering [(ngModel)]="plantMultiCtrl" [ngModelOptions]="{standalone: true}" [multiple]="true" #multiSelect (infiniteScroll)="getFilterPlantType()" [complete]="offset === ListOfLoc.length" msInfiniteScroll>
+                    <mat-option>
+                        <ngx-mat-select-search [placeholderLabel]="'Search'" [showToggleAllCheckbox]="false"
+                         [formControl]="plantMultiFilterCtrl">
+                        </ngx-mat-select-search>
+                    </mat-option>
+                    <mat-option value="" [disabled]="!!plantMultiCtrl"> {{Headers.All}} </mat-option>
+                    <div class="select-all">
+                      <mat-checkbox [checked]="plantMultiCtrl.length === ListOfLoc.length ? true : false" [indeterminate]="plantMultiCtrl.length < ListOfLoc.length ? true : false"
+                                      (change)="toggleSelectAll($event)">Select All</mat-checkbox>
+                    </div>
+
+                    <mat-option [disabled]="!plantMultiCtrl" *ngFor="let type of filteredPlantsMulti | async" [value]="type">
+                        {{type.LocationName}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+    </div>
+    <div fxLayout="row wrap">
+        <div fxFlex="100" fxFlex.gt-xs="100" class="pr-1 pl-1">
+            <mat-form-field class="full-width" appearance="outline">
+                <mat-label class="label" style="font-size: 15px !important;">{{ Headers.AssetCategory}}</mat-label>
+                <mat-select disableOptionCentering [(ngModel)]="categoryMultiCtrl" [ngModelOptions]="{standalone: true}" [multiple]="true" #multiSelect (infiniteScroll)="getFilterCategoryType()" [complete]="offset ===ListOfCategory.length" msInfiniteScroll>
+                    <mat-option>
+                        <ngx-mat-select-search [placeholderLabel]="'Search'" [showToggleAllCheckbox]="false"
+                            (toggleAll)="toggleSelectAllcategory($event)" [formControl]="categoryFilterCtrl">
+                        </ngx-mat-select-search>
+                    </mat-option>
+                    <mat-option value="" [disabled]="!!categoryMultiCtrl"> {{Headers.All}} </mat-option>
+                    <div class="select-all">
+                      <mat-checkbox [checked]="categoryMultiCtrl.length === ListOfCategory.length ? true : false" [indeterminate]="categoryMultiCtrl.length < ListOfCategory.length ? true : false"
+                                      (change)="toggleSelectAllcategory($event)">Select All</mat-checkbox>
+                    </div>
+                    <mat-option [disabled]="!categoryMultiCtrl" *ngFor="let type of filteredcategoryMulti| async" [value]="type">
+                        {{type.AssetCategoryName}}
+                    </mat-option>
+                </mat-select>
+            </mat-form-field>
+        </div>
+    </div>
+    <div fxLayout="row wrap" style="padding-bottom: 10px;">
+        <div fxFlex="100" fxFlex.gt-xs="100" class="pr-1">
+            <span fxFlex></span>
+            <button mat-raised-button class="success" [disabled]="dialogForm.invalid" (click)="Submit()"><mat-icon style="padding-bottom: 5px;">check</mat-icon>Submit</button>
+        </div>
+    </div>
+</div>

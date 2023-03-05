@@ -1,0 +1,48 @@
+
+<div class="md-dialog-container " style="height: 150px !important;">
+<mat-toolbar class="mat-toolbar" style="background-color:rgb(12, 48, 87);color:white">
+  <span style="position:absolute;left: 45% !important;">OTP Verification</span>
+    <span class="example-spacer"></span>
+    <button mat-icon-button class="example-icon" aria-label="Example icon-button with close icon"
+    (click)="onclosetab()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-toolbar><br><br>
+
+  <mat-dialog-content >
+    <div class="md-dialog-content">
+      <form [formGroup]="signupForm" >
+
+        <div>
+          <span class="Centerr">
+         <p style="font-size:16px;"> Enter OTP received on your registered email. </p>
+          </span>
+        </div>
+        <div class="container">
+        <div class="userInput">
+
+        <!--<input matInput type="text" formControlName="otpHashValue"  password="true" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"  maxlength="6"   />-->
+        
+          
+        <input type="text" #ist formControlName="otpHashValue1" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" maxlength="1" (keyup)="otpController($event,sec,'',signupForm.value)" />
+        <input type="text" #sec formControlName="otpHashValue2" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"  maxlength="1" (keyup)="otpController($event,third,ist,signupForm.value)"/>
+        <input type="text" #third formControlName="otpHashValue3" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"  maxlength="1" (keyup)="otpController($event,fourth,sec,signupForm.value)" />
+        <input type="text" #fourth formControlName="otpHashValue4" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"  maxlength="1" (keyup)="otpController($event,five,third,signupForm.value)" />
+        <input type="text" #five formControlName="otpHashValue5" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"   maxlength="1" (keyup)="otpController($event,six,fourth,signupForm.value)" />
+         <input type="text" #six formControlName="otpHashValue6" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"  maxlength="1" (keyup)="otpController($event,'',five,signupForm.value)" />
+          <!--</mat-form-field>-->
+        </div>
+        </div> 
+        <div class="Center1" >
+         
+          <p>{{timeLeft}} Seconds Left....</p>
+          <span ><a  style="cursor: pointer !important;color:blue;font-size: 20px !important;" [ngClass]="{'disabled': !!timeLeft }"  (click)="ResendOTP()" >RESEND OTP</a></span>
+       </div>
+       <div class="Center2">
+        <button mat-raised-button class="mat-primary full-width mb-1" [disabled]="signupForm.invalid"  (click)="onSubmit()" >VERIFY OTP</button>
+       </div>
+  
+      </form>
+    </div>
+  </mat-dialog-content>
+</div>

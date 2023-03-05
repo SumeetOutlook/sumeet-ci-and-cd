@@ -1,0 +1,147 @@
+<div class="md-dialog-container" cdkDragRootElement=".cdk-overlay-pane" cdkDrag>
+  <mat-toolbar   class="mat-toolbar" style="background-color:rgb(12, 48, 87);color:white" cdkDragHandle>
+    <span style="position: relative;left: 38%;">{{data.value==='insert'?'Add':'Edit'}} {{header.Location}}</span>
+    <span class="example-spacer"></span>
+    <button mat-icon-button class="example-icon" aria-label="Example icon-button with close icon"
+      (click)="onclosetab()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-toolbar>
+  <div mat-dialog-content class="p-1 m-0" >
+
+    <form [formGroup]="dialogLocationForm" (ngSubmit)="onSubmit()">
+      <div fxLayout="row wrap" fxLayout.lt-sm="column">
+
+        <div fxFlex="100" class="pr-1">
+          <div fxFlex="50" class="pr-1">
+
+            <mat-form-field class="full-width">
+              <mat-label class="label asterisk_input">{{header.Location}} Name</mat-label>
+              <input matInput locationName="locationName" [formControl]="dialogLocationForm.controls['locationName']"
+                autocomplete="off"  maxlength="30">
+              <mat-error
+                *ngIf="submitted || f1.locationName.errors || f1.locationName.dirty || f1.locationName.touched || f1.locationName.hasError('whitespace')">
+                <span *ngIf="f1.locationName.errors?.required || f1.locationName.hasError('whitespace')">{{header.Location}} is required </span>
+                <!-- <span *ngIf="f1.locationName.errors?.required">{{header.Location}} is required </span> -->
+              </mat-error>
+            </mat-form-field>
+
+          </div>
+          <div fxFlex="50" class="pr-1">
+
+            <mat-form-field class="full-width">
+              <mat-label class="label asterisk_input">Enter Address 1</mat-label>
+              <input matInput address1="address1" [formControl]="dialogLocationForm.controls['address1']"
+                autocomplete="off" maxlength="30">
+              <mat-error *ngIf="submitted || f1.address1.errors || f1.address1.dirty || f1.address1.touched || f1.address1.hasError('whitespace')">
+                <span *ngIf="f1.address1.errors?.required || f1.address1.hasError('whitespace')">Address is required </span>
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div fxFlex="100" class="pr-1">
+          <div fxFlex="50" class="pr-1">
+            <mat-form-field class="full-width">
+              <input matInput address2="address2" [formControl]="dialogLocationForm.controls['address2']"
+                placeholder="Enter Address 2" autocomplete="off" maxlength="30">
+            </mat-form-field>
+          </div>
+
+          <div fxFlex="50" class="pr-1">
+            <mat-form-field class="full-width">
+              <input matInput locationName2="locationName2" [formControl]="dialogLocationForm.controls['locationName2']"
+                placeholder="Enter Depatment Code" autocomplete="off" maxlength="30">
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div fxFlex="100" class="pr-1">
+          <div fxFlex="50" class="pr-1">
+            <mat-form-field class="full-width">
+              <mat-label class="label asterisk_input">Country</mat-label>
+              <mat-select disableOptionCentering placeholder="Country"
+                [formControl]="dialogLocationForm.controls['country']">
+                <mat-option>
+                  <ngx-mat-select-search [placeholderLabel]="'Search'" noEntriesFoundLabel="{{header.NoRecordFound}}"
+                    [formControl]="dialogLocationForm.controls['countryFilter']"></ngx-mat-select-search>
+                </mat-option>
+                <mat-option *ngFor="let opt of filteredCountry  | async" [value]="opt.Country_Name"
+                  (click)="onChangeCountry(opt.Country_Id)"> {{ opt.Country_Name }} </mat-option>
+              </mat-select>
+              <mat-error *ngIf="submitted && f1.country.errors || f1.country.dirty || f1.country.touched">
+                <span *ngIf="f1.country.errors?.required">Country Type is a required field</span>
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <div fxFlex="50" class="pr-1">
+            <mat-form-field class="full-width">
+              <mat-label class="label asterisk_input">State</mat-label>
+              <mat-select disableOptionCentering 
+                [formControl]="dialogLocationForm.controls['state']">
+                <mat-option>
+                  <ngx-mat-select-search [placeholderLabel]="'Search'" noEntriesFoundLabel="{{header.NoRecordFound}}"
+                    [formControl]="dialogLocationForm.controls['stateFilter']"></ngx-mat-select-search>
+                </mat-option>
+                <mat-option *ngFor="let opt of filteredState  | async" [value]="opt.State_Name"
+                  (click)="onChangeState(opt.State_Id)"> {{ opt.State_Name }} </mat-option>
+              </mat-select>
+              <mat-error *ngIf="submitted && f1.state.errors || f1.state.dirty || f1.state.touched">
+                <span *ngIf="f1.state.errors?.required">State is a required field</span>
+              </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div fxFlex="100" class="pr-1">
+          <div fxFlex="50" class="pr-1">
+            <mat-form-field class="full-width">
+              <mat-label class="label asterisk_input">City</mat-label>
+              <mat-select disableOptionCentering  [formControl]="dialogLocationForm.controls['city']">
+                <mat-option>
+                  <ngx-mat-select-search [placeholderLabel]="'Search'" noEntriesFoundLabel="{{header.NoRecordFound}}"
+                    [formControl]="dialogLocationForm.controls['cityFilter']"></ngx-mat-select-search>
+                </mat-option>
+                <mat-option *ngFor="let opt of filteredCity  | async" [value]="opt.City_Name"> {{ opt.City_Name }}
+                </mat-option>
+              </mat-select>
+              <mat-error *ngIf="submitted && f1.city.errors || f1.city.dirty || f1.city.touched">
+                <span *ngIf="f1.city.errors?.required">City Name is a required field</span>
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <div fxFlex="50" class="pr-1">
+            <mat-form-field class="full-width">
+              <mat-label class="label asterisk_input">Enter {{header.ZipCode}}</mat-label>
+              <input matInput zipCode="zipCode" [formControl]="dialogLocationForm.controls['zipCode']"
+                 autocomplete="off"  maxlength="10">
+                <mat-error *ngIf="submitted || f1.zipCode.errors || f1.zipCode.dirty || f1.zipCode.touched || f1.zipCode.hasError('whitespace')">
+                  <span *ngIf="f1.zipCode.errors?.required || f1.zipCode.hasError('whitespace')">{{header.ZipCode}} is required </span>
+                </mat-error>
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div fxFlex="100" class="pr-1">
+          <div fxFlex="50" class="pr-1">
+            <mat-form-field class="full-width">
+              <input matInput locationCode="locationCode" [formControl]="dialogLocationForm.controls['locationCode']"
+                placeholder="Enter Area Code" autocomplete="off" maxlength="30">
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div fxFlex="100" class="mt-1">
+          <button mat-raised-button class="success" style="float:right !important;" *ngIf="data.value =='insert'"
+          (click)="onSubmit()" [disabled]="dialogLocationForm.invalid"><mat-icon>check</mat-icon>Add {{header.Location}}</button>
+
+            <button mat-raised-button class="success" style="float:right !important;" *ngIf="data.value !='insert'"
+            (click)="onSubmit()" [disabled]="dialogLocationForm.invalid"><mat-icon>check</mat-icon>Save</button>
+
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

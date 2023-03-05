@@ -1,0 +1,45 @@
+<div class="md-dialog-container" cdkDrag cdkDragRootElement=".cdk-overlay-pane">
+    <mat-toolbar class="mat-toolbar" style="background-color:rgb(12, 48, 87);color:white" cdkDragHandle >
+        <span style="position: relative;left: 40%;" >Upload FAR Asset</span>
+        <span class="example-spacer"></span>
+        <button mat-icon-button class="example-icon" aria-label="Example icon-button with close icon"
+            (click)="onclosetab()">
+            <mat-icon>close</mat-icon>
+        </button>
+    </mat-toolbar><br><br>
+    <mat-dialog-content >
+        <div class="md-dialog-content" style="padding: 20px !important;padding-top: 8px;">
+            <form [formGroup]="AssetInfo">
+                <div fxLayout="row wrap" fxLayout.lt-sm="column">
+                    <!-- <div fxFlex="25" class="pr-1 full">
+              <mat-form-field class="full-width" appearance="outline">
+                <mat-label class="label">Current FAR Date</mat-label>
+                <input matInput name="CurrentFARDate" [formControl]="AssetInfo.controls['CurrentFARDate']" readonly>
+              </mat-form-field>
+            </div> -->
+
+                    <div fxFlex="35" class="pr-1 full">
+                        <mat-form-field class="full-width" appearance="outline">
+                            <mat-label class="label">Upload By</mat-label>
+                            <input matInput name="UploadBy" [formControl]="AssetInfo.controls['UploadBy']" readonly>
+                        </mat-form-field>
+                    </div>
+                    <div fxFlex="45" class="pr-4" style="border: 0px solid lightgrey;margin-top: 4px !important;"
+                        class=" responsive">
+                        <input type="file" id="files" [formControl]="AssetInfo.controls['FileData']" (change)="fileChange($event)"
+                            placeholder="Upload file" class="uploadSelectClass" accept=".xlsx" #fileInput />
+                            <label for="files" (change)="fileChange($event)" style="cursor: pointer;"> <button style="margin-left:1.5px" (click)="fileInput.click()">Select file</button> <span> {{fileText}}</span></label>
+                    </div>
+                    <div fxFlex="10" style="margin-top: 4px !important;">
+
+                        <button class="btn success" (click)="uploadData()" [disabled]="fileList.length == 0"
+                            style="margin-left: 15px !important;" mat-raised-button>
+                            <mat-icon>file_upload</mat-icon>Upload
+                        </button>
+                    </div>
+
+                </div>
+            </form>
+        </div>
+    </mat-dialog-content>
+</div>

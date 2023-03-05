@@ -1,0 +1,43 @@
+<div class="md-dialog-container" cdkDrag cdkDragRootElement=".cdk-overlay-pane">
+    <mat-toolbar  cdkDragHandle class="mat-toolbar" style="background-color:rgb(12, 48, 87);color:white">
+      <span> {{data.title}}</span>
+      <span class="example-spacer"></span>
+      <button mat-icon-button class="example-icon" aria-label="Example icon-button with close icon"
+      (click)="dialogRef.close()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-toolbar>
+    <div mat-dialog-content class="p-1 m-0">
+  
+      <form >
+        <div fxLayout="row wrap" fxLayout.lt-sm="column">
+            <div fxFlex="100" class="pr-1">
+                <mat-form-field class="demo-chip-list">
+                    <mat-chip-list #chipList>
+                      <mat-chip *ngFor="let fruit of fruits" [selectable]="selectable"
+                               [removable]="removable" (removed)="remove(fruit)">
+                        {{fruit.name}}
+                        <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                      </mat-chip>
+                      <input 
+                             [matChipInputFor]="chipList"
+                             [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                             [matChipInputAddOnBlur]="addOnBlur"
+                             (matChipInputTokenEnd)="add($event)"
+                             (paste)="paste($event)"/>
+                    </mat-chip-list>
+                  </mat-form-field>
+                  
+              </div>
+  
+          <div fxFlex="100" class="mt-1">
+           
+  
+              <button mat-raised-button class="success" style="float:right !important;" (click)="save()"
+       ><mat-icon>check</mat-icon>Save</button>
+  
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>

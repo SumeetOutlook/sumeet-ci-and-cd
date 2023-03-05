@@ -1,0 +1,109 @@
+<div class="md-dialog-container">
+  <mat-toolbar cdkDrag cdkDragRootElement=".cdk-overlay-pane" cdkDragHandle class="mat-toolbar" style="background-color:rgb(12, 48, 87);color:white">
+    <span style="position: relative;left: 40%;">{{ header.EditSelection }}</span>
+    <span class="example-spacer"></span>
+    <button mat-icon-button class="example-icon" aria-label="Example icon-button with close icon" id="CloseIcon"
+      (click)="onclosetab()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-toolbar><br><br>
+  <mat-dialog-content cdkDrag cdkDragRootElement=".cdk-overlay-pane" cdkDragHandle>
+
+    <div class="md-dialog-content example-container">
+      <table mat-table #table [dataSource]="dataSource" matSort>
+        <ng-container matColumnDef="Select">
+          <th mat-sort-header="Select" mat-header-cell *matHeaderCellDef>
+            <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="selection.hasValue() && isAllSelected"
+              [indeterminate]="selection.hasValue() && !isAllSelected">
+            </mat-checkbox>
+          </th>
+          <td mat-cell *matCellDef="let element let i=index">
+            <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? isSelected(element) : null"
+              [checked]="getselectedIds.indexOf(element.AssetCategoryId) > -1">
+            </mat-checkbox>
+          </td>
+          <td mat-footer-cell *matFooterCellDef="let element"></td>
+        </ng-container>
+
+        <ng-container matColumnDef="AssetCategory">
+          <th mat-sort-header mat-header-cell *matHeaderCellDef>{{displayedHeaders[0]}} </th>
+          <td mat-cell *matCellDef="let element">{{element.AssetCategoryName}}({{element.Qty}})</td>
+        </ng-container>
+
+        <!-- <ng-container matColumnDef="MobileUser" >
+      <th mat-sort-header mat-header-cell *matHeaderCellDef>{{displayedHeaders[1]}} </th>
+      <td mat-cell *matCellDef="let element">
+        <mat-form-field class="formfield" style="width: 148px !important;" color="primary">
+          <mat-select  [(ngModel)]="element.MobileUser" [ngModelOptions]="{standalone: true}" placeholder="User">
+            <mat-option *ngFor="let type of lUserList" [value]="type.UserName">
+              {{type.UserName}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </td>
+    </ng-container> -->
+        <!-- <ng-container matColumnDef="CategoryOwner" >
+      <th mat-sort-header mat-header-cell *matHeaderCellDef>{{displayedHeaders[2]}} </th>
+      <td mat-cell *matCellDef="let element">
+        <mat-form-field class="formfield" style="width: 148px !important;" color="primary">
+          <mat-select  [(ngModel)]="element.BlockOwner" [ngModelOptions]="{standalone: true}" placeholder="BlockOwner">
+            <mat-option *ngFor="let type of blockOwners" [value]="type.UserName">
+              {{type.UserName}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </td>
+    </ng-container> -->
+        <!-- <ng-container matColumnDef="Comment" >
+      <th mat-sort-header mat-header-cell *matHeaderCellDef>{{displayedHeaders[3]}} </th>
+      <td mat-cell *matCellDef="let element" style="color:red">{{element.Comment}}</td>
+    </ng-container> -->
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns;sticky: true "></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+
+
+      <div *ngIf="data=='Self Certification'">
+        <table mat-table #table [dataSource]="dataSource" matSort>
+
+          <!--  <ng-container matColumnDef="Select">
+        <th mat-header-cell *matHeaderCellDef>
+          <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="isChecked"
+            [indeterminate]="selection.hasValue() && !isAllSelected()">
+          </mat-checkbox>
+        </th>
+        <td mat-cell *matCellDef="let row let i=index">
+          <mat-checkbox (click)="$event.stopPropagation()" (change)="EnableDisable(row,i)"
+            [checked]="newdataSource.indexOf(row.ID) > -1">
+          </mat-checkbox>
+        </td>
+      </ng-container>-->
+
+          <ng-container matColumnDef="AssetCategory">
+            <th mat-sort-header mat-header-cell *matHeaderCellDef>{{SelfCertificationdisplayedHeaders[0]}} </th>
+            <td mat-cell *matCellDef="let element">{{element.AssetCategory}}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="CategoryOwner">
+            <th mat-sort-header mat-header-cell *matHeaderCellDef>{{SelfCertificationdisplayedHeaders[1]}} </th>
+            <td mat-cell *matCellDef="let element">{{element.CategoryOwner}}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="Comment">
+            <th mat-sort-header mat-header-cell *matHeaderCellDef>{{SelfCertificationdisplayedHeaders[2]}} </th>
+            <td mat-cell *matCellDef="let element" style="color:red">{{element.Comment}}</td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="SelfCertificationdisplayedColumns;sticky: true "></tr>
+          <tr mat-row *matRowDef="let row; columns: SelfCertificationdisplayedColumns;"></tr>
+        </table>
+      </div>
+      <div layout="row" style="text-align: right !important;">
+        <button class="btn success" style="margin-bottom:10px;margin-right: 10px;" (click)="onSubmit()"
+          mat-raised-button>Submit</button>
+      </div>
+    </div>
+
+  </mat-dialog-content>
+</div>

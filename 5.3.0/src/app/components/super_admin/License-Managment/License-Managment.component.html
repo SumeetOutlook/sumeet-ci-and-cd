@@ -1,0 +1,674 @@
+<h3><strong style=" color:#008bd0 !important;"> License Credentials </strong> </h3>
+<div class="md-dialog-content">
+  <mat-tab-group #tabGroup>
+      <mat-tab label="License Management">
+          <div class="md-label">
+            <span matTooltip="Create License" [matTooltipDisabled]="false" style="padding-top: 7px;">
+              <button mat-raised-button class="minibtn" style="margin-left: 8px !important;" (click)="openPopup()">
+                <mat-icon style="color: white;">add</mat-icon>
+              </button></span>
+            <span matTooltip="Edit License" [matTooltipDisabled]="false">
+                <button mat-raised-button class="minibtn" style="margin-left: 8px !important; " (click)="openEditPopup()"
+                *ngIf="displaybtn">
+                <mat-icon style="color: white;">create</mat-icon></button></span>
+              <div  class="example-container mat-elevation-z8">        
+                <table mat-table  #table [dataSource]="datasource" matSort>
+              
+                  <!-- <ng-container matColumnDef="License_Usage_ID">
+                    <th mat-sort-header="License_Usage_ID" mat-header-cell *matHeaderCellDef>License_Usage_ID</th>
+                    <td mat-cell *matCellDef="let row;let i=index">{{row.License_Usage_ID}}</td>
+                  </ng-container> -->
+              
+                  <!-- <ng-container matColumnDef="License_ID">
+                    <th mat-sort-header="ALicense_ID" mat-header-cell *matHeaderCellDef>License_ID</th>                   
+                    <td mat-cell *matCellDef="let element"> {{element.name}} </td>
+                  </ng-container> -->
+                  <ng-container matColumnDef="select">
+                    <th mat-sort-header="select" mat-header-cell *matHeaderCellDef></th>
+                    <!-- <td mat-cell *matCellDef="let row;let i=index">{{row.Group_ID}}</td> -->
+                    <td mat-cell *matCellDef="let element"> 
+                        <mat-checkbox (click)="$event.stopPropagation()" (dblclick)="$event.stopPropagation()" (change)="$event ? isSelected(element) : null">
+                      </mat-checkbox>
+                       
+                    </td>
+                  </ng-container>
+                  <ng-container matColumnDef="Type">
+                    <th mat-sort-header="Type" mat-header-cell *matHeaderCellDef>Type</th>
+                    <!-- <td mat-cell *matCellDef="let row;let i=index">{{row.Group_ID}}</td> -->
+                    <td mat-cell *matCellDef="let element"> 
+                        <span *ngIf="element.Type == '1'">Perpetual</span>
+                        <span *ngIf="element.Type == '2'">Subscriptions</span>
+                        <span *ngIf="element.Type == '3'">Support</span>
+                    </td>
+                  </ng-container>
+              
+                  <ng-container matColumnDef="Product">
+                    <th mat-sort-header="Product" mat-header-cell *matHeaderCellDef>Product</th>
+                    <!-- <td mat-cell *matCellDef="let row;let i=index">{{row.Company_ID}}</td> -->
+                    <td mat-cell *matCellDef="let element"> 
+                        <span *ngIf="element.Product == '1'">Assetcues Audit</span>
+                        <span *ngIf="element.Product == '2'">Assetcues Enterprise</span>
+                        <span *ngIf="element.Product == '3'">DiskoverIT</span>
+                    </td>
+                  </ng-container>
+              
+                  <ng-container matColumnDef="Module">
+                    <th mat-sort-header="Module" mat-header-cell *matHeaderCellDef>Module</th>
+                    <!-- <td mat-cell *matCellDef="let row;let i=index">{{row.Module}}</td> -->
+                    <td mat-cell *matCellDef="let element"> {{element.Module}} </td>
+                  </ng-container>
+
+                  <ng-container matColumnDef="From_Date">
+                    <th mat-sort-header="From_Date" mat-header-cell *matHeaderCellDef>From Date</th>
+                    <td mat-cell *matCellDef="let element;let i=index">{{element.FromDate | date:'dd-MMM-yyyy'}}</td>
+                  </ng-container>
+              
+                  <ng-container matColumnDef="To_Date">
+                    <th mat-sort-header="To_Date" mat-header-cell *matHeaderCellDef>To Date</th>
+                    <td mat-cell *matCellDef="let element;let i=index">{{element.ToDate | date:'dd-MMM-yyyy'}}</td>
+                  </ng-container>
+              
+                 
+              
+                  <ng-container matColumnDef="License_Level">
+                    <th mat-sort-header="License_Level" mat-header-cell *matHeaderCellDef>Level</th>
+                    <td mat-cell *matCellDef="let element;let i=index">
+                        <span *ngIf="element.LicenseLevel == 'G'">Group</span>
+                        <span *ngIf="element.LicenseLevel == 'C'">Company</span>
+                    </td>
+                  </ng-container>
+              
+                  <ng-container matColumnDef="Creation_Date">
+                    <th mat-sort-header="Creation_Date" mat-header-cell *matHeaderCellDef>CreatedOn</th>
+                    <td mat-cell *matCellDef="let element;let i=index">{{element.CreatedOn}}</td>
+              
+                  </ng-container>
+              
+                  <!-- <ng-container matColumnDef="Total_Asset_Count">
+                    <th mat-sort-header="Total_Asset_Count" mat-header-cell *matHeaderCellDef>Total_Asset_Count</th>
+                    <td mat-cell *matCellDef="let row;let i=index" value="UsedCount">{{row.Total_Asset_Count}}</td>
+                  </ng-container>
+                  
+                  <ng-container matColumnDef="Total_Asset_Usage_Percentage">
+                    <th mat-sort-header="Total_Asset_Usage_Percentage" mat-header-cell *matHeaderCellDef>Total_Asset_Usage_Percentage</th>
+                    <td mat-cell *matCellDef="let row;let i=index" value="UsedCount">{{row.Total_Asset_Usage_Percentage}}</td>
+                  </ng-container>
+              
+                  <ng-container matColumnDef="Total_Audited_Count">
+                    <th mat-sort-header="Total_Audited_Count" mat-header-cell *matHeaderCellDef>Total_Audited_Count</th>
+                    <td mat-cell *matCellDef="let row;let i=index" value="UsedCount">{{row.Total_Audited_Count}}</td>
+                  </ng-container>
+              
+                  <ng-container matColumnDef="Total_Audited_Count_Usage_Percentage">
+                    <th mat-sort-header="Total_Audited_Count_Usage_Percentage" mat-header-cell *matHeaderCellDef>Total_Audited_Count_Usage_Percentage</th>
+                    <td mat-cell *matCellDef="let row;let i=index" value="UsedCount">{{row.Total_Audited_Count_Usage_Percentage}}</td>
+                  </ng-container>
+              
+                  <ng-container matColumnDef="Total_Transferred_Count">
+                    <th mat-sort-header="Total_Transferred_Count" mat-header-cell *matHeaderCellDef>Total_Transferred_Count</th>
+                    <td mat-cell *matCellDef="let row;let i=index" value="UsedCount">{{row.Total_Transferred_Count}}</td>
+                  </ng-container>
+              
+                  <ng-container matColumnDef="Total_Transferred_Count_Usage_Percentage">
+                    <th mat-sort-header="Total_Transferred_Count_Usage_Percentage" mat-header-cell *matHeaderCellDef>Total_Transferred_Count_Usage_Percentage</th>
+                    <td mat-cell *matCellDef="let row;let i=index" value="UsedCount">{{row.Total_Transferred_Count_Usage_Percentage}}</td>
+                  </ng-container>
+              
+                  <ng-container matColumnDef="Total_Retired_Count">
+                    <th mat-sort-header="Total_Retired_Count" mat-header-cell *matHeaderCellDef>Total_Retired_Count</th>
+                    <td mat-cell *matCellDef="let row;let i=index" value="UsedCount">{{row.Total_Retired_Count}}</td>
+                  </ng-container>
+              
+                  <ng-container matColumnDef="Total_Retired_Count_Usage_Percentage">
+                    <th mat-sort-header="Total_Retired_Count_Usage_Percentage" mat-header-cell *matHeaderCellDef>Total_Retired_Count_Usage_Percentage</th>
+                    <td mat-cell *matCellDef="let row;let i=index" value="UsedCount">{{row.Total_Retired_Count_Usage_Percentage}}</td>
+                  </ng-container>
+              
+                  <ng-container matColumnDef="Total_Allocated_Count">
+                    <th mat-sort-header="Total_Allocated_Count" mat-header-cell *matHeaderCellDef>Total_Allocated_Count</th>
+                    <td mat-cell *matCellDef="let row;let i=index" value="UsedCount">{{row.Total_Allocated_Count}}</td>
+                  </ng-container>
+              
+                  <ng-container matColumnDef="Total_Allocated_Count_Usage_Percentage">
+                    <th mat-sort-header="TTotal_Allocated_Count_Usage_Percentage" mat-header-cell *matHeaderCellDef>Total_Allocated_Count_Usage_Percentage</th>
+                    <td mat-cell *matCellDef="let row;let i=index" value="UsedCount">{{row.Total_Allocated_Count_Usage_Percentage}}</td>
+                  </ng-container> -->
+              
+                  <tr mat-header-row *matHeaderRowDef="displayedColumns;sticky:true"></tr>
+                  <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                </table>
+                <div style="text-align: center;" *ngIf="!datasource">{{message.NoDataAvailable}}</div>
+              </div>
+              <mat-paginator #paginator="matPaginator" class="expedientes-paginator" [showFirstLastButtons]="true"
+              [pageSize]="50" [pageSizeOptions]="[50, 100, 200,500]"></mat-paginator>
+              <!-- <form [formGroup]="LicenseManagement">
+                
+                  <div fxLayout="row wrap" fxLayout.lt-sm="column">
+                      <div fxFlex="33"  class="pr-1 full">
+                          <mat-form-field class="full-width" appearance="outline">
+                              <mat-label class="label" style="font-size: 15px !important;">License ID</mat-label>
+                              <input matInput 
+                                  [formControl]="LicenseManagement.controls['LI']">
+                              <mat-error *ngIf="submitted && f2.LI.errors || f2.LI.dirty || f2.LI.touched">
+                                  <span *ngIf="f2.LI.errors?.required">License_ID is a required </span>
+                              </mat-error>
+                          </mat-form-field>
+                      </div>
+                      <div fxFlex="33"  class="pr-1 full">
+                          <mat-form-field class="full-width" appearance="outline">
+                              <mat-label class="label" style="font-size: 15px !important;">Type</mat-label>
+                              <input matInput type="name" name="Type"
+                                  [formControl]="LicenseManagement.controls['Type']">
+                              <mat-error
+                                  *ngIf="submitted && f2.Type.errors || f2.Type.dirty || f2.Type.touched">
+                                  <span *ngIf="f2.Type.errors?.required">Type is a required </span>
+                              </mat-error>
+                          </mat-form-field>
+                      </div>
+                      <div fxFlex="33"  class="pr-1 full">
+                          <mat-form-field class="full-width" appearance="outline">
+                              <mat-label class="label" style="font-size: 15px !important;">Product</mat-label>
+                              <input matInput type="name"
+                                  [formControl]="LicenseManagement.controls['Product']">
+                              <mat-error
+                                  *ngIf="submitted && f2.Product.errors || f2.Product.dirty || f2.Product.touched">
+                                  <span *ngIf="f2.Product.errors?.required">Product is a required </span>
+                              </mat-error>
+                          </mat-form-field>
+                      </div>
+                      <div fxFlex="33"  class="pr-1 full">
+                          <mat-form-field class="full-width" appearance="outline">
+                              <mat-label class="label" style="font-size: 15px !important;">Module</mat-label>
+                              <input matInput type="text" name="port number"
+                                  [formControl]="LicenseManagement.controls['Module']" >
+                              <mat-error
+                                  *ngIf="submitted && f2.Module.errors || f2.Module.dirty || f2.Module.touched">
+                                  <span *ngIf="f2.Module.errors?.required">Module is a required </span>
+                              </mat-error>
+                          </mat-form-field>
+                      </div>
+                      <div fxFlex="33"  class="pr-1 full">
+                          <mat-form-field class="full-width" appearance="outline">
+                              <mat-label class="label" style="font-size: 15px !important;">From Date</mat-label>
+                              <input matInput [matDatepicker]="picker1" type="name"
+                                  [formControl]="LicenseManagement.controls['From_Date']">
+                              <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                              <mat-error
+                                  *ngIf="submitted && f2.From_Date.errors || f2.From_Date.dirty || f2.From_Date.touched">
+                                  <span *ngIf="f2.From_Date.errors?.required">From_Date is a required </span>
+                              </mat-error>
+                          </mat-form-field>
+                          <mat-datepicker #picker1></mat-datepicker>
+                      </div>
+                      <div fxFlex="33"  class="pr-1 full">
+                          <mat-form-field class="full-width" appearance="outline">
+                              <mat-label class="label" style="font-size: 15px !important;">To Date</mat-label>
+                              <input [disabled]="checked" [matDatepicker]="picker2" matInput
+                                  [formControl]="LicenseManagement.controls['To_Date']" >
+                              <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                              <mat-error
+                                  *ngIf="submitted && f2.To_Date.errors || f2.To_Date.dirty || f2.To_Date.touched">
+                                  <span *ngIf="f2.To_Date.errors?.required">To_Date is a required </span>
+                              </mat-error>
+                          </mat-form-field>
+                          <mat-datepicker #picker2></mat-datepicker>
+                      </div>
+
+                      <div fxFlex="33"  class="pr-1 full">
+                          <mat-form-field class="full-width" appearance="outline">
+                              <mat-label class="label" style="font-size: 15px !important;">Status</mat-label>
+                              <input [disabled]="checked" matInput type="text" name="password"
+                                  [formControl]="LicenseManagement.controls['Status']">
+                              <mat-error
+                                  *ngIf="submitted && f2.Status.errors || f2.Status.dirty || f2.Status.touched">
+                                  <span *ngIf="f2.Status.errors?.required">Status is a required </span>
+                              </mat-error>
+                          </mat-form-field>
+                      </div>
+
+                      <div fxFlex="33"  class="pr-1 full">
+                          <mat-form-field class="full-width" appearance="outline">
+                              <mat-label class="label" style="font-size: 15px !important;">License Level</mat-label>
+                              <input [disabled]="checked" matInput type="text" name="password"
+                                  [formControl]="LicenseManagement.controls['LL']">
+                              <mat-error *ngIf="submitted && f2.LL.errors || f2.LL.dirty || f2.LL.touched">
+                                  <span *ngIf="f2.LL.errors?.required">License_Level is a required </span>
+                              </mat-error>
+                          </mat-form-field>
+                      </div>
+                  </div>
+              </form> -->
+              <!-- <button mat-raised-button class="btn success"
+                          (click)="tabGroup.selectedIndex=1">Next</button> -->
+          </div>
+      </mat-tab>
+      <mat-tab label="License Terms"  [disabled]="GridData.length == 0">
+         <!-- <div class="selectClass" style="width: 200px; margin: 20px 0px 20px 20px;">
+            <mat-select placeholder="Select">               
+                <mat-option *ngFor="let element of dummydata">{{element.name}}</mat-option>
+            </mat-select>
+         </div> -->
+          <div class="md-label">
+            
+                <div  fxLayout="row wrap" fxLayout.lt-sm="column">
+                    <div fxFlex="15"  class="pr-1 full">
+                        <mat-form-field class="full-width" appearance="outline">
+                            <mat-label class="label" style="font-size: 15px !important;">License Type
+                            </mat-label>
+                            <mat-select [(ngModel)]="LicenseType" [ngModelOptions]="{standalone: true}">
+                                <mat-option *ngFor="let type of GridData" [value]="type" (click)="GetLicenseTermsById(type)">{{type.TypeName}} {{type.FromDate | date:'dd-MMM-yyyy'}}</mat-option>
+                            </mat-select>                              
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div  fxLayout="row wrap" fxLayout.lt-sm="column" *ngIf="!!LicenseType">
+                    <div fxFlex="5"  class="pl-1 full">
+                        <mat-checkbox class="example-margin" (change)="changeStatus('Asset')"></mat-checkbox>
+                    </div>
+                    <div fxFlex="15"  class="pr-1 full">
+                       <span style="font-weight: bold;">Asset Licenses</span> 
+                    </div>
+                    <div fxFlex="25"  class="pr-1 full">
+                        <mat-form-field class="full-width" appearance="outline">
+                            <mat-label class="label" style="font-size: 15px !important;">Total Asset Count</mat-label>
+                            <input matInput type="name" name="Total_Count" [(ngModel)]="LicenseTermsData.TotalAssetCount" [disabled]="!!AssetDisabled" [ngModelOptions]="{standalone: true}" (change)="changeTotalCountToleranceLevel()">
+                        </mat-form-field>
+                    </div>
+                    <div fxFlex="25"  class="pr-1 full">
+                        <mat-form-field class="full-width" appearance="outline">
+                            <mat-label class="label" style="font-size: 15px !important;">Alert Count Percentage</mat-label> 
+                            <input matInput type="name" name="Count_Percentage" [(ngModel)]="LicenseTermsData.TotalCountAlertPercentage" [disabled]="!!AssetDisabled" [ngModelOptions]="{standalone: true}">                        
+                        </mat-form-field>
+                    </div>
+                    <div fxFlex="25"  class="pr-1 full">
+                        <mat-form-field class="full-width" appearance="outline">
+                            <mat-label class="label" style="font-size: 15px !important;">Tolerance Count Level</mat-label>
+                            <input matInput type="name" name="Asset_Tolerance_Level" [(ngModel)]="LicenseTermsData.TotalCountToleranceLevel" [disabled]="!!AssetDisabled" [ngModelOptions]="{standalone: true}">                        
+                        </mat-form-field>
+                    </div>    
+                    <div fxFlex="5"  class="pr-1 full"></div>        
+                </div>
+                <div  fxLayout="row wrap" fxLayout.lt-sm="column" *ngIf="!!LicenseType">
+                    <div fxFlex="5"  class="pl-1">
+                        <mat-checkbox class="example-margin" (change)="changeStatus('User')"></mat-checkbox>
+                    </div>
+                    <div fxFlex="15"  class="pr-1">
+                        <span style="font-weight: bold;">User Licenses</span>
+                    </div>
+                    <div fxFlex="25"  class="pr-1">
+                        <mat-form-field class="full-width" appearance="outline">
+                            <mat-label class="label" style="font-size: 15px !important;">Total User</mat-label>
+                            <input matInput type="name" name="Total_User" [(ngModel)]="LicenseTermsData.TotalUsers" [disabled]="!!UserDisabled" [ngModelOptions]="{standalone: true}" (change)="changeTotalUsersToleranceLevel()">
+                        </mat-form-field>
+                    </div>
+                    <div fxFlex="25"  class="pr-1">
+                        <mat-form-field class="full-width" appearance="outline">
+                            <mat-label class="label" style="font-size: 15px !important;">Alert User Percentage</mat-label>
+                            <input matInput type="name" name="User_Percentage" [(ngModel)]="LicenseTermsData.TotalUsersAlertPercentage" [disabled]="!!UserDisabled" [ngModelOptions]="{standalone: true}">                        
+                        </mat-form-field>
+                    </div>
+                    <div fxFlex="25"  class="pr-1">
+                        <mat-form-field class="full-width" appearance="outline">
+                            <mat-label class="label" style="font-size: 15px !important;">Tolerance User Level</mat-label>
+                            <input matInput type="name" name="User_Tolerance_Level" [(ngModel)]="LicenseTermsData.TotalUsersToleranceLevel" [disabled]="!!UserDisabled" [ngModelOptions]="{standalone: true}">                        
+                        </mat-form-field>
+                    </div>    
+                    <div fxFlex="5"  class="pr-1"></div>        
+                </div>
+                <div  fxLayout="row wrap" fxLayout.lt-sm="column" *ngIf="!!LicenseType">
+                    <div fxFlex="5"  class="pl-1">
+                        <mat-checkbox class="example-margin" [disabled]="moduleList.indexOf('Asset Audit') == -1" (change)="changeStatus('Audit')"></mat-checkbox>
+                    </div>
+                    <div fxFlex="15"  class="pr-1">
+                        <span style="font-weight: bold;">Audit Licenses</span>
+                    </div>
+                    <div fxFlex="25"  class="pr-1">
+                        <mat-form-field class="full-width" appearance="outline">
+                            <mat-label class="label" style="font-size: 15px !important;">Total Audit</mat-label>
+                            <input matInput type="name" name="Total_Audit" [(ngModel)]="LicenseTermsData.AuditedCount" [disabled]="!!AuditDisabled" [ngModelOptions]="{standalone: true}" (change)="changeAuditedCountToleranceLevel()">
+                        </mat-form-field>
+                    </div>
+                    <div fxFlex="25"  class="pr-1">
+                        <mat-form-field class="full-width" appearance="outline">
+                            <mat-label class="label" style="font-size: 15px !important;">Alert Audit Percentage</mat-label>
+                            <input matInput type="name" name="Audit_Percentage" [(ngModel)]="LicenseTermsData.AuditedCountAlertPercentage" [disabled]="!!AuditDisabled" [ngModelOptions]="{standalone: true}">                        
+                        </mat-form-field>
+                    </div>
+                    <div fxFlex="25"  class="pr-1">
+                        <mat-form-field class="full-width" appearance="outline">
+                            <mat-label class="label" style="font-size: 15px !important;">Tolerance Audit Level</mat-label>
+                            <input matInput type="name" name="Audit_Tolerance_Level" [(ngModel)]="LicenseTermsData.AuditedCountToleranceLevel" [disabled]="!!AuditDisabled" [ngModelOptions]="{standalone: true}">                        
+                        </mat-form-field>
+                    </div>     
+                    <div fxFlex="5"  class="pr-1"></div>       
+                </div>
+                <div  fxLayout="row wrap" fxLayout.lt-sm="column" *ngIf="!!LicenseType">
+                    <div fxFlex="5"  class="pl-1">
+                        <mat-checkbox class="example-margin" [disabled]="moduleList.indexOf('Asset Movement') == -1" (change)="changeStatus('Movement')"></mat-checkbox>
+                    </div>
+                    <div fxFlex="15"  class="pr-1">
+                        <span style="font-weight: bold;">Transfer Licenses</span>
+                    </div>
+                    <div fxFlex="25"  class="pr-1">
+                        <mat-form-field class="full-width" appearance="outline">
+                            <mat-label class="label" style="font-size: 15px !important;">Total Transfer</mat-label>
+                            <input matInput type="name" name="Total_Transfer" [(ngModel)]="LicenseTermsData.TransferCount" [disabled]="!!MovementDisabled" [ngModelOptions]="{standalone: true}" (change)="changeTransferedCountToleranceLevel()">
+                        </mat-form-field>
+                    </div>
+                    <div fxFlex="25"  class="pr-1">
+                        <mat-form-field class="full-width" appearance="outline">
+                            <mat-label class="label" style="font-size: 15px !important;">Alert Transfer Percentage</mat-label>
+                            <input matInput type="name" name="Transfer_Percentage" [(ngModel)]="LicenseTermsData.TransferedCountAlertPercentage" [disabled]="!!MovementDisabled" [ngModelOptions]="{standalone: true}">                        
+                        </mat-form-field>
+                    </div>
+                    <div fxFlex="25"  class="pr-1">
+                        <mat-form-field class="full-width" appearance="outline">
+                            <mat-label class="label" style="font-size: 15px !important;">Tolerance Transfer Level</mat-label>
+                            <input matInput type="name" name="Transfer_Tolerance_Level" [(ngModel)]="LicenseTermsData.TransferedCountToleranceLevel" [disabled]="!!MovementDisabled" [ngModelOptions]="{standalone: true}">                        
+                        </mat-form-field>
+                    </div>   
+                    <div fxFlex="5"  class="pr-1"></div>         
+                </div>
+                <div  fxLayout="row wrap" fxLayout.lt-sm="column" *ngIf="!!LicenseType">
+                    <div fxFlex="5"  class="pl-1">
+                        <mat-checkbox class="example-margin" [disabled]="moduleList.indexOf('Asset Retirement') == -1" (change)="changeStatus('Retirement')"></mat-checkbox>
+                    </div>
+                    <div fxFlex="15"  class="pr-1 ">
+                        <span style="font-weight: bold;">Retirement Licenses</span>
+                    </div>
+                    <div fxFlex="25"  class="pr-1 ">
+                        <mat-form-field class="full-width" appearance="outline">
+                            <mat-label class="label" style="font-size: 15px !important;">Total Retirment</mat-label>
+                            <input matInput type="name" name="Total_Retirment" [(ngModel)]="LicenseTermsData.RetirementCount" [disabled]="!!RetirementDisabled" [ngModelOptions]="{standalone: true}" (change)="changeRetiredCountToleranceLevel()">
+                        </mat-form-field>
+                    </div>
+                    <div fxFlex="25"  class="pr-1 ">
+                        <mat-form-field class="full-width" appearance="outline">
+                            <mat-label class="label" style="font-size: 15px !important;">Alert Retirment Percentage</mat-label>
+                            <input matInput type="name" name="Retirment_Percentage" [(ngModel)]="LicenseTermsData.RetiredCountAlertPercentage" [disabled]="!!RetirementDisabled" [ngModelOptions]="{standalone: true}">                        
+                        </mat-form-field>
+                    </div>
+                    <div fxFlex="25"  class="pr-1 ">
+                        <mat-form-field class="full-width" appearance="outline">
+                            <mat-label class="label" style="font-size: 15px !important;">Tolerance Retirment Level</mat-label>
+                            <input matInput type="name" name="Retirment_Tolerance_Level" [(ngModel)]="LicenseTermsData.RetiredCountToleranceLevel" [disabled]="!!RetirementDisabled" [ngModelOptions]="{standalone: true}">                        
+                        </mat-form-field>
+                    </div>      
+                    <div fxFlex="5"  class="pr-1 "></div>      
+                </div>
+                <div  fxLayout="row wrap" fxLayout.lt-sm="column" *ngIf="!!LicenseType">
+                    <div fxFlex="5"  class="pl-1">
+                        <mat-checkbox class="example-margin" [disabled]="moduleList.indexOf('Assignment') == -1" (change)="changeStatus('Assignment')"></mat-checkbox>
+                    </div>
+                    <div fxFlex="15"  class="pr-1 ">
+                        <span style="font-weight: bold;">Assignment Licenses</span>
+                    </div>
+                    <div fxFlex="25"  class="pr-1 ">
+                        <mat-form-field class="full-width" appearance="outline">
+                            <mat-label class="label" style="font-size: 15px !important;">Total Assignment</mat-label>
+                            <input matInput type="name" name="Total_Assignment" [(ngModel)]="LicenseTermsData.AllocatedCount" [disabled]="!!AssignmentDisabled" [ngModelOptions]="{standalone: true}" (change)="changeAllocatedCountToleranceLevel()"> 
+                        </mat-form-field>
+                    </div>
+                    <div fxFlex="25"  class="pr-1 ">
+                        <mat-form-field class="full-width" appearance="outline">
+                            <mat-label class="label" style="font-size: 15px !important;">Alert Assignment Percentage</mat-label>
+                            <input matInput type="name" name="Assignment_Percentage" [(ngModel)]="LicenseTermsData.AllocatedCountAlertPercentage" [disabled]="!!AssignmentDisabled" [ngModelOptions]="{standalone: true}">                        
+                        </mat-form-field>
+                    </div>
+                    <div fxFlex="25"  class="pr-1 ">
+                        <mat-form-field class="full-width" appearance="outline">
+                            <mat-label class="label" style="font-size: 15px !important;">Tolerance Assignment Level</mat-label>
+                            <input matInput type="name" name="Assignment_Tolerance_Level" [(ngModel)]="LicenseTermsData.AllocatedCountToleranceLevel" [disabled]="!!AssignmentDisabled" [ngModelOptions]="{standalone: true}">                        
+                        </mat-form-field>
+                    </div>   
+                    <div fxFlex="5"  class="pr-1 "></div>         
+                </div>
+                <div  fxLayout="row wrap" fxLayout.lt-sm="column" *ngIf="!!LicenseType">
+                    <div fxFlex="5"  class="pl-1">
+                        <mat-checkbox class="example-margin"></mat-checkbox>
+                    </div>
+                    <div fxFlex="15"  class="pr-1 ">
+                        <span style="font-weight: bold;">Company License</span>
+                    </div>
+                    <div fxFlex="25"  class="pr-1 ">
+                        <mat-form-field class="full-width" appearance="outline">
+                            <mat-label class="label" style="font-size: 15px !important;">Total Company</mat-label>
+                            <input matInput type="name" name="Total_Company" [(ngModel)]="LicenseTermsData.TotalCompanies" [ngModelOptions]="{standalone: true}">
+                        </mat-form-field>
+                    </div>
+                    <div fxFlex="25"  class="pr-1 ">
+                        <!-- <mat-form-field class="full-width" appearance="outline">
+                            <mat-label class="label" style="font-size: 15px !important;">Alert Comapny Percentage</mat-label>
+                            <input matInput type="name" name="Company_Percentage" [(ngModel)]="LicenseTermsData.TotalUsers" [ngModelOptions]="{standalone: true}">                        
+                        </mat-form-field> -->
+                    </div>
+                    <!-- <div fxFlex="25"  class="pr-1 ">
+                        <button mat-raised-button class="pr-1 success" (click)="SubmitLicenseTerms()">
+                            <mat-icon>check</mat-icon>Submit
+                        </button>
+                    </div>      -->
+                    <div fxFlex="5"  class="pr-1 "></div>       
+                </div>
+                <div  fxLayout="row wrap" fxLayout.lt-sm="column" *ngIf="!!LicenseType">
+                    <div fxFlex="5"  class="pl-1">
+                        <mat-checkbox class="example-margin"></mat-checkbox>
+                    </div>
+                    <div fxFlex="15"  class="pr-1 ">
+                        <span style="font-weight: bold;">Location License</span>
+                    </div>
+                    <div fxFlex="25"  class="pr-1 ">
+                        <mat-form-field class="full-width" appearance="outline">
+                            <mat-label class="label" style="font-size: 15px !important;">Total Location</mat-label>
+                            <input matInput type="name" name="Total_Location" [(ngModel)]="LicenseTermsData.TotalLocation" [ngModelOptions]="{standalone: true}">
+                        </mat-form-field>
+                    </div>
+                    <div fxFlex="25"  class="pr-1 ">
+                        <!-- <mat-form-field class="full-width" appearance="outline">
+                            <mat-label class="label" style="font-size: 15px !important;">Alert Comapny Percentage</mat-label>
+                            <input matInput type="name" name="Company_Percentage" [(ngModel)]="LicenseTermsData.TotalUsers" [ngModelOptions]="{standalone: true}">                        
+                        </mat-form-field> -->
+                    </div>
+                    <div fxFlex="25"  class="pr-1 ">
+                        <button mat-raised-button class="pr-1 success" (click)="SubmitLicenseTerms()">
+                            <mat-icon>check</mat-icon>Submit
+                        </button>
+                    </div>     
+                    <div fxFlex="5"  class="pr-1 "></div>       
+                </div>
+            
+              <!-- <button mat-raised-button class="warn"
+                          (click)="tabGroup.selectedIndex=0">Back</button>
+                      
+                      <button mat-raised-button class="btn success"
+                          (click)="tabGroup.selectedIndex=2">Next</button> -->
+                     
+          </div>
+
+      </mat-tab>
+       <mat-tab label="License Company Distribution" [disabled]="LicenseGroup">
+          <div class="md-label">
+              <form [formGroup]="firstFormGroup" style="margin-top: 20px;">
+                  <div fxLayout="row wrap" fxLayout.lt-sm="column">
+                    <mat-accordion class="example-headers-align" *ngFor="let data of Company_Distribution_Data;let k=index"
+                    style="width: 100%;">
+                    <mat-expansion-panel [expanded]="panelOpenState[k]" (opened)="setStep(k)"
+                        (closed)="changeState(k)" hideToggle>
+                        <mat-expansion-panel-header class="prevent-click" style="height: 50px;">
+                            <mat-panel-title style="font-weight: bold;">                                
+                                {{data.name}} - {{data.totalCount}}
+                            </mat-panel-title>                            
+                        </mat-expansion-panel-header>
+
+                        <div fxLayout="row wrap" fxLayout.lt-sm="column" *ngFor="let m of data.companyList;let i=index">
+                            <div fxLayout="row wrap" fxLayout.lt-sm="column" fxFlex="100" fxFlex.gt-xs="100">
+                                <div fxFlex="10"  class="pl-1"></div>
+                                <div fxFlex="25"  class="pl-1" style="font-weight: bold;">
+                                    {{m.CompanyName}}
+                                </div>
+                                <div fxFlex="25"  class="pl-1">
+                                    <mat-form-field class="full-width" appearance="outline">
+                                        <mat-label class="label" style="font-size: 15px !important;">Total</mat-label>
+                                        <input matInput type="name" name="Total_Company" [(ngModel)]="m.Count" (change)="CheckTotalCount(data , m)" [ngModelOptions]="{standalone: true}">
+                                    </mat-form-field>
+                                </div>
+                                <div fxFlex="40"  class="pl-1"></div>
+                            </div>                            
+                        </div>
+                    </mat-expansion-panel>
+                </mat-accordion>
+                  </div>                 
+              </form>
+
+              <button mat-raised-button class="pr-1 success" (click)="SubmitCompanyDistribution()">
+                <mat-icon>check</mat-icon>Submit
+             </button>
+              <!-- <button mat-raised-button class="warn"
+                          (click)="tabGroup.selectedIndex=1">Back</button>
+                     
+                      <button mat-raised-button class="btn success"
+                          (click)="tabGroup.selectedIndex=3">Next</button> -->
+                     
+          </div>                   
+      </mat-tab>
+      <!-- <mat-tab label="License OverUsageterms">
+          <div class="md-label">
+              <form [formGroup]="firstFormGroup2" style="margin-top: 20px;">
+                  <ng-template matStepLabel>Fill out your name</ng-template>
+                  <div fxLayout="row wrap" fxLayout.lt-sm="column">
+                      
+                      <div fxFlex="33"  class="pr-1 full">
+                              <mat-form-field class="full-width" appearance="outline">
+                                  <mat-label class="label" style="font-size: 15px !important;">License Overusage ID</mat-label>
+                                  <input matInput type="name" name="user name"
+                                      [formControl]="firstFormGroup2.controls['LOI']">
+                                  <mat-error
+                                      *ngIf="submitted && f3.LOI.errors || f3.LOI.dirty || f3.LOI.touched">
+                                      <span *ngIf="f3.LOI.errors?.required">License_Overusage_ID is a
+                                          required </span>
+                                  </mat-error>
+                              </mat-form-field>
+                          </div>
+                          <div fxFlex="33"  class="pr-1 full">
+                              <mat-form-field class="full-width" appearance="outline">
+                                  <mat-label class="label" style="font-size: 15px !important;">License Grace Period</mat-label>
+                                  <input matInput formControlName="LGP">
+                                  <mat-error
+                                      *ngIf="submitted && f3.LGP.errors || f3.LGP.dirty || f3.LGP.touched">
+                                      <span *ngIf="f3.LGP.errors?.required">License_Grace_Period is a
+                                          required </span>
+                                  </mat-error>
+                              </mat-form-field>
+                          </div>
+                          <div fxFlex="33"  class="pr-1 full">
+                              <mat-form-field class="full-width" appearance="outline">
+                                  <mat-label class="label" style="font-size: 15px !important;">Non Transactional Grace Period</mat-label>
+                                  <input matInput    formControlName="NTGP">
+                                  <mat-error
+                                      *ngIf="submitted && f3.NTGP.errors || f3.NTGP.dirty || f3.NTGP.touched">
+                                      <span
+                                          *ngIf="f3.NTGP.errors?.required">Non_Transactional_Grace_Period
+                                          is a
+                                          required </span>
+                                  </mat-error>
+                              </mat-form-field>
+                          </div>
+                          <div fxFlex="33"  class="pr-1 full">
+                              <mat-form-field class="full-width" appearance="outline">
+                                  <mat-label class="label" style="font-size: 15px !important;">Grace User Percentage</mat-label>
+                                  <input matInput  formControlName="GUP">
+                                  <mat-error
+                                      *ngIf="submitted && f3.GUP.errors || f3.GUP.dirty || f3.GUP.touched">
+                                      <span *ngIf="f3.GUP.errors?.required">Grace_User_Percentage is a
+                                          required
+                                      </span>
+                                  </mat-error>
+                              </mat-form-field>
+                          </div>
+                          <div fxFlex="33"  class="pr-1 full">
+                              <mat-form-field class="full-width" appearance="outline">
+                                  <mat-label class="label" style="font-size: 15px !important;">Grace Asset Percentage</mat-label>
+                                  <input matInput   formControlName="GAssetP">
+                                  <mat-error
+                                      *ngIf="submitted && f3.GAssetP.errors || f3.GAssetP.dirty || f3.GAssetP.touched">
+                                      <span *ngIf="f3.GAssetP.errors?.required">Grace_Asset_Percentage is
+                                          a required
+                                      </span>
+                                  </mat-error>
+                              </mat-form-field>
+                          </div>
+                     
+                     
+                          
+                          <div fxFlex="33"  class="pr-1 full">
+                              <mat-form-field class="full-width" appearance="outline">
+                                  <mat-label class="label" style="font-size: 15px !important;">Grace Audite Percentage</mat-label>
+                                  <input matInput type="text"  id="val"
+                                      name="port number"
+                                      [formControl]="firstFormGroup2.controls['GAuditedP']">
+                                  <mat-error
+                                      *ngIf="submitted && f3.GAuditedP.errors || f3.GAuditedP.dirty || f3.GAuditedP.touched">
+                                      <span *ngIf="f3.GAuditedP.errors?.required">Grace_Audited_Percentage
+                                          is a
+                                          required </span>
+                                  </mat-error>
+                              </mat-form-field>
+                          </div>
+                          <div fxFlex="33"  class="pr-1 full">
+                              <mat-form-field class="full-width" appearance="outline">
+                                  <mat-label class="label" style="font-size: 15px !important;">Grace Transferred Percentage</mat-label>
+                                  <input matInput type="text" name="password"
+                                      [formControl]="firstFormGroup2.controls['GTP']">
+                                  <mat-error
+                                      *ngIf="submitted && f3.GTP.errors || f3.GTP.dirty || f3.GTP.touched">
+                                      <span *ngIf="f3.GTP.errors?.required">Grace_Transferred_Percentage
+                                          is a required
+                                      </span>
+                                  </mat-error>
+                              </mat-form-field>
+                          </div>
+
+                          <div fxFlex="33"  class="pr-1 full">
+                              <mat-form-field class="full-width" appearance="outline">
+                                  <mat-label class="label" style="font-size: 15px !important;">Grace Retired Percentage</mat-label>
+                                  <input matInput type="text" name="password"
+                                      [formControl]="firstFormGroup2.controls['GRP']">
+                                  <mat-error
+                                      *ngIf="submitted && f3.GRP.errors || f3.GRP.dirty || f3.GRP.touched">
+                                      <span *ngIf="f3.GRP.errors?.required">Grace_Retired_Percentage is a
+                                          required
+                                      </span>
+                                  </mat-error>
+                              </mat-form-field>
+                          </div>
+
+                          <div fxFlex="33"  class="pr-1 full">
+                              <mat-form-field class="full-width" appearance="outline">
+                                  <mat-label class="label" style="font-size: 15px !important;">Grace Allocated Percentage</mat-label>
+                                  <input matInput type="text" name="password"
+                                      [formControl]="firstFormGroup2.controls['GAlP']">
+                                  <mat-error
+                                      *ngIf="submitted && f3.GAlP.errors || f3.GAlP.dirty || f3.GAlP.touched">
+                                      <span *ngIf="f3.GAlP.errors?.required">Grace_Allocated_Percentage is
+                                          a required
+                                      </span>
+                                  </mat-error>
+                              </mat-form-field>
+                          </div>
+                      
+                  </div>
+                  
+              </form>
+              <button mat-raised-button class="warn"
+                          (click)="tabGroup.selectedIndex=2">Back</button>
+                     
+                     
+                      
+                      <button mat-raised-button class="btn success" 
+                          [disabled]="firstFormGroup2.invalid">Save</button>
+          </div>                    
+      </mat-tab> -->
+      <!--<mat-tab>
+          <button mat-raised-button color="primary"> Submit </button>
+      </mat-tab>  -->
+  </mat-tab-group>
+</div>

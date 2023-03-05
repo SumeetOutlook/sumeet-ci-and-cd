@@ -1,0 +1,25 @@
+<h1 mat-dialog-title>{{data.value==='insert'?'Create':'Edit'}} SBU</h1>
+<form [formGroup]="dialogForm" (ngSubmit)="onSubmit()" *ngIf="data.value == 'insert' || data.value == 'edit'">
+<div fxLayout="row wrap" fxLayout.lt-sm="column">
+ <div fxFlex="50"  class="pr-1">
+    <mat-form-field class="full-width">
+      <input
+      matInput
+      [formControl]="dialogForm.controls['name']"
+      placeholder={{products.sbu}}>
+      <mat-error *ngIf="submitted || f.name.errors || f.name.dirty || f.name.touched">
+        <span *ngIf="f.name.errors?.required"> SBU Name is required </span>
+        <!-- <span *ngIf="f.name.errors?.minlength"> Minimum length is 3 characters </span> -->
+      </mat-error>
+    </mat-form-field>
+  </div>
+  <div fxFlex="100" class="mt-1">
+    <button mat-raised-button color="primary" [disabled]="dialogForm.invalid">Save</button>
+    <span fxFlex></span>
+    <button mat-button color="warn" type="button" (click)="dialogRef.close(false)">Cancel</button>
+  </div>
+</div>
+</form>
+
+
+

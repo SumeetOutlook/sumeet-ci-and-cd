@@ -1,0 +1,1107 @@
+<div class="md-dialog-container">
+  <mat-toolbar class="mat-toolbar"  style="background-color:rgb(12, 48, 87) !important;color:white">
+    <span style="position: relative;left: 40%;">Edit Asset</span>
+    <span class="example-spacer"></span>
+    <button mat-icon-button class="example-icon" aria-label="Example icon-button with close icon" (click)="onclosetab()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-toolbar><br><br>
+  <mat-dialog-content  cdkDrag cdkDragRootElement=".cdk-overlay-pane" cdkDragHandle>
+    
+  <div class="md-dialog-content">
+  
+  <mat-tab-group animationDuration="200ms" [selectedIndex]="selectedIndex" (selectedTabChange)="tabChanged($event)"> 
+    <mat-tab label="Asset Info"> 
+      <div class="md-label">
+      <form [formGroup]="AssetInfo" (ngSubmit)="onAssetInfoSubmit()">
+        <div fxLayout="row wrap" fxLayout.lt-sm="column">
+          <div fxFlex="33"  class="pr-1 full">
+            <mat-form-field class="full-width" appearance="outline">         
+              <mat-label class="label" style="font-size: 15px !important;">{{displayedHeaders[0]}}</mat-label>
+                  <input matInput maxlength="30" name="InventoryNo" InventoryNo="InventoryNo"
+                    placeholder="Enter Inventory Number" [formControl]="AssetInfo.controls['InventoryNo']"
+                    class="bg-transparente" autocomplete="off">
+            </mat-form-field>
+          </div>
+      
+          <div fxFlex="33"  class="pr-1 full" *ngIf="enableAssetFormField">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">{{displayedHeaders[1]}}</mat-label>
+              <input matInput maxlength="25" name="AssetID" AssetID="AssetID"  
+                class="bg-transparente" placeholder="Enter Asset Number" [formControl]="AssetInfo.controls['AssetID']"
+                autocomplete="off">
+              <!-- <mat-error *ngIf="submitted || f1.AssetID.errors || f1.AssetID.dirty || f1.AssetID.touched">
+                <span *ngIf="f1.AssetID.errors?.required">Asset Number is required</span>
+              </mat-error> -->
+            </mat-form-field>
+          </div>
+         
+          <div fxFlex="33"  class="pr-1 full" *ngIf="enableAssetFormField">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">{{displayedHeaders[2]}}</mat-label>
+              <input type="text" matInput maxlength="4" name="SubAssetID"  
+                SubAssetID="SubAssetID" placeholder="Enter Sub No." [pattern]="numericPattern"
+                [formControl]="AssetInfo.controls['SubAssetID']" autocomplete="off" />
+              <!-- <mat-error *ngIf="submitted || f1.SubAssetID.errors || f1.SubAssetID.dirty || f1.SubAssetID.touched">
+                <span *ngIf="f1.SubAssetID.errors?.pattern">Enter only numeric values</span>
+                <span *ngIf="f1.SubAssetID.errors?.required">Sub Number is required</span>
+  
+              </mat-error> -->
+            </mat-form-field>
+          </div>
+      
+         <div fxFlex="33"  class="pr-1" *ngIf="enableAssetFormField">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">{{displayedHeaders[3]}}</mat-label>
+                  <mat-select disableOptionCentering Unit="Unit"  
+                    [formControl]="AssetInfo.controls['Unit']">
+                    <mat-option>
+                      <ngx-mat-select-search [placeholderLabel]="'Search'" noEntriesFoundLabel="{{header.NoRecordFound}}"
+                        [formControl]="AssetInfo.controls['uomFilter']"></ngx-mat-select-search>
+                    </mat-option>
+                    <mat-option *ngFor="let uom of filteredUOM | async" [value]="uom">
+                      {{uom.Unit_Name}}
+                    </mat-option>
+                  </mat-select>
+                  <!-- <mat-error *ngIf="submitted || f1.Unit.errors || f1.Unit.dirty || f1.Unit.touched">
+                    <span *ngIf="f1.Unit.errors?.required">Unit Name is required</span>
+                  </mat-error> -->
+            </mat-form-field>
+          </div>
+      
+          <div fxFlex="33"  class="pr-1" *ngIf="enableAssetFormField">
+            <mat-form-field class="full-width">
+              <mat-label class="label">{{displayedHeaders[4]}}</mat-label>
+              <input matInput name="Quantity" Quantity="Quantity"  [formControl]="AssetInfo.controls['Quantity']"
+                placeholder="Enter Quantity" [pattern]="decimalNumericPattern" 
+                maxlength="17" autocomplete="off">
+              <!-- <mat-error *ngIf="submitted || f1.Quantity.errors || f1.Quantity.dirty || f1.Quantity.touched">
+                <span *ngIf="f1.Quantity.errors?.required">Quantity is required</span>
+                <span *ngIf="f1.Quantity.errors?.pattern">Quantity should be with 13 digits with max 3 desimals</span>
+              </mat-error> -->
+            </mat-form-field>
+          </div>
+          <div fxFlex="33"  class="pr-1" *ngIf="enableAssetFormField">
+            <mat-form-field class="full-width"  *ngIf="enableAssetFormField">
+              <mat-label class="label">{{displayedHeaders[5]}}</mat-label>
+              <input matInput [matDatepicker]="picker3"  AcquisitionDate="AcquisitionDate"
+                    name="AcquisitionDate" (dateChange)="changeCapitlizationDate($event)"
+                    [formControl]="AssetInfo.controls['AcquisitionDate']" autocomplete="off">
+                  <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+                  <mat-datepicker #picker3></mat-datepicker>
+                  <!-- <mat-error
+                    *ngIf="submitted || f1.AcquisitionDate.errors || f1.AcquisitionDate.dirty || f1.AcquisitionDate.touched">
+                    <span *ngIf="f1.AcquisitionDate.errors?.required">Capitalization Date is required</span>
+                  </mat-error> -->
+            </mat-form-field>
+          </div>
+          <div fxFlex="33"  class="pr-1" *ngIf="enableAssetFormField">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">{{displayedHeaders[6]}}</mat-label>
+              <input matInput maxlength="30" name="GRNNo" GRNNo="GRNNo"  [formControl]="AssetInfo.controls['GRNNo']"
+                placeholder="Enter GRN No." autocomplete="off">
+              <!-- <mat-error *ngIf="submitted || f1.GRNNo.errors || f1.GRNNo.dirty || f1.GRNNo.touched">
+                <span *ngIf="f1.GRNNo.errors?.required">GRN Number is required</span>
+              </mat-error> -->
+            </mat-form-field>
+          </div>
+      
+         <div fxFlex="33"  class="pr-1" *ngIf="enableAssetFormField">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">{{displayedHeaders[7]}}</mat-label>
+                  <input matInput maxlength="50" name="PONumber" PONumber="PONumber" 
+                    [formControl]="AssetInfo.controls['PONumber']" autocomplete="off" placeholder="Enter PO No.">
+            </mat-form-field>
+          </div>
+          <div fxFlex="33"  class="pr-1" *ngIf="enableAssetFormField">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">{{displayedHeaders[8]}}</mat-label>
+                  <input matInput maxlength="45" placeholder="Enter Invoice No."  name="InvoiceNo" InvoiceNo="InvoiceNo"
+                    [required]="checkRequired==false" [formControl]="AssetInfo.controls['InvoiceNo']" autocomplete="off"/>
+                  <!-- <mat-error *ngIf="submitted || f1.InvoiceNo.errors || f1.InvoiceNo.dirty || f1.InvoiceNo.touched">
+                    <span *ngIf="f1.InvoiceNo.errors?.required">Invoice Number is required</span>
+                  </mat-error> -->
+            </mat-form-field>
+          </div>
+          <div fxFlex="33"  class="pr-1" *ngIf="enableAssetFormField">
+            <mat-form-field class="full-width" *ngIf="enableAssetFormField">
+              <mat-label class="label">{{displayedHeaders[9]}}</mat-label>
+              <input matInput maxlength="30" name="SerialNo" SerialNo="SerialNo"  [required]="checkRequired==false"
+                placeholder="Enter Serial No." [formControl]="AssetInfo.controls['SerialNo']" autocomplete="off">
+              <!-- <mat-error *ngIf="submitted || f1.SerialNo.errors || f1.SerialNo.dirty || f1.SerialNo.touched">
+                <span *ngIf="f1.SerialNo.errors?.required">Serial Number is required</span>
+              </mat-error> -->
+            </mat-form-field>
+          </div>
+          <div fxFlex="33"  class="pr-1"  *ngIf="enableAssetFormField">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">{{displayedHeaders[10]}}</mat-label>
+                  <input matInput maxlength="50" name="ITSerialNo"  ITSerialNo="ITSerialNo"
+                    [formControl]="AssetInfo.controls['ITSerialNo']" placeholder="Enter ITSerial No."
+                    [required]="checkRequired==false" autocomplete="off">
+                  <!-- <mat-error *ngIf="submitted || f1.ITSerialNo.errors || f1.ITSerialNo.dirty || f1.ITSerialNo.touched">
+                    <span *ngIf="f1.ITSerialNo.errors?.required">ITSerial Number is required</span>
+                  </mat-error> -->
+            </mat-form-field>
+          </div>
+      
+          <div fxFlex="33"  class="pr-1" *ngIf="enableAssetFormField">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">{{displayedHeaders[11]}}</mat-label>
+                  <input matInput maxlength="20" name="EquipmentNumber"  placeholder="Enter Equipment No."
+                    [formControl]="AssetInfo.controls['EquipmentNumber']" autocomplete="off">
+            </mat-form-field>
+          </div>
+          <div fxFlex="33"  class="pr-1" *ngIf="enableAssetFormField">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">{{displayedHeaders[12]}}</mat-label>
+              <mat-select disableOptionCentering AssetLocation="AssetLocation"  [required]="checkRequired==false"
+                [formControl]="AssetInfo.controls['AssetLocation']">
+                <mat-option>
+                  <ngx-mat-select-search [placeholderLabel]="'Search'"  noEntriesFoundLabel="{{header.NoRecordFound}}"
+                    [formControl]="AssetInfo.controls['plantFilter']"></ngx-mat-select-search>
+                </mat-option>
+                <mat-option *ngFor="let plant of filteredPlant | async" (click)="showSublocation = false"
+                  [value]="plant">
+                  {{plant.LocationName}}
+                </mat-option>
+              </mat-select>
+              <!-- <mat-error
+                *ngIf="submitted || f1.AssetLocation.errors || f1.AssetLocation.dirty || f1.AssetLocation.touched">
+                <span *ngIf="f1.AssetLocation.errors?.required">Plant is required</span>
+              </mat-error> -->
+            </mat-form-field>
+          </div>
+          <div fxFlex="33"  class="pr-1" *ngIf="enableAssetFormField">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">{{displayedHeaders[13]}}</mat-label>
+                  <mat-select disableOptionCentering StorageLocation="StorageLocation"  [required]="checkRequired==false"
+                    [formControl]="AssetInfo.controls['StorageLocation']" [disabled]="showSublocation">
+                    <mat-option>
+                      <ngx-mat-select-search [placeholderLabel]="'Search'" noEntriesFoundLabel="{{header.NoRecordFound}}"
+                        [formControl]="AssetInfo.controls['subLocationFilter']"></ngx-mat-select-search>
+                    </mat-option>
+                    <mat-option *ngFor="let sublocation of filteredSubLocation | async" [value]="sublocation">
+                      {{sublocation.RackName}}
+                    </mat-option>
+                  </mat-select>
+                  <!-- <mat-error
+                    *ngIf="submitted || f1.StorageLocation.errors || f1.StorageLocation.dirty || f1.StorageLocation.touched">
+                    <span *ngIf="f1.StorageLocation.errors?.required">Sub Location is required</span>
+                  </mat-error> -->
+            </mat-form-field>
+          </div>
+  
+          <div fxFlex="33"  class="pr-1" *ngIf="enableAssetFormField">
+            <mat-form-field class="full-width">
+              <mat-label class="label">{{displayedHeaders[14]}}</mat-label>
+                  <input matInput maxlength="30" placeholder="Enter Room"  name="Room" 
+                    Room="Room" [formControl]="AssetInfo.controls['Room']" autocomplete="off">
+                  <!-- <mat-error *ngIf="submitted || f1.Room.errors || f1.Room.dirty || f1.Room.touched">
+                    <span *ngIf="f1.Room.errors?.required">Room is required</span>
+                  </mat-error> -->
+            </mat-form-field>
+          </div>
+  
+          <div fxFlex="33"  class="pr-1" *ngIf="enableAssetFormField">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">{{displayedHeaders[15]}}</mat-label>
+  
+                  <mat-select disableOptionCentering CostCenter="CostCenter"  
+                    [formControl]="AssetInfo.controls['CostCenter']" placeholder="Select Cost Center">
+                    <mat-option>
+                      <ngx-mat-select-search [placeholderLabel]="'Search'"  noEntriesFoundLabel="{{header.NoRecordFound}}"
+                        [formControl]="AssetInfo.controls['costCenterFilter']"></ngx-mat-select-search>
+                    </mat-option>
+                    <mat-option *ngFor="let costcenter of filteredCostCenter  | async" [value]="costcenter.Id">
+                      {{costcenter.Description}}
+                    </mat-option>
+                  </mat-select>
+                  <!-- <mat-error *ngIf="submitted || f1.CostCenter.errors || f1.CostCenter.dirty || f1.CostCenter.touched">
+                    <span *ngIf="f1.CostCenter.errors?.required">Cost Center is required</span>
+                  </mat-error> -->
+            </mat-form-field>
+          </div>
+          <div fxFlex="33"  class="pr-1" *ngIf="enableAssetFormField">
+            <mat-form-field class="full-width">
+              <mat-label class="label">{{displayedHeaders[16]}}</mat-label>
+              <mat-select disableOptionCentering  [formControl]="AssetInfo.controls['asset_criticality']"
+                placeholder="Select Asset Criticality">
+                <mat-option>
+                  <ngx-mat-select-search [placeholderLabel]="'Search'"  noEntriesFoundLabel="{{header.NoRecordFound}}"
+                    [formControl]="AssetInfo.controls['assetcricalityFilter']"></ngx-mat-select-search>
+                </mat-option>
+                <mat-option *ngFor="let assetCriticality of filteredAssetCriticality  | async"
+                  [value]="assetCriticality">
+                  {{assetCriticality.AssetCriticality}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div fxFlex="33"  class="pr-1" *ngIf="enableAssetFormField">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">{{displayedHeaders[17]}}</mat-label>
+                  <mat-select disableOptionCentering AssetClass="AssetClass"  
+                    [formControl]="AssetInfo.controls['AssetClass']">
+                    <mat-option>
+                      <ngx-mat-select-search [placeholderLabel]="'Search'" noEntriesFoundLabel="{{header.NoRecordFound}}"
+                        [formControl]="AssetInfo.controls['AssetClassFilter']"></ngx-mat-select-search>
+                    </mat-option>
+                    <mat-option *ngFor="let assetclass of filteredAssetClass | async" [value]="assetclass">
+                      {{assetclass.BlockName}}
+                    </mat-option>
+                  </mat-select>
+                  <!-- <mat-error *ngIf="submitted || f1.AssetClass.errors || f1.AssetClass.dirty || f1.AssetClass.touched">
+                    <span *ngIf="f1.AssetClass.errors?.required">Asset Class is required</span>
+                  </mat-error> -->
+            </mat-form-field>
+          </div>
+      
+          <div fxFlex="33"  class="pr-1" *ngIf="enableAssetFormField">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">{{displayedHeaders[18]}}</mat-label>
+              <mat-select disableOptionCentering AssetCategory="AssetCategory" 
+                [formControl]="AssetInfo.controls['AssetCategory']">
+                <mat-option>
+                  <ngx-mat-select-search [placeholderLabel]="'Search'"  noEntriesFoundLabel="{{header.NoRecordFound}}"
+                    [formControl]="AssetInfo.controls['categoryFilter']"></ngx-mat-select-search>
+                </mat-option>
+                <mat-option *ngFor="let category of filteredAssetCategory | async" [value]="category.AssetCategoryId"
+                  (click)="showAssetType = false">
+                  {{category.AssetCategoryName}}
+                </mat-option>
+              </mat-select>
+              <!-- <mat-error
+                *ngIf="submitted || f1.AssetCategory.errors || f1.AssetCategory.dirty || f1.AssetCategory.touched">
+                <span *ngIf="f1.AssetCategory.errors?.required">Asset Category is required</span>
+              </mat-error> -->
+            </mat-form-field>
+          </div>
+          <div fxFlex="33"  class="pr-1" *ngIf="enableAssetFormField">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">{{displayedHeaders[19]}}</mat-label>
+              <mat-select disableOptionCentering [disabled]="showAssetType"  
+                TypeOfAsset="TypeOfAsset" [formControl]="AssetInfo.controls['TypeOfAsset']"
+                placeholder="Select Asset Type">
+                <mat-option>
+                  <ngx-mat-select-search [placeholderLabel]="'Select Asset Type'" noEntriesFoundLabel="{{header.NoRecordFound}}"
+                    [formControl]="AssetInfo.controls['assettypeFilter']"></ngx-mat-select-search>
+                </mat-option>
+                <mat-option *ngFor="let assettype of filteredAssetType | async" [value]="assettype"
+                  (click)="showAssetSubType = false">
+                  {{assettype.TypeOfAsset}}
+                </mat-option>
+              </mat-select>
+              <!-- <mat-error *ngIf="submitted || f1.TypeOfAsset.errors || f1.TypeOfAsset.dirty || f1.TypeOfAsset.touched">
+                <span *ngIf="f1.TypeOfAsset.errors?.required">Asset Type is required</span>
+              </mat-error> -->
+            </mat-form-field>
+          </div>
+      
+         <div fxFlex="33"  class="pr-1" *ngIf="enableAssetFormField">
+            <mat-form-field class="full-width">
+              <mat-label class="label">Cost Center</mat-label> 
+              <mat-label class="label">{{displayedHeaders[20]}}</mat-label>
+  
+              <mat-select disableOptionCentering [disabled]="showAssetSubType" SubTypeOfAsset="SubTypeOfAsset"
+                [formControl]="AssetInfo.controls['SubTypeOfAsset']"
+                placeholder="Select Asset Subtype">
+                <mat-option>
+                  <ngx-mat-select-search [placeholderLabel]="'Search'" noEntriesFoundLabel="{{header.NoRecordFound}}"
+                    [formControl]="AssetInfo.controls['assetsubtypeFilter']"></ngx-mat-select-search>
+                </mat-option>
+                <mat-option *ngFor="let assetsubtype of filteredAssetSubtype  | async" [value]="assetsubtype">
+                  {{assetsubtype.SubTypeOfAsset}}
+                </mat-option>
+              </mat-select>
+              <!-- <mat-error
+                *ngIf="submitted || f1.SubTypeOfAsset.errors || f1.SubTypeOfAsset.dirty || f1.SubTypeOfAsset.touched">
+                <span *ngIf="f1.SubTypeOfAsset.errors?.required">Asset Subtype is required</span>
+              </mat-error> -->
+            </mat-form-field>
+          </div>
+          <div fxFlex="33"  class="pr-1" *ngIf="enableAssetFormField">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">{{displayedHeaders[21]}}</mat-label>
+                  <input matInput maxlength="50" name="ADL2"   placeholder="Enter Asset Name"
+                    ADL2="ADL2" [formControl]="AssetInfo.controls['ADL2']" autocomplete="off">
+                  <!-- <mat-error *ngIf="submitted || f1.ADL2.errors || f1.ADL2.dirty || f1.ADL2.touched">
+                    <span *ngIf="f1.ADL2.errors?.required">Asset Name is required</span>
+                  </mat-error> -->
+            </mat-form-field>
+          </div>
+          <div fxFlex="33"  class="pr-1" *ngIf="enableAssetFormField">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">{{displayedHeaders[22]}}</mat-label>
+                  <input matInput maxlength="45" name="ADL3" ADL3="ADL3"  placeholder="Enter Asset Description" 
+                    [formControl]="AssetInfo.controls['ADL3']" autocomplete="off">
+                  <!-- <mat-error *ngIf="submitted || f1.ADL3.errors || f1.ADL3.dirty || f1.ADL3.touched">
+                    <span *ngIf="f1.ADL3.errors?.required">Asset Description is required</span>
+                  </mat-error> -->
+            </mat-form-field>
+          </div>
+      
+          <div fxFlex="33"  class="pr-1" *ngIf="enableAssetFormField">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">{{displayedHeaders[23]}}</mat-label>
+  
+              <mat-select disableOptionCentering Suplier="Suplier"  [formControl]="AssetInfo.controls['Suplier']" 
+                placeholder="Select Vendor">
+                <mat-option>
+                  <ngx-mat-select-search [placeholderLabel]="'Search'" noEntriesFoundLabel="{{header.NoRecordFound}}"
+                    [formControl]="AssetInfo.controls['vendorFilter']"></ngx-mat-select-search>
+                </mat-option>
+                <mat-option *ngFor="let vendor of filteredVendor  | async" [value]="vendor">
+                  {{vendor.SupplierName}}
+                </mat-option>
+              </mat-select>
+              <!-- <mat-error *ngIf="submitted || f1.Suplier.errors || f1.Suplier.dirty || f1.Suplier.touched">
+                <span *ngIf="f1.Suplier.errors?.required">Supplier is required</span>
+              </mat-error> -->
+            </mat-form-field>
+          </div>
+          <div fxFlex="33"  class="pr-1" *ngIf="enableAssetFormField">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">{{displayedHeaders[24]}}</mat-label>
+                  <input matInput maxlength="4" name="UsefulLife" UsefulLife="UsefulLife"  
+                    placeholder="Enter Useful Life" [pattern]="numericPattern"
+                    [formControl]="AssetInfo.controls['UsefulLife']" autocomplete="off">
+                  <!-- <mat-error *ngIf="submitted || f1.UsefulLife.errors || f1.UsefulLife.dirty || f1.UsefulLife.touched">
+                    <span *ngIf="f1.UsefulLife.errors?.pattern">Enter only numeric values</span>
+                    <span *ngIf="f1.UsefulLife.errors?.required">Useful Life is required</span>
+  
+                  </mat-error> -->
+            </mat-form-field>
+          </div>
+          <div fxFlex="33"  class="pr-1" *ngIf="enableAssetFormField">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">{{displayedHeaders[25]}}</mat-label>
+              <input matInput [matDatepicker]="picker1" ExpiryDate="ExpiryDate"  
+                (dateChange)="changeAssetExpiryDate($event)" name="ExpiryDate"
+                [formControl]="AssetInfo.controls['ExpiryDate']" autocomplete="off">
+              <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+              <mat-datepicker #picker1></mat-datepicker>
+              <!-- <mat-error *ngIf="submitted || f1.ExpiryDate.errors || f1.ExpiryDate.dirty || f1.ExpiryDate.touched">
+                <span *ngIf="f1.ExpiryDate.errors?.required">Expiry Date is required</span>
+              </mat-error> -->
+            </mat-form-field>
+          </div>
+          <div fxFlex="33"  class="pr-1" *ngIf="enableAssetFormField">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">{{displayedHeaders[26]}}</mat-label>
+  
+                  <mat-select disableOptionCentering asset_condition="asset_condition" 
+                    [formControl]="AssetInfo.controls['asset_condition']" placeholder="Select Asset Condition">
+                    <mat-option>
+                      <ngx-mat-select-search [placeholderLabel]="'Search'"  noEntriesFoundLabel="{{header.NoRecordFound}}"
+                        [formControl]="AssetInfo.controls['assetconditionFilter']"></ngx-mat-select-search>
+                    </mat-option>
+                    <mat-option *ngFor="let assetCondition of filteredAssetCondition  | async"
+                      [value]="assetCondition">
+                      {{assetCondition.AssetCondition}}
+                    </mat-option>
+                  </mat-select>
+                  <!-- <mat-error
+                    *ngIf="submitted || f1.asset_condition.errors || f1.asset_condition.dirty || f1.asset_condition.touched">
+                    <span *ngIf="f1.asset_condition.errors?.required">Asset Condition is required</span>
+                  </mat-error> -->
+            </mat-form-field>
+          </div>
+            <div fxFlex="33"  class="pr-1" *ngIf="enableAssetFormField">
+              <mat-form-field class="full-width" appearance="outline">
+                <mat-label class="label">{{displayedHeaders[27]}}</mat-label>
+                  <input matInput minlength="2" maxlength="100" placeholder="Enter User"  name="User"
+                    [formControl]="AssetInfo.controls['User']" autocomplete="off">
+              </mat-form-field>
+            </div>
+  
+              <div fxFlex="33"  class="pr-1" *ngIf="enableAssetFormField">
+            <mat-form-field class="full-width" appearance="outline">
+                <mat-label class="label">{{displayedHeaders[28]}}</mat-label>
+                  <input matInput minlength="2" maxlength="100" name="custodian" placeholder="Enter Custodian"
+                    [formControl]="AssetInfo.controls['Custodian']" autocomplete="off">
+              </mat-form-field>
+          </div>
+           
+        </div>
+          </form>
+          <button style="float:right;margin-right:2%" class="btn" mat-raised-button color="primary" (click)="nextStep(1)">Next</button>
+          <button style="float:right;margin-right:2%" class="btn" mat-raised-button color="primary" >Save & Submit For Approval</button>
+          <button style="float:right;margin-right:2%" class="btn" mat-raised-button color="primary" >Save</button>   
+      </div>
+    </mat-tab>
+  
+    <mat-tab label="Cost" [disabled]="this.AssetInfo.invalid">
+      <div class="md-label">
+        <form [formGroup]="CostForm" (ngSubmit)="onCostFormSubmit()">
+          <div fxLayout="row wrap" fxLayout.lt-sm="column">
+            <div fxFlex="33"  class="pr-1 full" *ngIf="enableCostFormField">
+              <mat-form-field class="full-width" appearance="outline">
+                <mat-label class="label">{{displayedCostHeaders[0]}}</mat-label>
+                  <input matInput AcquisitionCost="AcquisitionCost" maxlength="17" name="AcquisitionCost"
+                    [pattern]="decimalNumericPattern" maxlength="17"
+                    [formControl]="CostForm.controls['AcquisitionCost']" autocomplete="off" placeholder="Enter Cost">
+                  <!-- <mat-error
+                    *ngIf="submitted || f2.AcquisitionCost.errors || f2.AcquisitionCost.dirty || f2.AcquisitionCost.touched">
+                    <span *ngIf="f2.AcquisitionCost.errors?.required">Cost is required</span>
+                    <span *ngIf="f2.AcquisitionCost.errors?.pattern">Enter only numeric values upto 3 desimal
+                      points</span>
+                  </mat-error> -->
+              </mat-form-field>
+            </div>
+        
+            <div fxFlex="33"  class="pr-1 full" *ngIf="enableCostFormField">
+              <mat-form-field class="full-width" appearance="outline">
+                <mat-label class="label">{{displayedCostHeaders[1]}}</mat-label>
+                <input matInput maxlength="17" name="WDV" WDV="WDV" [pattern]="decimalNumericPattern"
+                  maxlength="17" [formControl]="CostForm.controls['WDV']"
+                  autocomplete="off" placeholder="Enter WDV">
+                <!-- <mat-error *ngIf="submitted || f2.WDV.errors || f2.WDV.dirty || f2.WDV.touched">
+                  <span *ngIf="f2.WDV.errors?.required">WDV is required</span>
+                  <span *ngIf="f2.WDV.errors?.pattern">Enter only numeric values upto 3 desimal points</span>
+                </mat-error> -->
+              </mat-form-field>
+            </div>
+        
+           <div fxFlex="33"  class="pr-1 full" *ngIf="enableCostFormField">
+              <mat-form-field class="full-width" appearance="outline">
+                <mat-label class="label">{{displayedCostHeaders[2]}}</mat-label>
+                <input [matDatepicker]="picker" matInput DepnRunDate="DepnRunDate" name="DepnRunDate"
+                  (dateChange)="changeDepnRunDate($event)" [formControl]="CostForm.controls['DepnRunDate']"
+                  autocomplete="off">
+                <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                <mat-datepicker #picker></mat-datepicker>
+              </mat-form-field>
+            </div>
+        
+            <div fxFlex="33"  class="pr-1" *ngIf="enableCostFormField">
+              <mat-form-field class="full-width" appearance="outline">
+                <mat-label class="label">{{displayedCostHeaders[3]}}</mat-label>
+                <input matInput minlength="0" maxlength="100" name="ResidualValue" ResidualValue="ResidualValue"
+                  [pattern]="residualValuePattern" placeholder="Enter Residual Value"
+                  [formControl]="CostForm.controls['ResidualValue']" autocomplete="off">
+                <!-- <mat-error
+                  *ngIf="submitted || f2.ResidualValue.errors || f2.ResidualValue.dirty || f2.ResidualValue.touched">
+                  <span *ngIf="f2.ResidualValue.errors?.pattern">Enter only numeric values upto 2 desimal points</span>
+                </mat-error> -->
+              </mat-form-field>
+            </div>
+            </div>
+            </form>
+            <button mat-raised-button color="warn" type="button" (click)="previousStep(0)">Previous</button>
+            <button class="btn" mat-raised-button color="primary" [disabled]="CostForm.invalid"
+              (click)="nextStep(2)">Next</button>
+          </div> 
+    </mat-tab>
+  
+    <mat-tab label="Maintenance" [disabled]="CostForm.invalid"> 
+      <div class="md-label">
+        <form [formGroup]="Maintenance"  (ngSubmit)="onMaintenanceFormSubmit()">
+          <div fxLayout="row wrap" fxLayout.lt-sm="column">
+            <div fxFlex="33"  class="pr-1 full" *ngIf="enableMaintainanceField">
+              <mat-form-field class="full-width" appearance="outline">
+                <mat-label class="label">{{displayedMaintenanceHeaders[0]}}</mat-label>
+                <input matInput [matDatepicker]="picker2" name="InsuranceFrom"
+                   InsuranceFrom="InsuranceFrom"
+                  (dateChange)="changeInsuranceStart($event)" [formControl]="Maintenance.controls['InsuranceFrom']"
+                  autocomplete="off">
+                <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                <mat-datepicker #picker2></mat-datepicker>
+              </mat-form-field>
+            </div>
+        
+            <div fxFlex="33"  class="pr-1 full" *ngIf="enableMaintainanceField">
+              <mat-form-field class="full-width" appearance="outline">
+                <mat-label class="label">{{displayedMaintenanceHeaders[1]}}</mat-label>
+                <input matInput [matDatepicker]="picker4" name="InsuranceTo" InsuranceTo="InsuranceTo"
+                   (dateChange)="changeInsuranceEnd($event)"
+                  [formControl]="Maintenance.controls['InsuranceTo']" autocomplete="off">
+                <mat-datepicker-toggle matSuffix [for]="picker4"></mat-datepicker-toggle>
+                <mat-datepicker #picker4></mat-datepicker>
+              </mat-form-field>
+            </div>
+        
+           <div fxFlex="33"  class="pr-1 full" *ngIf="enableMaintainanceField">
+              <mat-form-field class="full-width" appearance="outline">
+                <mat-label class="label">{{displayedMaintenanceHeaders[2]}}</mat-label>
+                <input matInput name="InsuranceVendor" InsuranceVendor="InsuranceVendor"
+                   [formControl]="Maintenance.controls['InsuranceVendor']"
+                  autocomplete="off">
+              </mat-form-field>
+            </div>
+        
+            <div fxFlex="33"  class="pr-1" *ngIf="enableMaintainanceField">
+              <mat-form-field class="full-width" appearance="outline">
+                <mat-label class="label">{{displayedMaintenanceHeaders[3]}}</mat-label>
+                <input matInput [matDatepicker]="picker5" name="AMCStart" (dateChange)="changeAMCStartDate($event)"
+                  [formControl]="Maintenance.controls['AMCStart']" autocomplete="off">
+                <mat-datepicker-toggle matSuffix [for]="picker5"></mat-datepicker-toggle>
+                <mat-datepicker #picker5></mat-datepicker>
+              </mat-form-field>
+            </div>
+            <div fxFlex="33"  class="pr-1" *ngIf="enableMaintainanceField">
+              <mat-form-field class="full-width" appearance="outline">
+                <mat-label class="label">{{displayedMaintenanceHeaders[4]}}</mat-label>
+                  <input matInput [matDatepicker]="picker6" name="AMCEnd" (dateChange)="changeAMCEndDate($event)"
+                    [formControl]="Maintenance.controls['AMCEnd']" autocomplete="off">
+                  <mat-datepicker-toggle matSuffix [for]="picker6"></mat-datepicker-toggle>
+                  <mat-datepicker #picker6></mat-datepicker>
+              </mat-form-field>
+            </div>
+            <div fxFlex="33"  class="pr-1" *ngIf="enableMaintainanceField">
+              <mat-form-field class="full-width" appearance="outline">
+                <mat-label class="label">{{displayedMaintenanceHeaders[5]}}</mat-label>
+                <input matInput name="AMCVendor" placeholder="Enter AMC Vendor"
+                  [formControl]="Maintenance.controls['AMCVendor']" autocomplete="off">
+              </mat-form-field>
+            </div>
+        
+            <div fxFlex="33"  class="pr-1" *ngIf="enableMaintainanceField">
+              <mat-form-field class="full-width" appearance="outline">
+                <mat-label class="label">{{displayedMaintenanceHeaders[6]}}</mat-label>
+                  <input matInput [matDatepicker]="picker7" name="WarrantyStartDate"
+                    (dateChange)="changeWarrantyStartDate($event)"
+                    [formControl]="Maintenance.controls['WarrantyStartDate']" autocomplete="off">
+                  <mat-datepicker-toggle matSuffix [for]="picker7"></mat-datepicker-toggle>
+                  <mat-datepicker #picker7></mat-datepicker>
+              </mat-form-field>
+            </div>
+  
+            <div fxFlex="33"  class="pr-1" *ngIf="enableMaintainanceField">
+              <mat-form-field class="full-width" appearance="outline">
+                <mat-label class="label">{{displayedMaintenanceHeaders[7]}}</mat-label>
+                <input matInput [matDatepicker]="picker8" name="WarrantyEnd"
+                  (dateChange)="changeWarrantyEndDate($event)" [formControl]="Maintenance.controls['WarrantyEnd']"
+                  autocomplete="off">
+                <mat-datepicker-toggle matSuffix [for]="picker8"></mat-datepicker-toggle>
+                <mat-datepicker #picker8></mat-datepicker>
+              </mat-form-field>
+            </div>
+        
+           <div fxFlex="33"  class="pr-1"*ngIf="enableMaintainanceField">
+              <mat-form-field class="full-width" appearance="outline">
+                <mat-label class="label">{{displayedMaintenanceHeaders[8]}}</mat-label>
+                  <input matInput maxlength="30" name="WarrantyPeriod"
+                    [formControl]="Maintenance.controls['WarrantyPeriod']" placeholder="Enter Warranty Period"
+                    autocomplete="off">
+              </mat-form-field>
+            </div>
+            <div fxFlex="33"  class="pr-1" *ngIf="enableMaintainanceField">
+              <mat-form-field class="full-width" appearance="outline">
+                <mat-label class="label">{{displayedMaintenanceHeaders[9]}}</mat-label>
+                  <input matInput maxlength="30" name="WarrantyCost" [pattern]="residualValuePattern"
+                    WarrantyCost="WarrantyCost" placeholder="Enter Warranty Cost"
+                    [formControl]="Maintenance.controls['WarrantyCost']" autocomplete="off">
+                  <!-- <mat-error
+                    *ngIf="submitted || f3.WarrantyCost.errors || f3.WarrantyCost.dirty || f3.WarrantyCost.touched">
+                    <span *ngIf="f3.WarrantyCost.errors?.pattern">Enter only numeric values upto 2 desimal points</span>
+                  </mat-error> -->
+              </mat-form-field>
+            </div>
+        
+            <div fxFlex="33"  class="pr-1" *ngIf="enableMaintainanceField">
+              <mat-form-field class="full-width" appearance="outline">
+                <mat-label class="label">{{displayedMaintenanceHeaders[10]}}</mat-label>
+                <input matInput maxlength="30" name="WarrantyTerms"
+                  [formControl]="Maintenance.controls['WarrantyTerms']" placeholder="Enter Warranty Terms"
+                  autocomplete="off">
+              </mat-form-field>
+            </div>
+        
+           <div fxFlex="33"  class="pr-1" *ngIf="enableMaintainanceField"> 
+              <mat-form-field class="full-width" appearance="outline">
+                <mat-label class="label">{{displayedMaintenanceHeaders[11]}}</mat-label>
+                  <input matInput maxlength="30" name="Remarks" [formControl]="Maintenance.controls['Remarks']"
+                    placeholder="Enter Remarks" autocomplete="off">
+              </mat-form-field>
+            </div>
+            </div>
+            </form>
+            <button class="btn" mat-raised-button color="warn" type="button" (click)="previousStep(1)">Previous</button>
+            <button style="float:right;margin-right:2%" class="btn" mat-raised-button color="primary" (click)="nextStep(3)">Next</button>
+          </div> 
+    </mat-tab>
+  
+    <mat-tab label="Other Info" [disabled]="Maintenance.invalid"> 
+     <div class="md-label">
+      <form [formGroup]="OtherInfo" (ngSubmit)="onOtherInfoSubmit()">
+        <div fxLayout="row wrap" fxLayout.lt-sm="column">
+          <div fxFlex="33"  class="pr-1 full" *ngIf="enableOtherInfoField">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">{{displayedOtherInfoHeaders[0]}}</mat-label>
+                  <input matInput name="IsMetal" [formControl]="OtherInfo.controls['IsMetal']" autocomplete="off"
+                    maxlength="200">
+            </mat-form-field>
+          </div>
+  
+          <div fxFlex="33"  class="pr-1 full" *ngIf="enableOtherInfoField">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">{{displayedOtherInfoHeaders[1]}}</mat-label>
+              <input matInput name="CPPNumber" [formControl]="OtherInfo.controls['CPPNumber']" autocomplete="off"
+                maxlength="50">
+            </mat-form-field>
+          </div>
+      
+          <div fxFlex="33"  class="pr-1 full" *ngIf="enableOtherInfoField">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">{{displayedOtherInfoHeaders[2]}}</mat-label>
+                  <input matInput name="AMCComment" [formControl]="OtherInfo.controls['AMCComment']" autocomplete="off"
+                    maxlength="150">
+            </mat-form-field>
+          </div>
+      
+         <div fxFlex="33"  class="pr-1" *ngIf="enableOtherInfoField">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">{{displayedOtherInfoHeaders[3]}}</mat-label>
+                  <input matInput name="Budget" [formControl]="OtherInfo.controls['Budget']" autocomplete="off"
+                    maxlength="250">
+            </mat-form-field>
+          </div>
+      
+          <div fxFlex="33"  class="pr-1" *ngIf="enableOtherInfoField">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">{{displayedOtherInfoHeaders[4]}}</mat-label>
+              <input matInput [matDatepicker]="picker9" name="GRNDate" [formControl]="OtherInfo.controls['GRNDate']"
+                autocomplete="off" (keypress)="keyPressNumbers($event)" maxlength="10">
+              <mat-datepicker-toggle matSuffix [for]="picker9"></mat-datepicker-toggle>
+              <mat-datepicker #picker9></mat-datepicker>
+            </mat-form-field>
+          </div>
+  
+          <div fxFlex="33"  class="pr-1" *ngIf="enableOtherInfoField">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">{{displayedOtherInfoHeaders[5]}}</mat-label>
+                  <input matInput name="Description" [formControl]="OtherInfo.controls['Description']" autocomplete="off"
+                    maxlength="50">
+            </mat-form-field>
+          </div>
+  
+          <div fxFlex="33"  class="pr-1" *ngIf="enableOtherInfoField">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">{{displayedOtherInfoHeaders[6]}}</mat-label>
+                  <input matInput name="Remark" [formControl]="OtherInfo.controls['Remark']" autocomplete="off"
+                    maxlength="250">
+            </mat-form-field>
+          </div>
+          <div fxFlex="33"  class="pr-1" *ngIf="enableOtherInfoField">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">{{displayedOtherInfoHeaders[7]}}</mat-label>
+                  <input matInput name="AccountingStatus" [formControl]="OtherInfo.controls['AccountingStatus']"
+                    autocomplete="off" maxlength="50">
+            </mat-form-field>
+          </div>
+          <div fxFlex="33"  class="pr-1" *ngIf="enableOtherInfoField">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">{{displayedOtherInfoHeaders[8]}}</mat-label>
+              <input matInput name="Division" [formControl]="OtherInfo.controls['Division']" autocomplete="off"
+                maxlength="50">
+            </mat-form-field>
+          </div>
+      
+          <div fxFlex="33"  class="pr-1" *ngIf="enableOtherInfoField">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">{{displayedOtherInfoHeaders[9]}}</mat-label>
+                  <input matInput name="ExpenseAccount" [formControl]="OtherInfo.controls['ExpenseAccount']"
+                    autocomplete="off" maxlength="50">
+            </mat-form-field>
+          </div>
+      
+         <div fxFlex="33"  class="pr-1" *ngIf="enableOtherInfoField">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">{{displayedOtherInfoHeaders[10]}}</mat-label>
+                  <input matInput name="CostAccount" [formControl]="OtherInfo.controls['CostAccount']" autocomplete="off"
+                    maxlength="50">
+            </mat-form-field>
+          </div>
+      
+          <div fxFlex="33"  class="pr-1" *ngIf="enableOtherInfoField">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">{{displayedOtherInfoHeaders[11]}}</mat-label>
+                  <input matInput name="ReverseAccount" [formControl]="OtherInfo.controls['ReverseAccount']"
+                    autocomplete="off" maxlength="50">
+            </mat-form-field>
+          </div>
+      
+         <div fxFlex="33"  class="pr-1" *ngIf="enableOtherInfoField">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">{{displayedOtherInfoHeaders[12]}}</mat-label>
+                  <input matInput name="Department" [formControl]="OtherInfo.controls['Department']" autocomplete="off"
+                    maxlength="50">
+            </mat-form-field>
+          </div>
+          <div fxFlex="33"  class="pr-1" *ngIf="enableOtherInfoField">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">{{displayedOtherInfoHeaders[13]}}</mat-label>
+              <input matInput name="Area" [formControl]="OtherInfo.controls['Area']" autocomplete="off"
+                maxlength="50">
+            </mat-form-field>
+          </div>
+      
+          <div fxFlex="33"  class="pr-1" *ngIf="enableOtherInfoField">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">{{displayedOtherInfoHeaders[14]}}</mat-label>
+              <input matInput name="Merchandise" [formControl]="OtherInfo.controls['Merchandise']" autocomplete="off"
+                maxlength="50">
+            </mat-form-field>
+          </div>
+      
+         <div fxFlex="33"  class="pr-1" *ngIf="enableOtherInfoField">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">{{displayedOtherInfoHeaders[15]}}</mat-label>
+                  <input matInput name="InterCompany" [formControl]="OtherInfo.controls['InterCompany'] "
+                    autocomplete="off" maxlength="50">
+            </mat-form-field>
+          </div>
+      
+          <div fxFlex="33"  class="pr-1" *ngIf="enableOtherInfoField">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">{{displayedOtherInfoHeaders[16]}}</mat-label>
+              <input matInput name="ServiceProvider" [formControl]="OtherInfo.controls['ServiceProvider']"
+                autocomplete="off" maxlength="50">
+            </mat-form-field>
+          </div>
+          <div fxFlex="33"  class="pr-1" *ngIf="enableOtherInfoField">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">{{displayedOtherInfoHeaders[17]}}</mat-label>
+                  <input matInput name="AccumulatedDepreciation"
+                    [formControl]="OtherInfo.controls['AccumulatedDepreciation']" autocomplete="off" maxlength="50">
+            </mat-form-field>
+          </div>
+          <div fxFlex="33"  class="pr-1" *ngIf="enableOtherInfoField">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">{{displayedOtherInfoHeaders[18]}}</mat-label>
+                  <input matInput name="Class" [formControl]="OtherInfo.controls['Class']" autocomplete="off"
+                    maxlength="50">
+            </mat-form-field>
+          </div>
+          <div fxFlex="33"  class="pr-1" *ngIf="enableOtherInfoField">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">{{displayedOtherInfoHeaders[19]}}</mat-label>
+              <input matInput name="Loc2" [formControl]="OtherInfo.controls['Loc2']" autocomplete="off"
+                maxlength="20">
+            </mat-form-field>
+          </div>
+      
+          <div fxFlex="33"  class="pr-1" *ngIf="enableOtherInfoField">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">{{displayedOtherInfoHeaders[20]}}</mat-label>
+              <input matInput name="Loc3" [formControl]="OtherInfo.controls['Loc3']" autocomplete="off"
+                maxlength="20">
+            </mat-form-field>
+          </div>
+      
+         <div fxFlex="33"  class="pr-1" *ngIf="enableOtherInfoField">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">{{displayedOtherInfoHeaders[21]}}</mat-label>
+                  <input matInput name="Loc4" [formControl]="OtherInfo.controls['Loc4']" autocomplete="off"
+                    maxlength="20">
+            </mat-form-field>
+          </div>
+          <div fxFlex="33"  class="pr-1" *ngIf="enableOtherInfoField">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">{{displayedOtherInfoHeaders[22]}}</mat-label>
+                  <input matInput name="Loc5" [formControl]="OtherInfo.controls['Loc5']" autocomplete="off"
+                    maxlength="20">
+            </mat-form-field>
+          </div>
+      
+          <div fxFlex="33"  class="pr-1" *ngIf="enableOtherInfoField">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">{{displayedOtherInfoHeaders[23]}}</mat-label>
+                  <input matInput name="FutureUse" [formControl]="OtherInfo.controls['FutureUse']" autocomplete="off"
+                    maxlength="20">
+            </mat-form-field>
+          </div>
+      
+         <div fxFlex="33"  class="pr-1" *ngIf="enableOtherInfoField">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">{{displayedOtherInfoHeaders[24]}}</mat-label>
+              <input matInput name="InterUnit" [formControl]="OtherInfo.controls['InterUnit']" autocomplete="off"
+                maxlength="20">
+            </mat-form-field>
+          </div>
+      
+          <div fxFlex="33"  class="pr-1" *ngIf="enableOtherInfoField">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">{{displayedOtherInfoHeaders[25]}}</mat-label>
+                  <input matInput name="AccountClearing" [formControl]="OtherInfo.controls['AccountClearing']"
+                    autocomplete="off" maxlength="20">
+            </mat-form-field>
+          </div>
+          <div fxFlex="33"  class="pr-1" *ngIf="enableOtherInfoField">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">{{displayedOtherInfoHeaders[26]}}</mat-label>
+                  <input matInput name="DepartmentClearing" [formControl]="OtherInfo.controls['DepartmentClearing']"
+                    autocomplete="off" maxlength="20">
+            </mat-form-field>
+          </div>
+          <div fxFlex="33"  class="pr-1" *ngIf="enableOtherInfoField">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">{{displayedOtherInfoHeaders[27]}}</mat-label>
+              <input matInput name="Comments" [formControl]="OtherInfo.controls['Comments']" autocomplete="off"
+                maxlength="150">
+            </mat-form-field>
+          </div>
+          <div fxFlex="33"  class="pr-1" *ngIf="enableOtherInfoField">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">{{displayedOtherInfoHeaders[28]}}</mat-label>
+              <input matInput name="Upl" [formControl]="OtherInfo.controls['Upl']" maxlength="50">
+            </mat-form-field>
+          </div>
+      
+          <div fxFlex="33"  class="pr-1" *ngIf="enableOtherInfoField">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">{{displayedOtherInfoHeaders[29]}}</mat-label>
+                  <input matInput name="DepreciationReserve" [formControl]="OtherInfo.controls['DepreciationReserve']"
+                    autocomplete="off" maxlength="50">
+            </mat-form-field>
+          </div>
+      
+         <div fxFlex="33"  class="pr-1" *ngIf="enableOtherInfoField">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">{{displayedOtherInfoHeaders[30]}}</mat-label>
+              <input matInput name="Project" [formControl]="OtherInfo.controls['Project']" autocomplete="off"
+                maxlength="50">
+            </mat-form-field>
+          </div>
+          <div fxFlex="33"  class="pr-1" *ngIf="enableOtherInfoField">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">{{displayedOtherInfoHeaders[31]}}</mat-label>
+              <input matInput name="AmortizationStartDate" [formControl]="OtherInfo.controls['AmortizationStartDate']"
+                autocomplete="off" (keypress)="keyPressNumbers($event)" maxlength="20">
+            </mat-form-field>
+          </div>
+      
+          <div fxFlex="33"  class="pr-1" *ngIf="enableOtherInfoField">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">{{displayedOtherInfoHeaders[32]}}</mat-label>
+                  <input matInput name="AmortizeNBV" [formControl]="OtherInfo.controls['AmortizeNBV']" autocomplete="off"
+                    maxlength="50">
+            </mat-form-field>
+          </div>
+      
+         <div fxFlex="33"  class="pr-1" *ngIf="enableOtherInfoField">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">{{displayedOtherInfoHeaders[33]}}</mat-label>
+                  <input matInput name="LifeInMonths" [formControl]="OtherInfo.controls['LifeInMonths']"
+                    autocomplete="off" (keypress)="keyPressNumbers($event)">
+            </mat-form-field>
+          </div>
+      
+          <div fxFlex="33"  class="pr-1" *ngIf="enableOtherInfoField">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">{{displayedOtherInfoHeaders[34]}}</mat-label>
+                  <input matInput name="Messages" [formControl]="OtherInfo.controls['Messages']" autocomplete="off"
+                    maxlength="50">
+            </mat-form-field>
+          </div>
+          </div>
+          </form> 
+          <button mat-raised-button color="warn" type="button" (click)="previousStep(2)">Previous</button>
+          <button class="btn" mat-raised-button color="primary" (click)="nextStep(4)">Next</button>
+      </div>  
+    </mat-tab>
+  
+    <mat-tab label="Document"> 
+      <div class="md-label">
+        <form [formGroup]="Download" (ngSubmit)="onDownloadFormSubmit">
+          <div fxLayout="row wrap" fxLayout.lt-sm="column">
+            <div fxFlex="33"  class="pr-1 full" *ngIf="enableDownloadField">
+              <mat-form-field class="full-width">
+                <mat-label class="label">{{displayedUploadHeaders[0]}}</mat-label>
+                  <mat-select disableOptionCentering [formControl]="Download.controls['DocumentType']"
+                    [(ngModel)]="DocumentType">
+                    <mat-option>
+                      <ngx-mat-select-search [placeholderLabel]="'Search'"  noEntriesFoundLabel="{{header.NoRecordFound}}"
+                        [formControl]="Download.controls['UploadFilter']"></ngx-mat-select-search>
+                    </mat-option>
+                    <mat-option *ngFor="let upload of filteredUpload | async " [value]="upload.Displayname">
+                      {{upload.Displayname}} </mat-option>
+                    <!--<mat-option value="Asset Photo">Asset Photo</mat-option>
+                    <mat-option value="Insurance Policy">Insurance Policy</mat-option>
+                    <mat-option value="AMC Document">AMC Document</mat-option>
+                    <mat-option value="Invoice">Invoice</mat-option>
+                    <mat-option value="Software Document">Software Document</mat-option>-->
+                  </mat-select>
+              </mat-form-field>
+            </div>
+            <div fxFlex="33"  class="pr-1" *ngIf="enableDownloadField">
+                <!-- <label style="margin-bottom: 5px;">File Upload</label><br>
+                  <input type="file" ng2FileSelect style="padding-top: 7px" [formControl]="Download.controls['FileUpload']"/> -->
+                  <div fxFlex="60" class="mt-12 responsive">
+                    <input type="file" ng2FileSelect class="uploadSelectClass"
+                      [formControl]="Download.controls['FileUpload']" autocomplete="off" />
+                
+                  </div>
+            </div>
+          </div>  
+      </form> 
+  
+      <mat-table [dataSource]="datasource" matSort style="margin-bottom: 20px">
+  
+        <ng-container matColumnDef="DocumentType" style="padding-left: 5%;margin-right: 5%;">
+          <mat-header-cell *matHeaderCellDef> Document Type </mat-header-cell>
+          <td mat-cell *matCellDef="let row">{{row.DocumentType}}</td>
+        </ng-container>
+  
+        <ng-container matColumnDef="DocumentName">
+          <mat-header-cell *matHeaderCellDef> Document Name </mat-header-cell>
+          <td mat-cell *matCellDef="let row">{{row.DocumentName}}</td>
+        </ng-container>
+      
+        <ng-container matColumnDef="DeleteDocument">
+          <mat-header-cell  *matHeaderCellDef> Delete Document</mat-header-cell>
+          <td mat-cell *matCellDef="let i-index">
+            <button class="" type="text" (click)="onRemove(i)">delete</button>
+          </td>
+          </ng-container>
+          <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+       </mat-table>
+       <button mat-raised-button color="warn" type="button" (click)="previousStep(3)">Previous</button>
+       <button class="btn" mat-raised-button color="primary" (click)="nextStep(5)">Next</button>
+      </div>  
+    </mat-tab>
+  
+    <mat-tab label="Hardware Info" (ngSubmit)="onHardwareFormSubmit">
+      <div class="md-label">
+        <form [formGroup]="HardwareInfo">
+  
+          <div fxLayout="row wrap" fxLayout.lt-sm="column">
+            <div fxFlex="33"  class="pr-1 full" *ngIf="enableHardwareInfoField">
+              <mat-form-field class="full-width">
+                <mat-label class="label">{{displayedHardwareInfoHeaders[0]}}</mat-label>
+                  <mat-select disableOptionCentering [formControl]="HardwareInfo.controls['OperatingSystem']"
+                    [(ngModel)]="OperatingSystem">
+                    <!--<mat-option label="Select Operating System">Select Operating System</mat-option>
+                    <mat-option value="Windows">Windows</mat-option>
+                    <mat-option value="Mac">Mac</mat-option>-->
+                    <mat-option>
+                      <ngx-mat-select-search [placeholderLabel]="'Search'"  noEntriesFoundLabel="{{header.NoRecordFound}}"
+                        [formControl]="HardwareInfo.controls['OperatingSystemFilter']"></ngx-mat-select-search>
+                    </mat-option>
+                    <mat-option *ngFor="let os of filteredOperatingSystemName | async " [value]="os">
+                      {{os.OperatingSystemName}}</mat-option>
+                    </mat-select>
+              </mat-form-field>
+            </div>
+        
+            <div fxFlex="33"  class="pr-1 full">
+              <mat-form-field class="full-width" *ngIf="enableHardwareInfoField">
+                <mat-label class="label">{{displayedHardwareInfoHeaders[1]}}</mat-label>
+                <mat-select disableOptionCentering [formControl]="HardwareInfo.controls['CPUClass']"
+                  [(ngModel)]="CPUClass">
+                  <!--<mat-option label="Select CPU Class">Select CPU Class</mat-option>
+                  <mat-option value="1|model1">1|model1</mat-option>-->
+                  <mat-option>
+                    <ngx-mat-select-search [placeholderLabel]="'Search'"  noEntriesFoundLabel="{{header.NoRecordFound}}"
+                      [formControl]="HardwareInfo.controls['CPUClassDataFilter']"></ngx-mat-select-search>
+                  </mat-option>
+                  <mat-option *ngFor="let cpu of filteredCPUClass | async " [value]="cpu">{{cpu.CpuClassName}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+        
+           <div fxFlex="33"  class="pr-1 full" *ngIf="enableHardwareInfoField">
+              <mat-form-field class="full-width">
+                <mat-label class="label">{{displayedHardwareInfoHeaders[2]}}</mat-label>
+                <mat-select disableOptionCentering [formControl]="HardwareInfo.controls['CPUSubClass']"
+                  [(ngModel)]="CPUSubClass">
+                  <!---- <mat-option label="Select CPU SubClass">Select CPU SubClass</mat-option>-->
+                  <mat-option>
+                    <ngx-mat-select-search [placeholderLabel]="'Search'"  noEntriesFoundLabel="{{header.NoRecordFound}}"
+                      [formControl]="HardwareInfo.controls['CPUClasssubDataFilter']"></ngx-mat-select-search>
+                  </mat-option>
+                  <mat-option *ngFor="let cpusubclass of filteredCPUsubClass | async " [value]="cpusubclass">
+                    {{cpusubclass.CpuSubClassName}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+        
+            <div fxFlex="33"  class="pr-1" *ngIf="enableHardwareInfoField">
+              <mat-form-field class="full-width">
+                <mat-label class="label">{{displayedHardwareInfoHeaders[3]}}</mat-label>
+                <mat-select disableOptionCentering [formControl]="HardwareInfo.controls['ApplicationType']"
+                  [(ngModel)]="ApplicationType">
+                  <!--<mat-option label="Select Application Type">Select Application Type</mat-option>-->
+                  <mat-option>
+                    <ngx-mat-select-search [placeholderLabel]="'Search'"  noEntriesFoundLabel="{{header.NoRecordFound}}"
+                      [formControl]="HardwareInfo.controls['ApplicationDataFilter']"></ngx-mat-select-search>
+                  </mat-option>
+                  <mat-option *ngFor="let applicationtype of filteredApplicationType | async "
+                    [value]="applicationtype">{{applicationtype.ApplicationTypeName}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div fxFlex="33"  class="pr-1" *ngIf="enableHardwareInfoField">
+              <mat-form-field class="full-width">
+                <mat-label class="label">{{displayedHardwareInfoHeaders[4]}}</mat-label>
+                  <mat-select disableOptionCentering [formControl]="HardwareInfo.controls['Model']" [(ngModel)]="Model">
+                    <!---- <mat-option label="Select Model">Select Model</mat-option>-->
+                    <mat-option>
+                      <ngx-mat-select-search [placeholderLabel]="'Search'" noEntriesFoundLabel="{{header.NoRecordFound}}"
+                        [formControl]="HardwareInfo.controls['ModelDataFilter']"></ngx-mat-select-search>
+                    </mat-option>
+                    <mat-option *ngFor="let model of  filteredModel | async " [value]="model">{{model.ModelName}}
+                    </mat-option>
+                  </mat-select>
+              </mat-form-field>
+            </div>
+            <div fxFlex="33"  class="pr-1" *ngIf="enableHardwareInfoField">
+              <mat-form-field class="full-width">
+                <mat-label class="label">{{displayedHardwareInfoHeaders[5]}}</mat-label>
+                <mat-select disableOptionCentering [formControl]="HardwareInfo.controls['Manufacturer']"
+                  [(ngModel)]="Manufacturer">
+                  <!--<mat-option label="Select Manufacturer">Select Manufacturer</mat-option>-->
+                  <mat-option>
+                    <ngx-mat-select-search [placeholderLabel]="'Search'"  noEntriesFoundLabel="{{header.NoRecordFound}}"
+                      [formControl]="HardwareInfo.controls['ManufacturerFilter']"></ngx-mat-select-search>
+                  </mat-option>
+                  <mat-option *ngFor="let manufacture of filteredManufacturer | async " [value]="manufacture">
+                    {{manufacture.ManufacturerName}}</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+        
+            <div fxFlex="33"  class="pr-1" *ngIf="enableHardwareInfoField">
+              <mat-form-field class="full-width" appearance="outline">
+                <mat-label class="label">{{displayedHardwareInfoHeaders[6]}}</mat-label>
+                  <input matInput name="HostName" [formControl]="HardwareInfo.controls['HostName']" autocomplete="off"
+                    maxlength="30">
+              </mat-form-field>
+            </div>
+  
+            <div fxFlex="33"  class="pr-1" *ngIf="enableHardwareInfoField">
+              <mat-form-field class="full-width" appearance="outline">
+                <mat-label class="label">{{displayedHardwareInfoHeaders[7]}}</mat-label>
+                  <input matInput name="HDD" [formControl]="HardwareInfo.controls['HDD']" autocomplete="off"
+                    maxlength="30">
+              </mat-form-field>
+            </div>
+  
+            <div fxFlex="33"  class="pr-1" *ngIf="enableHardwareInfoField">
+              <mat-form-field class="full-width" appearance="outline">
+                <mat-label class="label">{{displayedHardwareInfoHeaders[8]}}</mat-label>
+                <input matInput name="RAM" [formControl]="HardwareInfo.controls['RAM']" autocomplete="off"
+                  maxlength="30">
+              </mat-form-field>
+            </div>
+          
+            </div>
+            </form>
+  
+            <button class="btn" mat-raised-button color="primary" (click)="onFinalSubmit()">Finish</button>
+            <!-- <button mat-raised-button color="warn" type="button" (click)="previousStep(4)">Previous</button>
+            <button mat-raised-button color="primary" class="btn" (click)="onSubmit()">Submit</button>
+            <button mat-raised-button color="warn" class="btn" (click)="onBack()">Back to Upload Assets</button> -->
+      </div> 
+    </mat-tab>
+  
+  </mat-tab-group>
+  
+  </div>
+  </mat-dialog-content>
+  </div>
+  
+  

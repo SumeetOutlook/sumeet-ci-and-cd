@@ -1,0 +1,39 @@
+<div class="md-dialog-container">
+  <div fxLayout="row wrap" class="example-container mat-elevation-z8">
+    <mat-toolbar cdkDrag cdkDragRootElement=".cdk-overlay-pane" cdkDragHandle class="mat-toolbar" style="background-color:rgb(12, 48, 87);color:white">
+      <span style="position: relative;left: 40%;">Add Comment </span>
+      <span class="example-spacer"></span>
+      <button mat-icon-button class="example-icon" aria-label="Example icon-button with close icon"
+        (click)="onclosetab()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-toolbar>
+  </div>
+  <div style="padding: 20px !important;">
+    <form [formGroup]="dialogRejectForm">
+      <div fxLayout="row wrap" fxLayout.lt-sm="column">
+        <!-- <mat-label style="font-weight: 500 !important;font-size: 18px !important;">{{message.ReviewRejectLabel}}</mat-label> -->
+        <div fxFlex="100" style="padding-top: 22px !important;padding-right: 0px !important;">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label class="label">{{header.Comment}}</mat-label>
+            <textarea [formControl]="dialogRejectForm.controls['Rejectctrl']" matInput autocomplete="off"
+              maxlength="200"></textarea>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div style="text-align: right;">
+        <button class="btn" (click)="onclosetab()" mat-raised-button color="warn">
+          <mat-icon>close</mat-icon> No
+        </button>
+        <button class="btn success" (click)="ContinueRejectbtn()" [disabled]="dialogRejectForm.invalid"
+          mat-raised-button>
+          <mat-icon>check</mat-icon>Yes
+        </button>
+      </div>
+
+    </form>
+  </div>
+
+
+</div>

@@ -1,0 +1,171 @@
+.example-spacer {
+    flex: 1 1 auto;
+  }
+
+
+.md-dialog-container{
+    margin: -24px;
+    overflow: hidden;
+}
+.example-icon{
+    background-color: none;
+}
+
+.mat-input-wrapper{
+    background-color: lightgray;
+}
+/*.mat-tab-header{
+    position:fixed;
+}*/
+.mat-tab-label-container{
+    font-size: 0.9em;
+    margin-top: -10px;
+}
+.mat-dialog-content{
+    margin: -25px 0px 0px 0px;
+    padding:0px 12px;
+    overflow:hidden;
+}
+/*.mat-tab-body-wrapper{
+    max-height:60vh;
+    min-height:30vh;
+    overflow: auto;
+    padding-bottom: 20px;
+}*/
+/*.egret-navy .mat-form-field-appearance-outline.mat-form-field-disabled .mat-form-field-outline{
+    background-color: rgb(249, 250, 246);
+}*/
+.egret-navy .mat-tab-group.mat-primary .mat-ink-bar{
+    height:8px;
+}
+/*.egret-navy .mat-toolbar{
+    background-color:rgba(3, 3, 61, 0.863);  
+    color: white;   
+}*/
+.mat-tab-label{
+    font-size:13px;
+    font-weight:700;
+}
+.egret-navy .mat-icon-button{
+    background:none;
+}
+.md-label{
+    max-height:60vh;
+    min-height:30vh;
+    overflow: auto;
+    padding-bottom: 20px;
+}
+.mat-form-field-appearance-outline .mat-form-field-infix{
+    padding: 0.6em 1em 0.6em;
+}
+
+.egret-navy .mat-input-element:disabled{
+    color: rgba(0, 0, 0, 0.87);
+    font-size: 12px;
+}
+.label{
+   color: rgba(0, 0, 0, 0.54);
+   font-weight: 700;
+   font-size: 14px !important;
+}
+[_nghost-kco-c356] .mat-select-value-text{
+    font-size:12px  !important;
+}
+.egret-navy .mat-form-field-appearance-outline.mat-form-field-disabled .mat-form-field-outline {
+    color: lightgray;
+    background-color: #d3d3d369;
+    /* border-radius: 25px; */
+}
+.egret-navy .mat-form-field-appearance-outline .mat-form-field-outline-thick{
+    color:lightblue;
+}
+:host ::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline {
+    display: flex;
+    position: absolute;
+    top: 1.25em !important;
+  }
+  
+  :host ::ng-deep .mat-form-field-appearance-outline .mat-form-field-flex {
+    padding: 0 .75em 0 0.75em;
+    margin-top: -1.25em !important;
+    position: relative;
+  }
+  :host ::ng-deep .mat-form-field-appearance-outline .mat-form-field-label{
+    margin-top:0.45em;
+    font-weight: 700;
+    font-size: 14px !important;
+  }
+ 
+
+  :host ::ng-deep  .mat-form-field-empty.mat-form-field-label, .mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label{
+    transform:translateY(-1.59375em) scale(0.75);
+    width: 133.33333333%;
+  }
+  :host ::ng-deep  .mat-form-field-appearance-outline .mat-form-field-outline-gap{
+    border-top-color: transparent;
+  }
+
+  .uploadSelectClass{
+
+    // padding-top: 7px;
+    // width: 100% !important;
+    // height: 28px !important;
+    // border: 1px solid lightgray !important;
+    //  border-radius: 4px !important;
+
+     width: 0.1px;
+height: 0.1px;
+opacity: 0;
+overflow: hidden;
+position: absolute;
+z-index: -1;
+}
+.uploadSelectClass + label {
+  padding-top: 7px;
+    width: 100% !important;
+    height: 28px !important;
+    border: 1px solid lightgray !important;
+     border-radius: 4px !important;
+  // font-size:1.25em;
+  // font-weight: 500;
+  // color: lightgrey;
+  // background-color: black;
+  display: inline-block;
+  }
+
+  @media only screen and (max-width: 768px) {
+    /* For mobile phones: */
+    .responsive{
+  
+      flex: 1 1 100% !important;
+      max-width: 98% !important;
+  
+    }
+  }
+  
+  :host ::ng-deep .mat-form-field-appearance-outline.mat-form-field-disabled .mat-form-field-outline{
+    background-color: rgba(0, 0, 0, 0.03);
+    cursor: not-allowed;
+    border-radius: 4px !important;
+    cursor: not-allowed !important;
+  }
+
+  .mat-input-element:disabled {
+    color: rgba(3, 3, 3, 0.87);
+    font-size: 14px;
+    font-weight: 500;
+    margin-top: 3px;
+    margin-bottom: -2px;
+  }
+
+  :host ::ng-deep .mat-input-element {
+    caret-color: #10174c;
+    margin-top: 2px !important;
+    margin-bottom: -2px !important;
+  }
+  
+    .success {
+      background-color: green;
+      color: white !important;
+    }
+

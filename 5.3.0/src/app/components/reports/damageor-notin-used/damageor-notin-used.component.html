@@ -1,0 +1,140 @@
+<h3><strong style=" color:#008bd0 !important;">Damaged or Not in Use</strong> 
+    <!-- <span *ngIf="arrlength > 0" style="margin-left: 245px !important;font: italic;"><i>{{arrlength}} assets selected </i></span><span *ngIf="arrlength > 0" ><a style="color:#008bd0 !important;margin-left: 5px !important;cursor: pointer;" (click)="viewSelected()"><u>View</u></a></span><span *ngIf="arrlength > 0" ><a style="color:red !important;margin-left: 5px !important;cursor: pointer;" (click)="clearSelected()">Clear</a></span>
+    <span *ngIf="appliedfilters.length > 0" style="margin-left: 200px !important;font: italic;"><span>other filters applied<i *ngFor="let fil of appliedfilters;let i=index" style="font-weight: 700;"> {{fil}}<i *ngIf="i!=appliedfilters.length-1">/</i> </i></span></span><span *ngIf="appliedfilters.length > 0" ><a style="color:red !important;margin-left: 15px !important;cursor: pointer;" (click)="clearfilter()">Clear</a></span> -->
+  </h3>
+  <span class="example-spacer"></span>
+  <mat-toolbar>
+  <mat-form-field  class="formfield" color="primary">
+    <mat-select disableOptionCentering [(ngModel)]="locn"  placeholder="Location" [multiple]="true" #multiSelect>
+      <!-- <mat-option> -->
+        <!-- <ngx-mat-select-search [placeholderLabel]="'Search'" noEntriesFoundLabel="No Result Found" [showToggleAllCheckbox]="true" (toggleAll)="toggleSelectAllCity($event)"
+         [formControl]="cityMultiFilterCtrl">
+        </ngx-mat-select-search> -->
+      <!-- </mat-option> -->
+      <mat-option *ngFor="let location of loc " [value]="location">
+        {{location.City}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+
+  <mat-form-field  class="formfield" color="primary">
+    <mat-select disableOptionCentering  [(ngModel)]="sbn" placeholder="SBU" [multiple]="true" #multiSelect>
+      <!-- <mat-option> -->
+        <!-- <ngx-mat-select-search [placeholderLabel]="'Search'" noEntriesFoundLabel="No Result Found" [showToggleAllCheckbox]="true" (toggleAll)="toggleSelectAllCity($event)"
+         [formControl]="cityMultiFilterCtrl">
+        </ngx-mat-select-search> -->
+      <!-- </mat-option> -->
+      <mat-option *ngFor="let sb of sbu " [value]="sb">
+        {{sb.SBU}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+ 
+
+  <mat-form-field  class="formfield" color="primary">
+    <mat-select disableOptionCentering [(ngModel)]="astn"  placeholder="Asset Class" [multiple]="true" #multiSelect>
+      <!-- <mat-option> -->
+        <!-- <ngx-mat-select-search [placeholderLabel]="'Search'" noEntriesFoundLabel="No Result Found" [showToggleAllCheckbox]="true" (toggleAll)="toggleSelectAllCity($event)"
+         [formControl]="cityMultiFilterCtrl">
+        </ngx-mat-select-search> -->
+      <!-- </mat-option> -->
+      <mat-option *ngFor="let ast of astcls " [value]="ast">
+        {{ast.BlockName}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field  class="formfield" color="primary">
+    <mat-select disableOptionCentering  [(ngModel)]="catgn" placeholder="Category" [multiple]="true" #multiSelect>
+      <!-- <mat-option> -->
+        <!-- <ngx-mat-select-search [placeholderLabel]="'Search'" noEntriesFoundLabel="No Result Found" [showToggleAllCheckbox]="true" (toggleAll)="toggleSelectAllCity($event)"
+         [formControl]="cityMultiFilterCtrl">
+        </ngx-mat-select-search> -->
+      <!-- </mat-option> -->
+      <mat-option *ngFor="let categ of category " [value]="categ">
+        {{categ.AssetCategoryName}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field  class="formfield" color="primary">
+    <mat-select disableOptionCentering   placeholder="Region" [multiple]="true" #multiSelect>
+      <!-- <mat-option> -->
+        <!-- <ngx-mat-select-search [placeholderLabel]="'Search'" noEntriesFoundLabel="No Result Found" [showToggleAllCheckbox]="true" (toggleAll)="toggleSelectAllCity($event)"
+         [formControl]="cityMultiFilterCtrl">
+        </ngx-mat-select-search> -->
+      <!-- </mat-option> -->
+      <mat-option *ngFor="let location of loc " [value]="location">
+        {{location.City}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field  class="formfield" color="primary">
+    <mat-select disableOptionCentering   placeholder="Company" [multiple]="true" #multiSelect>
+      <!-- <mat-option> -->
+        <!-- <ngx-mat-select-search [placeholderLabel]="'Search'" noEntriesFoundLabel="No Result Found" [showToggleAllCheckbox]="true" (toggleAll)="toggleSelectAllCity($event)"
+         [formControl]="cityMultiFilterCtrl">
+        </ngx-mat-select-search> -->
+      <!-- </mat-option> -->
+      <mat-option *ngFor="let cmpny of company " [value]="cmpny">
+        {{cmpny.City}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-form-field  class="formfield" color="primary">
+    <mat-select disableOptionCentering [(ngModel)]="grpn"  placeholder="Group" [multiple]="true" #multiSelect>
+      <!-- <mat-option> -->
+        <!-- <ngx-mat-select-search [placeholderLabel]="'Search'" noEntriesFoundLabel="No Result Found" [showToggleAllCheckbox]="true" (toggleAll)="toggleSelectAllCity($event)"
+         [formControl]="cityMultiFilterCtrl">
+        </ngx-mat-select-search> -->
+      <!-- </mat-option> -->
+      <mat-option *ngFor="let grp of group " [value]="grp">
+        {{grp.GroupName}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+
+  <mat-form-field  class="formfield" color="primary">
+    <mat-select disableOptionCentering  [(ngModel)]="tpn" placeholder="Type" [multiple]="true" #multiSelect>
+      <!-- <mat-option> -->
+        <!-- <ngx-mat-select-search [placeholderLabel]="'Search'" noEntriesFoundLabel="No Result Found" [showToggleAllCheckbox]="true" (toggleAll)="toggleSelectAllCity($event)"
+         [formControl]="cityMultiFilterCtrl">
+        </ngx-mat-select-search> -->
+      <!-- </mat-option> -->
+      <mat-option *ngFor="let tp of type " [value]="tp">
+        {{tp.TypeOfAsset}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field  class="formfield" color="primary">
+    <mat-select disableOptionCentering   placeholder="SubType" [multiple]="true" #multiSelect>
+      <!-- <mat-option> -->
+        <!-- <ngx-mat-select-search [placeholderLabel]="'Search'" noEntriesFoundLabel="No Result Found" [showToggleAllCheckbox]="true" (toggleAll)="toggleSelectAllCity($event)"
+         [formControl]="cityMultiFilterCtrl">
+        </ngx-mat-select-search> -->
+      <!-- </mat-option> -->
+      <mat-option *ngFor="let sbtp of subtype " [value]="location">
+        {{sbtp}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field  class="formfield" color="primary">
+    <mat-select disableOptionCentering  [(ngModel)]="crn" placeholder="Currency" [multiple]="false"
+    #singleSelect>
+      <!-- <mat-option> -->
+        <!-- <ngx-mat-select-search [placeholderLabel]="'Search'" noEntriesFoundLabel="No Result Found" [showToggleAllCheckbox]="true" (toggleAll)="toggleSelectAllCity($event)"
+         [formControl]="cityMultiFilterCtrl">
+        </ngx-mat-select-search> -->
+      <!-- </mat-option> -->
+      <mat-option *ngFor="let crncy of currency " [value]="crncy">
+        {{crncy.BaseCurrency}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  <mat-icon class="example-icon" [style.fontSize]="'24px'" style="height: 30px;width: 35px;margin-left: -10px;" (click)="GetDamagenotinUseAsset()"><img style="height: 38px;width:40px;" src="assets/images/assetrak/23_10_2020/GO 5.png" /></mat-icon>
+</mat-toolbar>

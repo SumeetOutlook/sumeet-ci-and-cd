@@ -1,0 +1,149 @@
+<div class="md-dialog-container" cdkDrag cdkDragRootElement=".cdk-overlay-pane">
+    <mat-toolbar  cdkDragHandle class="mat-toolbar" style="background-color:rgb(12, 48, 87);color:white">
+      <span style="position: relative;left: 40%;">{{ Headers.WithdrawRetire }}</span>
+      <span class="example-spacer"></span>
+      <button mat-icon-button class="example-icon" aria-label="Example icon-button with close icon"
+        (click)="dialogRef.close(false)">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-toolbar><br><br>
+    <mat-dialog-content>
+      <div class="example-container mat-elevation-z8 mt-8" >
+        <table mat-table #table [dataSource]="dataSource" matSort>
+          <ng-container matColumnDef="select">
+            <th mat-header-cell *matHeaderCellDef>
+              <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="selection.hasValue() && isAllSelected()"
+                [indeterminate]="selection.hasValue() && !isAllSelected()">
+              </mat-checkbox>
+            </th>
+            <td mat-cell *matCellDef="let row let i=index">
+              <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null"
+                [checked]="selection.isSelected(row)">
+              </mat-checkbox>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="Icon">
+            <th mat-sort-header mat-header-cell *matHeaderCellDef [ngClass]="'w-100'"> </th>
+            <td mat-cell *matCellDef="let element" [ngClass]="'w-100'" >
+              
+                <mat-icon *ngIf="element.TaggingStatus === 9" matTooltip="Retired Asset" [style.fontSize]="'15px'" style="color: #e67e4a !important;font-weight: bold;cursor: pointer;height: 15px;">delete</mat-icon>
+                <mat-icon *ngIf="(element.MergeId != null && element.MergeId != 0)&&  (element.MergeId === element.PreFarId) && element.TaggingStatus!=9" matTooltip="Parent Asset" [style.fontSize]="'15px'" style="color: #e67e4a !important;font-weight: bold;cursor: pointer;height: 15px;" >person</mat-icon>
+                <mat-icon *ngIf="(element.MergeId != null && element.MergeId != 0 )&& ( element.MergeId != element.PreFarId) && element.TaggingStatus!=9" matTooltip="Child Asset" [style.fontSize]="'15px'" style="color: #e67e4a !important;font-weight: bold;cursor: pointer;height: 15px;">groups</mat-icon>
+                <mat-icon *ngIf="(element.MergeId2 != null && element.MergeId2 != 0 ) &&  (element.MergeId === null || element.MergeId === 0 ) && ( element.MergeId2 === element.PreFarId) && element.TaggingStatus!=9" matTooltip="Parent Asset" [style.fontSize]="'15px'" style="color: #e67e4a !important;font-weight: bold;cursor: pointer;height: 15px;" >person</mat-icon>
+                <mat-icon *ngIf="(element.MergeId2 != null && element.MergeId2 != 0 )  &&  (element.MergeId === null || element.MergeId === 0 ) && ( element.MergeId2 != element.PreFarId) && element.TaggingStatus!=9" matTooltip="Child Asset" [style.fontSize]="'15px'" style="color: #e67e4a !important;font-weight: bold;cursor: pointer;height: 15px;" >groups</mat-icon>
+                <mat-icon *ngIf="element.IsQtySplit === true && (element.MergeId == null || element.MergeId == 0) && (element.MergeId2 == null || element.MergeId2 == 0)" matTooltip="Quantity Split Asset" [style.fontSize]="'15px'" style="color: #e67e4a !important;font-weight: bold;cursor: pointer;">format_list_numbered_rtl</mat-icon>
+              </td>
+          </ng-container>
+  
+          <ng-container matColumnDef="Inventory No.">
+            <th mat-sort-header mat-header-cell *matHeaderCellDef [ngClass]="'w-100'">{{Headers.InventoryNumber}}</th>
+            <td mat-cell *matCellDef="let element" [ngClass]="'w-100'">{{element.Barcode}}</td>
+          </ng-container>
+  
+          <ng-container matColumnDef="Asset No.">
+            <th mat-sort-header mat-header-cell *matHeaderCellDef [ngClass]="'w-100'">{{Headers.AID}} </th>
+            <td mat-cell *matCellDef="let element" [ngClass]="'w-100'">{{element.AssetId}}</td>
+          </ng-container>
+  
+          <ng-container matColumnDef="Sub No.">
+            <th mat-sort-header mat-header-cell *matHeaderCellDef [ngClass]="'w-100'">{{Headers.SAID}} </th>
+            <td mat-cell *matCellDef="let element" [ngClass]="'w-100'">{{element.SubAssetId}}</td>
+          </ng-container>
+  
+          <ng-container matColumnDef="Asset Class">
+            <th mat-sort-header mat-header-cell *matHeaderCellDef [ngClass]="'w-150'">{{Headers.AssetClass}}</th>
+            <td mat-cell *matCellDef="let element" [ngClass]="'w-150'">{{element.BlockOfAsset}}</td>
+          </ng-container>
+  
+          <ng-container matColumnDef="Asset Name">
+            <th mat-sort-header mat-header-cell *matHeaderCellDef [ngClass]="'w-150'">{{Headers.ADL2}} </th>
+            <td mat-cell *matCellDef="let element" [ngClass]="'w-150'">{{element.ADL2}}</td>
+          </ng-container>
+  
+          <ng-container matColumnDef="Asset Description">
+            <th mat-sort-header mat-header-cell *matHeaderCellDef [ngClass]="'w-150'">{{Headers.ADL3}} </th>
+            <td mat-cell *matCellDef="let element" [ngClass]="'w-150'">{{element.ADL3}}</td>
+          </ng-container>
+          <ng-container matColumnDef="Serial No">
+            <th mat-sort-header mat-header-cell *matHeaderCellDef [ngClass]="'w-150'">{{Headers.SerialNo}} </th>
+            <td mat-cell *matCellDef="let element" [ngClass]="'w-150'">{{element.SerialNo}}</td>
+          </ng-container>
+          <ng-container matColumnDef="IT Serial No">
+            <th mat-sort-header mat-header-cell *matHeaderCellDef [ngClass]="'w-150'">{{Headers.ITSerialNo}} </th>
+            <td mat-cell *matCellDef="let element" [ngClass]="'w-150'">{{element.ITSerialNo}}</td>
+          </ng-container>
+  
+          <ng-container matColumnDef="Plant">
+            <th mat-sort-header mat-header-cell *matHeaderCellDef [ngClass]="'w-150'">{{Headers.Location}} </th>
+            <td mat-cell *matCellDef="let element" [ngClass]="'w-150'">{{element.Location}}</td>
+          </ng-container>
+  
+          <ng-container matColumnDef="Cost">
+            <th mat-sort-header mat-header-cell *matHeaderCellDef [ngClass]="'w-150'">{{Headers.ActualCost }} </th>
+            <td mat-cell *matCellDef="let element" [ngClass]="'w-150'">{{element.AcquisitionCost | number : '1.2-2'}}</td>
+          </ng-container>
+  
+          <ng-container matColumnDef="WDV">
+            <th mat-sort-header mat-header-cell *matHeaderCellDef [ngClass]="'w-100'">{{Headers.WDV}}</th>
+            <td mat-cell *matCellDef="let element" [ngClass]="'w-100'">{{element.WDV | number : '1.2-2'}}</td>
+          </ng-container>
+          <ng-container matColumnDef="Inventory Indicator">
+            <th mat-sort-header mat-header-cell *matHeaderCellDef [ngClass]="'w-100'">{{Headers.InventoryIndicator}} </th>
+            <td mat-cell *matCellDef="let element" [ngClass]="'w-100'">{{element.Taggable}}</td>
+          </ng-container>
+  
+  
+          <tr mat-header-row *matHeaderRowDef="displayedColumns;sticky: true "></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+      </div>
+      <form [formGroup]="dialogForm">
+        <div fxLayout="row wrap" style="padding-top: 10px;">
+          <div fxFlex="100" fxFlex.gt-xs="25" class="pr-1">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label asterisk_input" style="font-size: 15px !important;">Retirement Comment</mat-label>
+              <textarea matInput formControlName="commentCtrl" maxlength="100" class="bg-transparente">
+                <mat-error *ngIf="commentCtrl.hasError('whitespace')">
+                  <span *ngIf="commentCtrl.hasError('whitespace')"></span>
+                </mat-error>
+              </textarea>
+            </mat-form-field>
+          </div>
+          <div fxFlex="100" fxFlex.gt-xs="75" class="pr-1" style="text-align: right;">
+            <button mat-raised-button class="pr-1 success" [disabled]="dialogForm.invalid" (click)="Submit('0')">
+              <mat-icon>check</mat-icon>Withdraw
+            </button>
+          </div>
+        </div>
+      </form>
+      <!-- <div fxFlex="100" fxFlex.gt-xs="75" class="pr-1"  *ngIf="informationtab">
+        <span fxFlex></span>
+      <button mat-raised-button color="primary" class="pr-1" [disabled]="dialogForm.invalid"
+        (click)="Submit()">Submit</button>   
+      </div>
+      <div fxFlex="100" fxFlex.gt-xs="75" class="pr-1"  *ngIf="withdrawntab">
+        <button mat-raised-button color="primary" class="pr-1" [disabled]="dialogForm.invalid"
+        (click)="Submit()">Reinitiate</button>
+        <span fxFlex></span>
+        <button mat-raised-button color="primary" class="pr-1" [disabled]="dialogForm.invalid"
+        (click)="Submit()">Withdraw</button>
+      </div> -->
+      <!-- <form >
+      <div fxLayout="row wrap" fxLayout.lt-sm="column">
+          <div fxFlex="30"  class="pr-1 full">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">Search Asset to Group</mat-label>
+              <input
+              matInput
+              name="AssetNo"
+              [formControl]='AssetNo'>
+            </mat-form-field>
+          </div>
+          <button  matTooltip="get asset to group"  class="btn" mat-icon-button>
+            <mat-icon [style.fontSize]="'27px'" style="color:white">search</mat-icon>
+          </button> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
+          </div>
+        </form> -->
+  
+    </mat-dialog-content>
+  </div>

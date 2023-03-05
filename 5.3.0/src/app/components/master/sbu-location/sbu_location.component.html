@@ -1,0 +1,347 @@
+<div class="content" fxLayout="row wrap" fxLayoutGap="12px grid">
+  <div fxFlex="33%" class="example-container mat-elevation-z4 responsive">
+    <mat-card class="cardmat">
+      <mat-card-header class="headercard" style="margin-bottom: -10px !important;">
+        <!-- <mat-card-title><span class="heading" style="margin-left: -6px;"><strong>{{menuheader['Sbu']}}</strong></span></mat-card-title>
+        <span fxFlex></span>         
+        <mat-icon (click)="openDialog('insert')" *ngIf="PermissionIdList.indexOf(23) > -1" [style.fontSize]="'30px'"
+          style="color: #1d3478 !important;cursor: pointer !important;" matTooltip="Add SBU">add</mat-icon>
+        <mat-icon class='action-icon' (click)="openSbuUpload()"  matTooltip="Upload SBU" *ngIf="PermissionIdList.indexOf(23) > -1">file_upload</mat-icon> -->
+        <div fxLayout="row wrap" style="width: 100%;">
+          <div fxFlex="100" fxFlex.gt-xs="50">
+            <mat-form-field>
+              <button mat-icon-button matPrefix class="example-icon"
+                style="background-color:white;margin-top: 0px;width:30px;height: 30px;">
+                <mat-icon style="font-size: 21px;margin-right: 10px;margin-left: -2px;">search</mat-icon>
+              </button>
+              <input matInput (keyup)="applyFilter($event.target.value)" autocomplete="off" placeholder="Search">
+            </mat-form-field>
+          </div>
+          <span fxFlex></span>
+          <div fxFlex="100" fxFlex.gt-xs="50" style="padding-top: 5px;">
+            <span fxFlex></span>
+            <button mat-raised-button matTooltip="Add {{header.SBU}}" *ngIf="PermissionIdList.indexOf(23) > -1"
+              class="minibtn" style="margin-left: 8px !important;height: 36px;" (click)="openDialog('insert')">
+              <mat-icon style="color: white;">add</mat-icon>
+            </button>
+            <button mat-raised-button matTooltip="Upload {{header.SBU}}" *ngIf="PermissionIdList.indexOf(23) > -1"
+              class="minibtn" style="margin-left: 8px !important;height: 36px;" (click)="openSbuUpload()">
+              <mat-icon style="color: white;">file_upload</mat-icon>
+            </button>
+            <!--<button mat-raised-button matTooltip="Export {{header.SBU}}" class="minibtn"  style="margin-left: 8px !important;" (click)="exportSBUFile()"> 
+              <mat-icon style="color: white;">download</mat-icon> </button>-->
+            <!-- <mat-panel-description style="float: right;">
+              <mat-icon [matMenuTriggerFor]="msgMenu" (click)="$event.stopPropagation()" class="text-muted">
+                more_vert</mat-icon>
+              <mat-menu #msgMenu="matMenu">
+                <button mat-menu-item (click)="exportSBUFile()" style="height: 40px !important;">
+                  <mat-icon style="margin-right: 6px;color: #0c3057;"> download
+                  </mat-icon> Export
+                </button>
+              </mat-menu>
+            </mat-panel-description> -->
+          </div>
+        </div>
+      </mat-card-header>
+      <mat-card-content>
+        <!-- <div style="margin-bottom: -10px !important;">
+          <mat-form-field class="ml-12">
+            <button mat-icon-button matPrefix class="example-icon"
+              style="background-color:white;margin-top: 0px;width:30px;height: 30px;"
+              aria-label="Example icon-button with close icon">
+              <mat-icon style="font-size: 21px;margin-right: 10px;margin-left: -2px;">search</mat-icon>
+            </button>
+            <input matInput (keyup)="applyFilter($event.target.value)" placeholder="Search">
+          </mat-form-field>
+        </div> -->
+       <div class="responsivetable">
+        <table mat-table [dataSource]="dataSource" class="tablescroll" matSort>
+
+          <ng-container matColumnDef="SBU">
+            <th mat-header-cell *matHeaderCellDef>
+              {{displayedHeaders[0]}}
+            </th>
+
+            <td mat-cell *matCellDef="let element;let j=index;" style="cursor: pointer;" (click)="GetSBUId(element,j)">
+              <span *ngIf="selectedRowIndex != element.SBU">{{element.SBU}} </span>
+              <span *ngIf="selectedRowIndex == element.SBU" >
+                <mat-icon style="font-size: 16px;">check</mat-icon>
+              </span>
+              <span *ngIf="selectedRowIndex == element.SBU" style="font-weight: bold;font-size: 15px;">{{element.SBU}} </span>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="Actions" >
+            <th mat-header-cell *matHeaderCellDef style="text-align: end;">
+              {{displayedHeaders[1]}}
+            </th>
+            <td mat-cell *matCellDef="let element; let j = index;" style="text-align: end;">
+              <mat-panel-description>
+                <mat-icon [matMenuTriggerFor]="msgMenu" class="text-muted"
+                  style="margin-right: 12%;font-size: 23px !important;">more_vert
+                </mat-icon>
+                <mat-menu #msgMenu="matMenu">
+                  <button mat-menu-item (click)="openDialog('edit',element)" *ngIf="PermissionIdList.indexOf(24) > -1">
+                    <mat-icon>edit</mat-icon>Edit
+                  </button>
+                  <button mat-menu-item focusable="false" (click)="deleteSBU('delete',element)" *ngIf="PermissionIdList.indexOf(24) > -1">
+                    <mat-icon>delete</mat-icon>Delete
+                  </button>
+                </mat-menu>
+              </mat-panel-description>
+            </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="displayedColumns;sticky:true;"></tr>
+          <tr mat-row (click)="getCard(i)" *matRowDef="let row; columns: displayedColumns;let i=index"
+            class="notSelected" [attr.data-isSelected]="selectedrows1[i]"></tr>
+
+        </table>
+      </div>
+        <mat-paginator #paginator class="expedientes-paginator" [showFirstLastButtons]="true" [pageSize]="50"
+          [pageSizeOptions]="[50, 100, 200,500]">
+
+        </mat-paginator>
+      </mat-card-content>
+    </mat-card>
+
+
+  </div>
+  <div fxFlex="33%" class="example-container mat-elevation-z4 responsive" [hidden]="!(companyIdSession > 0)">
+
+    <mat-card class="cardmat">
+      <div fxLayout="row wrap" style="margin-bottom: -10px !important;">
+        <div fxFlex="100">
+          <span style="font-size:17px !important;font-weight: 700;">Selected {{header.SBU}} :<label
+              style="color: #e67e4a;"> {{LabelForLocation}}</label></span>
+        </div>
+      </div>
+      <mat-card-header class="headercard" style="margin-bottom: -10px !important;">
+        <div fxLayout="row wrap" style="width: 100%;padding-top: 5px;">
+          <div fxFlex="100" fxFlex.gt-xs="50">
+            <mat-form-field>
+              <button mat-icon-button matPrefix class="example-icon"
+                style="background-color:white;margin-top: 0px;width:30px;height: 30px;">
+                <mat-icon style="font-size: 21px;margin-right: 10px;margin-left: -2px;">search</mat-icon>
+              </button>
+              <input matInput (keyup)="applyFilterL($event.target.value)" autocomplete="off" placeholder="Search">
+            </mat-form-field>
+          </div>
+          <span fxFlex></span>
+          <div fxFlex="100" fxFlex.gt-xs="50" style="padding-top: 5px;">
+            <span fxFlex></span>
+            <span   matTooltip="Add {{header.Location}}" [matTooltipDisabled]="false">
+            <button mat-raised-button  *ngIf="PermissionIdList.indexOf(26) > -1"
+              class="minibtn" style="margin-left: 8px !important;height: 36px;" [disabled]="LocationAddDisable" (click)="openDialogL('insert')">
+              <mat-icon style="color: white;">add</mat-icon>
+            </button></span>
+            <span   matTooltip="Upload {{header.Location}}" [matTooltipDisabled]="false">
+            <button mat-raised-button  *ngIf="PermissionIdList.indexOf(26) > -1"
+              class="minibtn" style="margin-left: 8px !important;height: 36px;" [disabled]="LocationAddDisable" (click)="openLocationUpload()">
+              <mat-icon style="color: white;">file_upload</mat-icon>
+            </button></span>
+            <span   matTooltip="Export {{header.Location}}" [matTooltipDisabled]="false">
+            <button mat-raised-button  class="minibtn"  style="margin-left: 8px !important;"  [disabled]="LocationAddDisable" (click)="exportplantFile()"> 
+              <mat-icon style="color: white;">download</mat-icon> </button> </span>
+            <!-- <mat-panel-description style="float: right;">
+              <mat-icon [matMenuTriggerFor]="msgMenu"  (click)="$event.stopPropagation()" class="text-muted">
+                more_vert</mat-icon>
+              <mat-menu #msgMenu="matMenu">
+                <button mat-menu-item [disabled]="LocationAddDisable" (click)="exportSBUFile()"   style="height: 40px !important;">
+                  <mat-icon style="margin-right: 6px;color: #0c3057;"> download
+                  </mat-icon> Export
+                </button>
+              </mat-menu>
+            </mat-panel-description> -->
+
+          </div>
+        </div>
+        <!-- <mat-card-title><span class="heading" style="margin-left: -6px;"><strong>{{menuheader['Department Name']}}</strong></span>
+        </mat-card-title>
+        <span fxFlex></span>
+        <mat-icon *ngIf="!LocationAddDisable && PermissionIdList.indexOf(26) > -1" (click)="openDialogL('insert')" [style.fontSize]="'30px'"
+          style="color: #1d3478 !important;cursor: pointer;" matTooltip="Add Department Name">add</mat-icon>
+          <mat-icon *ngIf="LocationAddDisable && PermissionIdList.indexOf(26) > -1" [style.fontSize]="'30px'"
+          style="color: gray !important;cursor: pointer;pointer-events:none">add</mat-icon>
+          <mat-icon class='action-icon' *ngIf="!LocationAddDisable && PermissionIdList.indexOf(26) > -1" (click)="openLocationUpload()" matTooltip="Upload Department Name">file_upload</mat-icon>
+
+          <mat-icon class='action-icon disabled' *ngIf="LocationAddDisable && PermissionIdList.indexOf(26) > -1" >file_upload</mat-icon> -->
+
+      </mat-card-header>
+
+      <mat-card-content>
+        <!-- <div fxLayout="row wrap" style="margin-bottom: -10px !important;" >
+          <div fxFlex="50" style="margin-top: 21px !important;">            
+            <span *ngIf="LabelForLocation"  style="font-size:12px !important;font-weight: 700;"><label style="color: #e67e4a;">SBU : {{LabelForLocation}}</label></span>
+          </div>
+          <div fxFlex="50">
+            <mat-form-field class="FloatFromRight" style="width: 165px !important;">
+              <button mat-icon-button matPrefix class="example-icon"
+                style="background-color:white;margin-top: 0px;width:30px;height: 30px;"
+                aria-label="Example icon-button with close icon">
+                <mat-icon style="font-size: 21px;margin-right: 10px;margin-left: -2px;">search</mat-icon>
+              </button>
+              <input matInput (keyup)="applyFilterL($event.target.value)" placeholder="Search">
+            </mat-form-field>
+          </div>
+        </div> -->
+        <div class="responsivetable">
+        <table mat-table [dataSource]="dataSourceL" class="tablescroll" matSort>
+          <ng-container matColumnDef="LocationName">
+            <th mat-header-cell *matHeaderCellDef>
+              {{displayedHeadersL[0]}}
+            </th>
+            <td mat-cell *matCellDef="let element; let k=index;" style="cursor: pointer;" (click)="GetLocationId(element,k)">              
+              <span *ngIf="selectedRowIndex1 != element.LocationName">{{element.LocationName}} </span>
+                <span *ngIf="selectedRowIndex1 == element.LocationName" >
+                  <mat-icon style="font-size: 16px;">check</mat-icon>
+                </span>
+                <span *ngIf="selectedRowIndex1 == element.LocationName" style="font-weight: bold;font-size: 15px;">{{element.LocationName}} </span>
+            </td>
+          </ng-container>
+          <ng-container matColumnDef="ActionsL">
+            <th mat-header-cell *matHeaderCellDef style="text-align: end;">
+              {{displayedHeadersL[1]}}
+            </th>
+            <td mat-cell *matCellDef="let element;let j=index;" style="text-align: end;">
+              <mat-panel-description>
+                <mat-icon [matMenuTriggerFor]="msgMenu" class="text-muted" style="margin-right: 12%;">more_vert
+                </mat-icon>
+                <mat-menu #msgMenu="matMenu">
+                  <button mat-menu-item (click)="openDialogL('edit',element)" *ngIf="PermissionIdList.indexOf(27) > -1">
+                    <mat-icon>edit</mat-icon>Edit
+                  </button>
+                  <button mat-menu-item focusable="false" (click)="deleteLOcation('delete',element)" *ngIf="PermissionIdList.indexOf(27) > -1">
+                    <mat-icon>delete</mat-icon>Delete
+                  </button>
+                </mat-menu>
+              </mat-panel-description>
+            </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="displayedColumnsL"></tr>
+          <tr mat-row (click)="getcard1(i)" *matRowDef="let row; columns: displayedColumnsL;let i=index"
+            class="notSelected" [attr.data-isSelected]="selectedrows2[this.len+i]"></tr>
+        </table>
+        </div>
+        <mat-paginator #PaginatorForL="matPaginator"  class="expedientes-paginator" [showFirstLastButtons]="true" [pageSize]="50"
+          [pageSizeOptions]="[50, 100, 200,500]">
+
+        </mat-paginator>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  <div fxFlex="34%" class="example-container mat-elevation-z4 responsive" [hidden]="!(companyIdSession > 0)">
+    <mat-card class="cardmat">
+      <div fxLayout="row wrap" style="margin-bottom: -10px !important;">
+        <div fxFlex="100">
+          <span style="font-size:17px !important;font-weight: 700;">Selected {{header.Location}} :<label
+              style="color: #e67e4a;"> {{LabelForStorageLocation}}</label></span>
+        </div>
+      </div>
+      <mat-card-header class="headercard" style="margin-bottom: -10px !important;">
+        <!-- <mat-card-title><span class="heading"><strong>{{menuheader['Sub-Location']}}</strong></span></mat-card-title>
+        <span fxFlex></span>       
+        <mat-icon *ngIf="!StorageLocationAddDisable &&  PermissionIdList.indexOf(29) > -1"  (click)="openDialogS('insert')" [style.fontSize]="'30px'"
+          style="color: #1d3478 !important;cursor: pointer;" matTooltip="Add Sub-Location">add</mat-icon>
+          <mat-icon *ngIf="StorageLocationAddDisable &&  PermissionIdList.indexOf(29) > -1" [style.fontSize]="'30px'"
+          style="color: gray !important;cursor: pointer;pointer-events:none">add</mat-icon>
+          <mat-icon class='action-icon' *ngIf="!StorageLocationAddDisable &&  PermissionIdList.indexOf(29) > -1" (click)="openRackUpload()" matTooltip="Upload Sub-Location">file_upload</mat-icon>
+          <mat-icon class='action-icon disabled' *ngIf="StorageLocationAddDisable &&  PermissionIdList.indexOf(29) > -1" (click)="openRackUpload()" matTooltip="Upload">file_upload</mat-icon> -->
+          <div fxLayout="row wrap" style="width: 100%;padding-top: 5px;">
+            <div fxFlex="100" fxFlex.gt-xs="50">
+              <mat-form-field>
+                <button mat-icon-button matPrefix class="example-icon"
+                  style="background-color:white;margin-top: 0px;width:30px;height: 30px;">
+                  <mat-icon style="font-size: 21px;margin-right: 10px;margin-left: -2px;">search</mat-icon>
+                </button>
+                <input matInput (keyup)="applyFilterS($event.target.value)" autocomplete="off" placeholder="Search">
+              </mat-form-field>
+            </div>
+            <span fxFlex></span>
+            <div fxFlex="100" fxFlex.gt-xs="50" style="padding-top: 5px;">
+              <span fxFlex></span>
+              <span matTooltip="Add {{header.StorageLocation}}" [matTooltipDisabled]="false">
+              <button mat-raised-button *ngIf="PermissionIdList.indexOf(29) > -1"
+                class="minibtn" style="margin-left: 8px !important;height: 36px;" [disabled]="StorageLocationAddDisable" (click)="openDialogS('insert')">
+                <mat-icon style="color: white;">add</mat-icon>
+              </button></span>
+              <span matTooltip="Upload {{header.StorageLocation}}" [matTooltipDisabled]="false">
+              <button mat-raised-button  *ngIf="PermissionIdList.indexOf(29) > -1"
+                class="minibtn" style="margin-left: 8px !important;height: 36px;" [disabled]="StorageLocationAddDisable" (click)="openRackUpload()">
+                <mat-icon style="color: white;">file_upload</mat-icon>
+              </button></span>
+              <span matTooltip="Export {{header.StorageLocation}}" [matTooltipDisabled]="false">
+              <button mat-raised-button  class="minibtn"  style="margin-left: 8px !important;"  [disabled]="StorageLocationAddDisable" (click)="exportsubplantfile()"> 
+                <mat-icon style="color: white;">download</mat-icon> </button></span>
+              <!-- <mat-panel-description style="float: right;">
+                <mat-icon [matMenuTriggerFor]="msgMenu" (click)="$event.stopPropagation()" class="text-muted">
+                  more_vert</mat-icon>
+                <mat-menu #msgMenu="matMenu">
+                  <button mat-menu-item (click)="exportSBUFile()" style="height: 40px !important;">
+                    <mat-icon style="margin-right: 6px;color: #0c3057;"> download
+                    </mat-icon> Export
+                  </button>
+                </mat-menu>
+              </mat-panel-description>
+   -->
+            </div>
+          </div>
+        </mat-card-header>
+
+      <mat-card-content>
+        <!-- <div fxLayout="row wrap" style="margin-bottom: -10px !important;">
+          <div fxFlex="50" style="margin-top: 21px !important;">            
+            <span *ngIf="LabelForStorageLocation"  style="font-size:12px !important;font-weight: 700;"><label style="color: #e67e4a;">Location : {{LabelForStorageLocation}}</label></span>
+          </div>
+          <div fxFlex="50" >
+          <mat-form-field class="FloatFromRight" style="width: 165px !important;">
+            <button mat-icon-button matPrefix class="example-icon"
+              style="background-color:white;margin-top: 0px;width:30px;height: 30px;"
+              aria-label="Example icon-button with close icon">
+              <mat-icon style="font-size: 21px;margin-right: 10px;margin-left: -2px;">search</mat-icon>
+            </button>
+            <input matInput (keyup)="applyFilterS($event.target.value)" placeholder="Search">
+          </mat-form-field>
+          </div>
+        </div> -->
+        <div class="responsivetable">
+        <table mat-table [dataSource]="dataSourceS" class="tablescroll" matSort>
+          <ng-container matColumnDef="RackName">
+            <th mat-header-cell *matHeaderCellDef>
+              {{displayedHeadersS[0]}}
+            </th>
+            <td mat-cell *matCellDef="let Companyelement; let g=index;">
+              <span style="cursor: pointer;">{{Companyelement.RackName}}
+              </span>
+            </td>
+          </ng-container>       
+          <ng-container matColumnDef="ActionsS">
+            <th mat-header-cell *matHeaderCellDef style="text-align: end;">
+              {{displayedHeadersS[1]}}
+            </th>
+            <td mat-cell *matCellDef="let element;let j=index;" style="text-align: end;">
+              <mat-panel-description>
+                <mat-icon [matMenuTriggerFor]="msgMenu" class="text-muted" style="margin-right: 12%;">more_vert
+                </mat-icon>
+                <mat-menu #msgMenu="matMenu">
+                  <button mat-menu-item (click)="openDialogS('edit',element)" *ngIf="PermissionIdList.indexOf(30) > -1">
+                    <mat-icon>edit</mat-icon>Edit
+                  </button>
+                  <button mat-menu-item focusable="false" (click)="deleteSTorageLocation('delete',element)" *ngIf="PermissionIdList.indexOf(30) > -1">
+                    <mat-icon>delete</mat-icon>Delete
+                  </button>
+                </mat-menu>
+              </mat-panel-description>
+            </td>
+          </ng-container>
+          <tr mat-header-row *matHeaderRowDef="displayedColumnsS"></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumnsS;let x=index"
+            class="notSelected" ></tr>
+        </table>
+        </div>
+        <mat-paginator #PaginatorForS="matPaginator" class="expedientes-paginator" [showFirstLastButtons]="true" [pageSize]="50"
+          [pageSizeOptions]="[50, 100, 200,500]">
+
+        </mat-paginator>
+      </mat-card-content>
+    </mat-card>
+  </div>
+  </div>

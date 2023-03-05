@@ -1,0 +1,45 @@
+<div class="md-dialog-container">
+  <mat-toolbar class="mat-toolbar" style="background-color:rgb(12, 48, 87);color:white">
+    <span style="position: relative;left: 40%;"> Printed Label</span>
+    <span class="example-spacer"></span>
+    <button mat-icon-button class="example-icon" aria-label="Example icon-button with close icon"
+      (click)="onclosetab()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-toolbar><br><br>
+  <mat-dialog-content cdkDrag cdkDragRootElement=".cdk-overlay-pane" cdkDragHandle>
+    <div class="example-container mat-elevation-z8 mt-8">
+      <table mat-table [dataSource]="datasource" matSort>
+
+           
+
+        <ng-container matColumnDef="Company">
+          <th mat-sort-header="Company" mat-header-cell *matHeaderCellDef >{{Headers.Location}}</th>
+          <td mat-cell *matCellDef="let row;let i=index">{{row.location}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="Asset Class">
+          <th mat-sort-header="Asset Class" mat-header-cell *matHeaderCellDef >Record</th>
+          <td mat-cell *matCellDef="let row;let i=index">{{row.count}}</td>
+        </ng-container>
+        
+       
+       
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns;sticky:true"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    </div>
+    <!-- <div class="md-dialog-content">
+      <form [formGroup]="dialogForm">          
+          <div class="mr-05 pb-1">  
+            <div fxLayout="row wrap" class="example-container mat-elevation-z8" style="margin-left: 45px;">          
+          </div>
+          </div>
+          <div fxFlex="100" class="mt-1" style="padding-bottom: 20px;">
+          </div>
+      </form>
+  
+    </div> -->
+  </mat-dialog-content>
+</div>

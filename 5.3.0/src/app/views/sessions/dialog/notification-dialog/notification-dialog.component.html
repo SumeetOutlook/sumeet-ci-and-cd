@@ -1,0 +1,50 @@
+<div class="md-dialog-container">
+    <mat-toolbar class="mat-toolbar" style="background-color:rgb(12, 48, 87);color:white">
+      <span style="position: relative;left: 40%;">Duplicate</span>
+      <span class="example-spacer"></span>
+      <button mat-icon-button class="example-icon" aria-label="Example icon-button with close icon"
+        (click)="dialogRef.close(false)">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-toolbar><br><br>
+    <mat-dialog-content>    
+      <form [formGroup]="dialogForm" class="mt-8">
+        <div fxLayout="row wrap">
+          <div fxFlex="100" fxFlex.gt-xs="100" class="pr-1">
+            <mat-form-field appearance="outline" style="width: 100%;">
+              <mat-label>Event Name</mat-label>
+              <input matInput placeholder="Placeholder" formControlName="EventName" >      
+            </mat-form-field>
+          </div>
+          
+  
+             
+        </div>
+        <div fxLayout="row wrap">
+          <div fxFlex="100" fxFlex.gt-xs="100" class="pr-1">
+            <mat-form-field appearance="outline" style="width: 100%;">
+              <mat-label>Event Subject</mat-label>
+              <input matInput placeholder="Placeholder" formControlName="EventSubject">      
+            </mat-form-field>
+          </div>
+        </div>
+        <div fxLayout="row wrap">
+          <div fxFlex="100" fxFlex.gt-xs="100" class="pr-1">
+            <mat-form-field appearance="outline" style="width: 100%;">
+              <mat-label>Template Content</mat-label>
+              <textarea matInput  formControlName="TemplateContent" >    </textarea>  
+            </mat-form-field>
+          </div> 
+        </div>
+        <div fxLayout="row wrap">
+          <div fxFlex="100" fxFlex.gt-xs="100" class="pr-1">
+            <span fxFlex></span>
+            <button mat-raised-button class="success" [disabled]="dialogForm.invalid" (click)="Submit()">
+              <mat-icon>check</mat-icon> Submit
+            </button>
+          </div>
+        </div>   
+      </form>
+      
+    </mat-dialog-content>
+  </div>

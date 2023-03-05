@@ -1,0 +1,853 @@
+<h3><strong style=" color:#008bd0 !important;"> Configuration </strong> </h3>
+<div class="md-dialog-content">
+    <mat-tab-group #tabGroup>
+        <mat-tab label="SSO Configuration">
+            <div class="md-label">
+                <form [formGroup]="firstFormGroup3">
+                    <div fxLayout="row wrap" fxLayout.lt-sm="column" style="padding-top: 10px;">
+                        <div fxFlex="100" class="pr-1 pl-1 full">
+                            <mat-slide-toggle [checked]="!!ssoEnable" style="cursor: pointer;"
+                                (change)="changeToggle()"></mat-slide-toggle> <span
+                                style="font-weight: bold;padding-left: 10px;">Authenticate Using SSO</span>
+                        </div>
+                        <div fxFlex="33" class="pr-1 pl-1" *ngIf="ssoEnable">
+                            <mat-form-field class="full-width ssoInputs" appearance="outline">
+                                <mat-label class="label" style="font-size: 15px !important;">SSO Application
+                                </mat-label>
+                                <mat-select [formControl]="firstFormGroup3.controls['SSOType']"
+                                    [disabled]="f4.IsSSO.value=='false'">
+                                    <mat-option (click)="showOtherFields(sso)" [value]="sso"
+                                        *ngFor="let sso of TypeData">
+                                        {{sso.Name}}
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error
+                                    *ngIf="submitted && f4.SSOType.errors || f4.SSOType.dirty || f4.SSOType.touched">
+                                    <span *ngIf="f4.SSOType.errors?.required">SSO Application is required.
+                                        required </span>
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div fxFlex="33" class="pr-1 pl-1" *ngIf="(showAdfs && ssoEnable)">
+                            <mat-form-field class="full-width ssoInputs" appearance="outline">
+                                <mat-label class="label" style="font-size: 15px !important;">AssetCues Login Page
+                                    Required</mat-label>
+                                <mat-select [formControl]="firstFormGroup3.controls['IsLocal']"
+                                    [disabled]="f4.IsSSO.value=='false'">
+                                    <mat-option value="true">
+                                        TRUE
+                                    </mat-option>
+                                    <mat-option value="false">
+                                        FALSE
+                                    </mat-option>
+                                </mat-select>
+                                <mat-error
+                                    *ngIf="submitted && f4.IsLocal.errors || f4.IsLocal.dirty || f4.IsLocal.touched">
+                                    <span *ngIf="f4.IsLocal.errors?.required"> AssetCues Login Page Required is a
+                                        required
+                                    </span>
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <!-- <div fxFlex="33" class="pr-1 full">
+                            <mat-form-field class="full-width" appearance="outline">
+                                <mat-label class="label" style="font-size: 15px !important;">SSO Name
+                                    </mat-label>
+                                <input matInput type="name" name="SSOName"
+                                    [formControl]="firstFormGroup3.controls['SSOName']"  [disabled]="f4.IsSSO.value=='false'">
+                                <mat-error *ngIf="submitted && f4.SSOName.errors || f4.SSOName.dirty || f4.SSOName.touched">
+                                    <span *ngIf="f4.SSOName.errors?.required">SSOName
+                                        is a
+                                        required </span>
+                                </mat-error>
+                            </mat-form-field>
+                        </div> -->
+                        <div fxFlex="33" class="pr-1 pl-1" *ngIf="(showAdfs || showPingFed) && ssoEnable">
+                            <mat-form-field class="full-width ssoInputs" appearance="outline">
+                                <mat-label class="label" style="font-size: 15px !important;">Service URL</mat-label>
+                                <input matInput type="name" name="Total_Users"
+                                    [formControl]="firstFormGroup3.controls['SSOPath']"
+                                    [disabled]="f4.IsSSO.value=='false'">
+                                <mat-error
+                                    *ngIf="submitted && f4.SSOPath.errors || f4.SSOPath.dirty || f4.SSOPath.touched">
+                                    <span *ngIf="f4.SSOPath.errors?.required">Service URL is a required.
+                                    </span>
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div fxFlex="33" class="pr-1 pl-1" *ngIf="(showAdfs || showPingFed) && ssoEnable">
+                            <mat-form-field class="full-width ssoInputs" appearance="outline">
+                                <mat-label class="label" style="font-size: 15px !important;">Web URL
+                                </mat-label>
+                                <input matInput type="name" name="URL" [formControl]="firstFormGroup3.controls['URL']"
+                                    [disabled]="f4.IsSSO.value=='false'">
+                                <mat-error *ngIf="submitted && f4.URL.errors || f4.URL.dirty || f4.URL.touched">
+                                    <span *ngIf="f4.URL.errors?.required">Web URL
+                                        is a
+                                        required. </span>
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div fxFlex="33" class="pr-1 pl-1" *ngIf="(showPing || showPingFed) && ssoEnable">
+                            <mat-form-field class="full-width ssoInputs" appearance="outline">
+                                <mat-label class="label" style="font-size: 15px !important;">Web Redirect URL
+                                </mat-label>
+                                <input matInput type="name" name="RedirectURL"
+                                    [formControl]="firstFormGroup3.controls['RedirectURL']"
+                                    [disabled]="!f4.IsSSO.value">
+                                <mat-error
+                                    *ngIf="submitted && f4.RedirectURL.errors || f4.RedirectURL.dirty || f4.RedirectURL.touched">
+                                    <span *ngIf="f4.RedirectURL.errors?.required">Web Redirect URL is a required
+                                    </span>
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div fxFlex="33" class="pr-1 pl-1" *ngIf="(showPing || showPingFed) && ssoEnable">
+                            <mat-form-field class="full-width ssoInputs" appearance="outline">
+                                <mat-label class="label" style="font-size: 15px !important;">Mobile Redirect URL
+                                </mat-label>
+                                <input matInput type="name" name="MobileRedirectURL"
+                                    [formControl]="firstFormGroup3.controls['MobileRedirectURL']"
+                                    placeholder="webRedirectURL" [disabled]="!f4.IsSSO.value">
+                                <mat-error
+                                    *ngIf="submitted && f4.MobileRedirectURL.errors || f4.MobileRedirectURL.dirty || f4.MobileRedirectURL.touched">
+                                    <span *ngIf="f4.MobileRedirectURL.errors?.required">Mobile Redirect URL is a
+                                        required
+                                    </span>
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div fxFlex="33" class="pr-1 pl-1" *ngIf="(showPing || showPingFed) && ssoEnable">
+                            <mat-form-field class="full-width ssoInputs" appearance="outline">
+                                <mat-label class="label" style="font-size: 15px !important;">Issuer
+                                </mat-label>
+                                <input matInput type="name" name="Issuer"
+                                    [formControl]="firstFormGroup3.controls['Issuer']" [disabled]="!f4.IsSSO.value">
+                                <mat-error
+                                    *ngIf="submitted && f4.Issuer.errors || f4.Issuer.dirty || f4.Issuer.touched">
+                                    <span *ngIf="f4.Issuer.errors?.required">Issuer
+                                        is a
+                                        required </span>
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div fxFlex="33" class="pr-1 pl-1" *ngIf="(showPing || showPingFed ) && ssoEnable">
+                            <mat-form-field class="full-width ssoInputs" appearance="outline">
+                                <mat-label class="label" style="font-size: 15px !important;">Client Id
+                                </mat-label>
+                                <input matInput type="text" name="ClientId"
+                                    [formControl]="firstFormGroup3.controls['ClientId']" [disabled]="!f4.IsSSO.value">
+                                <mat-error
+                                    *ngIf="submitted && f4.ClientId.errors || f4.ClientId.dirty || f4.ClientId.touched">
+                                    <span *ngIf="f4.ClientId.errors?.required">ClientId is a required.
+                                    </span>
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div fxFlex="33" class="pr-1 pl-1" *ngIf="(showPing && ssoEnable)">
+                            <mat-form-field class="full-width ssoInputs" appearance="outline">
+                                <mat-label class="label" style="font-size: 15px !important;">Client Secret
+                                </mat-label>
+                                <input matInput type="text" name="ClientSecrate"
+                                    [formControl]="firstFormGroup3.controls['ClientSecrate']"
+                                    [disabled]="!f4.IsSSO.value">
+                                <mat-error
+                                    *ngIf="submitted && f4.ClientSecrate.errors || f4.ClientSecrate.dirty || f4.ClientSecrate.touched">
+                                    <span *ngIf="f4.ClientSecrate.errors?.required">Client Secret
+                                        is a
+                                        required </span>
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div fxFlex="33" class="pr-1 pl-1" *ngIf="(showPing && ssoEnable )">
+                            <mat-form-field class="full-width ssoInputs" appearance="outline">
+                                <mat-label class="label" style="font-size: 15px !important;">Discovery Url</mat-label>
+                                <input matInput type="text" name="DiscoveryUrl"
+                                    [formControl]="firstFormGroup3.controls['DiscoveryUrl']"
+                                    [disabled]="!f4.IsSSO.value">
+                                <mat-error
+                                    *ngIf="submitted && f4.DiscoveryUrl.errors || f4.DiscoveryUrl.dirty || f4.DiscoveryUrl.touched">
+                                    <span *ngIf="f4.DiscoveryUrl.errors?.required">Discovery Url is a required
+                                    </span>
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div fxFlex="33" class="pr-1 pl-1" *ngIf="(showPing && ssoEnable)">
+                            <mat-form-field class="full-width ssoInputs" appearance="outline">
+                                <mat-label class="label" style="font-size: 15px !important;">Authorization Endpoint
+                                </mat-label>
+                                <input matInput type="text" name="AuthorizationEndpoint"
+                                    [formControl]="firstFormGroup3.controls['AuthorizationEndpoint']"
+                                    [disabled]="!f4.IsSSO.value">
+                                <mat-error
+                                    *ngIf="submitted && f4.AuthorizationEndpoint.errors || f4.AuthorizationEndpoint.dirty || f4.AuthorizationEndpoint.touched">
+                                    <span *ngIf="f4.AuthorizationEndpoint.errors?.required">Authorization Endpoint
+                                        is a
+                                        required </span>
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div fxFlex="33" class="pr-1 pl-1" *ngIf="showPing && ssoEnable">
+                            <mat-form-field class="full-width ssoInputs" appearance="outline">
+                                <mat-label class="label" style="font-size: 15px !important;">Token Endpoint</mat-label>
+                                <input matInput type="text" name="password"
+                                    [formControl]="firstFormGroup3.controls['TokenEndpoint']"
+                                    [disabled]="!f4.IsSSO.value">
+                                <mat-error
+                                    *ngIf="submitted && f4.TokenEndpoint.errors || f4.TokenEndpoint.dirty || f4.TokenEndpoint.touched">
+                                    <span *ngIf="f4.TokenEndpoint.errors?.required">Token Endpoint is a required
+                                    </span>
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div fxFlex="33" class="pr-1 pl-1" *ngIf="(showPing && ssoEnable)">
+                            <mat-form-field class="full-width ssoInputs" appearance="outline">
+                                <mat-label class="label" style="font-size: 15px !important;">User Endpoint
+                                </mat-label>
+                                <input matInput type="text" name="UserEndpoint"
+                                    [formControl]="firstFormGroup3.controls['UserEndpoint']"
+                                    [disabled]="!f4.IsSSO.value">
+                                <mat-error
+                                    *ngIf="submitted && f4.UserEndpoint.errors || f4.UserEndpoint.dirty || f4.UserEndpoint.touched">
+                                    <span *ngIf="f4.TokenEndpoint.errors?.required">User Endpoint
+                                        is a
+                                        required </span>
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <!--     <div fxFlex="33" class="pr-1 full" *ngIf="(showPing || showPingFed) && ssoEnable">
+                            <mat-form-field class="full-width" appearance="outline">
+                                <mat-label class="label" style="font-size: 15px !important;">Scope</mat-label>
+                                <input matInput type="text" name="Scope"
+                                    [formControl]="firstFormGroup3.controls['Scope']" [disabled]="!f4.IsSSO.value">
+                                <mat-error *ngIf="submitted && f4.Scope.errors || f4.Scope.dirty || f4.Scope.touched">
+                                    <span *ngIf="f4.Scope.errors?.required">Scope is a required
+                                    </span>
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div fxFlex="33" class="pr-1 full" *ngIf="(showPing || showPingFed)  && ssoEnable ">
+                            <mat-form-field class="full-width" appearance="outline">
+                                <mat-label class="label" style="font-size: 15px !important;" >Is Active
+                                </mat-label>
+                                <mat-select [formControl]="firstFormGroup3.controls['IsActive']" >
+                                    <mat-option value="true">
+                                            TRUE
+                                        </mat-option>
+                                        <mat-option value="false">
+                                            FALSE
+                                        </mat-option>
+                                </mat-select>
+                              
+                                <mat-error *ngIf="submitted && f4.IsActive.errors || f4.IsActive.dirty || f4.IsActive.touched">
+                                    <span *ngIf="f4.IsActive.errors?.required">IsActive is a
+                                        required </span>
+                                </mat-error>
+                            </mat-form-field>
+                        </div> -->
+                        <div fxFlex="33" class="pr-1 pl-1">
+                            <button mat-raised-button class="pr-1 success" style="margin: 16px;" *ngIf="!!ssoEnable"
+                                [disabled]="this.firstFormGroup3.invalid" (click)="SubmitSSO()">
+                                <mat-icon>check</mat-icon>Submit
+                            </button>
+                        </div>
+
+                    </div>
+                </form>
+                <!-- <button mat-raised-button class="warn" (click)="tabGroup.selectedIndex=0">Back</button> 
+                <button mat-raised-button class="btn success" (click)="tabGroup.selectedIndex=2">Submit</button>-->
+
+
+            </div>
+
+        </mat-tab>
+        <mat-tab label="Approval Configuration">
+            <div fxFlex="100%" class="example-container mat-elevation-z4">
+                <mat-card class="cardmat" style="height: auto !important;">
+                    <mat-card-header class="headercard">
+                        <span style="font-size:17px !important;font-weight: 700;">Retirement</span>
+
+                    </mat-card-header>
+                    <mat-card-content>
+                        <div class="responsivetable">
+                            <table mat-table [dataSource]="retiredataSource" class="tablescroll" matSort>
+                                <ng-container matColumnDef="displayName">
+                                    <th mat-header-cell *matHeaderCellDef>CONFIGURATION</th>
+                                    <td mat-cell *matCellDef="let element;let j=index;" 
+                                        style="width:170px ;">
+                                        <span style="font-weight: bold;font-size: 14px;">{{element.DisplayName}} </span>
+                                    </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="defaultValue">
+                                    <th mat-header-cell *matHeaderCellDef>
+                                        <div  fxLayout="row wrap" >
+                                            <div fxFlex="100" fxFlex.gt-xs="50" class="pr-1">
+                                        <mat-form-field class="full-width"  appearance="outline" style="left: -15% !important;">
+                                            <mat-label class="label" style="font-size: 12px !important;">
+                                            </mat-label>
+                                            <mat-select disableOptionCentering [(ngModel)]="SellingAmtCheckCtrl" (selectionChange)="SellingAmtCheck()"
+                                                [ngModelOptions]="{standalone: true}">
+                                                <mat-option value="0"> Cost </mat-option>
+                                                <mat-option value="1"> WDV </mat-option>
+                                                <mat-option value="2"> Selling Amount</mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                            </div>
+                                        <div fxFlex="100" fxFlex.gt-xs="50" class="pr-1">
+                                        <mat-form-field class="full-width"   appearance="outline" style="left: -10% !important;">
+                                            <mat-label class="label" style="font-size: 12px !important;">
+                                            </mat-label>
+                                            <mat-select disableOptionCentering 
+                                                [ngModelOptions]="{standalone: true}">
+                                                <mat-option value="0"> Greater Than </mat-option>
+                                                <mat-option value="1"> Less Than </mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                        </div>
+                                        </div>
+                                    </th>
+                                    <td mat-cell *matCellDef="let element;let j=index;" style="width:300px ;">                                        
+                                        <!-- <mat-form-field class="full-width" appearance="outline" *ngIf="j==4">
+                                            <input matInput type="number" name="DefaultValue" [hidden]="!((j<4))"
+                                                [(ngModel)]="element.SelectedValue"
+                                                [ngModelOptions]="{standalone: true}">
+                                        </mat-form-field> -->
+                                    </td>
+                                </ng-container>
+
+                                <ng-container matColumnDef="isActive">
+                                    <div fxLayout="row wrap">
+                                    <th mat-header-cell *matHeaderCellDef>
+                                
+                                        <mat-form-field class="full-width" appearance="outline">
+                                            <mat-label class="label" style="font-size: 15px !important;">
+                                            </mat-label>
+                                            <input matInput type="name" [(ngModel)]="RetirementTxnCtrl" (change)="RetirementTxn()"
+                                                [ngModelOptions]="{standalone: true}"
+                                                name="DefaultValue">
+                                        </mat-form-field>
+                                    
+                                    </th>
+                                
+                                    <td mat-cell *matCellDef="let element;let j=index;" style="width:280px ;">
+                                        <mat-slide-toggle [checked]="!!element.IsActive" style="cursor: pointer;"
+                                            (change)="ChangeApproval(element)"></mat-slide-toggle>
+
+                                    </td>
+                                    </div>
+                                </ng-container>
+                                <ng-container matColumnDef="isActive1">
+                                    <th mat-header-cell *matHeaderCellDef>For other transactions</th>
+                                    <td mat-cell *matCellDef="let element;let j=index;" style="width:100px ;">
+                                        <mat-slide-toggle [disabled]="RetirementTxnCtrl == 0" [checked]="!!this.retireOtherdata[j+1].IsActive" style="cursor: pointer;"
+                                        (change)="ChangeOtherApproval('Retirement' , j)" ></mat-slide-toggle>
+                                    </td>
+                                </ng-container>
+                                <tr mat-header-row *matHeaderRowDef="displayedColumns;sticky:true;"></tr>
+                                <tr mat-row *matRowDef="let row; columns: displayedColumns;let i=index"></tr>
+
+                            </table>
+                        </div>
+
+                    </mat-card-content>
+                </mat-card>
+
+                <mat-card class="cardmat" style="height: auto !important;">
+                    <mat-card-header class="headercard">
+                        <span style="font-size:17px !important;font-weight: 700;">Transfer</span>
+
+                    </mat-card-header>
+                    <mat-card-content>
+                        <div class="responsivetable">
+                            <table mat-table [dataSource]="tranferdataSource" class="tablescroll" matSort>
+                                <ng-container matColumnDef="displayName">
+                                    <th mat-header-cell *matHeaderCellDef>CONFIGURATION</th>
+                                    <td mat-cell *matCellDef="let element;let j=index;" [hidden]="!((j<4))"
+                                        style="width:170px ;">
+                                        <span style="font-weight: bold;font-size: 14px;">{{element.DisplayName}} </span>
+                                    </td>
+                                </ng-container>
+                                <ng-container matColumnDef="defaultValue">
+                                    <th mat-header-cell *matHeaderCellDef>
+                                        <div  fxLayout="row wrap" >
+                                            <div fxFlex="100" fxFlex.gt-xs="50" class="pr-1">
+                                        <mat-form-field class="full-width"  appearance="outline" style="left: -15% !important;">
+                                            <mat-label class="label" style="font-size: 12px !important;">
+                                            </mat-label>
+                                            <mat-select disableOptionCentering [(ngModel)]="SellingAmtCheckCtrl" (selectionChange)="SellingAmtCheck()"
+                                                [ngModelOptions]="{standalone: true}">
+                                                <mat-option value="0"> Cost </mat-option>
+                                                <mat-option value="1"> WDV </mat-option>
+                                                <mat-option value="2"> Selling Amount</mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                            </div>
+                                        <div fxFlex="100" fxFlex.gt-xs="50" class="pr-1">
+                                        <mat-form-field class="full-width"   appearance="outline" style="left: -10% !important;">
+                                            <mat-label class="label" style="font-size: 12px !important;">
+                                            </mat-label>
+                                            <mat-select disableOptionCentering 
+                                                [ngModelOptions]="{standalone: true}">
+                                                <mat-option value="0"> Greater Than </mat-option>
+                                                <mat-option value="1"> Less Than </mat-option>
+                                            </mat-select>
+                                        </mat-form-field>
+                                        </div>
+                                        </div>
+                                    </th> 
+                                        <td mat-cell *matCellDef="let element;let j=index;" style="width:300px ;">                                        
+                                            <!-- <mat-form-field class="full-width" appearance="outline" *ngIf="j==4">
+                                                <input matInput type="number" name="DefaultValue" [hidden]="!((j<4))"
+                                                    [(ngModel)]="element.SelectedValue"
+                                                    [ngModelOptions]="{standalone: true}">
+                                            </mat-form-field> -->
+                                        </td>
+                                    <!-- <th mat-header-cell *matHeaderCellDef> -->
+                                        <!-- <mat-form-field class="full-width" appearance="outline">
+                                            <mat-label class="label" style="font-size: 15px !important;">Is Cost/WDV
+                                            </mat-label>
+                                            <mat-select disableOptionCentering [(ngModel)]="costORwdvCtrl"
+                                                [ngModelOptions]="{standalone: true}">
+                                                <mat-option value="0"> Cost </mat-option>
+                                                <mat-option value="1"> WDV </mat-option>
+                                            </mat-select>
+                                        </mat-form-field> -->
+                                    <!-- </th>
+                                    <td mat-cell *matCellDef="let element;let j=index;" [hidden]="!((j<4))"
+                                        style="width:300px ;"> -->
+                                        <!-- <mat-form-field class="full-width" appearance="outline" *ngIf="j==4">
+                                            <input matInput type="name" name="DefaultValue"
+                                                [(ngModel)]="element.SelectedValue"
+                                                [ngModelOptions]="{standalone: true}">
+                                        </mat-form-field> -->
+                                    <!-- </td> -->
+
+                                </ng-container>
+                                <ng-container matColumnDef="isActive">
+                                    <th mat-header-cell *matHeaderCellDef>
+                                        <mat-form-field class="full-width" appearance="outline">
+                                            <mat-label class="label" style="font-size: 15px !important;">
+
+                                            </mat-label>
+                                            <input matInput type="name" [(ngModel)]="TransferTxnCtrl" (change)="TransferTxn()"
+                                                [ngModelOptions]="{standalone: true}"
+                                                name="DefaultValue">
+                                        </mat-form-field>
+                                    </th>
+                                    <td [hidden]="!((j<4))" style="width:280px ;" mat-cell
+                                        *matCellDef="let element;let j=index;">
+
+                                        <mat-slide-toggle [checked]="!!element.IsActive" style="cursor: pointer;" 
+                                            (change)="ChangeApproval(element)"></mat-slide-toggle>
+
+                                    </td>
+                                    <ng-container matColumnDef="isActive1">
+                                        <th mat-header-cell *matHeaderCellDef>For other transactions</th>
+                                        <td mat-cell *matCellDef="let element;let j=index;" [hidden]="!((j<4))"
+                                            style="width:100px ;">
+                                            <mat-slide-toggle [disabled]="TransferTxnCtrl == 0" style="cursor: pointer;" [checked]="!!this.tranferOtherdata[j+1].IsActive"
+                                            (change)="ChangeOtherApproval('Transfer' , j)" ></mat-slide-toggle>
+
+                                        </td>
+                                    </ng-container>
+                                </ng-container>
+                                <tr mat-header-row *matHeaderRowDef="displayedColumns;sticky:true;"></tr>
+                                <tr mat-row *matRowDef="let row; columns: displayedColumns;let i=index"
+                                    class="notSelected"></tr>
+
+                            </table>
+                        </div>
+                    </mat-card-content>
+                </mat-card>
+                <!--     <button mat-raised-button class="warn" (click)="tabGroup.selectedIndex=0">Back</button> -->
+            </div>
+
+        </mat-tab>
+
+        <mat-tab label="OutBound Integration">
+            <div fxFlex="100%" class="example-container mat-elevation-z4">
+                <div fxLayout="row wrap" fxLayout.lt-sm="column" style="padding-top: 10px;">
+                    <div fxFlex="100" class="pr-1 full">
+                        <mat-slide-toggle [checked]="!!showSapDropDown" style="cursor: pointer;"
+                            (change)="showSapSelector()"></mat-slide-toggle> <span
+                            style="font-weight: bold;padding-left: 10px;">Outbound Integration </span>
+                    </div>
+                </div>
+                <div fxLayout="row wrap" fxLayout.lt-sm="column" style="padding-top: 10px;">
+                    <div fxFlex="25" class="pr-1 full">
+                        <mat-form-field class="full-width" appearance="outline" *ngIf="showSapDropDown">
+                            <mat-label class="label" style="font-size: 15px !important;">Integration Type
+                            </mat-label>
+                            <mat-select [(ngModel)]="outBoundVal" [ngModelOptions]="{standalone: true}">
+                                <mat-option value="sap">Sap</mat-option>
+                                <mat-option value="oracle">Oracle</mat-option>
+                                <mat-option value="excel">Excel</mat-option>
+                                <mat-option value="csv">CSV</mat-option>
+                            </mat-select>
+                        </mat-form-field>
+                    </div>
+                </div>
+
+                <div fxLayout="row wrap" fxLayout.lt-sm="column" class="responsivetable"
+                    *ngIf="(showSapDropDown && outBoundVal)">
+                    <table mat-table [dataSource]="outBoundDataSource" class="tablescroll" matSort>
+
+                        <ng-container matColumnDef="displayName">
+                            <th mat-header-cell *matHeaderCellDef></th>
+                            <td mat-cell *matCellDef="let element;let j=index;" style="width:500px ;" [hidden]="j < 2">
+                                <span style="font-weight: bold;font-size: 14px;">{{element.DisplayName}} </span>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="defaultValue">
+                            <th mat-header-cell *matHeaderCellDef></th>
+                            <td mat-cell *matCellDef="let element;let j=index;" style="width:100px ;" [hidden]="j < 2">
+                                <!-- <mat-form-field class="full-width" appearance="outline" *ngIf="outBoundVal == 'sap'">                                           
+                                       <input matInput type="name" name="DefaultValue" [(ngModel)]="element.SelectedValue" [ngModelOptions]="{standalone: true}">  
+                                    </mat-form-field> -->
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="isActive">
+                            <th mat-header-cell *matHeaderCellDef></th>
+                            <td mat-cell *matCellDef="let element;let j=index;" style="cursor: pointer;"
+                                [hidden]="j < 2">
+                                <mat-slide-toggle (change)="OutBondFields(element)" [checked]="element.IsActive">
+                                </mat-slide-toggle>
+                            </td>
+                        </ng-container>
+                        <tr mat-header-row *matHeaderRowDef="displayedColumnsOutBound;sticky:true;"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumnsOutBound;let i=index"
+                            class="notSelected"></tr>
+
+                    </table>
+                </div>
+            </div>
+
+            <!--   <button mat-raised-button class="warn" (click)="tabGroup.selectedIndex=0">Back</button> -->
+
+
+        </mat-tab>
+
+        <mat-tab label="Other Configuration">
+            <div fxFlex="100%" class="example-container mat-elevation-z4">
+
+                <div fxLayout="row wrap" fxLayout.lt-sm="column" class="responsivetable">
+                    <table mat-table [dataSource]="othersDataSource" class="tablescroll" matSort>
+
+                        <ng-container matColumnDef="displayName">
+                            <th mat-header-cell *matHeaderCellDef></th>
+                            <td mat-cell *matCellDef="let element;let j=index;" style="width:500px ;">
+                                <span style="font-weight: bold;font-size: 14px;">{{element.DisplayName}} </span>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="defaultValue">
+                            <th mat-header-cell *matHeaderCellDef></th>
+                            <td mat-cell *matCellDef="let element;let j=index;" style="width:100px ;">
+
+                                <mat-form-field class="full-width" appearance="outline" *ngIf="element.ConfigurationMasterId==18 || element.ConfigurationMasterId==71 ||
+                                              element.ConfigurationMasterId==72 || element.ConfigurationMasterId==74||
+                                               element.ConfigurationMasterId==70 || element.ConfigurationMasterId==63 ||  element.ConfigurationMasterId==36 || element.ConfigurationMasterId==37 || element.ConfigurationMasterId==38 || element.ConfigurationMasterId==64">
+                                    <input matInput type="name" name="DefaultValue" [(ngModel)]="element.SelectedValue" [disabled]="(element.ConfigurationMasterId==36 || element.ConfigurationMasterId==37 || element.ConfigurationMasterId==38) && element.IsActive == false"
+                                        [ngModelOptions]="{standalone: true}" (change)="changeselectedvalue(element)">
+                                </mat-form-field>
+                                <mat-form-field class="full-width" appearance="outline" *ngIf="!element.ConfigurationMasterId==63  || !element.ConfigurationMasterId==67">
+                      <input matInput type="name" name="DefaultValue" [(ngModel)]="element.SelectedValue" [disabled]="element.IsActive == false" (change)="checkPrefixVal()" [pattern]="unamePattern"
+                          [ngModelOptions]="{standalone: true}" (change)="changeselectedvalue(element)">
+                        
+                            <!--<span *ngIf="f.element.errors?.pattern">Start Number is required </span>-->
+                           
+                        
+                      
+                  </mat-form-field>
+                  <span matTooltip="Upload File" [matTooltipDisabled]="false" > 
+
+                    <button mat-raised-button class="minibtn" style="margin-left: 8px !important;height: 36px;" *ngIf=" element.ConfigurationMasterId==67"
+                    [disabled]="element.IsActive == false" (click)="openUploadAssetCategory()" >
+                    <mat-icon style="color:gray;">file_upload</mat-icon></button></span>
+   
+                         <mat-form-field class="full-width" appearance="outline"
+                                    *ngIf="element.ConfigurationMasterId==2">
+                                    <mat-select disableOptionCentering [(ngModel)]="element.SelectedValue" (selectionChange)="ChangeApproval(element)"
+                                        [ngModelOptions]="{standalone: true}">
+                                        <mat-option value="1"> Global </mat-option>
+                                        <mat-option value="0"> Classwise </mat-option>
+                                        <mat-option value="2"> Categorywise </mat-option>
+                                    </mat-select>
+                                </mat-form-field>
+                            </td>
+                        </ng-container>
+                        <ng-container matColumnDef="isActive">
+                            <th mat-header-cell *matHeaderCellDef></th>
+                            <td mat-cell *matCellDef="let element;let j=index;" style="cursor: pointer;">
+                                <mat-slide-toggle  [checked]="!!element.IsActive" *ngIf="element.ConfigurationMasterId !=2 && element.ConfigurationMasterId !=63 && element.ConfigurationMasterId !=64 && element.ConfigurationMasterId !=36  && element.ConfigurationMasterId !=37 && element.ConfigurationMasterId !=38"  style="cursor: pointer;" 
+                                            (change)="ChangeApproval(element)" ></mat-slide-toggle>
+                            </td>
+                        </ng-container>
+                        <tr mat-header-row *matHeaderRowDef="displayedColumnsOthers;sticky:true;"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumnsOthers;let i=index"
+                            class="notSelected"></tr>
+
+                    </table>
+                </div>
+            </div>
+
+            <!--   <button mat-raised-button class="warn" (click)="tabGroup.selectedIndex=0">Back</button> -->
+
+
+        </mat-tab>
+
+        <mat-tab label="Email Credential">
+            <mat-card class="p-0">
+
+                <mat-card-content>
+                    <form [formGroup]="firstFormGroup1" style="margin-top: 20px;">
+                        <ng-template matStepLabel>Fill out your name</ng-template>
+                        <div class="pb-1">
+                            <mat-slide-toggle class="pr-1" formControlName="IsSSL">Is SSL</mat-slide-toggle>
+                            <mat-slide-toggle class="pr-1" formControlName="IsHTMLBody">Is HTML Body</mat-slide-toggle>
+                            <mat-slide-toggle class="pr-1" formControlName="UserCredentials">User Credentials
+                            </mat-slide-toggle>
+                            <mat-slide-toggle (change)="changeDisable($event)" [checked]="checkval"
+                                formControlName="Withoutpassword" class="pr-1">Without Password </mat-slide-toggle>
+                            <mat-slide-toggle (change)="changeDisable1($event)" [checked]="checkval" class="pr-1"
+                                formControlName="WithoutSmtp">Is SMTP are Different
+                            </mat-slide-toggle>
+                        </div>
+                        <div class="row wrap">
+
+                            <div fxFlex="100" fxFlex.gt-xs="50" class="pr-1">
+                                <div class="pb-1">
+                                    <mat-form-field class="full-width">
+                                        <input matInput placeholder="Sender Title" [formControl]="firstFormGroup1.controls['Sendertitle']">
+                                        <mat-error
+                                            *ngIf="submitted && f2.Sendertitle.errors || f2.Sendertitle.dirty || f2.Sendertitle.touched">
+                                            <span *ngIf="f2.Sendertitle.errors?.required">Sendertitle is a required
+                                            </span>
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+
+                                <div class=" pb-1">
+                                    <mat-form-field class="full-width">
+                                        <input matInput type="name" name="username"
+                                            [formControl]="firstFormGroup1.controls['emailsender']"
+                                            placeholder="Email sender">
+                                        <mat-error
+                                            *ngIf="submitted && f2.emailsender.errors || f2.emailsender.dirty || f2.emailsender.touched">
+                                            <span *ngIf="f2.emailsender.errors?.required">Emailsender is a required
+                                            </span>
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                                <div class=" pb-1">
+                                    <mat-form-field class="full-width">
+                                        <input matInput type="name" [disabled]="checked" name="username"
+                                            [formControl]="firstFormGroup1.controls['smtpemail']"
+                                            placeholder=" Smtp Email">
+                                        <mat-error
+                                            *ngIf="submitted && f2.smtpemail.errors || f2.smtpemail.dirty || f2.smtpemail.touched">
+                                            <span *ngIf="f2.smtpemail.errors?.required">Smtpemail is a required </span>
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+
+                                <div class=" pb-1">
+                                    <mat-form-field class="full-width">
+                                        <input matInput type="text"
+                                            oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+                                            name="port number" [formControl]="firstFormGroup1.controls['Eportnumber']"
+                                            placeholder="Port Number">
+                                        <mat-error
+                                            *ngIf="submitted && f2.Eportnumber.errors || f2.Eportnumber.dirty || f2.Eportnumber.touched">
+                                            <span *ngIf="f2.Eportnumber.errors?.required">password is a required </span>
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+
+                            </div>
+                            <div fxFlex="100" fxFlex.gt-xs="50" class="pr-1">
+                                <div class=" pb-1">
+                                    <mat-form-field class="full-width">
+                                        <input matInput type="name" name="username"
+                                            [formControl]="firstFormGroup1.controls['emailhost']" autocomplete="off"
+                                            placeholder="Email Host">
+                                        <mat-error
+                                            *ngIf="submitted && f2.emailhost.errors || f2.emailhost.dirty || f2.emailhost.touched">
+                                            <span *ngIf="f2.emailhost.errors?.required">password is a required </span>
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                                <div class=" pb-1">
+                                    <mat-form-field class="full-width">
+                                        <input [disabled]="checked" matInput type="password" name="password" autocomplete="off"
+                                            [formControl]="firstFormGroup1.controls['Epassword']"
+                                            placeholder="Password">
+                                        <mat-error
+                                            *ngIf="submitted && f2.Epassword.errors || f2.Epassword.dirty || f2.Epassword.touched">
+                                            <span *ngIf="f2.Epassword.errors?.required">password is a required </span>
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+
+                                <div class=" pb-1">
+                                    <mat-form-field class="full-width">
+                                        <input [disabled]="checked" matInput type="password" name="password"
+                                            [formControl]="firstFormGroup1.controls['smtppassword']"
+                                            placeholder=" Smtp Password">
+                                        <mat-error
+                                            *ngIf="submitted && f2.smtppassword.errors || f2.smtppassword.dirty || f2.smtppassword.touched">
+                                            <span *ngIf="f2.smtppassword.errors?.required">SMTP password is a required
+                                            </span>
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+
+                            </div>
+                        </div>
+
+                        <div fxLayout="row" style="float: right;" class="pb-1">
+                            <!-- <button mat-raised-button color="accent" (click)="tabGroup.selectedIndex=0">Back</button>
+                            <span fxFlex="8px"></span>
+                            <button mat-raised-button color="primary" (click)="tabGroup.selectedIndex=2">Next</button>
+                            <span fxFlex="8px"></span>
+                            <button mat-raised-button color="primary" [disabled]="firstFormGroup1.invalid"
+                                (click)="Saveemail()">{{Submitemail }}</button> -->
+                                <button mat-raised-button class="pr-1 success" [disabled]="firstFormGroup1.invalid" (click)="Saveemail()">
+                                    <mat-icon>check</mat-icon>Submit
+                                </button>
+                        </div>
+                    </form>
+                </mat-card-content>
+            </mat-card>
+        </mat-tab>
+
+        <mat-tab label="FTP 1">
+            <mat-card class="p-0">
+                <mat-card-content>
+                    <form [formGroup]="firstFormGroup2" style="margin-top: 20px;">
+                        <ng-template matStepLabel>Fill out your name</ng-template>
+                        <div class="pb-1">
+                            <mat-radio-group aria-label="Select an option">
+                                <mat-radio-button (click)="onclickftp()" class="pr-1" value="0">FTP</mat-radio-button>
+                                <mat-radio-button (click)="onclicksftp()" value="1">SFTP</mat-radio-button>
+                            </mat-radio-group>
+                        </div>
+
+                        <div fxLayout="row wrap">
+
+                            <div fxFlex="100" fxFlex.gt-xs="50" class="pr-1">
+                                <div class="pb-2" *ngIf="isShowDivftp">
+                                    <mat-form-field class="full-width">
+                                        <mat-label>Operation Type</mat-label>
+                                        <div>
+                                            <mat-select disableOptionCentering formControlName="Operationtypeftp">
+                                                <mat-option value="User Credentials">User Credentials </mat-option>
+                                            </mat-select>
+                                            <!-- <mat-error *ngIf="submitted && f3.Operationtypeftp.errors || f3.Operationtypeftp.dirty || f3.Operationtypeftp.touched">
+                                <span *ngIf="f3.Operationtypeftp.errors?.required">Operation Type  is a required </span>
+                              </mat-error> -->
+                                        </div>
+                                    </mat-form-field>
+                                </div>
+                                <div class="pb-2" *ngIf="isShowDivsftp">
+                                    <mat-form-field class="full-width">
+                                        <mat-label>Operation Type</mat-label>
+                                        <mat-select disableOptionCentering formControlName="Operationtypesftp">
+                                            <mat-option value="UserName and Password">UserName and Password
+                                            </mat-option>
+                                            <mat-option value="UserName and Private or Public Key">UserName and Private
+                                                or Public Key </mat-option>
+                                            <mat-option value="UserName Password Private and Public key">UserName
+                                                Password Private and Public key</mat-option>
+                                        </mat-select>
+                                        <!-- <mat-error *ngIf="submitted && f3.Operationtypesftp.errors || f3.Operationtypesftp.dirty || f3.Operationtypesftp.touched">
+                              <span *ngIf="f3.Operationtypesftp.errors?.required">Operation Type  is a required </span>
+                            </mat-error> -->
+                                    </mat-form-field>
+                                </div>
+                                <div class=" pb-2">
+                                    <mat-form-field class="full-width">
+                                        <input matInput type="name" name="user name"
+                                            [formControl]="firstFormGroup2.controls['username']"
+                                            placeholder="User Name">
+                                        <mat-error
+                                            *ngIf="submitted && f3.username.errors || f3.username.dirty || f3.username.touched">
+                                            <span *ngIf="f3.username.errors?.required">Username is a required </span>
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                                <div class=" pb-2">
+                                    <mat-form-field class="full-width">
+                                        <input matInput placeholder=" Host name" formControlName="Hostname">
+                                        <mat-error
+                                            *ngIf="submitted && f3.Hostname.errors || f3.Hostname.dirty || f3.Hostname.touched">
+                                            <span *ngIf="f3.Hostname.errors?.required">Hostname is a required </span>
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+
+                            </div>
+                            <div fxFlex="100" fxFlex.gt-xs="50" class="pr-1">
+                                <div class=" pb-2">
+                                </div>
+                                <div class=" pl-2">
+                                    <mat-form-field class="full-width">
+                                        <input matInput type="text"
+                                            oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"
+                                            [ngModel]="portnumber" id="val" name="port number"
+                                            [formControl]="firstFormGroup2.controls['portnumber']"
+                                            placeholder="Port Number">
+                                        <mat-error
+                                            *ngIf="submitted && f3.portnumber.errors || f3.portnumber.dirty || f3.portnumber.touched">
+                                            <span *ngIf="f3.portnumber.errors?.required">port number is a required
+                                            </span>
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                                <div class=" pb-2">
+                                    <mat-form-field class="full-width">
+                                        <input matInput type="password" name="password"
+                                            [formControl]="firstFormGroup2.controls['password']" placeholder="Password">
+                                        <mat-error
+                                            *ngIf="submitted && f3.password.errors || f3.password.dirty || f3.password.touched">
+                                            <span *ngIf="f3.password.errors?.required">password is a required </span>
+                                        </mat-error>
+                                    </mat-form-field>
+                                </div>
+                                <!-- <div class=" pb-2">
+                          <mat-form-field class="full-width">
+                            <input matInput type="text" name="password" [formControl]="firstFormGroup2.controls['FTPfor']"
+                              placeholder="FTP For">
+                          </mat-form-field>
+                        </div> -->
+                            </div>
+                        </div>
+                        <div fxLayout="row" style="float: right;" class="pb-1">
+                            <!-- <button mat-raised-button color="accent" (click)="tabGroup.selectedIndex=1">Back</button>
+                            <span fxFlex="8px"></span>
+                            <button mat-raised-button color="primary" (click)="tabGroup.selectedIndex=3">Next</button>
+                            <span fxFlex="8px"></span>
+                            <button mat-raised-button color="primary" (click)="SaveFTP()"
+                                [disabled]="firstFormGroup2.invalid">Save</button> -->
+                                <button mat-raised-button class="pr-1 success" [disabled]="firstFormGroup2.invalid" (click)="SaveFTP()">
+                                    <mat-icon>check</mat-icon>Submit
+                                </button>
+                        </div>
+
+                    </form>
+                    <!-- <div class="pt-14 pb-1" class="full-width">
+                    <mat-form-field>
+                      <input matInput type="text" name="password" 
+                        placeholder="FTP For">
+                    </mat-form-field>
+                    <button mat-icon-button mat-sm-button color="warn" class="mr-1" (click)="openPopUp()">
+                      <mat-icon>update</mat-icon>
+                    </button>
+                  </div> -->
+                </mat-card-content>
+            </mat-card>
+
+        </mat-tab>
+
+    </mat-tab-group>
+</div>

@@ -1,0 +1,110 @@
+<div class="md-dialog-container">
+  <mat-toolbar class="mat-toolbar"  style="background-color:rgb(12, 48, 87);color:white">
+    <span style="position: relative;left: 40%;">{{data.value==='insert'?'Create':'Edit'}} Employee</span>
+    <span class="example-spacer"></span>
+    <button mat-icon-button class="example-icon" aria-label="Example icon-button with close icon" (click)="onclosetab()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-toolbar><br><br>
+  <mat-dialog-content cdkDrag cdkDragRootElement=".cdk-overlay-pane" cdkDragHandle>
+    <div class="md-dialog-content">
+      <form [formGroup]="dialogGroupForm" (ngSubmit)="onSubmit()">
+        <div fxLayout="row wrap" fxLayout.lt-sm="column">
+         
+          <div *ngIf="data.value==='insert'" fxFlex="100" class="pr-1">
+            <div fxFlex="50" class="pr-1">
+  
+              <mat-form-field class="full-width">
+                <mat-label class="label asterisk_input">Employee ID</mat-label>
+                <input matInput  [formControl]="dialogGroupForm.controls['employeeId']" autocomplete="off" >
+                <mat-error *ngIf="submitted || f1.employeeId.errors || f1.employeeId.dirty || f1.employeeId.touched || f1.employeeId.hasError('whitespace')">
+                  <span *ngIf="f1.employeeId.errors?.required || f1.employeeId.hasError('whitespace')">Employee ID  is required </span>
+                </mat-error>
+              </mat-form-field>
+  
+            </div>
+            <div fxFlex="50" class="pr-1">
+          
+            <mat-form-field class="full-width">
+              <mat-label class="label asterisk_input">Employee Email</mat-label>
+              <input matInput emailId="emailId" [formControl]="dialogGroupForm.controls['employeeEmail']" autocomplete="off">
+              <mat-error *ngIf="submitted || f1.employeeEmail.errors || f1.employeeEmail.dirty || f1.employeeEmail.touched ">
+                <span *ngIf="f1.employeeEmail.errors?.required ">Employee Email  is required </span>
+                <span *ngIf="f1.employeeEmail.errors?.email">Employee Email  is invalid</span>
+              </mat-error>
+            </mat-form-field>
+            </div>
+          </div>
+
+          <div *ngIf="data.value !='insert'" fxFlex="100" class="pr-1">
+            <div fxFlex="50" class="pr-1">
+  
+              <mat-form-field class="full-width">
+                <input matInput  [formControl]="dialogGroupForm.controls['employeeId']" placeholder="Employee ID" autocomplete="off" readonly >
+               
+              </mat-form-field>
+  
+            </div>
+            <div fxFlex="50" class="pr-1">
+          
+            <mat-form-field class="full-width">
+              <input matInput emailId="emailId" [formControl]="dialogGroupForm.controls['employeeEmail']" placeholder="Employee Email" readonly autocomplete="off" >
+            
+            </mat-form-field>
+            </div>
+          </div>
+          
+  
+          <div fxFlex="100" class="pr-1">
+            <div fxFlex="50" class="pr-1">
+              <mat-form-field class="full-width">
+                <mat-label class="label asterisk_input">First Name</mat-label>
+                <input matInput  [formControl]="dialogGroupForm.controls['firstName']"  autocomplete="off">
+                <mat-error *ngIf="submitted || f1.firstName.errors || f1.firstName.dirty || f1.firstName.touched || f1.firstName.hasError('whitespace')">
+                  <span *ngIf="f1.firstName.errors?.required || f1.firstName.hasError('whitespace')">First Name  is required </span>
+                </mat-error>
+              </mat-form-field>
+            </div>
+  
+          <div fxFlex="50" class="pr-1">
+            <mat-form-field class="full-width">
+              <mat-label class="label asterisk_input">Last Name</mat-label>
+              <input matInput  [formControl]="dialogGroupForm.controls['lastName']" autocomplete="off">
+              <mat-error *ngIf="submitted || f1.lastName.errors || f1.lastName.dirty || f1.lastName.touched || f1.lastName.hasError('whitespace')">
+                <span *ngIf="f1.lastName.errors?.required || f1.lastName.hasError('whitespace')">Last Name is required </span>
+              </mat-error>
+            </mat-form-field>
+           
+          </div>
+        </div>
+        <div fxFlex="100" class="pr-1">
+          <div fxFlex="50" class="pr-1">
+            <mat-form-field class="full-width">
+              <input matInput [formControl]="dialogGroupForm.controls['contactNo']"  [pattern]="contactNumberPattern"  autocomplete="off" placeholder="Contact No"  maxlength="12" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" autocomplete="off"> 
+            <mat-error    >
+             
+                <span *ngIf="f1.contactNo.errors?.pattern">Contact No is invalid</span>
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+        <div fxFlex="50" class="pr-1">
+          <mat-form-field class="full-width">
+            <input matInput  [formControl]="dialogGroupForm.controls['Location']" placeholder="Location" autocomplete="off">
+          </mat-form-field>
+         
+        </div>
+      </div>
+         
+          <div fxFlex="100" class="mt-1">
+            <button mat-raised-button color="primary" style="float:right !important;margin-bottom: 10px !important;" [disabled]="dialogGroupForm.invalid">Save</button>
+           
+          </div>
+        </div>
+      </form>
+</div>
+</mat-dialog-content>
+</div>
+
+
+

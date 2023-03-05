@@ -1,0 +1,88 @@
+
+<div class="md-dialog-container" cdkDrag cdkDragRootElement=".cdk-overlay-pane">
+  <mat-toolbar cdkDragHandle class="mat-toolbar"  style="background-color:rgb(12, 48, 87);color:white">
+    <span style="position: relative;left: 40%;">Add User</span>
+    <span class="example-spacer"></span>
+    <button mat-icon-button class="example-icon" aria-label="Example icon-button with close icon" (click)="onclosetab()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-toolbar>
+  <div mat-dialog-content class="p-1 m-0"   >
+  
+    <form [formGroup]="dialogUserAddForm" (ngSubmit)="onSubmit()">
+      <div fxLayout="row wrap" fxLayout.lt-sm="column">
+       
+        <div fxFlex="100" class="pr-1">
+          <div fxFlex="50" class="pr-1">
+
+            <mat-form-field class="full-width">
+              <mat-label class="label asterisk_input">Enter user email</mat-label>
+              <!-- <input matInput userName="userName" [formControl]="dialogUserAddForm.controls['userName']" placeholder="Enter User Name" autocomplete="off" required> -->
+              <input matInput  maxlength="100"  userName="userName" [formControl]="dialogUserAddForm.controls['userName']" (ngModelChange)="ClearData()" [matAutocomplete]="auto" autocomplete="off" >
+              <mat-autocomplete #auto="matAutocomplete" >
+                  <mat-option *ngFor="let option of filteredOptions | async" [value]="option.EmployeeEmail" (click)="SetOtherDetail(option)">
+                    {{option.EmployeeEmail}}
+                  </mat-option>
+              </mat-autocomplete>
+              <mat-error *ngIf="submitted || f1.userName.errors || f1.userName.dirty || f1.userName.touched">
+                <span *ngIf="f1.userName.errors?.required">User Name is required </span>
+                <span *ngIf="f1.userName.errors?.email">
+                  Email not valid.
+             </span>  
+              </mat-error>
+            </mat-form-field>
+
+          </div>
+          <div fxFlex="50" class="pr-1" [ngClass]="{disabledDiv: !!IsDisabled}">
+        
+          <mat-form-field class="full-width">
+            <mat-label class="label asterisk_input">Enter First Name</mat-label>
+            <input matInput firstName="firstName" [formControl]="dialogUserAddForm.controls['firstName']" [readonly]="!!IsDisabled" autocomplete="off">
+            <mat-error *ngIf="submitted || f1.firstName.errors || f1.firstName.dirty || f1.firstName.touched || f1.firstName.hasError('whitespace')">
+              <span *ngIf="f1.firstName.errors?.required || f1.firstName.hasError('whitespace')">First Name is required </span>             
+            </mat-error>
+          </mat-form-field>
+          </div>
+        </div>
+
+        <div fxFlex="100" class="pr-1">
+          <div fxFlex="50" class="pr-1" [ngClass]="{disabledDiv: !!IsDisabled}">
+            <mat-form-field class="full-width">
+              <mat-label class="label asterisk_input">Enter Last Name</mat-label>
+              <input matInput lastName="lastName" [formControl]="dialogUserAddForm.controls['lastName']" [readonly]="!!IsDisabled" autocomplete="off">
+              <mat-error *ngIf="submitted || f1.lastName.errors || f1.lastName.dirty || f1.lastName.touched || f1.lastName.hasError('whitespace')">
+                <span *ngIf="f1.lastName.errors?.required || f1.lastName.hasError('whitespace')">Last Name is required </span>             
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+        <div fxFlex="50" class="pr-1" >
+          <mat-form-field class="full-width">
+            <input matInput contactNo="contactNo"  maxlength="10" [formControl]="dialogUserAddForm.controls['contactNo']" placeholder="Enter Contact No" autocomplete="off" [pattern]="contactNumberPattern">
+            <mat-error *ngIf="submitted || f1.contactNo.errors || f1.contactNo.dirty || f1.contactNo.touched ">
+              <span *ngIf="f1.contactNo.errors?.required">Contact No is required </span>  
+              <span *ngIf="f1.contactNo.errors?.pattern">
+                Contact No not valid.
+           </span>            
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div fxFlex="100" class="pr-1">
+        <div fxFlex="50" class="pr-1" [ngClass]="{disabledDiv: !!IsDisabledEmployeeId}">
+          <mat-form-field class="full-width">
+            <input matInput lastName="lastName" [formControl]="dialogUserAddForm.controls['employeeId']" [readonly]="!!IsDisabledEmployeeId" placeholder="Enter Employee Id" autocomplete="off">
+          </mat-form-field>
+        </div>
+    </div>
+       
+        <div fxFlex="100" class="mt-1">
+          <button mat-raised-button color="primary" style="float:right !important;" [disabled]="dialogUserAddForm.invalid">Save</button>
+         
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+

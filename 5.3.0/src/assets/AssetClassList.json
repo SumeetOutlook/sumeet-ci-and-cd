@@ -1,0 +1,42 @@
+[
+ {
+   "Id":"1",
+   "AssetClass": "@#$%^&*()",
+   "ShortName": "$%TTT"
+ },
+ {
+   "Id":"2",
+   "AssetClass": "AAABBBCCC",
+   "ShortName": "ABC"
+ },
+ {
+   "Id":"3",
+   "AssetClass": "Computer",
+   "ShortName": "COMP"
+ },
+ {
+   "Id":"4",
+   "AssetClass": "Furniture & Fixture",
+   "ShortName": "F & F"
+ },
+ {
+   "Id":"5",
+   "AssetClass": "LAND & BUILDING",
+   "ShortName": "L & B"
+ },
+ {
+   "Id":"6",
+   "AssetClass": "LAPTOP",
+   "ShortName": "LAAPPIIEE"
+ },
+ {
+   "Id":"7",
+   "AssetClass": "PLANT & EQUIPMENT",
+   "ShortName": "P & E"
+ },
+ {
+   "Id":"8",
+   "AssetClass": "PLANT & MACHINARY",
+   "ShortName": "P & M"
+ }
+]

@@ -1,0 +1,771 @@
+<!-- <div class="md-dialog-container">
+
+<mat-toolbar class="mat-toolbar"  style="background-color:#0C3057 !important;color:white">
+  <span>Available Fields</span>
+  <span class="example-spacer"></span>
+  <button mat-icon-button class="example-icon" aria-label="Example icon-button with close icon" (click)="onclosetab()">
+    <mat-icon>close</mat-icon>
+  </button>
+</mat-toolbar><br><br>
+<mat-dialog-content>
+    
+      <div fxLayout="row wrap" >
+        <mat-form-field>
+          <mat-label>Select</mat-label>
+              <mat-select placeholder="Fields" disableOptionCentering  [(ngModel)]="optionValue">
+                <mat-option value="prefer">Prefer</mat-option>
+              </mat-select>
+        </mat-form-field>
+            
+     
+    </div>
+  
+</mat-dialog-content>
+<div *ngIf="optionValue=='prefer'" style="max-height:150px;overflow: hidden auto;border:1px solid lightgrey">
+  <section class="example-section">
+    <mat-checkbox >Asset No </mat-checkbox>
+    <mat-checkbox >Sub No </mat-checkbox>
+    <mat-checkbox class="example-margin"color="primary">Capitalization Date </mat-checkbox>
+    <mat-checkbox >Asset Class</mat-checkbox>
+    <mat-checkbox >Asset Type </mat-checkbox>
+    <mat-checkbox >Asset SubType </mat-checkbox>
+    <mat-checkbox >UOM</mat-checkbox>
+    <mat-checkbox  style="margin-left:59px">Asset Name </mat-checkbox>
+    <mat-checkbox class="example-margin"color="primary" style="margin-left:0px">Asset Description </mat-checkbox>
+    <mat-checkbox  style="margin-left:40px">Qty </mat-checkbox>
+    <mat-checkbox  style="margin-left:84px">Cost </mat-checkbox>
+    <mat-checkbox  style="margin-left:70px">Wdv </mat-checkbox>
+    <mat-checkbox >Equipment No </mat-checkbox>
+    <mat-checkbox  style="margin-left:0px">Asset Condition </mat-checkbox>
+    <mat-checkbox  style="margin-left:-20px">Asset Criticality </mat-checkbox>
+  </section>
+  </div>
+</div> -->
+<div class="md-dialog-container">
+  <div class="event-dialog-wrapper">
+    <mat-toolbar matDialogTitle class="mat-primary m-0" style="background-color:#0C3057 !important;color:white">
+      <div fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+        <span style="position: relative;left: 40%;" class="title dialog-title">
+          Available Fields
+        </span>
+        <button mat-icon-button (click)="dialogRef.close()" aria-label="Close dialog">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+    </mat-toolbar>
+
+    <div mat-dialog-content class="p-1 m-0" cdkDrag cdkDragRootElement=".cdk-overlay-pane" cdkDragHandle>
+
+      <form name="eventForm" class="event-form" fxFlex>
+        <div fxLayout="row wrap" fxLayout.lt-sm="column">
+
+          <div fxFlex="40" class="ml-12" *ngIf="Relationship">
+            <mat-form-field class="full-width">
+              <mat-label>Select</mat-label>
+              <mat-select placeholder="Fields" disableOptionCentering (selectionChange)="getFields($event)"
+                [(value)]="selectedValue">
+                <mat-option [value]="'prefar'">prefar</mat-option>
+                <mat-option [value]="'clientcustomizecolumn'">Customization</mat-option>
+                <mat-option [value]="'review_assets'">Review Asset</mat-option>
+                <mat-option [value]="'prepurchaseditassets'">PrePurchased ItAsset</mat-option>
+                <mat-option [value]="'assetallocationdetails'">Asset Allocation Details</mat-option>
+                <mat-option [value]="'uploaderror'">Upload Error</mat-option>
+                <mat-option [value]="'capitalizenoncapitalizecommonfields'">Capitalize noncapitalize commonFields</mat-option>
+                <mat-option [value]="'other'">Other</mat-option>
+
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div fxFlex="40" class="ml-12" *ngIf="AssignmentPopup">
+            <mat-form-field class="full-width">
+              <mat-label>Select</mat-label>
+              <mat-select placeholder="Fields" disableOptionCentering (selectionChange)="getFields($event)"
+                [(value)]="selectedValue">
+                <mat-option [value]="'prefar'">prefar</mat-option>
+                <mat-option [value]="'clientcustomizecolumn'">Customization</mat-option>
+                <mat-option [value]="'prepurchaseditassets'">PrePurchased ItAsset</mat-option>
+                <mat-option [value]="'assetallocationdetails'">Asset Allocation Details</mat-option>
+                <mat-option [value]="'capitalizenoncapitalizecommonfields'">Capitalize noncapitalize commonFields</mat-option>
+                <mat-option [value]="'other'">Other</mat-option>
+
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div fxFlex="40" class="ml-12" *ngIf="ManageGroup">
+            <mat-form-field class="full-width">
+              <mat-label>Select</mat-label>
+              <mat-select placeholder="Fields" disableOptionCentering (selectionChange)="getFields($event)"
+                [(value)]="selectedValue">
+                <mat-option [value]="'prefar'">prefar</mat-option>
+                <mat-option [value]="'clientcustomizecolumn'">Customization</mat-option>
+                <mat-option [value]="'review_assets'">Review Asset</mat-option>
+                <mat-option [value]="'prepurchaseditassets'">PrePurchased ItAsset</mat-option>
+                <mat-option [value]="'assetallocationdetails'">Asset Allocation Details</mat-option>
+                <mat-option [value]="'uploaderror'">Upload Error</mat-option>
+                <mat-option [value]="'capitalizenoncapitalizecommonfields'">Capitalize noncapitalize commonFields</mat-option>
+                <mat-option [value]="'other'">Other</mat-option>
+
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div fxFlex="40" class="ml-12" *ngIf="ApproveTaggingInformation">
+            <mat-form-field class="full-width">
+              <mat-label>Select</mat-label>
+              <mat-select placeholder="Fields" disableOptionCentering (selectionChange)="getFields($event)"
+                [(value)]="selectedValue">
+                <mat-option [value]="'prefar'">prefar</mat-option>
+                <mat-option [value]="'labeldetails'">Label Details</mat-option>                
+                <mat-option [value]="'clientcustomizecolumn'">Customization</mat-option>
+                <mat-option [value]="'review_assets'">Review Asset</mat-option>
+                <mat-option [value]="'prepurchaseditassets'">PrePurchased ItAsset</mat-option>
+                <mat-option [value]="'assetallocationdetails'">Asset Allocation Details</mat-option>
+                <mat-option [value]="'uploaderror'">Upload Error</mat-option>
+                <mat-option [value]="'capitalizenoncapitalizecommonfields'">Capitalize noncapitalize commonFields</mat-option>
+                <mat-option [value]="'other'">Other</mat-option>
+
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div fxFlex="40" class="ml-12" *ngIf="AdditionalAssets">
+            <mat-form-field class="full-width">
+              <mat-label>Select</mat-label>
+              <mat-select placeholder="Fields" disableOptionCentering (selectionChange)="getFields($event)"
+                [(value)]="selectedValue">
+                <mat-option [value]="'prefar'">prefar</mat-option>
+                <mat-option [value]="'prepurchaseditassets'">PrePurchased ItAsset</mat-option>
+                <mat-option [value]="'clientcustomizecolumn'">Customization</mat-option>
+                <mat-option [value]="'preprintadditionalasset'">Preprint Additional Asset</mat-option>
+                <mat-option [value]="'capitalizenoncapitalizecommonfields'">Capitalize noncapitalize commonFields</mat-option>
+                <mat-option [value]="'other'">Other</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+
+          <div fxFlex="40" class="ml-12" *ngIf="InventoryStatus">
+            <mat-form-field class="full-width">
+              <mat-label>Select</mat-label>
+              <mat-select placeholder="Fields" disableOptionCentering (selectionChange)="getFields($event)"
+                [(value)]="selectedValue">
+                <mat-option [value]="'prefar'">prefar</mat-option>
+                <mat-option [value]="'assetdocument'">Asset Document</mat-option>                
+                <mat-option [value]="'clientcustomizecolumn'">Customization</mat-option>                
+                <mat-option [value]="'prepurchaseditassets'">PrePurchased ItAsset</mat-option>
+                <mat-option [value]="'assetallocationdetails'">Asset Allocation Details</mat-option>                
+                <mat-option [value]="'capitalizenoncapitalizecommonfields'">Capitalize noncapitalize commonFields</mat-option>
+                <mat-option [value]="'other'">Other</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+
+
+          <div fxFlex="40" class="ml-12" *ngIf="MissingAssets">
+            <mat-form-field class="full-width">
+              <mat-label>Select</mat-label>
+              <mat-select placeholder="Fields" disableOptionCentering (selectionChange)="getFields($event)"
+                [(value)]="selectedValue">
+                <mat-option [value]="'prefar'">prefar</mat-option>
+                <mat-option [value]="'clientcustomizecolumn'">Customization</mat-option>
+                <mat-option [value]="'prepurchaseditassets'">PrePurchased ItAsset</mat-option>
+                <mat-option [value]="'capitalizenoncapitalizecommonfields'">Capitalize noncapitalize commonFields</mat-option>
+                <mat-option [value]="'other'">Other</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div fxFlex="40" class="ml-12" *ngIf="AdditionalAssetsReconc">
+            <mat-form-field class="full-width">
+              <mat-label>Select</mat-label>
+              <mat-select placeholder="Fields" disableOptionCentering (selectionChange)="getFields($event)"
+                [(value)]="selectedValue">
+                <mat-option [value]="'prefar'">Prefar</mat-option>                
+                <mat-option [value]="'AdditionalAssets'">Additional Assets</mat-option>
+                <mat-option [value]="'clientcustomizecolumn'">Customization</mat-option>
+                <mat-option [value]="'other'">Other</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div fxFlex="40" class="ml-12" *ngIf="ViewModifiedAssets">
+            <mat-form-field class="full-width">
+              <mat-label>Select</mat-label>
+              <mat-select placeholder="Fields" disableOptionCentering (selectionChange)="getFields($event)"
+                [(value)]="selectedValue">
+                <mat-option [value]="'prefar'">Prefar</mat-option>
+                <mat-option [value]="'clientcustomizecolumn'">Customization</mat-option>
+                <mat-option [value]="'prepurchaseditassets'">PrePurchased ItAsset</mat-option>
+
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div fxFlex="40" class="ml-12" *ngIf="Assignment">
+            <mat-form-field class="full-width">
+              <mat-label>Select</mat-label>
+              <mat-select placeholder="Fields" disableOptionCentering (selectionChange)="getFields($event)"
+                [(value)]="selectedValue">
+                <mat-option [value]="'prefar'">prefar</mat-option>
+                <mat-option [value]="'prepurchaseditassets'">Capitalize Non-Capitalize</mat-option>
+                <mat-option [value]="'assetallocationdetails'">Asset Allocation Details</mat-option>
+                <mat-option [value]="'employeemaster'">Employee Master</mat-option>
+                <mat-option [value]="'usermaster'">User Master</mat-option>
+                <mat-option [value]="'clientcustomizecolumn'">Customization</mat-option>
+
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div fxFlex="40" class="ml-12" *ngIf="InitiateTransfer">
+            <mat-form-field class="full-width">
+              <mat-label>Select</mat-label>
+              <mat-select placeholder="Fields" disableOptionCentering (selectionChange)="getFields($event)"
+                [(value)]="selectedValue">
+                <mat-option [value]="'prefar'">prefar</mat-option>
+                <mat-option [value]="'clientcustomizecolumn'">Customization</mat-option>
+                <mat-option [value]="'mobiletransferredassets'">mobiletransferredassets</mat-option>
+                <mat-option [value]="'other'">Other</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div fxFlex="40" class="ml-12" *ngIf="TransferApproval">
+            <mat-form-field class="full-width">
+              <mat-label>Select</mat-label>
+              <mat-select placeholder="Fields" disableOptionCentering (selectionChange)="getFields($event)"
+                [(value)]="selectedValue">
+                <mat-option [value]="'prefar'">prefar</mat-option>
+                <mat-option [value]="'assetdocument'">Asset Document</mat-option>
+                <mat-option [value]="'clientcustomizecolumn'">Customization</mat-option>
+                <mat-option [value]="'mobiletransferredassets'">mobiletransferredassets</mat-option>
+                <mat-option [value]="'other'">Other</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div fxFlex="40" class="ml-12" *ngIf="InitiateTransferPopup">
+            <mat-form-field class="full-width">
+              <mat-label>Select</mat-label>
+              <mat-select placeholder="Fields" disableOptionCentering (selectionChange)="getFields($event)"
+                [(value)]="selectedValue">
+                <mat-option [value]="'prefar'">prefar</mat-option>
+                <mat-option [value]="'clientcustomizecolumn'">Customization</mat-option>
+                <mat-option [value]="'mobiletransferredassets'">mobiletransferredassets</mat-option>
+                <mat-option [value]="'other'">Other</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div fxFlex="40" class="ml-12" *ngIf="TransferApprovalPopup">
+            <mat-form-field class="full-width">
+              <mat-label>Select</mat-label>
+              <mat-select placeholder="Fields" disableOptionCentering (selectionChange)="getFields($event)"
+                [(value)]="selectedValue">
+                <mat-option [value]="'prefar'">prefar</mat-option>
+                <mat-option [value]="'assetdocument'">Asset Document</mat-option>
+                <mat-option [value]="'clientcustomizecolumn'">Customization</mat-option>
+                <mat-option [value]="'mobiletransferredassets'">mobiletransferredassets</mat-option>
+                <mat-option [value]="'other'">Other</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div fxFlex="40" class="ml-12" *ngIf="InitiateRetirement">
+            <mat-form-field class="full-width">
+              <mat-label>Select</mat-label>
+              <mat-select placeholder="Fields" disableOptionCentering (selectionChange)="getFields($event)"
+                [(value)]="selectedValue">
+                <mat-option [value]="'prefar'">Prefar</mat-option>
+                <mat-option [value]="'clientcustomizecolumn'">Customization</mat-option>
+                <mat-option [value]="'other'">Other</mat-option>
+
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div fxFlex="40" class="ml-12" *ngIf="RetirementApproval">
+            <mat-form-field class="full-width">
+              <mat-label>Select</mat-label>
+              <mat-select placeholder="Fields" disableOptionCentering (selectionChange)="getFields($event)"
+                [(value)]="selectedValue">
+                <mat-option [value]="'prefar'">prefar</mat-option>
+                <mat-option [value]="'retireassetdetails'">Retire AssetDetails</mat-option>
+                <mat-option [value]="'assetdocument'">Asset Document</mat-option>
+                <mat-option [value]="'clientcustomizecolumn'">Customization</mat-option>
+                <mat-option [value]="'other'">Other</mat-option>
+
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div fxFlex="40" class="ml-12" *ngIf="InitiateRetirementPopup">
+            <mat-form-field class="full-width">
+              <mat-label>Select</mat-label>
+              <mat-select placeholder="Fields" disableOptionCentering (selectionChange)="getFields($event)"
+                [(value)]="selectedValue">
+                <mat-option [value]="'prefar'">Prefar</mat-option>
+                <mat-option [value]="'clientcustomizecolumn'">Customization</mat-option>
+                <mat-option [value]="'other'">Other</mat-option>
+
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div fxFlex="40" class="ml-12" *ngIf="RetirementApprovalPopup">
+            <mat-form-field class="full-width">
+              <mat-label>Select</mat-label>
+              <mat-select placeholder="Fields" disableOptionCentering (selectionChange)="getFields($event)"
+                [(value)]="selectedValue">
+                <mat-option [value]="'prefar'">prefar</mat-option>
+                <mat-option [value]="'retireassetdetails'">Retire AssetDetails</mat-option>
+                <mat-option [value]="'assetdocument'">Asset Document</mat-option>
+                <mat-option [value]="'clientcustomizecolumn'">Customization</mat-option>
+                <mat-option [value]="'other'">Other</mat-option>
+
+              </mat-select>
+            </mat-form-field>
+          </div>
+          
+          <div fxFlex="40" class="ml-12" *ngIf="Editasset">
+            <mat-form-field class="full-width">
+              <mat-label>Select</mat-label>
+              <mat-select placeholder="Fields" disableOptionCentering (selectionChange)="getFields($event)"
+                [(value)]="selectedValue">
+                <mat-option [value]="'prefar'">prefar</mat-option>
+                <mat-option [value]="'clientcustomizecolumn'">Customization</mat-option>
+                <mat-option [value]="'review_assets'">Review Asset</mat-option>
+                <mat-option [value]="'prepurchaseditassets'">PrePurchased ItAsset</mat-option>
+                <mat-option [value]="'assetallocationdetails'">Asset Allocation Details</mat-option>
+                <mat-option [value]="'uploaderror'">Upload Error</mat-option>
+                <mat-option [value]="'capitalizenoncapitalizecommonfields'">Capitalize noncapitalize commonFields</mat-option>
+                <mat-option [value]="'other'">Other</mat-option>
+
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div fxFlex="40" class="ml-12" *ngIf="ReviewAsset">
+            <mat-form-field class="full-width">
+              <mat-label>Select</mat-label>
+              <mat-select placeholder="Fields" disableOptionCentering (selectionChange)="getFields($event)"
+                [(value)]="selectedValue">
+                <mat-option [value]="'prefar'">prefar</mat-option>
+                <mat-option [value]="'clientcustomizecolumn'">Customization</mat-option>
+                <mat-option [value]="'review_assets'">Review Asset</mat-option>
+                <mat-option [value]="'prepurchaseditassets'">PrePurchased ItAsset</mat-option>
+                <mat-option [value]="'assetallocationdetails'">Asset Allocation Details</mat-option>
+                <mat-option [value]="'uploaderror'">Upload Error</mat-option>
+                <mat-option [value]="'capitalizenoncapitalizecommonfields'">Capitalize noncapitalize commonFields</mat-option>
+                <mat-option [value]="'other'">Other</mat-option>
+                
+
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div fxFlex="40" class="ml-12" *ngIf="PrintTag">
+            <mat-form-field class="full-width">
+              <mat-label>Select</mat-label>
+              <mat-select placeholder="Fields" disableOptionCentering (selectionChange)="getFields($event)"
+                [(value)]="selectedValue">
+                <mat-option [value]="'printlabels'">Print Label</mat-option>
+                <!-- <mat-option [value]="''">Customization</mat-option> -->
+
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div fxFlex="40" class="ml-12" *ngIf="ReprintTag">
+            <mat-form-field class="full-width">
+              <mat-label>Select</mat-label>
+              <mat-select placeholder="Fields" disableOptionCentering (selectionChange)="getFields($event)"
+                [(value)]="selectedValue">
+                <mat-option [value]="'prefar'">prefar</mat-option>
+                <mat-option [value]="'labeldetails'">Label Details</mat-option> 
+
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div fxFlex="40" class="ml-12" *ngIf="TagStatusReport">
+            <mat-form-field class="full-width">
+              <mat-label>Select</mat-label>
+              <mat-select placeholder="Fields" disableOptionCentering (selectionChange)="getFields($event)"
+                [(value)]="selectedValue">
+                <mat-option [value]="'prefar'">prefar</mat-option>
+                <mat-option [value]="'labeldetails'">Label Details</mat-option> 
+                <mat-option [value]="'taggingprojectmaster'">Tagging Project Master</mat-option>
+
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div fxFlex="40" class="ml-12" *ngIf="sendforreconsilation">
+            <mat-form-field class="full-width">
+              <mat-label>Select</mat-label>
+              <mat-select placeholder="Fields" disableOptionCentering (selectionChange)="getFields($event)"
+                [(value)]="selectedValue">
+                <mat-option [value]="'prefar'">prefar</mat-option>
+                <!-- <mat-option [value]="''">Customization</mat-option> -->
+
+              </mat-select>
+            </mat-form-field>
+          </div>
+            
+          <div fxFlex="40" class="ml-12" *ngIf="closeproject">
+            <mat-form-field class="full-width">
+              <mat-label>Select</mat-label>
+              <mat-select placeholder="Fields" disableOptionCentering (selectionChange)="getFields($event)"
+                [(value)]="selectedValue">
+                <mat-option [value]="'prefar'">prefar</mat-option>
+                <!-- <mat-option [value]="''">Customization</mat-option> -->
+
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div fxFlex="40" class="ml-12" *ngIf="physicalmovement">
+            <mat-form-field class="full-width">
+              <mat-label>Select</mat-label>
+              <mat-select placeholder="Fields" disableOptionCentering (selectionChange)="getFields($event)"
+                [(value)]="selectedValue">
+                <mat-option [value]="'prefar'">prefar</mat-option>
+                <mat-option [value]="'assetdocument'">Asset Document</mat-option>
+                <mat-option [value]="'clientcustomizecolumn'">Customization</mat-option>
+                <mat-option [value]="'mobiletransferredassets'">mobiletransferredassets</mat-option>
+                <mat-option [value]="'other'">Other</mat-option>
+
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div fxFlex="40" class="ml-12" *ngIf="assetintransitreport">
+            <mat-form-field class="full-width">
+              <mat-label>Select</mat-label>
+              <mat-select placeholder="Fields" disableOptionCentering (selectionChange)="getFields($event)"
+                [(value)]="selectedValue">
+                <mat-option [value]="'prefar'">prefar</mat-option>
+                <mat-option [value]="'assetdocument'">Asset Document</mat-option>
+                <mat-option [value]="'clientcustomizecolumn'">Customization</mat-option>
+                <mat-option [value]="'mobiletransferredassets'">mobiletransferredassets</mat-option>
+                <mat-option [value]="'other'">Other</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div fxFlex="40" class="ml-12" *ngIf="recieveasset">
+            <mat-form-field class="full-width">
+              <mat-label>Select</mat-label>
+              <mat-select placeholder="Fields" disableOptionCentering (selectionChange)="getFields($event)"
+                [(value)]="selectedValue">
+                <mat-option [value]="'prefar'">prefar</mat-option>
+                <mat-option [value]="'assetdocument'">Asset Document</mat-option>
+                <mat-option [value]="'clientcustomizecolumn'">Customization</mat-option>
+                <mat-option [value]="'mobiletransferredassets'">mobiletransferredassets</mat-option>
+                <mat-option [value]="'other'">Other</mat-option>
+
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div fxFlex="40" class="ml-12" *ngIf="revertasset">
+            <mat-form-field class="full-width">
+              <mat-label>Select</mat-label>
+              <mat-select placeholder="Fields" disableOptionCentering (selectionChange)="getFields($event)"
+                [(value)]="selectedValue">
+                <mat-option [value]="'prefar'">prefar</mat-option>
+                <!-- <mat-option [value]="''">Customization</mat-option> -->
+
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div fxFlex="40" class="ml-12" *ngIf="physicaldisposal">
+            <mat-form-field class="full-width">
+              <mat-label>Select</mat-label>
+              <mat-select placeholder="Fields" disableOptionCentering (selectionChange)="getFields($event)"
+                [(value)]="selectedValue">
+                <mat-option [value]="'prefar'">prefar</mat-option>
+                <mat-option [value]="'retireassetdetails'">Retire AssetDetails</mat-option>
+                <mat-option [value]="'mobiletransferredassets'">Mobile Transfer Asset</mat-option>
+                <mat-option [value]="'other'">Other</mat-option>
+                <mat-option [value]="'clientcustomizecolumn'">Customization</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div fxFlex="40" class="ml-12" *ngIf="PhysicalDisposalPopup">
+            <mat-form-field class="full-width">
+              <mat-label>Select</mat-label>
+              <mat-select placeholder="Fields" disableOptionCentering (selectionChange)="getFields($event)"
+                [(value)]="selectedValue">
+                <mat-option [value]="'prefar'">prefar</mat-option>
+                <mat-option [value]="'retireassetdetails'">Retire AssetDetails</mat-option>
+                <mat-option [value]="'mobiletransferredassets'">Mobile Transfer Asset</mat-option>
+                <mat-option [value]="'other'">Other</mat-option>
+                <mat-option [value]="'clientcustomizecolumn'">Customization</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div fxFlex="40" class="ml-12" *ngIf="outboundpendingasset">
+            <mat-form-field class="full-width">
+              <mat-label>Select</mat-label>
+              <mat-select placeholder="Fields" disableOptionCentering (selectionChange)="getFields($event)"
+                [(value)]="selectedValue">
+                <mat-option [value]="'prefar'">prefar</mat-option>
+                <mat-option [value]="'taggingcomplete'">Tagging complete</mat-option>
+
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div fxFlex="40" class="ml-12" *ngIf="AssetRetirementhistory">
+            <mat-form-field class="full-width">
+              <mat-label>Select</mat-label>
+              <mat-select placeholder="Fields" disableOptionCentering (selectionChange)="getFields($event)"
+                [(value)]="selectedValue">
+                <mat-option [value]="'prefar'">prefar</mat-option>
+                <!-- <mat-option [value]="'retireassetdetailshistory'">Retire Asset History</mat-option> -->
+                <mat-option [value]="'retireassetdetails'">Retire Asset</mat-option>
+                <mat-option [value]="'other'">Other</mat-option>
+                <mat-option [value]="'clientcustomizecolumn'">Customization</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div fxFlex="40" class="ml-12" *ngIf="NonVerifiableAssets">
+            <mat-form-field class="full-width">
+              <mat-label>Select</mat-label>
+              <mat-select placeholder="Fields" disableOptionCentering (selectionChange)="getFields($event)"
+                [(value)]="selectedValue">
+                <mat-option [value]="'prefar'">prefar</mat-option>
+                <!-- <mat-option [value]="''">Customization</mat-option> -->
+
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div fxFlex="40" class="ml-12" *ngIf="VerifyOnlyAssets">
+            <mat-form-field class="full-width">
+              <mat-label>Select</mat-label>
+              <mat-select placeholder="Fields" disableOptionCentering (selectionChange)="getFields($event)"
+                [(value)]="selectedValue">
+                <mat-option [value]="'prefar'">prefar</mat-option>
+                <!-- <mat-option [value]="''">Customization</mat-option> -->
+
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div fxFlex="40" class="ml-12" *ngIf="AssetDisposalreport">
+            <mat-form-field class="full-width">
+              <mat-label>Select</mat-label>
+              <mat-select placeholder="Fields" disableOptionCentering (selectionChange)="getFields($event)"
+                [(value)]="selectedValue">
+                <mat-option [value]="'prefar'">prefar</mat-option>
+                <!-- <mat-option [value]="'retireassetdetails'">Retire Asset</mat-option> -->
+                <mat-option [value]="'retireassetdetailshistory'">Retire Asset History</mat-option>
+                <mat-option [value]="'clientcustomizecolumn'">Customization</mat-option>
+                <mat-option [value]="'retireassetdetails'">Retire Asset</mat-option>
+                <mat-option [value]="'other'">Other</mat-option>
+
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div fxFlex="40" class="ml-12" *ngIf="TaggingReport">
+            <mat-form-field class="full-width">
+              <mat-label>Select</mat-label>
+              <mat-select placeholder="Fields" disableOptionCentering (selectionChange)="getFields($event)"
+                [(value)]="selectedValue">
+                <mat-option [value]="'prefar'">prefar</mat-option>
+                <mat-option [value]="'taggingcomplete'">Tagging complete</mat-option>
+                <mat-option [value]="'clientcustomizecolumn'">Customization</mat-option>
+                <mat-option [value]="'other'">Other</mat-option>
+
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div fxFlex="40" class="ml-12" *ngIf="InventoryReport">
+            <mat-form-field class="full-width">
+              <mat-label>Select</mat-label>
+              <mat-select placeholder="Fields" disableOptionCentering (selectionChange)="getFields($event)"
+                [(value)]="selectedValue">
+                <mat-option [value]="'prefar'">prefar</mat-option>
+                <mat-option [value]="'labeldetails'">Label Details</mat-option> 
+                <mat-option [value]="'clientcustomizecolumn'">Customization</mat-option>
+                <mat-option [value]="'prepurchaseditassets'">PrePurchased ItAsset</mat-option>
+                <mat-option [value]="'capitalizenoncapitalizecommonfields'">Capitalize noncapitalize commonFields</mat-option>
+                <mat-option [value]="'taggingprojectmaster'">Tagging Project Master</mat-option>
+                <!-- <mat-option [value]="''">Customization</mat-option> -->
+
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div fxFlex="40" class="ml-12" *ngIf="AssetRegister">
+            <mat-form-field class="full-width">
+              <mat-label>Select</mat-label>
+              <mat-select placeholder="Fields" disableOptionCentering (selectionChange)="getFields($event)"
+                [(value)]="selectedValue">
+                <mat-option [value]="'prefar'">prefar</mat-option>
+                <mat-option [value]="'prepurchaseditassets'">PrePurchased ItAsset</mat-option>
+                <mat-option [value]="'capitalizenoncapitalizecommonfields'">Capitalize noncapitalize commonFields</mat-option>
+                <mat-option [value]="'clientcustomizecolumn'">Customization</mat-option>
+                <mat-option [value]="'other'">Other</mat-option>
+                <!-- <mat-option [value]="''">Customization</mat-option> -->
+
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div fxFlex="40" class="ml-12" *ngIf="AuditTrail">
+            <mat-form-field class="full-width">
+              <mat-label>Select</mat-label>
+              <mat-select placeholder="Fields" disableOptionCentering (selectionChange)="getFields($event)"
+                [(value)]="selectedValue">
+                <mat-option [value]="'prefar'">prefar</mat-option>
+                <!-- <mat-option [value]="''">Customization</mat-option> -->
+
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div fxFlex="40" class="ml-12" *ngIf="AssetTrail">
+            <mat-form-field class="full-width">
+              <mat-label>Select</mat-label>
+              <mat-select placeholder="Fields" disableOptionCentering (selectionChange)="getFields($event)"
+                [(value)]="selectedValue">
+                <mat-option [value]="'prefar'">prefar</mat-option>
+                <!-- <mat-option [value]="''">Customization</mat-option> -->
+
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div fxFlex="40" class="ml-12" *ngIf="DamagedNotinuseAssets">
+            <mat-form-field class="full-width">
+              <mat-label>Select</mat-label>
+              <mat-select placeholder="Fields" disableOptionCentering (selectionChange)="getFields($event)"
+                [(value)]="selectedValue">
+                <mat-option [value]="'prefar'">prefar</mat-option>
+                <mat-option [value]="'other'">Other</mat-option>
+                <!-- <mat-option [value]="''">Customization</mat-option> -->
+
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div fxFlex="40" class="ml-12" *ngIf="AssetTransferReport">
+            <mat-form-field class="full-width">
+              <mat-label>Select</mat-label>
+              <mat-select placeholder="Fields" disableOptionCentering (selectionChange)="getFields($event)"
+                [(value)]="selectedValue">
+                <mat-option [value]="'prefar'">prefar</mat-option>
+                <mat-option [value]="'mobiletransferredassets'">Mobile Transfer</mat-option>
+                <mat-option [value]="'clientcustomizecolumn'">Customization</mat-option>
+                <mat-option [value]="'other'">Other</mat-option>
+
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div fxFlex="40" class="ml-12" *ngIf="AssetDispatchReport">
+            <mat-form-field class="full-width">
+              <mat-label>Select</mat-label>
+              <mat-select placeholder="Fields" disableOptionCentering (selectionChange)="getFields($event)"
+                [(value)]="selectedValue">
+                <mat-option [value]="'prefar'">prefar</mat-option>
+                <mat-option [value]="'mobiletransferredassets'">Mobile Transfer Asset</mat-option>
+                <mat-option [value]="'clientcustomizecolumn'">Customization</mat-option>
+                <mat-option [value]="'other'">Other</mat-option>
+
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div fxFlex="40" class="ml-12" *ngIf="UnrecordedTransferReport">
+            <mat-form-field class="full-width">
+              <mat-label>Select</mat-label>
+              <mat-select placeholder="Fields" disableOptionCentering (selectionChange)="getFields($event)"
+                [(value)]="selectedValue">
+                <mat-option [value]="'prefar'">prefar</mat-option>
+                <!-- <mat-option [value]="''">Customization</mat-option> -->
+
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div fxFlex="40" class="ml-12" *ngIf="Assetsatrisk">
+            <mat-form-field class="full-width">
+              <mat-label>Select</mat-label>
+              <mat-select placeholder="Fields" disableOptionCentering (selectionChange)="getFields($event)"
+                [(value)]="selectedValue">
+                <mat-option [value]="'prefar'">prefar</mat-option>
+                <!-- <mat-option [value]="''">Customization</mat-option> -->
+
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div fxFlex="40" class="ml-12" *ngIf="AllocationReport">
+            <mat-form-field class="full-width">
+              <mat-label>Select</mat-label>
+              <mat-select placeholder="Fields" disableOptionCentering (selectionChange)="getFields($event)"
+                [(value)]="selectedValue">
+                <mat-option [value]="'prefar'">prefar</mat-option>
+                <mat-option [value]="'assetallocationdetails'">Asset Allocation Details</mat-option>
+                <!-- <mat-option [value]="'employeemaster'">Employee Master</mat-option>
+                <mat-option [value]="'usermaster'">User Master</mat-option> -->
+				        <mat-option [value]="'other'">Other</mat-option>
+                
+
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div fxLayout="row" fxLayout.lt-sm="column" fxFlex="100" formGroupName="color">
+            <mat-card class="default"
+              style="padding-bottom: 10px;width: 100% !important; overflow: auto !important;padding-bottom: 10px !important;">
+              <mat-card-title
+                style="margin-bottom: 8px !important;margin-top: 6px !important;color: black !important;font-size: 14px !important;font-weight: 700;padding-left: 10px;">
+                <!-- Selected Asset No: -->
+              </mat-card-title>
+              <mat-card-content class="p-0" fxLayout="column" style="overflow: auto !important">
+                <div class="activity-data">
+                  <mat-nav-list class="list-horizontal">
+                    <mat-list-item *ngFor="let n of List ">
+                      <mat-checkbox [checked]="checboxlist.indexOf(n.ID) > -1" (change)="checkboxclick(n)">
+                        {{Headers[n.FieldsName]}}
+                      </mat-checkbox>
+                    </mat-list-item>
+
+                  </mat-nav-list>
+                </div>
+              </mat-card-content>
+            </mat-card>
+          </div>         
+
+        </div>
+      </form>
+    </div>
+
+    <!-- <div mat-dialog-actions class="m-0 p-1" fxLayout="row" style="text-align: right !important;" fxLayoutAlign="space-between center">
+
+    <button mat-raised-button color="primary">Save</button>
+
+  </div> -->
+    <div style="text-align: right !important; height: 50px !important;">
+
+      <button mat-raised-button color="primary" style="float:right;margin-right: 25px !important;"
+        (click)="save(selectedValue)">Save</button>
+
+    </div>
+  </div>
+</div>

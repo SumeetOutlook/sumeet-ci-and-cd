@@ -1,0 +1,19 @@
+[
+ {
+   "InventoryNo": "TT127",
+   "AssetNo": "TT127",
+   "SubNo": "0|0",
+   "CapitalizationDate": "7/22/2020 ",
+   "AssetClass": "Land & Building",
+   "AssetName": "New Fixtures",
+   "AssetDescription": "Quaint And Queer",
+   "Qty": 1,
+   "UOM": "Qty",
+   "Cost": 41550,
+   "WDV": 40000,
+   "EquipmentNumber": "",
+   "AssetCondition": "Fit For Purpose|9/18/2020 1:57:59 PM",
+   "AssetCriticality": "Normal",
+   "Status": "Asset In Project"
+ }
+]

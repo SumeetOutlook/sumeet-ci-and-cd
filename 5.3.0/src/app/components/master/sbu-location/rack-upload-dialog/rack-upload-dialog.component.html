@@ -1,0 +1,36 @@
+<div class="md-dialog-container" cdkDrag cdkDragRootElement=".cdk-overlay-pane">
+  <mat-toolbar  cdkDragHandle class="mat-toolbar">
+    <span style="position: relative;left: 40%;">Upload {{header.StorageLocation}}</span>
+    <button mat-icon-button>
+      <mat-icon (click)="onClose()">close</mat-icon>
+    </button>
+  </mat-toolbar>
+  <br><br>
+
+  <mat-dialog-content class="dialog-content">
+    <div class="md-dialog-content">
+      <form>
+        <div class="ml-16" fxLayout="row wrap" fxLayout.lt-sm="column">
+          <div class="mt-12 responsive" fxFlex="60">
+            <input type="file" class="upload-input" accept=".xlsx" (change)="fileChange($event)">
+          </div>
+          <div class="mt-12 ml-16 responsive" fxFlex="20">
+            <button class="btn success" (click)="uploadFile()" [disabled]="uploadfile == false" mat-raised-button>
+              <mat-icon style="color: white;">file_upload</mat-icon>Upload
+            </button>
+          </div>
+        </div>
+
+        <div class="mt-24" fxLayout="row wrap" fxLayout.lt-sm="column">
+          <div class="responsive" fxFlex="40">
+            <button class="btn ml-16 success" mat-raised-button (click)="downloadTemplate('Rack')">
+              <mat-icon class="file-icon">insert_drive_file</mat-icon>
+              Download Template
+            </button>
+          </div>
+        </div>
+
+      </form>
+    </div>
+  </mat-dialog-content>
+</div>

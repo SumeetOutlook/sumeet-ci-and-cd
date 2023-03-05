@@ -1,0 +1,90 @@
+<div class="md-dialog-container" cdkDrag cdkDragRootElement=".cdk-overlay-pane">
+    <mat-toolbar  cdkDragHandle class="mat-toolbar" style="background-color:rgb(12, 48, 87);color:white">
+      <span>{{data.task==='add'?'Add':'View/Edit'}} Cost Config</span>
+      <span class="example-spacer"></span>
+      <button type="button" mat-icon-button class="example-icon" aria-label="Example icon-button with close icon"
+        (click)="onclosetab()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-toolbar>
+    <div mat-dialog-content class="p-1 m-0">
+  
+      <form [formGroup]="dialogSBUForm" (ngSubmit)="onSubmit()">
+        <div fxLayout="row wrap" fxLayout.lt-sm="column">
+  
+  
+          <div fxFlex="100" class="pr-1">
+            <mat-form-field class="full-width" color="primary">
+              <mat-select disableOptionCentering   [(ngModel)]="configVal"
+                placeholder="Config Types" [ngModelOptions]="{standalone: true}" [multiple]="false" #singleSelect >
+                <mat-option>
+                  <ngx-mat-select-search [placeholderLabel]="'Search'" [formControl]="orderTypeFilterCtrl">
+                  </ngx-mat-select-search>
+                </mat-option>
+                <mat-option  *ngFor="let type of configTypes" [value]="type">
+                  {{type}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+  
+              <div fxFlex="50" class="pr-1" *ngIf="configVal == 'Amount From'">
+                <mat-form-field class="full-width">
+                  <input matInput name="sbuName" [(ngModel)]="amountFromVal" placeholder="Amount From"
+                    autocomplete="off" [ngModelOptions]="{standalone: true}"  required maxlength="50">
+                  <!-- <mat-error *ngIf="submitted || f1.sbuName.errors || f1.sbuName.dirty || f1.sbuName.touched || f1.sbuName.hasError('whitespace')">
+                    <span *ngIf="f1.sbuName.errors?.required || f1.sbuName.hasError('whitespace')">Issue Type is required </span>
+                  </mat-error> -->
+                </mat-form-field>
+              </div>
+  
+              <div fxFlex="50" class="pr-1" *ngIf="configVal == 'Amount From'">
+                <mat-form-field class="full-width">
+                  <input matInput name="sbuName" [(ngModel)]="amountToVal" [ngModelOptions]="{standalone: true}" placeholder="Amount To"
+                    autocomplete="off" required maxlength="50">
+                  <!-- <mat-error *ngIf="submitted || f1.sbuName.errors || f1.sbuName.dirty || f1.sbuName.touched || f1.sbuName.hasError('whitespace')">
+                    <span *ngIf="f1.sbuName.errors?.required || f1.sbuName.hasError('whitespace')">Issue Type is required </span>
+                  </mat-error> -->
+                </mat-form-field>
+              </div>
+
+              <div fxFlex="100" class="pr-1" *ngIf="configVal == 'Amount Below' || configVal == 'Amount Above'">
+                <mat-form-field class="full-width">
+                  <input matInput name="sbuName" [(ngModel)]="amountVal" [ngModelOptions]="{standalone: true}" placeholder="Value"
+                    autocomplete="off" required maxlength="50">
+                  <!-- <mat-error *ngIf="submitted || f1.sbuName.errors || f1.sbuName.dirty || f1.sbuName.touched || f1.sbuName.hasError('whitespace')">
+                    <span *ngIf="f1.sbuName.errors?.required || f1.sbuName.hasError('whitespace')">Issue Type is required </span>
+                  </mat-error> -->
+                </mat-form-field>
+              </div>
+
+
+              <div fxFlex="100" class="pr-1">
+                <mat-form-field class="full-width" color="primary">
+                  <mat-select disableOptionCentering   [(ngModel)]="lvlVal"
+                    placeholder="Levels" [ngModelOptions]="{standalone: true}" [multiple]="true" #multiSelect >
+                    <mat-option>
+                      <ngx-mat-select-search [placeholderLabel]="'Search'" [formControl]="orderTypeFilterCtrl">
+                      </ngx-mat-select-search>
+                    </mat-option>
+                    <mat-option  *ngFor="let type of lvls" [value]="type">
+                      {{type}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+  
+             
+          <div fxFlex="100" class="mt-1">
+            <!-- <button type="button" mat-raised-button class="success" style="float:left !important;margin-right: 5px;" *ngIf="disableAllFields&&data.task=='edit'" (click)="enableFields()"
+            ><mat-icon>edit</mat-icon>Edit this Issue</button>
+            <button type="button" mat-raised-button class="danger" style="float:left !important;" *ngIf="data.task=='edit'" (click)="onDelete()"
+            ><mat-icon>delete</mat-icon>Delete this Issue</button> -->
+            <button *ngIf="data.task=='edit' || data.task=='add'" mat-raised-button class="success" style="float:right !important;" 
+            ><mat-icon>check</mat-icon>{{data.task==='add'?'Create':'Save'}} Config</button>
+  
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>

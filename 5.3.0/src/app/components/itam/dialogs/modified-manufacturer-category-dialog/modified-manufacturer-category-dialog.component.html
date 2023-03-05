@@ -1,0 +1,54 @@
+<div class="md-dialog-container" cdkDrag cdkDragRootElement=".cdk-overlay-pane">
+    <mat-toolbar  cdkDragHandle class="mat-toolbar" style="background-color:rgb(12, 48, 87);color:white">
+      <span style="position: relative;left: 40%;">Modified Software</span>
+      <span class="example-spacer"></span>
+      <button mat-icon-button class="example-icon" aria-label="Example icon-button with close icon"
+        (click)="dialogRef.close(false)">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-toolbar><br><br>
+    <mat-dialog-content>     
+      <form [formGroup]="dialogForm" class="mt-8">
+        <div fxLayout="row wrap">
+          <div fxFlex="100" fxFlex.gt-xs="100" class="pr-1">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label" style="font-size: 15px !important;">Manufacturer</mat-label>
+              <mat-select formControlName="manufacturerCtrl" class="bg-transparente">
+                <mat-option *ngFor="let type of typeOfManufacturers" [value]="type.ID" >
+                  {{type.Name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>  
+          <div fxFlex="100" fxFlex.gt-xs="100" class="pr-1">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label" style="font-size: 15px !important;">Category</mat-label>
+              <mat-select formControlName="categoryCtrl" class="bg-transparente">
+                <mat-option *ngFor="let type of typeOfCategorys" [value]="type.ID" >
+                  {{type.SoftwareCategory}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>  
+          <div fxFlex="100" fxFlex.gt-xs="100" class="pr-1">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label" style="font-size: 15px !important;">Software Type</mat-label>
+              <mat-select formControlName="softwareTypeCtrl" class="bg-transparente">
+                <mat-option *ngFor="let type of typeOfSoftwares" [value]="type.SoftwareTypeId" >
+                  {{type.SoftwareTypeName}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>        
+        </div>
+      </form>
+      <div fxLayout="row wrap">
+        <div fxFlex="100" class="pr-1 full">
+          <span fxFlex></span>
+          <button mat-raised-button class="success" [disabled]="dialogForm.invalid" (click)="Submit()">
+            <mat-icon>check</mat-icon>Save
+          </button>
+        </div>
+      </div>
+    </mat-dialog-content>
+  </div>

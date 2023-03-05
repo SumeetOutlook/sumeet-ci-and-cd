@@ -1,0 +1,316 @@
+// // .mat-toolbar.mat-primary {
+// //   background:#0C3057 !important;;
+// //   color: white !important;
+// // }
+
+// // .example-spacer {
+// //     flex: 1 1 auto;
+// //   }
+// //   .md-dialog-content{
+// //       margin-left: 35px;
+      
+// //   }
+// //   .mat-dialog-actions .btn{
+// //     background-color: rgb(93, 218, 124); 
+// //   }
+// //   .mat-toolbar{
+// //     background-color: rgb(56, 131, 175);  
+  
+// //   }
+  
+// //   .example-form {
+// //     min-width: 150px;
+// //     max-width: 500px;
+// //     width: 100%;
+// //   }
+// //   .example-chip-list{
+// //     min-width: 150px;
+// //     max-width: 800px;
+// //     width: 100%;
+// //   }
+// //   .example-full-width {
+// //     width: 100%;
+// //   }
+// //   .mat-dialog-container {
+// //     display: block;
+// //     padding: 0px;
+// //     overflow: hidden !important;
+// //   }
+
+
+// .example-spacer {
+//   flex: 1 1 auto;
+// }
+
+
+// .md-dialog-container{
+//   margin: -24px;
+//   overflow: hidden;
+// }
+// .example-icon{
+//   background-color: none;
+// }
+
+// .mat-input-wrapper{
+//   background-color: lightgray;
+// }
+// /*.mat-tab-header{
+//   position:fixed;
+// }*/
+// .mat-tab-label-container{
+//   font-size: 0.9em;
+//   margin-top: -10px;
+// }
+// .mat-dialog-content{
+//   margin: -25px 0px 0px 0px;
+//   padding:0px 12px;
+//   overflow:hidden;
+// }
+
+// .example-form {
+//   min-width: 150px;
+//   max-width: 500px;
+//   width: 100%;
+// }
+// .example-chip-list{
+//   min-width: 150px;
+//   max-width: 800px;
+//   width: 100%;
+// }
+// .example-full-width {
+//   width: 100%;
+// }
+// // .mat-dialog-container {
+// //   display: block;
+// //   padding: 0px;
+// //   overflow: hidden !important;
+// // }
+
+// .md-dialog-container{
+//   margin: -24px;
+//   overflow: hidden;
+// }
+
+// .example-spacer {
+//   flex: 1 1 auto;
+// }
+// .md-dialog-content{
+//     margin-left: 10%;
+    
+// }
+
+// .mat-toolbar{
+//   background-color: rgb(56, 131, 175);  
+
+// }
+
+// .cdk-overlay-pane {
+
+//   width: 50% !important;
+
+// }
+
+// .mat-toolbar-single-row {
+//   height: 64px !important;
+// }
+// .group-form-dialog .mat-dialog-container {
+//   padding: 0 !important;
+// }
+
+
+
+/* .mat-cell:first-of-type, .mat-footer-cell:first-of-type, .mat-header-cell:first-of-type {
+    padding-left: 0px; 
+}
+
+
+.mat-table {
+    overflow-x: scroll;
+  }
+  
+  .mat-cell,
+  .mat-header-cell {
+    word-wrap: initial;
+    display: table-cell;
+    padding: 0px 5px;
+    line-break: unset;
+    width: 80%;
+    white-space: nowrap;
+    overflow: hidden;
+    vertical-align: middle;
+  }
+  
+  .mat-row,
+  .mat-header-row {
+    display: table-row;
+    border-width: 0;
+    border-bottom-width: 1px;
+    border-bottom-color: rgba(3, 3, 3, 0.12);
+    border-style: solid;
+    align-items: center;
+    box-sizing: border-box;
+  }
+  
+  .mat-header-cell {
+      font-size: 12px;
+      font-weight: 500;
+  } */
+
+  .example-spacer {
+    flex: 1 1 auto;
+  }
+
+
+.md-dialog-container{
+    margin: -24px;
+    overflow: hidden;
+    width: 520px !important;
+}
+.example-icon{
+    background-color: none;
+}
+
+.md-dialog-content{
+    margin-bottom: 20px;
+}
+
+/*.mat-tab-header{
+    position:fixed;
+}*/
+.mat-tab-label-container{
+    font-size: 0.9em;
+    margin-top: -10px;
+}
+.mat-dialog-content{
+    margin: -25px 0px 0px 0px;
+    padding:12px 12px;
+    overflow:hidden;
+}
+/*.mat-tab-body-wrapper{
+    max-height:60vh;
+    min-height:30vh;
+    overflow: auto;
+    padding-bottom: 20px;
+}*/
+.egret-navy .mat-tab-group.mat-primary .mat-ink-bar{
+    height:8px;
+}
+/*.egret-navy .mat-toolbar{
+    background-color:rgba(3, 3, 61, 0.863);  
+    color: white;   
+}*/
+.mat-tab-label{
+    font-size:0.9rem;
+}
+.egret-navy .mat-icon-button{
+    background:none;
+}
+
+.mat-table {
+    width:100%;
+    max-width: 100%;
+    min-width: 100%;
+    overflow: auto auto;
+  }
+  
+  .mat-header-cell{
+    font-size: 14px;
+    border-bottom: 1px solid;
+    border-bottom-color: rgba(0, 0, 0, 0.12);
+    padding: 15px 0px;
+    
+  }
+
+  .mat-cell{
+    border-bottom: 1px solid;
+    border-bottom-color: rgba(0, 0, 0, 0.12);
+    padding: 5px 0px;
+    
+  }
+
+  .mat-header-row{
+    width: 100%;
+    max-width: 100%;
+    min-width: 100%;
+    border-bottom-width: 0px;
+  }
+  
+  .mat-row, .mat-header-row {
+    min-width: 800px;
+    white-space: nowrap;
+  }
+
+  .mat-cell:first-of-type, .mat-header-cell:first-of-type, .mat-footer-cell:first-of-type{
+    padding-left:10px ;
+  }
+  
+  .mat-cell:last-of-type, .mat-header-cell:last-of-type, .mat-footer-cell:last-of-type{
+    padding-right: 10px;
+  }
+  
+
+  .head{
+      color: blue;
+  }
+
+  .w-100{
+    width: 100px;
+    flex:0 0 100px;
+  }
+
+  .w-80{
+    width: 80px;
+    flex:0 0 80px;
+  }
+
+  .w-150{
+      width: 150px;
+      flex: 0 0 150px;
+  }
+
+.md-label{
+    max-height:60vh;
+    min-height:30vh;
+    overflow: auto;
+    padding-bottom: 20px;
+}
+.mat-form-field-appearance-outline .mat-form-field-infix{
+    padding: 0.6em 1em 0.6em;
+}
+.full{
+    margin-top: 10px;
+}
+.btn{
+  margin-left:15px;
+  margin-top: 20px;
+  background-color: rgb(12, 48, 87);
+  cursor: pointer;
+}
+
+
+ ///////////////////// Dropdown Placeholder and After select value /////////////////////
+
+ :host ::ng-deep .mat-select-value-text {
+  // font-size: 14px !important;
+  // font-weight: 600;
+
+  font-size: 13px !important;
+  font-weight: 450;
+}
+
+:host ::ng-deep .mat-form-field-appearance-legacy .mat-form-field-label {
+  
+  color: gray!important;
+  font-style: italic;
+}
+
+    .success {
+      background-color: green;
+      color: white;
+    }
+///////////////////// Dropdown Placeholder and After select value /////////////////////
+.asterisk_input::after 
+    {
+        content:" *"; 
+        color: red;
+    }

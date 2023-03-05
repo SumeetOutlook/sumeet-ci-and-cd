@@ -1,0 +1,39 @@
+<div class="md-dialog-container">
+    <div fxLayout="row wrap" class="example-container mat-elevation-z8">
+      <mat-toolbar class="mat-toolbar" style="background-color:rgb(12, 48, 87);color:white">
+        <span style="position: relative;left: 40%;">Login</span>
+        <span class="example-spacer"></span>
+        <button mat-icon-button class="example-icon" aria-label="Example icon-button with close icon"
+          (click)="onclosetab()">
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-toolbar>
+    </div>
+    <div style="padding: 20px !important;">
+      <form [formGroup]="signinForm">
+        <div fxLayout="row wrap" fxLayout.lt-sm="column">
+            <div fxFlex="100">
+                <mat-form-field class="full-width" appearance="outline">
+                    <mat-label>User</mat-label>
+                    <input matInput formControlName="email" type="email" name="email" placeholder="Email" autocomplete="off">
+                  </mat-form-field>
+            </div>
+            <div fxFlex="100">
+                <mat-form-field class="full-width" appearance="outline">
+                    <mat-label>Password</mat-label>
+                    <input matInput formControlName="password" type="password" name="password" placeholder="********"
+                      autocomplete="off" />
+                  </mat-form-field>
+            </div>
+            <div *ngIf="displayError">
+              <span style="color: red;">Username or password is incorrect!</span>
+            </div>
+        </div>       
+        <div style="text-align: right;">                
+            <button class="btn success" (click)="onSubmit()" [disabled]="signinForm.invalid" mat-raised-button> Submit</button>
+        </div>  
+      </form>
+    </div>
+    
+  </div>
+

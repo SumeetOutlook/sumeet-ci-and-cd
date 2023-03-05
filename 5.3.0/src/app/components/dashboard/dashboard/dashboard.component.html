@@ -1,0 +1,294 @@
+<mat-progress-bar mode="indeterminate" *ngIf="Showprogressbar"></mat-progress-bar>
+<h3><strong style=" color:#008bd0 !important;"> </strong></h3>
+<span class="example-spacer"> </span>
+<div fxLayout="row wrap" fxLayout.lt-sm="column" *ngIf="displayContent"> <span fxFlex></span> <span style="margin-right: 25px;"><strong>Amount in {{CurrencyIcon}}&nbsp;'000s</strong></span> <mat-icon class="example-icon FixBtnClass" matTooltip="{{Headers.Filter}}" (click)="openFilter()" [style.fontSize]="'24px'" style="margin-bottom: -2px;cursor: pointer;"><img src="assets/images/assetrak/Latest/FilterNew.png" /></mat-icon></div>
+<div fxLayout="row wrap" fxLayout.lt-sm="column" style="height: 400px;" *ngIf="displayContent">
+  <div class="content">
+    <figure class="org-chart cf">
+      <ul class="administration">
+        <li>
+          <ul class="director">
+            <li>
+              <div fxLayout="row wrap" fxLayout.lt-sm="column">
+                <table style="width: 100%;">
+                  <tr style="background: #0000002e;">
+                    <td colspan="3">ALL ASSETS</td>
+                  </tr>
+                  <tr>
+                    <td>Count</td>
+                    <td>Cost</td>
+                    <td>NBV</td>
+                  </tr>
+                  <tr>
+                    <td>{{AllCount | number : 0 }}</td>
+                    <td>{{(AllCost === "0" || AllCost < currencyIn) ? "0" : (AllCost/currencyIn) | number : '1.0-0' }}</td>
+                    <td>{{(AllWDV === "0" || AllWDV < currencyIn) ? "0" : (AllWDV/currencyIn) | number : '1.0-0'}}</td>
+                  </tr>
+  
+                </table>
+               
+              </div>
+              <ul class="subdirector">
+              </ul>
+              <ul class="departments cf">
+                <li></li>
+  
+                <li class="department dep-a">
+                  <div fxLayout="row wrap" fxLayout.lt-sm="column">
+                    <table style="width: 100%;">
+                      <tr style="background: #0000002e;border-bottom: 1px white solid;">
+                        <td colspan="3">New Assets</td>
+                      </tr>
+                      <tr>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                      </tr>
+                      <tr>
+                        <td>{{(newcount) | number }}</td>
+                        <td>{{((newcost)/currencyIn) | number : '1.0-0' }}</td>
+                        <td>{{((newwdv)/currencyIn) | number : '1.0-0' }}</td>
+                      </tr>
+      
+                    </table>
+                  </div>
+                  <ul class="sections">
+                    <li class="section sec-a">
+                      <div fxLayout="row wrap" fxLayout.lt-sm="column" style="height: 110px;">
+                        <table style="width: 100%;">
+                          <tr style="background:#fff;color: black;">
+                            <td>Assets Under Review</td>
+                          </tr>
+                          <tr>
+                            <td (click)="PageNavigation('22','h1/c')" style="cursor: pointer;">{{Errorcount | number }} / {{(Errorcost === "0" || Errorcost < currencyIn) ? "0" : (Errorcost/currencyIn) | number : '1.0-0' }}  / {{(Errorwdv === "0" || Errorwdv < currencyIn) ? "0" : (Errorwdv/currencyIn) | number : '1.0-0' }}</td>                         
+                          </tr>
+                          <tr>
+                            <td style="background:#fff;color: black;">Asset Relationship</td>                         
+                          </tr>   
+                          <tr>
+                            <td (click)="PageNavigation('24','h3/a')" style="cursor: pointer;">{{Relationcount | number }} /  {{(Relationcost === "0" || Relationcost < currencyIn) ? "0" : (Relationcost/currencyIn) | number : '1.0-0' }}  / {{(Relationwdv === "0" || Relationwdv < currencyIn) ? "0" : (Relationwdv/currencyIn) | number : '1.0-0' }}</td>                         
+                          </tr>   
+                        </table>
+                      </div>
+                    </li>
+                  </ul>
+                </li>
+                <li class="department dep-b">
+                  <div fxLayout="row wrap" fxLayout.lt-sm="column">
+                    <table style="width: 100%;">
+                      <tr style="background: #0000002e;border-bottom: 1px white solid;">
+                        <td colspan="3">Assets For Tagging</td>
+                      </tr>
+                      <tr>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                      </tr>
+                      <tr>
+                        <td>{{(taggingCount) | number }}</td>
+                        <td>{{((taggingCost)/currencyIn) | number : '1.0-0' }}</td>
+                        <td>{{((taggingWDV)/currencyIn) | number : '1.0-0' }}</td>
+                      </tr>
+      
+                    </table>
+                  </div>
+                  <ul class="sections">
+                    <li class="section">
+                      <div fxLayout="row wrap" fxLayout.lt-sm="column" style="height: 110px;">
+                        <table style="width: 100%;">
+                          <tr style="background:#fff;color: black;">
+                            <td>Untagged Assets</td>
+                          </tr>
+                          <tr>
+                            <td (click)="PageNavigation('30','h7/b')" style="cursor: pointer;">{{untagCount | number }} / {{(untagCost === "0" || untagCost < currencyIn) ? "0" : (untagCost/currencyIn) | number : '1.0-0' }}  / {{(untagWDV === "0" || untagWDV < currencyIn) ? "0" : (untagWDV/currencyIn) | number : '1.0-0' }}</td>                         
+                          </tr>
+                          <tr>
+                            <td style="background:#fff;color: black;">Pending Tagging Approval (A)</td>                         
+                          </tr>   
+                          <tr>
+                            <td (click)="PageNavigation('30','h7/b')" style="cursor: pointer;">{{pendingtagCount | number}} /  {{(pendingtagCost === "0" || pendingtagCost < currencyIn) ? "0" : (pendingtagCost/currencyIn) | number : '1.0-0' }}  / {{(pendingtagWDV === "0" || pendingtagWDV < currencyIn) ? "0" : (pendingtagWDV/currencyIn) | number : '1.0-0' }}</td>                         
+                          </tr>   
+                        </table>
+                      </div>
+                    </li>
+                  </ul>
+                </li>
+                <li class="department dep-c">
+                  <div fxLayout="row wrap" fxLayout.lt-sm="column">
+                    <table style="width: 100%;">
+                      <tr style="background: #0000002e;border-bottom: 1px white solid;"> 
+                        <td colspan="3">Assets Tagged</td>
+                      </tr>
+                      <tr>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                      </tr>
+                      <tr>
+                        <td>{{(taggedCount) | number }}</td>
+                        <td>{{((taggedCost)/currencyIn) | number : '1.0-0' }}</td>
+                        <td>{{((taggedWDV)/currencyIn) | number : '1.0-0' }}</td>
+                      </tr>
+      
+                    </table>
+                  </div>
+                  <ul class="sections">
+                    <li class="section">
+                      <div fxLayout="row wrap" fxLayout.lt-sm="column" style="height: 110px;">
+                        <table style="width: 100%;">
+                          <tr style="background:#fff;color: black;">
+                            <td>Assets Under Inventory (B)</td>
+                          </tr>
+                          <tr>
+                            <td (click)="PageNavigation('57','h8/e')" style="cursor: pointer;">{{underInvCount | number }} / {{(underInvCost === "0" || underInvCost < currencyIn) ? "0" : (underInvCost/currencyIn) | number : '1.0-0' }}  / {{(underInvWDV === "0" || underInvWDV < currencyIn) ? "0" : (underInvWDV/currencyIn) | number : '1.0-0' }}</td>                         
+                          </tr>
+                          <tr>
+                            <td style="background:#fff;color: black;">Other Tagged Assets</td>                         
+                          </tr>   
+                          <tr>
+                            <td (click)="PageNavigation('32','h7/d')" style="cursor: pointer;">{{availInvCount | number}} /  {{(availInvCost === "0" || availInvCost < currencyIn) ? "0" : (availInvCost/currencyIn) | number : '1.0-0' }}  / {{(availInvdWDV === "0" || availInvdWDV < currencyIn) ? "0" : (availInvdWDV/currencyIn) | number : '1.0-0' }}</td>                         
+                          </tr>   
+                        </table>
+                      </div>
+                    </li>
+                  </ul>
+                </li>
+                <li class="department dep-d">
+                  <div fxLayout="row wrap" fxLayout.lt-sm="column">
+                    <table style="width: 100%;">
+                      <tr style="background: #0000002e;border-bottom: 1px white solid;">
+                        <td colspan="3">Assets Not For Inventory</td>
+                      </tr>
+                      <tr>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                        <td>&nbsp;</td>
+                      </tr>
+                      <tr>
+                        <td>{{(notInvCount) | number}}</td>
+                        <td>{{((notInvCost)/currencyIn) | number : '1.0-0' }}</td>
+                        <td>{{((notInvWDV)/currencyIn) | number : '1.0-0' }}</td>
+                      </tr>
+      
+                    </table>
+                  </div>
+                  <ul class="sections">
+                    <li class="section">
+                      <div fxLayout="row wrap" fxLayout.lt-sm="column" style="height: 158px;">
+                        <table style="width: 100%;">
+                          <tr style="background:#fff;color: black;">
+                            <td>"Verify Only" Assets</td>
+                          </tr>
+                          <tr>
+                            <td  style="cursor: pointer;">{{verifyonlyCount | number}} / {{(verifyonlyCost === "0" || verifyonlyCost < currencyIn) ? "0" : (verifyonlyCost/currencyIn) | number : '1.0-0' }}  / {{(verifyonlyWDV === "0" || verifyonlyWDV < currencyIn) ? "0" : (verifyonlyWDV/currencyIn) | number : '1.0-0' }}</td>                         
+                          </tr>
+                          <tr>
+                            <td style="background:#fff;color: black;">Non Verifiable Assets</td>                         
+                          </tr>   
+                          <tr>
+                            <td  style="cursor: pointer;">{{nonverifyCount | number}} /  {{(nonverifyCost === "0" || nonverifyCost < currencyIn) ? "0" : (nonverifyCost/currencyIn) | number : '1.0-0' }}  / {{(nonverifyWDV === "0" || nonverifyWDV < currencyIn) ? "0" : (nonverifyWDV/currencyIn) | number : '1.0-0' }}</td>                         
+                          </tr>   
+                          <tr>
+                            <td style="background:#fff;color: black;">Retired Assets</td>                         
+                          </tr>   
+                          <tr>
+                            <td (click)="PageNavigation('55','h8/c')" style="cursor: pointer;">{{retireCount | number}} /  {{(retireCost === "0" || retireCost < currencyIn) ? "0" : (retireCost/currencyIn) | number : '1.0-0' }}  / {{(retireWDV === "0" || retireWDV < currencyIn) ? "0" : (retireWDV/currencyIn) | number : '1.0-0' }}</td>                         
+                          </tr> 
+                        </table>
+                      </div>
+                    </li>
+                  </ul>
+                </li>
+              </ul>  
+            </li>
+          </ul>
+        </li>
+      </ul>
+    </figure>
+  </div>
+</div>
+
+<div fxLayout="row wrap" fxLayout.lt-sm="column" *ngIf="displayContent">
+  <div fxFlex="35" class="pr-1 full">
+    <table style="width: 100%;;text-align: center;font-weight: bold;">
+      <tr>
+        <td colspan="4" style="color: blue;">Pending Tagging Approval&nbsp;(A) </td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td>Count</td>
+        <td>Cost</td>
+        <td>NBV</td>
+      </tr>
+      <tr>
+        <td style="text-align: left;padding-left: 50px;">Tagged</td>
+        <td (click)="PageNavigation('30','h7/b')" style="cursor: pointer;">{{pendingtaggedCount}}</td>
+        <td>{{(pendingtaggedCost === "0" || pendingtaggedCost < currencyIn) ? "0" : (pendingtaggedCost/currencyIn) | number : '1.0-0' }}</td>
+        <td>{{(pendingtaggedWDV === "0" || pendingtaggedWDV < currencyIn) ? "0" : (pendingtaggedWDV/currencyIn) | number : '1.0-0' }}</td>
+      </tr>
+      <tr>
+        <td style="text-align: left;padding-left: 50px;">Verify Only</td>
+        <td (click)="PageNavigation('30','h7/b')" style="cursor: pointer;">{{verifyonlytaggedCount}}</td>
+        <td>{{(verifyonlytaggedCost === "0" || verifyonlytaggedCost < currencyIn) ? "0" : (verifyonlytaggedCost/currencyIn) | number : '1.0-0' }}</td>
+        <td>{{(verifyonlytaggedWDV === "0" ||  verifyonlytaggedWDV < currencyIn) ? "0" : (verifyonlytaggedWDV/currencyIn) | number : '1.0-0' }}</td>
+      </tr>
+      <tr>
+        <td style="text-align: left;padding-left: 50px;">Non Verifiable</td>
+        <td (click)="PageNavigation('30','h7/b')" style="cursor: pointer;">{{nonverifytaggedCount}}</td>
+        <td>{{(nonverifytaggedCost === "0" || nonverifytaggedCost < currencyIn) ? "0" : (nonverifytaggedCost/currencyIn) | number : '1.0-0'  }}</td>
+        <td>{{(nonverifytaggedWDV === "0" || nonverifytaggedWDV < currencyIn) ? "0" : (nonverifytaggedWDV/currencyIn) | number : '1.0-0'  }}</td>
+      </tr>
+      <tr>
+        <td style="text-align: left;padding-left: 50px;">Not Found</td>
+        <td (click)="PageNavigation('30','h7/b')" style="cursor: pointer;">{{notfoundtagCount}}</td>
+        <td>{{(notfoundtagCost === "0" || notfoundtagCost < currencyIn) ? "0" : (notfoundtagCost/currencyIn) | number : '1.0-0'  }}</td>
+        <td>{{(notfoundtagWDV === "0" || notfoundtagWDV < currencyIn) ? "0" : (notfoundtagWDV/currencyIn) | number : '1.0-0'  }}</td>
+      </tr>
+      <tr>
+        <td style="text-align: left;padding-left: 50px;">Additional Asset</td>
+        <td (click)="PageNavigation('31','h7/c')" style="cursor: pointer;">{{additionalcount}}</td>
+        <td>0</td>
+        <td>0</td>
+      </tr>
+
+    </table>
+  </div>
+  <div fxFlex="35" class="pr-1 full">
+    <table style="width: 100%;text-align: center;font-weight: bold;">
+      <tr>
+        <td colspan="4" style="color: blue;">Assets Under Inventory &nbsp;(B) </td>
+      </tr>
+      <tr>
+        <td>&nbsp;</td>
+        <td>Count</td>
+        <td>Cost</td>
+        <td>NBV</td>
+      </tr>
+      <tr>
+        <td style="text-align: left;padding-left: 50px;">Verified</td>
+        <td (click)="PageNavigation('57','h8/e')" style="cursor: pointer;">{{verifyCount }}</td>
+        <td>{{(verifyCost  === "0" || verifyCost  < currencyIn) ? "0" : (verifyCost /currencyIn) | number : '1.0-0'  }}</td>
+        <td>{{(verifyWDV  === "0" || verifyWDV  < currencyIn) ? "0" : (verifyWDV /currencyIn) | number : '1.0-0'  }}</td>
+      </tr>
+      <tr>
+        <td style="text-align: left;padding-left: 50px;">Pending</td>
+        <td (click)="PageNavigation('57','h8/e')" style="cursor: pointer;">{{pendingInvCount }}</td>
+        <td>{{(pendingInvCost === "0" || pendingInvCost < currencyIn) ? "0" : (pendingInvCost/currencyIn) | number : '1.0-0' }}</td>
+        <td>{{(pendingInvdWDV  === "0" || pendingInvdWDV  < currencyIn) ? "0" : (pendingInvdWDV /currencyIn) | number : '1.0-0' }}</td>
+      </tr>
+      <tr>
+        <td style="text-align: left;padding-left: 50px;">Not Found</td>
+        <td (click)="PageNavigation('35','h7/g')" style="cursor: pointer;">{{notfoundCount}}</td>
+        <td>{{(notfoundCost === "0" || notfoundCost < currencyIn) ? "0" : (notfoundCost/currencyIn) | number : '1.0-0'  }}</td>
+        <td>{{(notfoundWDV === "0" || notfoundWDV < currencyIn) ? "0" : (notfoundWDV/currencyIn) | number : '1.0-0'  }}</td>
+      </tr>
+      <tr>
+        <td style="text-align: left;padding-left: 50px;">Additional</td>
+        <td (click)="PageNavigation('36','h7/h')" style="cursor: pointer;">{{additionalInvcount}}</td>
+        <td>{{(additionalInvCost === "0" || additionalInvCost < currencyIn) ? "0" : (additionalInvCost/currencyIn) | number : '1.0-0'  }}</td>
+        <td>{{(additionalInvWDV === "0" || additionalInvWDV < currencyIn) ? "0" : (additionalInvWDV/currencyIn) | number : '1.0-0'  }}</td>
+      </tr>     
+
+    </table>
+  </div>
+</div>

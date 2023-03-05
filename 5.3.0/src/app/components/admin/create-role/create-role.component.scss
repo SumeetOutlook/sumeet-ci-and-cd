@@ -1,0 +1,84 @@
+h3{
+  //color:#008bd0;
+  font-size: 14PX;
+
+}
+
+/* table {
+    width: 100%;
+  }
+  
+  .m-t-xl {
+    margin-top: 40px;
+  } */
+  .mat-cell:first-of-type, .mat-footer-cell:first-of-type, .mat-header-cell:first-of-type {
+    padding-left: 24px;
+    margin-right: -75px
+  }
+
+  .prevent-click
+  {
+    pointer-events: none;
+  }
+  .authorize-click{
+    pointer-events: auto;
+  }
+.child{
+    margin-left:85px !important;
+  }
+  .mat-expanded .mat-expansion-panel-header{
+    margin-bottom: 0rem;
+  }
+  .mat-card-title{
+    margin-bottom: 0px;
+  }
+
+  :host ::ng-deep  .mat-expansion-panel-header {
+    font-size: 15px;
+    font-weight: 500 !important;
+    padding: 0 25px !important;
+    margin-top: 5px !important;
+    margin-bottom: -5px !important;
+  }
+
+  .givemargin{
+    margin-right:8px !important;
+  }
+
+  .mat-card.p-0 .mat-card-title .card-title-text {
+    padding: 2px 22px 3px !important;
+  }
+
+  .mat-card.p-0 .mat-card-content {
+    padding: 0 0px 0px !important;
+}
+
+
+.mat-content {
+  
+  margin-top: 9px !important;
+  margin-bottom: -2px !important;
+}
+
+///////////////////// Dropdown Placeholder and After select value /////////////////////
+
+:host ::ng-deep .mat-select-value-text {
+  // font-size: 14px !important;
+  // font-weight: 600;
+
+  font-size: 13px !important;
+  font-weight: 450;
+}
+
+:host ::ng-deep .mat-form-field-appearance-legacy .mat-form-field-label {
+  
+  color: gray!important;
+  font-style: italic;
+}
+
+///////////////////// Dropdown Placeholder and After select value /////////////////////
+.asterisk_input::after 
+{
+    content:" *"; 
+    color: red;
+}

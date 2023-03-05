@@ -1,0 +1,123 @@
+<div class="md-dialog-container">
+  <mat-toolbar cdkDrag cdkDragRootElement=".cdk-overlay-pane" cdkDragHandle class="mat-toolbar" style="background-color:rgb(12, 48, 87);color:white">
+    <span style="position: relative;left: 40%;">User Details</span>
+    <span class="example-spacer"></span>
+    <button mat-icon-button class="example-icon" aria-label="Example icon-button with close icon"
+      (click)="onclosetab()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-toolbar>
+  <div mat-dialog-content class="p-1 m-0" cdkDrag cdkDragRootElement=".cdk-overlay-pane" cdkDragHandle>
+
+    <form [formGroup]="dialogGroupForm" (ngSubmit)="onSubmit()">
+      <div fxLayout="row wrap" fxLayout.lt-sm="column">
+
+        <table mat-table #table [dataSource]="dataSource" matSort>
+
+          <ng-container matColumnDef="OriginalUser">
+            <th mat-sort-header="OriginalUser" mat-header-cell *matHeaderCellDef>Original User</th>
+            <td mat-cell *matCellDef="let element"> {{element.OldValue}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="ProposedUser">
+            <th mat-sort-header="ProposedUser" mat-header-cell *matHeaderCellDef>Proposed User</th>
+            <td mat-cell *matCellDef="let element">{{element.NewValue}}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="Option">
+            <th mat-sort-header="Option" mat-header-cell *matHeaderCellDef>Option</th>
+            <td mat-cell *matCellDef="let element"> {{element.Temp1}} </td>
+          </ng-container>
+
+          <ng-container matColumnDef="Action">
+            <th mat-sort-header="Action" mat-header-cell *matHeaderCellDef>Action</th>
+            <td mat-cell *matCellDef="let element"> <button mat-raised-button color="primary"
+                (click)="getRejct(element)">Reject</button> </td>
+          </ng-container>
+
+          <tr mat-header-row *matHeaderRowDef="displayedColumns;sticky: true "></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+        </table>
+
+
+        <!-- <div fxFlex="100" class="pr-1">
+
+            <div fxFlex="50" class="pr-1">
+                <span><b>Original User</b></span>
+              <mat-form-field class="full-width">
+                <input matInput OUser="OUser" [formControl]="dialogGroupForm.controls['OUser']" placeholder="User" autocomplete="off" required>
+                <mat-error *ngIf="submitted || f1.OUser.errors || f1.OUser.dirty || f1.OUser.touched">
+                  <span *ngIf="f1.OUser.errors?.required">User is required </span>
+                </mat-error>
+              </mat-form-field>
+            </div>
+
+            <div fxFlex="50" class="pr-1">
+                <span><b>Proposed User</b></span>
+                <mat-form-field class="full-width">
+                  <input matInput PUser="PUser" [formControl]="dialogGroupForm.controls['PUser']" placeholder="User" autocomplete="off" required>
+                  <mat-error *ngIf="submitted || f1.PUser.errors || f1.PUser.dirty || f1.PUser.touched">
+                    <span *ngIf="f1.PUser.errors?.required">User is required </span>
+                  </mat-error>
+                </mat-form-field>
+              </div>
+ 
+          </div> -->
+
+        <!-- <div fxFlex="100" class="pr-1">
+           
+            <div fxFlex="50" class="pr-1">
+                <mat-form-field class="full-width">
+                  <input matInput oemailId="oemailId" [formControl]="dialogGroupForm.controls['oemailId']" placeholder="User Email" autocomplete="off" required [pattern]="emailPattern">
+                  <mat-error *ngIf="submitted || f1.oemailId.errors || f1.oemailId.dirty || f1.oemailId.touched ">
+                    <span *ngIf="f1.oemailId.errors?.required">EmailId is required </span>   
+                    <span *ngIf="f1.oemailId.errors?.pattern">
+                       Email not valid.
+                  </span>            
+                  </mat-error>
+                </mat-form-field>
+                </div>
+
+              <div fxFlex="50" class="pr-1">
+              <mat-form-field class="full-width">
+                <input matInput pemailId="pemailId" [formControl]="dialogGroupForm.controls['pemailId']" placeholder="User Email" autocomplete="off" required [pattern]="emailPattern">
+                <mat-error *ngIf="submitted || f1.pemailId.errors || f1.pemailId.dirty || f1.pemailId.touched ">
+                  <span *ngIf="f1.pemailId.errors?.required">EmailId is required </span>   
+                  <span *ngIf="f1.pemailId.errors?.pattern">
+                     Email not valid.
+                </span>            
+                </mat-error>
+              </mat-form-field>
+              </div>
+            
+        </div> -->
+
+        <!-- <div fxFlex="100" class="pr-1">
+            
+            <div fxFlex="50" class="pr-1">
+                <mat-form-field class="full-width">
+                    <input matInput oempid="oempid" [formControl]="dialogGroupForm.controls['oempid']" placeholder="EmpID" autocomplete="off">
+                  </mat-form-field>
+                </div>
+
+            <div fxFlex="50" class="pr-1">
+                <mat-form-field class="full-width">
+                    <input matInput oempid="pempid" [formControl]="dialogGroupForm.controls['pempid']" placeholder="EmpID" autocomplete="off">
+                  </mat-form-field>
+                </div>
+        </div> -->
+
+        <div fxFlex="100" style="margin-top: 24px;">
+
+          <button mat-raised-button class="success" style="margin-left: 157px; margin-right: 13px;"
+            (click)="acceptandapprove()">Accept & Approve</button>
+          <button mat-raised-button class="success" style="margin-right: 13px;" (click)="rejectandapprove()">Request For
+            Information</button>
+          <button mat-raised-button color="primary" (click)="onclosetab()">Cancel</button>
+
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

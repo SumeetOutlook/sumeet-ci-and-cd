@@ -1,0 +1,43 @@
+<div class="md-dialog-container" cdkDrag cdkDragRootElement=".cdk-overlay-pane">
+  <mat-toolbar  cdkDragHandle class="mat-toolbar" style="background-color:rgb(12, 48, 87);color:white">
+    <span>Upload {{header.AssetType}}</span>
+    <span class="example-spacer"></span>
+    <button mat-icon-button class="example-icon" aria-label="Example icon-button with close icon"
+      (click)="onclosetab()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-toolbar><br><br>
+  <mat-dialog-content style="margin-bottom: 20px;" >
+    <div class="md-dialog-content">
+      <form [formGroup]=" AssetType">
+        <div fxLayout="row wrap" class="ml-16" fxLayout.lt-sm="column">
+          <div fxFlex="60" class="mt-12 responsive">
+            <!-- <input type="file" (change)="fileChange($event)" ng2FileSelect class="uploadSelectClass" accept=".xlx,.xlsx" /> -->
+            <input type="file" class="uploadSelectClass" (change)="fileChange($event)" style="padding-top: 7px"
+              placeholder="Upload file" accept=".xlx,.xlsx">
+          </div>
+          <div fxFlex="20" class="mt-12 ml-16 responsive">
+            <!-- <button class="btn" mat-raised-button color="primary">
+                <mat-icon (click)="uploadData()" class="maticon" style="padding-top: 4px !important;padding-right: 4px !important;">file_upload</mat-icon>Upload
+              </button> -->
+              <button class="btn success" (click)="uploadData()" [disabled]="!fileList" mat-raised-button>
+                <mat-icon style="color: white;">file_upload</mat-icon>Upload
+              </button>
+          </div>
+
+        </div>
+        <div fxLayout="row wrap" class="mt-24" fxLayout.lt-sm="column">
+          <div fxFlex="40" class="responsive" style="text-align: right;">
+            <button class="btn ml-16 success" mat-raised-button (click)="downloadTemplate('AssetType')"
+              style="float: left !important;">
+              <mat-icon class="maticon" style="padding-top: 4px !important;padding-right: 4px !important;">
+                insert_drive_file</mat-icon>Download Template
+            </button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </mat-dialog-content>
+  <!-- <div style="text-align: right !important;margin-right: 10px !important;"><button mat-raised-button color="warn">Close</button></div> -->
+
+</div>

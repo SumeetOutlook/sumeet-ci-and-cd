@@ -1,0 +1,130 @@
+<!-- <div class="md-dialog-container">
+
+<mat-toolbar class="mat-toolbar"  style="background-color:#0C3057 !important;color:white">
+  <span>Available Fields</span>
+  <span class="example-spacer"></span>
+  <button mat-icon-button class="example-icon" aria-label="Example icon-button with close icon" (click)="onclosetab()">
+    <mat-icon>close</mat-icon>
+  </button>
+</mat-toolbar><br><br>
+<mat-dialog-content>
+    
+      <div fxLayout="row wrap" >
+        <mat-form-field>
+          <mat-label>Select</mat-label>
+              <mat-select placeholder="Fields" disableOptionCentering  [(ngModel)]="optionValue">
+                <mat-option value="prefer">Prefer</mat-option>
+              </mat-select>
+        </mat-form-field>
+            
+     
+    </div>
+  
+</mat-dialog-content>
+<div *ngIf="optionValue=='prefer'" style="max-height:150px;overflow: hidden auto;border:1px solid lightgrey">
+  <section class="example-section">
+    <mat-checkbox >Asset No </mat-checkbox>
+    <mat-checkbox >Sub No </mat-checkbox>
+    <mat-checkbox class="example-margin"color="primary">Capitalization Date </mat-checkbox>
+    <mat-checkbox >Asset Class</mat-checkbox>
+    <mat-checkbox >Asset Type </mat-checkbox>
+    <mat-checkbox >Asset SubType </mat-checkbox>
+    <mat-checkbox >UOM</mat-checkbox>
+    <mat-checkbox  style="margin-left:59px">Asset Name </mat-checkbox>
+    <mat-checkbox class="example-margin"color="primary" style="margin-left:0px">Asset Description </mat-checkbox>
+    <mat-checkbox  style="margin-left:40px">Qty </mat-checkbox>
+    <mat-checkbox  style="margin-left:84px">Cost </mat-checkbox>
+    <mat-checkbox  style="margin-left:70px">Wdv </mat-checkbox>
+    <mat-checkbox >Equipment No </mat-checkbox>
+    <mat-checkbox  style="margin-left:0px">Asset Condition </mat-checkbox>
+    <mat-checkbox  style="margin-left:-20px">Asset Criticality </mat-checkbox>
+  </section>
+  </div>
+</div> -->
+<div class="md-dialog-container">
+  <div class="event-dialog-wrapper">
+    <mat-toolbar matDialogTitle class="mat-primary m-0" style="background-color:#0C3057 !important;color:white">
+      <div fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+        <span style="position: relative;left: 40%;" class="title dialog-title">
+         Add Locations
+        </span>
+        <button mat-icon-button (click)="dialogRef.close()" aria-label="Close dialog">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+    </mat-toolbar>
+
+    <div mat-dialog-content class="p-1 m-0"  cdkDrag cdkDragRootElement=".cdk-overlay-pane" cdkDragHandle>
+
+      <form name="dialogForm" [formGroup]="dialogForm" class="event-form" fxFlex (ngSubmit)="onSubmit()">
+        <div fxLayout="row wrap" fxLayout.lt-sm="column">
+
+          <div fxFlex="40" class="ml-12" *ngFor="let l of locationTypes">
+            <section class="example-section">
+              <mat-checkbox class="example-margin" [checked]="locationIds.indexOf(l.id) > -1" (change)="addLocations(l)">
+                {{l.name}}</mat-checkbox>
+            </section>
+        </div>
+
+   
+<!--        
+          <div fxFlex="40" class="ml-12" *ngIf="InitiateTransfer">
+            <mat-form-field class="full-width">
+              <mat-label>Select</mat-label>
+              <mat-select placeholder="Fields" disableOptionCentering (selectionChange)="getFields($event)" [(value)]="selectedValue">
+                <mat-option [value]="'prefar'">Prefar</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div> -->
+
+         
+
+
+        
+          
+    
+       
+
+        </div>
+    </form>
+  </div>
+
+  <!-- <div mat-dialog-actions class="m-0 p-1" fxLayout="row" style="text-align: right !important;" fxLayoutAlign="space-between center">
+
+    <button mat-raised-button color="primary">Save</button>
+
+  </div> -->
+  <div style="text-align: right !important; height: 50px !important;" >
+
+    <button mat-raised-button type="submit" color="primary" style="float:right;margin-right: 25px !important;">Save</button>
+
+  </div>
+</div>
+</div>
+
+
+<!-- 
+<div mat-dialog aria-label="Group/Split">
+  <form [formGroup]="dialogForm" (ngSubmit)="onSubmit()">
+    <mat-toolbar class="mat-toolbar">
+      <span>Add Location</span>
+      <span class="example-spacer"></span>
+      <button mat-icon-button class="example-icon" aria-label="Example icon-button with close icon" (click)="onclosetab()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-toolbar><br><br>
+    <mat-dialog-content>
+       <div *ngFor="let l of locationTypes">
+        <section class="example-section">
+          <mat-checkbox class="example-margin" [checked]="locationIds.indexOf(l.id) > -1" (change)="addLocations(l)">
+            {{l.name}}</mat-checkbox>
+        </section>
+    </div>
+    
+    </mat-dialog-content>
+
+    <mat-dialog-actions layout="row">
+      <button  class="btn" mat-raised-button>Save</button>
+    </mat-dialog-actions>
+  </form>
+</div> -->

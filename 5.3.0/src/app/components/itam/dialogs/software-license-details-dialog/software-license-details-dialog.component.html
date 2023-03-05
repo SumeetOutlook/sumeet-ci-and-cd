@@ -1,0 +1,211 @@
+<div class="md-dialog-container" *ngIf="tabEnabled" cdkDrag cdkDragRootElement=".cdk-overlay-pane"> 
+    <mat-toolbar  cdkDragHandle class="mat-toolbar" style="background-color:rgb(12, 48, 87) !important;color:white">
+      <span>Software License</span>
+      <span class="example-spacer"></span>
+      <button mat-icon-button class="example-icon" aria-label="Example icon-button with close icon"
+        (click)="onclosetab()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-toolbar><br><br>
+    <mat-dialog-content >
+      <div class="md-dialog-content">
+       <mat-tab-group animationDuration="200ms" [selectedIndex]="selectedIndex" (selectedTabChange)="tabChanged($event)" [disabled]="mattab">
+          <mat-tab label="Details">
+            
+            <div class="md-label">              
+              <form [formGroup]="DetailsInfo">
+                
+                <div fxLayout="row wrap" fxLayout.lt-sm="column">
+                    <div fxFlex="33" class="pr-1" >
+                      <mat-form-field class="full-width" appearance="outline">
+                        <mat-label class="label" style="font-size: 15px !important;">License Name</mat-label>
+                        <input matInput name="AssetNo" [formControl]="DetailsInfo.controls['LicenseName']"
+                          class="bg-transparente">
+                      </mat-form-field>
+                    </div>
+                    <div fxFlex="33" class="pr-1" >
+                      <mat-form-field class="full-width" appearance="outline">
+                        <mat-label class="label" style="font-size: 15px !important;">Software</mat-label>
+                        <input matInput name="AssetNo" [formControl]="DetailsInfo.controls['Software']"
+                          class="bg-transparente">
+                      </mat-form-field>
+                    </div>
+                    <div fxFlex="33" class="pr-1" >
+                      <mat-form-field class="full-width" appearance="outline">
+                        <mat-label class="label" style="font-size: 15px !important;">Manufacturer</mat-label>
+                        <input matInput name="AssetNo" [formControl]="DetailsInfo.controls['Manufacturer']"
+                          class="bg-transparente">
+                      </mat-form-field>
+                    </div>
+                    <div fxFlex="33" class="pr-1" >
+                      <mat-form-field class="full-width" appearance="outline">
+                        <mat-label class="label" style="font-size: 15px !important;">Agreement Number</mat-label>
+                        <input matInput name="AssetNo" [formControl]="DetailsInfo.controls['AgreementNumber']"
+                          class="bg-transparente">
+                      </mat-form-field>
+                    </div>
+                    <div fxFlex="33" class="pr-1" >
+                      <mat-form-field class="full-width" appearance="outline">
+                        <mat-label class="label" style="font-size: 15px !important;">License Type</mat-label>
+                        <input matInput name="AssetNo" [formControl]="DetailsInfo.controls['LicenseType']"
+                          class="bg-transparente">
+                      </mat-form-field>
+                    </div>
+                    <div fxFlex="33" class="pr-1 " >
+                      <mat-form-field class="full-width" appearance="outline">
+                        <mat-label class="label" style="font-size: 15px !important;">License Option</mat-label>
+                        <input matInput name="AssetNo" [formControl]="DetailsInfo.controls['LicenseOption']"
+                          class="bg-transparente">
+                      </mat-form-field>
+                    </div>
+                    <div fxFlex="33" class="pr-1 " >
+                      <mat-form-field class="full-width" appearance="outline">
+                        <mat-label class="label" style="font-size: 15px !important;">Acquisition Date</mat-label>
+                        <input matInput name="AssetNo" [formControl]="DetailsInfo.controls['AcquisitionDate']"
+                          class="bg-transparente">
+                      </mat-form-field>
+                    </div>
+                    <div fxFlex="33" class="pr-1 " >
+                      <mat-form-field class="full-width" appearance="outline">
+                        <mat-label class="label" style="font-size: 15px !important;">Expiry Date</mat-label>
+                        <input matInput name="AssetNo" [formControl]="DetailsInfo.controls['ExpiryDate']"
+                          class="bg-transparente">
+                      </mat-form-field>
+                    </div>
+                    <div fxFlex="33" class="pr-1 " >
+                      <mat-form-field class="full-width" appearance="outline">
+                        <mat-label class="label" style="font-size: 15px !important;">Cost</mat-label>
+                        <input matInput name="AssetNo" [formControl]="DetailsInfo.controls['Cost']"
+                          class="bg-transparente">
+                      </mat-form-field>
+                    </div>
+                    <div fxFlex="33" class="pr-1 " >
+                      <mat-form-field class="full-width" appearance="outline">
+                        <mat-label class="label" style="font-size: 15px !important;">PurchasedFor</mat-label>
+                        <input matInput name="AssetNo" [formControl]="DetailsInfo.controls['PurchasedFor']"
+                          class="bg-transparente">
+                      </mat-form-field>
+                    </div>
+
+                    <div fxFlex="33" class="pr-1 " >
+                      <mat-form-field class="full-width" appearance="outline">
+                        <mat-label class="label" style="font-size: 15px !important;">Vendor</mat-label>
+                        <input matInput name="AssetNo" [formControl]="DetailsInfo.controls['Vendor']"
+                          class="bg-transparente">
+                      </mat-form-field>
+                    </div>
+
+                    <div fxFlex="33" class="pr-1 " >
+                      <mat-form-field class="full-width" appearance="outline">
+                        <mat-label class="label" style="font-size: 15px !important;">Site</mat-label>
+                        <input matInput name="AssetNo" [formControl]="DetailsInfo.controls['Site']"
+                          class="bg-transparente">
+                      </mat-form-field>
+                    </div>
+
+                    <div fxFlex="33" class="pr-1 " >
+                      <mat-form-field class="full-width" appearance="outline">
+                        <mat-label class="label" style="font-size: 15px !important;">LicenseKey</mat-label>
+                        <input matInput name="AssetNo" [formControl]="DetailsInfo.controls['LicenseKey']"
+                          class="bg-transparente">
+                      </mat-form-field>
+                    </div>
+
+                    <div fxFlex="33" class="pr-1 " >
+                      <mat-form-field class="full-width" appearance="outline">
+                        <mat-label class="label" style="font-size: 15px !important;">Description</mat-label>
+                        <input matInput name="AssetNo" [formControl]="DetailsInfo.controls['Description']"
+                          class="bg-transparente">
+                      </mat-form-field>
+                    </div>
+
+                    <div fxFlex="33" class="pr-1 " >
+                      <mat-form-field class="full-width" appearance="outline">
+                        <mat-label class="label" style="font-size: 15px !important;">CreatedBy</mat-label>
+                        <input matInput name="AssetNo" [formControl]="DetailsInfo.controls['CreatedBy']"
+                          class="bg-transparente">
+                      </mat-form-field>
+                    </div>
+
+                    <div fxFlex="33" class="pr-1 " >
+                      <mat-form-field class="full-width" appearance="outline">
+                        <mat-label class="label" style="font-size: 15px !important;">CreatedTime</mat-label>
+                        <input matInput name="AssetNo" [formControl]="DetailsInfo.controls['CreatedTime']"
+                          class="bg-transparente">
+                      </mat-form-field>
+                    </div>
+
+                    <div fxFlex="33" class="pr-1 " >
+                      <mat-form-field class="full-width" appearance="outline">
+                        <mat-label class="label" style="font-size: 15px !important;">LastUpdatedBy</mat-label>
+                        <input matInput name="AssetNo" [formControl]="DetailsInfo.controls['LastUpdatedBy']"
+                          class="bg-transparente">
+                      </mat-form-field>
+                    </div>
+
+                    <div fxFlex="33" class="pr-1 " >
+                      <mat-form-field class="full-width" appearance="outline">
+                        <mat-label class="label" style="font-size: 15px !important;">LastUpdatedTime</mat-label>
+                        <input matInput name="AssetNo" [formControl]="DetailsInfo.controls['LastUpdatedTime']"
+                          class="bg-transparente">
+                      </mat-form-field>
+                    </div>
+
+                    <div fxFlex="33" class="pr-1 " >
+                      <mat-form-field class="full-width" appearance="outline">
+                        <mat-label class="label" style="font-size: 15px !important;">InstallationsAllowed</mat-label>
+                        <input matInput name="AssetNo" [formControl]="DetailsInfo.controls['InstallationsAllowed']"
+                          class="bg-transparente">
+                      </mat-form-field>
+                    </div>
+                    
+                </div>
+                <div fxLayout="row wrap" fxLayout.lt-sm="column">
+                  <span style="font-weight: bold;"> Down gradeRights Details</span>
+                </div>
+                <div fxLayout="row wrap" fxLayout.lt-sm="column">
+                  <div fxFlex="100" class="pr-1 " >
+                    <div class=" example-container mat-elevation-z8">
+                      <table mat-table #table [dataSource]="datasource" matSort>
+                        <ng-container [matColumnDef]="column" *ngFor="let column of displayedColumns; index as i ">
+                          <th mat-header-cell *matHeaderCellDef mat-sort-header>                          
+                            <span>
+                              {{displayedHeaders[i]}}
+                            </span>
+                          </th>
+                          <td mat-cell *matCellDef="let element; let i = index;">                         
+                            <span>
+                              {{element[column]}}
+                            </span>
+                          </td>
+                        </ng-container>
+                        <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+                      </table>
+                      <div style="text-align: center;" *ngIf="datasource?.data?.length === 0"></div>
+                    </div>
+                  </div>
+                  
+                </div>               
+              </form>
+              <!-- <button style="float:right;margin-right:2%" class="btn" mat-raised-button color="primary"
+                (click)="nextStep(1)">Next</button> -->
+            </div>
+          </mat-tab>
+          <mat-tab label="Contracts">
+            <div class="md-label">
+              <form [formGroup]="ContractsInfo">
+                
+              </form>
+              <!-- <button class="btn" mat-raised-button color="warn" type="button" (click)="previousStep(0)">Previous</button>
+              <button style="float:right;margin-right:2%" class="btn" mat-raised-button color="primary"
+                (click)="nextStep(2)">Next</button> -->
+            </div>
+          </mat-tab>
+         
+        </mat-tab-group>
+      
+      </div>
+    </mat-dialog-content>
+  </div>
+

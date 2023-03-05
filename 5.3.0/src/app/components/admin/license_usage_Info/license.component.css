@@ -1,0 +1,22 @@
+/* table {
+    width: 100%;
+  }
+  
+  .m-t-xl {
+    margin-top: 40px;
+  } */
+  .mat-cell:first-of-type, .mat-footer-cell:first-of-type, .mat-header-cell:first-of-type {
+    padding-left: 24px;
+    margin-right: -75px
+  }
+
+  .mat-raised-button.mat-primary[disabled]{
+
+    background-color:lightgray !important;
+  } 
+ 
+  .mat-raised-button.mat-primary{
+
+    background-color:#e67e4a !important;
+    color: white !important;
+  }

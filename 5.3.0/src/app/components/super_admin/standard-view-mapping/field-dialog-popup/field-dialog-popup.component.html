@@ -1,0 +1,71 @@
+<div class="md-dialog-container">
+  <div class="event-dialog-wrapper">
+  <mat-toolbar cdkDragHandle matDialogTitle class="mat-primary m-0" style="background-color:#0C3057 !important;color:white">
+    <div fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+      <span class="title dialog-title"  style="position: relative;left: 40%;">{{data.value.CategoryName}}</span>
+      <!-- <span class="title dialog-title" style="position: relative;left: 40%;">{{data.value}}</span> -->
+      <button mat-icon-button (click)="dialogRef.close()" aria-label="Close dialog">
+        <mat-icon>close</mat-icon>
+      </button>
+    </div>
+  </mat-toolbar>
+
+  <div mat-dialog-content class="p-1 m-0" cdkDragRootElement=".cdk-overlay-pane" >
+   <form name="eventForm" class="event-form" fxFlex>
+      <div fxLayout="row wrap" fxLayout.lt-sm="column">
+        <div fxFlex="40" class="ml-12">
+        <mat-form-field class="formfield full-width" color="primary">
+            <mat-select disableOptionCentering formcontol="fieldMultiCtrl" placeholder="Select Table" (selectionChange)="getFields($event)"
+            [(value)]="selectedValue">          
+              
+              <mat-option *ngFor="let type of TablefilteredFieldMulti | async" [value]="type" >
+                    {{type.TableName}}
+               </mat-option>
+            </mat-select>
+       </mat-form-field>
+       </div>
+
+          <div fxLayout="row" fxLayout.lt-sm="column" fxFlex="100" formGroupName="color">
+            <mat-card class="default"
+            style="padding-bottom: 10px;width: 100% !important; overflow: auto !important;padding-bottom: 10px !important;">
+            <mat-card-title
+                style="margin-bottom: 8px !important;margin-top: 6px !important;color: black !important;font-size: 14px !important;font-weight: 700;padding-left: 10px;">
+                <!-- Selected Asset No: -->
+              </mat-card-title>
+              <mat-card-content class="p-0" fxLayout="column" >
+                <div class="activity-data">
+                  <mat-nav-list class="list-horizontal">
+                    <mat-list-item *ngFor="let n of List">
+                      
+                        <mat-checkbox [checked]="n.Custom2" (change)="checkboxclick(n)">
+                          <!-- {{Headers[n.Custom1]}} -->
+                          <span style="padding-left:7px !important;font-size: 13px;">{{Headers[n.Custom1]}}</span>
+                           <!-- <span *ngIf="n?.Custom1?.length > 35" title="{{Headers[n.Custom1]}}">{{Headers[n.Custom1] |slice:0:35}}</span>
+                        <span *ngIf="n?.Custom1?.length <= 25">{{Headers[n.Custom1]}}</span> -->
+                        </mat-checkbox>
+                        
+                      
+                    </mat-list-item>
+                  </mat-nav-list>
+                </div>
+              
+              </mat-card-content>
+
+          </mat-card>
+
+          </div>
+      
+      </div>
+    </form>
+
+  </div>
+  <div style="text-align: right !important; height: 50px !important;padding-top: 10px;" >
+    <!-- <button mat-raised-button color="warn" style="float:right;margin-right: 25px !important;"(click)="dialogRef.close()">Cancel</button> -->
+    <!-- <button mat-raised-button class="success" style="float:right;margin-right: 25px !important;"(click)="save()">Save</button> -->
+    <button mat-raised-button id="loginBtn" class="success loginBtn"  style="float:right;margin-right: 25px !important;"(click)="save()">Save</button>
+    <!--<button mat-raised-button color="warn" id="loginBtn" class="btn loginBtn" type="button" style="float:right;margin-right: 25px !important;"(click)="save()">Cancel</button>-->
+
+  </div>
+
+</div>
+</div>

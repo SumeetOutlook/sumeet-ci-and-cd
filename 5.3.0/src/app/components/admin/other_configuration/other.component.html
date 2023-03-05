@@ -1,0 +1,221 @@
+<h3><strong style=" color:#008bd0 !important;"> Other Configuration </strong> </h3>
+
+<mat-card >
+    <mat-card-content>
+      <!-- <form [formGroup]="dialogGroupForm"  class="mt-16"> -->
+          <div class="example-container mat-elevation-z8">
+          
+            <!-- <mat-form-field  class="formfield" color="primary" >
+              <mat-select disableOptionCentering placeholder="Select Group"  [formControl]="GrpCtrl"    style="font-size: 12px !important;">                  
+                <mat-option *ngFor="let Grp of filteredFinancialList | async" [value]="Grp.GroupID">
+                  {{Grp.GroupName}}</mat-option>
+              </mat-select>
+             </mat-form-field> -->
+          
+
+             <!-- <mat-form-field  class="formfield" color="primary">
+              <mat-select disableOptionCentering [formControl]="GrpCtrl" placeholder="Select Group">
+                <mat-option *ngFor="let Grp of filteredFinancialList| async" [value]="Grp.GroupID">
+                  {{Grp.GroupName}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field> -->
+
+            <mat-form-field  class="formfield" color="primary">
+              <mat-select disableOptionCentering [formControl]="GrpCtrl" placeholder="Select Group"  (selectionChange)= "SelectGroupbox($event.value)" required>
+                <mat-option>
+                  <ngx-mat-select-search [placeholderLabel]="'Search'"
+                    [formControl]="GrpCtrlr"></ngx-mat-select-search>
+                </mat-option>
+                <mat-option *ngFor="let Grp of filteregroup | async" [value]="Grp.GroupId">
+                  {{Grp.GroupName}}
+                </mat-option>               
+              </mat-select>
+            </mat-form-field>
+
+          <table mat-table [dataSource]="dataSource">
+            <ng-container matColumnDef="configuration">
+              <th mat-header-cell *matHeaderCellDef>Configuration</th>
+                <!--<td mat-cell *matCellDef="let element"> {{element.configuration}} -->
+                <td mat-cell *matCellDef="let element"> {{element.DisplayName}} 
+              </td>
+            </ng-container>
+
+
+
+             <ng-container matColumnDef="enable">
+              <th mat-header-cell *matHeaderCellDef> </th>
+              <td mat-cell  *matCellDef="let element" >
+                <span  *ngIf="element.Id == '0'">
+                <span  *ngIf="element.ConfigurationMasterId != '1' && element.ConfigurationMasterId != '2' && element.ConfigurationMasterId !='3'" style="padding-left: 60px !important;">
+                <mat-checkbox [checked]="element.SelectedValue"  (change)="SelectGridCheckbox(element)"></mat-checkbox>
+                </span>
+              </span>
+
+
+              <span  *ngIf="element.ConfigurationMasterId == '1'">
+
+                <mat-form-field class="ml-4" style="margin-bottom: -14px !important;">
+                  
+                    <mat-select disableOptionCentering placeholder="Fiscal Year" 
+                    (selectionChange)="getData($event.value)"  style="font-size: 12px !important;">
+                    
+                      <mat-option  *ngFor="let data of ListOfConfigList" [value]="data">
+                        {{data.name}}
+                      </mat-option>
+                    </mat-select>
+                 
+                </mat-form-field>
+
+                <mat-form-field fxFlex="30" *ngIf="CalendarYr" class="full-width" style="margin-left: 20px !important;" appearance="outline">
+                  <mat-label class="label">Start Date</mat-label>
+                  <input matInput [(ngModel)]="CalendarCtrlstart" disabled="true" >
+                 
+                </mat-form-field>
+
+                <mat-form-field fxFlex="30" *ngIf="CalendarYr" class="full-width" style="margin-left: 20px !important;" appearance="outline">
+                  <mat-label class="label">End Date</mat-label>
+                  <input matInput [(ngModel)]="CalendarCtrlend" disabled="true" >
+                 
+                </mat-form-field>
+
+                <mat-form-field fxFlex="30" *ngIf="FinancialYr" class="full-width" style="margin-left: 20px !important;" appearance="outline">
+                  <mat-label class="label">Start Date</mat-label>
+                  <input matInput [(ngModel)]="FinancialCtrlstart" disabled="true" >
+                </mat-form-field>
+
+                <mat-form-field fxFlex="30" *ngIf="FinancialYr" class="full-width" style="margin-left: 20px !important;" appearance="outline">
+                  <mat-label class="label">End Date</mat-label>
+                  <input matInput [(ngModel)]="FinancialCtrlend" disabled="true" >
+                </mat-form-field>
+
+                <mat-form-field fxFlex="30" *ngIf="OtherYr" class="full-width" style="margin-left: 20px !important;" appearance="outline">
+                  <mat-label class="label">Start Date</mat-label>
+                  <input matInput [matDatepicker]="picker1" [formControl]="StartDatectrl" (click)="picker1.open();"  name="startDate" autocomplete="off" (blur) = "ChangeEndDate($event)">
+                  <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                  <mat-datepicker #picker1 ></mat-datepicker>
+                </mat-form-field>
+
+                <mat-form-field fxFlex="30" *ngIf="OtherYr" class="full-width" style="margin-left: 20px !important;" appearance="outline">
+                  <mat-label class="label">End Date</mat-label>
+                  <input matInput [matDatepicker]="picker2" [formControl]="EndDatectrl" (click)="picker2.open();"  name="endDate" disabled
+                   autocomplete="off">
+                  <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                  <mat-datepicker #picker2 ></mat-datepicker>
+                </mat-form-field>
+
+              </span>
+                   
+
+              <!-- <span  *ngIf="element.ConfigurationMasterId == '2'">
+                <mat-form-field class="ml-4" style="margin-bottom: -14px !important;">
+                    <mat-select disableOptionCentering placeholder="Select" [(ngModel)]="element.SelectedValue" (selectionChange)="changeSplitStage($event.value)" style="font-size: 12px !important;">
+                      <mat-option  [value]="0">None</mat-option>
+                      <mat-option  [value]="1">Assetrak</mat-option>
+                      <mat-option  [value]="2">SAP</mat-option>
+                    </mat-select>
+                </mat-form-field>
+            </span> -->
+
+
+            <span  *ngIf="element.ConfigurationMasterId == '3'">
+              <mat-form-field class="ml-4" style="margin-bottom: -14px !important;">
+                  <mat-select disableOptionCentering placeholder="Select" [(ngModel)]="element.SelectedValue" (selectionChange)="changeLayerStage($event.value)" style="font-size: 12px !important;">
+                    <mat-option  [value]="0">None</mat-option>
+                    <mat-option  [value]="1">Country</mat-option>
+                    <mat-option  [value]="3">State</mat-option>
+                    <mat-option  [value]="4">City</mat-option>
+                    <mat-option  [value]="5">SBU</mat-option>
+                  </mat-select>
+              </mat-form-field>
+          </span>
+
+              </td>
+            </ng-container>
+
+
+
+
+             <!-- <ng-container matColumnDef="enable"> 
+              <th mat-header-cell *matHeaderCellDef> </th>
+              <td mat-cell  *matCellDef="let element" >
+                <span  *ngIf="element.enable != 'dropdown' && element.enable != 'dropdownForyear' " style="padding-left: 60px !important;">
+                <mat-checkbox [checked]="element.enable"  ></mat-checkbox>
+                </span>
+
+                <span  *ngIf="element.enable == 'dropdown'">
+                  <mat-form-field class="ml-4" style="margin-bottom: -14px !important;">
+                      <mat-select disableOptionCentering placeholder="Select" style="font-size: 12px !important;">
+                        <mat-option  [value]="'Assetrak'">Assetrak</mat-option>
+                        <mat-option  [value]="'SAP'">SAP</mat-option>
+                      </mat-select>
+                  </mat-form-field>
+              </span>
+
+              <span  *ngIf="element.enable == 'dropdownForyear'">
+
+                <mat-form-field class="ml-4" style="margin-bottom: -14px !important;">
+                  
+                    <mat-select disableOptionCentering placeholder="Fiscal Year" 
+                    (selectionChange)="getData($event.value)"  style="font-size: 12px !important;">
+                    
+                      <mat-option   *ngFor="let data of ListOfConfigList" [value]="data">
+                        {{data.name}}
+                      </mat-option>
+                    </mat-select>
+                 
+                </mat-form-field>
+
+                <mat-form-field fxFlex="30" *ngIf="CalendarYr" class="full-width" style="margin-left: 20px !important;" appearance="outline">
+                  <mat-label class="label">Start Date</mat-label>
+                  <input matInput [(ngModel)]="CalendarCtrlstart" disabled="true" >
+                 
+                </mat-form-field>
+
+                <mat-form-field fxFle
+                x="30" *ngIf="CalendarYr" class="full-width" style="margin-left: 20px !important;" appearance="outline">
+                  <mat-label class="label">End Date</mat-label>
+                  <input matInput [(ngModel)]="CalendarCtrlend" disabled="true" >
+                 
+                </mat-form-field>
+
+                <mat-form-field fxFlex="30" *ngIf="FinancialYr" class="full-width" style="margin-left: 20px !important;" appearance="outline">
+                  <mat-label class="label">Start Date</mat-label>
+                  <input matInput [(ngModel)]="FinancialCtrlstart" disabled="true" >
+                </mat-form-field>
+
+                <mat-form-field fxFlex="30" *ngIf="FinancialYr" class="full-width" style="margin-left: 20px !important;" appearance="outline">
+                  <mat-label class="label">End Date</mat-label>
+                  <input matInput [(ngModel)]="FinancialCtrlend" disabled="true" >
+                </mat-form-field>
+
+                <mat-form-field fxFlex="30" *ngIf="OtherYr" class="full-width" style="margin-left: 20px !important;" appearance="outline">
+                  <mat-label class="label">Start Date</mat-label>
+                  <input matInput [matDatepicker]="picker1" (click)="picker1.open();"  name="startDate" autocomplete="off">
+                  <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                  <mat-datepicker #picker1 ></mat-datepicker>
+                </mat-form-field>
+
+                <mat-form-field fxFlex="30" *ngIf="OtherYr" class="full-width" style="margin-left: 20px !important;" appearance="outline">
+                  <mat-label class="label">End Date</mat-label>
+                  <input matInput [matDatepicker]="picker2" (click)="picker2.open();"  name="endDate" 
+                   autocomplete="off">
+                  <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                  <mat-datepicker #picker2 ></mat-datepicker>
+                </mat-form-field>
+
+              </span>
+                   
+              </td>
+            </ng-container>  -->
+           
+            <tr mat-header-row *matHeaderRowDef="displayedColumns;sticky:true"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          </table>
+          <!-- <button style="float:right;margin-right:30%;margin-left:30%;margin-top: 10%;" (click)="btnSave()" class="btn" mat-raised-button color="primary" >Save</button> -->
+      
+        </div>
+      <!-- </form> -->
+        <button mat-raised-button color="primary" style="float:right;margin-right:10px !important;" (click)="btnSave()">Submit</button>
+    </mat-card-content>
+  </mat-card>

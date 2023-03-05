@@ -1,0 +1,383 @@
+<div class="md-dialog-container">
+  <mat-toolbar class="mat-toolbar" style="background-color:rgb(12, 48, 87) !important;color:white">
+    <span style="position: relative;left: 40%;">Permissions and Users Details</span>
+    <span class="example-spacer"></span>
+    <button mat-icon-button class="example-icon" aria-label="Example icon-button with close icon"
+      (click)="onclosetab()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-toolbar><br>
+  <mat-dialog-content cdkDrag cdkDragRootElement=".cdk-overlay-pane" cdkDragHandle>
+    <div class="md-dialog-content">
+      <mat-tab-group animationDuration="200ms" [selectedIndex]="selectedIndex" (selectedTabChange)="tabChanged($event)">
+        <mat-tab label="Permissions">
+          <div class="md-label">
+            <form>
+              <div fxLayout="row wrap" class="pr-5 pl-5" fxLayout.lt-sm="column">
+                <mat-accordion class="example-headers-align" *ngFor="let data of CreateModules1;let k=index"
+                    style="width: 100%;">
+                    <mat-expansion-panel [expanded]="panelOpenState[k]" (opened)="setStep(k,data)"
+                        (closed)="changeState(k)" hideToggle>
+                        <mat-expansion-panel-header class="prevent-click" style="height: 50px;">
+                            <mat-panel-title>
+                                <mat-checkbox class="authorize-click givemargin" [checked]="data.isCheck" (click)="$event.stopPropagation()"
+                                [disabled]="true"></mat-checkbox>
+                                {{data.mainmodules}}
+                            </mat-panel-title>
+                            <div *ngIf="!data.OpenState">
+                                <mat-icon [style.fontSize]="'30px'" style="color: gray !important;"
+                                    class="prevent-click icon" *ngIf="!panelOpenState[k]">add</mat-icon>
+                            </div>
+                            <div *ngIf="data.OpenState">
+                                <mat-icon [style.fontSize]="'30px'" style="color: #1d3478 !important;"
+                                    class="authorize-click icon" *ngIf="!panelOpenState[k]">add</mat-icon>
+                            </div>
+                            <div>
+                                <mat-icon [style.fontSize]="'30px'" style="color: #1d3478 !important;"
+                                    class="authorize-click icon" *ngIf="panelOpenState[k]">remove</mat-icon>
+                            </div>
+                        </mat-expansion-panel-header>
+      
+                        <div fxLayout="row wrap" fxLayout.lt-sm="column"
+                            *ngFor="let m of data.submodules;let i=index">
+      
+                            <div fxLayout="row wrap" fxLayout.lt-sm="column" fxFlex="100" fxFlex.gt-xs="100">
+                                <div fxFlex="15" fxFlex.gt-xs="15" class="pr-1"
+                                    style="font-size: 13px;font-weight: bold;margin-left: 110px !important;">
+                                    <div style="margin-bottom: 0px !important;">
+                                        <mat-checkbox class="givemargin" [checked]="m.isCheck" (click)="$event.stopPropagation()"
+                                        [disabled]="true"></mat-checkbox>
+                                        {{m.submodules}}
+                                    </div>
+                                </div>
+                                <div fxFlex="5" fxFlex.gt-xs="5">
+                                    <mat-icon [style.fontSize]="'30px'"
+                                        (click)="toggleCreateModules(i,m)"
+                                        style="color: #1d3478 !important;cursor:pointer"
+                                        *ngIf="m.childmodules.length > 0 && !m.OpenState"
+                                        class="authorize-click icon">chevron_right</mat-icon>
+                                    <mat-icon [style.fontSize]="'30px'"
+                                        (click)="toggleCreateModules(i,m)"
+                                        style="color: #1d3478 !important;cursor: pointer;"
+                                        *ngIf="m.childmodules.length>0 && m.OpenState"
+                                        class="authorize-click icon">expand_more</mat-icon>
+                                </div>
+                            </div>
+                            <br>
+                            <div fxLayout="row wrap" fxLayoutGap="row" fxLayout.lt-sm="column"
+                                *ngIf="m.OpenState">
+                                <div fxFlex="100" fxFlex.gt-xs="100" *ngFor="let c of m.childmodules;let j=index"
+                                    class="child">
+                                    <div fxFlex="100" fxFlex.gt-xs="30" class="pr-1"
+                                        style="font-size: 13px;font-weight: bold;">
+                                        <div style="margin-bottom: 10px !important;">
+                                            <mat-checkbox class="givemargin" [checked]="c.isCheck"  (click)="$event.stopPropagation()"
+                                            [disabled]="true"></mat-checkbox>
+                                            <strong>{{c.name}}</strong>
+                                        </div>
+      
+                                    </div>
+                                </div>
+                            </div>
+                            <br>
+                        </div>
+                    </mat-expansion-panel>
+                </mat-accordion>
+            </div>
+            </form>
+          </div>
+        </mat-tab>
+        
+        <!-- <mat-tab label="Views">
+          <div class="md-label">
+          <mat-card-content>
+          <mat-accordion class="example-headers-align" *ngFor="let data of CreateModules2;let m=index"
+              style="width: 100%;">
+              <mat-expansion-panel [expanded]="panelOpenState1[m] && step == m" (opened)="setStep1(m,data)"
+                  (closed)="changeState1(m)" hideToggle>
+                  <mat-expansion-panel-header class="prevent-click" style="height: 50px;">
+                      <mat-panel-title>
+                           <!--<mat-checkbox class="authorize-click givemargin" [checked]="data.isCheck" (click)="$event.stopPropagation()" [disabled]="true"
+                          (change)="SelectAllPermissions('mainmodules',data)"></mat-checkbox>-->
+                         <!-- <div fxFlex="100"  class="pr-1 givemargin"> -->
+                          <!-- <span  [disabled]="true">  {{data.CategoryName}} </span>  -->
+                        <!-- </div> -->
+                      <!-- </mat-panel-title>
+                 
+                      <div *ngIf="!data.OpenState">
+                          <mat-icon [style.fontSize]="'30px'" style="color: #1d3478 !important;"
+                              class="authorize-click icon" *ngIf="!panelOpenState1[m]">add</mat-icon>
+                      </div>
+                      <div *ngIf="data.OpenState">
+                        <mat-icon [style.fontSize]="'30px'" style="color: #1d3478 !important;"
+                            class="authorize-click icon" *ngIf="!panelOpenState1[m]">add</mat-icon>
+                    </div>
+                      <div>
+                          <mat-icon [style.fontSize]="'30px'" style="color: #1d3478 !important;"
+                              class="authorize-click icon" *ngIf="panelOpenState1[m]">remove</mat-icon>
+                      </div>
+                  </mat-expansion-panel-header>
+               
+                  <div class="example-headers-align" style="height:100% !important;"  >
+         
+                      <mat-panel-title>
+                          <div  fxLayout="column"  fxFlex="100" fxFlex.gt-xs="100"  fxLayout.lt-sm="column">
+                              <div fxFlex="100" fxFlex.gt-xs="40" class="pr-1" > -->
+      
+                               
+                                     <!--<div fxFlex="100"  fxFlex.gt-xs="5" class="pr-1 " >
+                                      <mat-checkbox class="givemargin" [checked]="!data1.isCheck" (click)="$event.stopPropagation()"
+                                      style="margin-left: 52px !important;" [disabled]="true"></mat-checkbox>
+                                     
+                                      </div>
+                                      <div fxFlex="100" fxFlex.gt-xs="15"  class="pr-1">
+                                        <span > {{data.CategoryName}}(Standard)</span> 
+                                      </div>>-->
+                                      <!-- <div fxFlex="100" fxFlex.gt-xs="30" class="pr-1" style="padding-top:5px !important;font-size: 13px;font-weight: bold;margin-left: 43px !important;" >
+                                     
+                                          <mat-checkbox class="givemargin" [checked]="!data.isCheck" (click)="$event.stopPropagation()"
+                                          [disabled]="true"></mat-checkbox>
+                                          <span >{{data.CategoryName}}(Standard)</span>
+                                    
+                                  </div>
+                                
+                              </div>
+                           
+                              <div fxFlex="100"  fxLayout="column" fxLayout.lt-sm="column"  fxFlex.gt-xs="100"   *ngFor="let c of childmodules;let j=index;"  >
+                                  <div fxFlex="100" xFlex.gt-xs="40"  class="pr-1"  >
+                                    
+                                    <div fxFlex="100"  fxFlex.gt-xs="30" class="pr-1 " style="padding-top:5px !important;font-size: 13px;font-weight: bold;margin-left: 43px !important;"  >
+                                      <mat-checkbox class="givemargin" [checked]="c.isCheck" (click)="$event.stopPropagation()"
+                                      [disabled]="true"></mat-checkbox>
+                                      <span >{{c.CategoryName}}</span>
+                                    </div>
+                                          
+                                     </div>
+                              </div>
+                            
+                          </div>
+                      </mat-panel-title>
+            
+                </div>
+            
+          
+              </mat-expansion-panel>
+          </mat-accordion>
+      </mat-card-content>
+              </div>
+          </mat-tab> --> -->
+         
+          <mat-tab label="Views" (click)="GetAllViewData()">
+            <div class="md-label">
+            <mat-card-content>
+            <mat-accordion class="example-headers-align" *ngFor="let data of StandviewDataAll;let m=index"
+                style="width: 100%;">
+                <mat-expansion-panel [expanded]="panelOpenState1[m] && step == m" (opened)="setStep1(m,data)"
+                    (closed)="changeState1(m)" hideToggle>
+                    <mat-expansion-panel-header class="prevent-click" style="height: 50px;">
+                        <mat-panel-title>
+                               <div fxFlex="100"  fxFlex.gt-xs="4" class="pr-1 ">
+                           <mat-icon [style.fontSize]="'30px'" style="color: #1d3478 !important;"
+                            class="authorize-click icon" *ngIf="!panelOpenState1[m]">add</mat-icon>
+    
+                            <mat-icon [style.fontSize]="'30px'" style="color: #1d3478 !important;"
+                                class="authorize-click icon" *ngIf="panelOpenState1[m]">remove</mat-icon>
+                       </div>
+                       <div fxFlex="100"  class="pr-1 givemargin">
+                            <!--<mat-checkbox class="authorize-click givemargin" [checked]="data.isCheck" (click)="$event.stopPropagation()"
+                            (change)="SelectAllPermissions('mainmodules',data)"></mat-checkbox>-->
+                            <span style="color: #1d3478 !important;" [disabled]="true">  {{data.CategoryName}}</span> 
+                       </div>
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <!--<mat-expansion-panel  *ngFor="let data1 of submodules1;let m=index" [expanded]="panelOpenState[m]" (opened)="setStep(m)"
+                    (closed)="changeState(m)" hideToggle>-->
+                    <div class="example-headers-align" style="height:100% !important;" >
+           
+                        <mat-panel-title>
+                            <div  fxLayout="column"  fxFlex="100" fxFlex.gt-xs="100"  fxLayout.lt-sm="column">
+                                <div fxFlex="100" fxFlex.gt-xs="40" class="pr-1" *ngFor="let viewdata of data.ListOfSubmodules;">
+        
+                                       <div fxFlex="100"  fxFlex.gt-xs="24" class="pr-1 " style="padding-top:4px !important;margin-left: 52px !important;">
+                                        <mat-checkbox [value]="viewdata.isCheck" class="givemargin" [checked]="viewdata.isCheck"  (click)="$event.stopPropagation()"
+                                        (change)="SelectAllPermissions('submodules1',viewdata,data.ListOfSubmodules)" [disabled]="true"></mat-checkbox>
+                                           <span [disabled]="true">{{viewdata.CategoryName}}</span>
+                                        </div>
+                                        <!-- <div fxFlex="100"  fxFlex.gt-xs="24" class="pr-1 " style="padding-top:4px !important;margin-left: 52px !important; ">
+                                            <mat-radio-button  [value]="data.isCheck" class="givemargin"  [checked]="data.isCheck" (click)="$event.stopPropagation()"
+                                            (change)="SelectAllPermissions('submodules1',data)"></mat-radio-button>
+                                               <span>{{data.CategoryName}}</span>
+                                            </div> -->
+                                        <!-- <div fxFlex="100"  fxFlex.gt-xs="5" class="pr-1 "  style="padding-top:4px !important;" >
+                                            <a   style="cursor: pointer !important;color:#008bd0 !important;font-size: 14px !important;"  (click)="VieweditGridpop(viewdata)" >View</a>
+                                        </div>   -->
+                                </div>
+                           
+                                <!-- <div fxFlex="100"  fxLayout="column" fxLayout.lt-sm="column"  fxFlex.gt-xs="100"   *ngFor="let c of childmodules;let j=index;"  >
+                                    <div fxFlex="100" xFlex.gt-xs="40"  class="pr-1" >
+                                      
+                                        <div fxFlex="100"  fxFlex.gt-xs="24" class="pr-1 " style="padding-top:4px !important; margin-left: 52px !important;" >
+                                            <mat-radio-button [value]="c.isCheck" class="givemargin"(click)="$event.stopPropagation()"
+                                            (change)="SelectAllPermissions('submodules1',c)"></mat-radio-button>
+                                            <span>{{c.CategoryName}}</span>
+                                        </div>
+                                        
+                                        <div fxFlex="100"  fxFlex.gt-xs="5" class="pr-1 "  style="padding-top:4px !important;" >
+                                           <a   style="padding-top:3px !important;cursor: pointer !important;color:#008bd0 !important;font-size: 14px !important;"(click)="VieweditGridpop(c)" >View</a>
+                                        </div>
+                                             
+                                   </div>
+                                </div> -->
+     
+                            </div>
+                        </mat-panel-title>
+              
+                  </div>
+                <!--</mat-expansion-panel>-->
+                   
+                </mat-expansion-panel>
+            </mat-accordion>
+        </mat-card-content>
+                </div>
+            </mat-tab>
+       
+          <mat-tab label="Users">
+          <div class="md-label">
+            <form>
+              <div fxLayout="row wrap" fxLayout.lt-sm="column">
+                <div class="content" fxLayout="row wrap" fxLayoutGap="12px grid" style="width: 100% !important;">
+                  <div fxFlex="33%" class="example-container mat-elevation-z4 responsive">
+                    <mat-card class="cardmat">
+                      <mat-card-header class="headercard" style="margin-bottom: -10px !important;">
+                        <mat-card-title><span class="heading" style="margin-left: -6px;"><strong>Users</strong></span>
+                        </mat-card-title>
+                        <span fxFlex></span>
+
+                        <mat-form-field class="ml-12" style="width: 165px !important;">
+                          <button mat-icon-button matPrefix class="example-icon"
+                            style="background-color:white;margin-top: 0px;width:30px;height: 30px;"
+                            aria-label="Example icon-button with close icon">
+                            <mat-icon style="font-size: 21px;margin-right: 10px;margin-left: -2px;">search</mat-icon>
+                          </button>
+                          <input matInput (keyup)="applyFilterU($event.target.value)" placeholder="Search">
+                        </mat-form-field>
+
+                      </mat-card-header>
+                      <mat-card-content>
+
+                        <div class="responsivetable">
+                          <table mat-table [dataSource]="dataSourceU" class="tablescroll" matSort>
+
+                            <ng-container matColumnDef="UserName">
+
+                              <td mat-cell *matCellDef="let element;let j=index;" (click)="GetUserId(element,j)">
+                                <span style="cursor: pointer;">{{element.UserName}} </span>
+                              </td>
+                            </ng-container>
+                            <tr mat-row (click)="getCard(i)" *matRowDef="let row; columns: displayedColumns;let i=index"
+                              class="notSelected" [attr.data-isSelected]="selectedrows1[i]"></tr>
+
+                          </table>
+                        </div>
+                      </mat-card-content>
+
+                    </mat-card>
+
+
+                  </div>
+                  <div fxFlex="33%" class="example-container mat-elevation-z4 responsive" *ngIf="SessionCompanyId > 0">
+
+                    <mat-card class="cardmat">
+                      <mat-card-header class="headercard" style="margin-bottom: -10px !important;">
+                        <mat-card-title><span class="heading"
+                            style="margin-left: -6px;"><strong>Locations</strong></span>
+                        </mat-card-title>
+                        <span fxFlex></span>
+                        <mat-form-field class="FloatFromRight"
+                          style="width: 155px !important;height: 50px !important;margin-top: -8px;">
+                          <button mat-icon-button matPrefix class="example-icon"
+                            style="background-color:white;margin-top: 0px;width:30px;height: 30px;"
+                            aria-label="Example icon-button with close icon">
+                            <mat-icon style="font-size: 21px;margin-right: 10px;margin-left: -2px;">search
+                            </mat-icon>
+                          </button>
+                          <input matInput (keyup)="applyFilterL($event.target.value)" placeholder="Search">
+                        </mat-form-field>
+
+                      </mat-card-header>
+
+                      <mat-card-content>
+                        <div fxLayout="row wrap">
+                          <div fxFlex="50">
+                            <span *ngIf="LabelForLocation" style="font-size:12px !important;font-weight: 700;"><label
+                                style="color: #e67e4a;">User : {{LabelForLocation}}</label></span>
+                          </div>
+                        </div>
+                        <div class="responsivetable">
+                          <table mat-table [dataSource]="dataSourceL" class="tablescroll" matSort>
+
+                            <ng-container matColumnDef="LocationName">
+                              <td mat-cell *matCellDef="let element;let k=index;" (click)="GetLocationId(element,j)">
+                                <span style="cursor: pointer;">{{element.LocationName}} </span>
+                              </td>
+                            </ng-container>
+                            <tr mat-row (click)="getcard1(i)"
+                              *matRowDef="let row; columns: displayedColumnsLocation;let i=index" class="notSelected"
+                              [attr.data-isSelected]="selectedrows2[this.len+i]"></tr>
+
+                          </table>
+                        </div>
+                      </mat-card-content>
+                    </mat-card>
+                  </div>
+                  <div fxFlex="34%" class="example-container mat-elevation-z4 responsive" *ngIf="SessionCompanyId > 0">
+                    <mat-card class="cardmat">
+                      <mat-card-header class="headercard" style="margin-bottom: -10px !important;">
+                        <mat-card-title><span class="heading"><strong>Category</strong></span></mat-card-title>
+
+                        <span fxFlex></span>
+                        <mat-form-field class="FloatFromRight"
+                          style="width: 155px !important;height: 50px !important;margin-top: -8px;">
+                          <button mat-icon-button matPrefix class="example-icon"
+                            style="background-color:white;margin-top: 0px;width:30px;height: 30px;"
+                            aria-label="Example icon-button with close icon">
+                            <mat-icon style="font-size: 21px;margin-right: 10px;margin-left: -2px;">search
+                            </mat-icon>
+                          </button>
+                          <input (keyup)="applyFilterC($event.target.value)" matInput placeholder="Search">
+                        </mat-form-field>
+                      </mat-card-header>
+                      <mat-card-content>
+                        <div fxLayout="row wrap">
+                          <div fxFlex="50">
+                            <span *ngIf="LabelForCategory"
+                              style="font-size:12px !important;font-weight: 700;"><label
+                                style="color: #e67e4a;">Location : {{LabelForCategory}}</label></span>
+                          </div>
+                        </div>                        
+                        <div class="responsivetable">
+                          <table mat-table [dataSource]="dataSourceC" class="tablescroll" matSort>
+
+                            <ng-container matColumnDef="AssetCategoryName">
+                              <td mat-cell *matCellDef="let element;let j=index;">
+                                <span style="cursor: pointer;">{{element.AssetCategoryName}} </span>
+                              </td>
+                            </ng-container>
+                            <tr mat-row (click)="getCard()"
+                              *matRowDef="let row; columns: displayedColumnsCategory;let i=index"></tr>
+                          </table>
+                        </div>
+                      </mat-card-content>
+                    </mat-card>
+                  </div>
+                </div>
+              </div>
+            </form>
+          </div>
+        </mat-tab>
+
+      </mat-tab-group>
+    </div>
+  </mat-dialog-content>
+
+</div>

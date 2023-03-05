@@ -1,0 +1,160 @@
+<div class="md-dialog-container" *ngIf="tabEnabled" cdkDrag cdkDragRootElement=".cdk-overlay-pane"> 
+    <mat-toolbar  cdkDragHandle class="mat-toolbar" style="background-color:rgb(12, 48, 87) !important;color:white">
+      <span style="position: relative;left: 40%;">{{data?.title}}</span>
+      <span class="example-spacer"></span>
+      <button mat-icon-button class="example-icon" aria-label="Example icon-button with close icon"
+        (click)="onclosetab()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-toolbar><br><br>
+    <mat-dialog-content >
+      <div class="md-dialog-content">
+            <div class="md-label">
+              <form [formGroup]="AssetInfo">
+                <div fxLayout="row wrap" fxLayout.lt-sm="column">
+                  <div fxFlex="33" class="pr-1 full">
+                    <mat-form-field class="full-width" appearance="outline">
+                      <mat-label class="label" style="font-size: 15px !important;">{{Headers.InvoiceNumber}}<span class="required-asterisk">*</span></mat-label>
+                      <input matInput name="AssetNo" [formControl]="AssetInfo.controls['AssetNo']"
+                        class="bg-transparente">
+                    </mat-form-field>
+                  </div>
+  
+                  <div fxFlex="33" class="pr-1 full">
+                    <mat-form-field class="full-width" appearance="outline">
+                      <mat-label class="label">{{Headers.Publisher}}<span class="required-asterisk">*</span></mat-label>
+                      <input matInput name="SubNo" [formControl]="AssetInfo.controls['SubNo']" readonly>
+                    </mat-form-field>
+                  </div>
+  
+                  <div fxFlex="33" class="pr-1 full">
+                    <mat-form-field class="full-width" appearance="outline">
+                      <mat-label class="label">{{Headers.SoftwareType}}<span class="required-asterisk">*</span></mat-label>
+                      <input matInput name="AssetClass" [formControl]="AssetInfo.controls['AssetClass']" readonly>
+                    </mat-form-field>
+                  </div>
+                  <div fxFlex="33" class="pr-1">
+                    <mat-form-field class="full-width" appearance="outline">
+                      <mat-label class="label">{{Headers.SoftwareName}}<span class="required-asterisk">*</span></mat-label>
+                      <input matInput name="AssetCategory" [formControl]="AssetInfo.controls['AssetCategory']" readonly>
+                    </mat-form-field>
+                  </div>
+  
+                  <div fxFlex="33" class="pr-1">
+                    <mat-form-field class="full-width" appearance="outline">
+                      <mat-label class="label">{{Headers.Version}}</mat-label>
+                      <input matInput name="AssetType" [formControl]="AssetInfo.controls['AssetType']" readonly>
+                    </mat-form-field>
+                  </div>
+                  <div fxFlex="33" class="pr-1">
+                    <mat-form-field class="full-width" appearance="outline">
+                      <mat-label class="label">{{Headers.Subscriprion}}<span class="required-asterisk">*</span></mat-label>
+                      <input matInput name="AssetSubType" [formControl]="AssetInfo.controls['AssetSubType']" readonly>
+                    </mat-form-field>
+                  </div>
+                  <div fxFlex="33" class="pr-1">
+                    <mat-form-field class="full-width" appearance="outline">
+                      <mat-label class="label">{{Headers.LicensePeriod}}</mat-label>
+                        <mat-select disableOptionCentering [formControl]="AssetInfo.controls['AssetName']" placeholder="{{Headers.LicensePeriod}}"
+                          [multiple]="false" #singleSelect >
+                          <mat-option  value="">Select License Period</mat-option>
+                          <mat-option  value="Perpetual">Perpetual</mat-option>
+                          <mat-option  value="Annual">Annual</mat-option>
+                        </mat-select>                
+                    </mat-form-field>
+                  </div>
+                  <div fxFlex="33" class="pr-1">
+                    <mat-form-field class="full-width" appearance="outline">
+                      <mat-label class="label">{{Headers.LicenceSupportExpiryBy}}</mat-label>
+                        <mat-select disableOptionCentering [formControl]="AssetInfo.controls['AssetDescription']" placeholder="{{Headers.LicenceSupportExpiryBy}}"
+                        [multiple]="false" #singleSelect >
+                        <mat-option  value="">Select Expiry Type</mat-option>
+                        <mat-option  value="Purchase Date">Purchase Date</mat-option>
+                        <mat-option  value="Installation Date">Installation Date</mat-option>
+                      </mat-select> 
+                    </mat-form-field>
+                  </div>
+                  <div fxFlex="33" class="pr-1">
+                    <mat-form-field class="full-width" appearance="outline">
+                      <mat-label class="label">{{Headers.PurchaseDate}}</mat-label>
+                      <input matInput name="AllocationType" [formControl]="AssetInfo.controls['AllocationType']" readonly>
+                    </mat-form-field>
+                  </div>
+  
+                  <div fxFlex="33" class="pr-1">
+                    <mat-form-field class="full-width" appearance="outline">
+                      <mat-label class="label">{{Headers.LicenceSupportPeriod}}</mat-label>
+                      <input matInput name="UserType" [formControl]="AssetInfo.controls['UserType']" readonly>
+                    </mat-form-field>
+                  </div>
+                  <div fxFlex="33" class="pr-1">
+                    <mat-form-field class="full-width" appearance="outline">
+                      <mat-label class="label">{{Headers.AMCRenewalDate}}</mat-label>
+                      <input matInput name="User" [formControl]="AssetInfo.controls['User']" [disabled]="true">
+                    </mat-form-field>
+                  </div>
+                  <div fxFlex="33" class="pr-1">
+                    <mat-form-field class="full-width" appearance="outline">
+                      <mat-label class="label">{{Headers.Escalation}}</mat-label>
+                      <input matInput name="Custodian" [formControl]="AssetInfo.controls['Custodian']" readonly>
+                    </mat-form-field>
+                  </div>
+                  <div fxFlex="33" class="pr-1">
+                    <mat-form-field class="full-width" appearance="outline">
+                      <mat-label class="label">{{Headers.AssetID}}</mat-label>
+                      <input matInput name="RevertDate" [formControl]="AssetInfo.controls['RevertDate']" readonly>
+                    </mat-form-field>
+                  </div>
+  
+                  <div fxFlex="33" class="pr-1">
+                    <mat-form-field class="full-width" appearance="outline">
+                      <mat-label class="label">{{Headers.PointToContact}}<span class="required-asterisk">*</span></mat-label>
+                      <input matInput name="CapitalizationDate" [formControl]="AssetInfo.controls['CapitalizationDate']"
+                        >
+                    </mat-form-field>
+                  </div>
+                  <div fxFlex="33" class="pr-1">
+                      <mat-radio-group aria-label="Select an option">
+                        <mat-radio-button value="empmail">Emp Email</mat-radio-button>
+                        <mat-radio-button value="empcod">Emp Id</mat-radio-button>
+                      </mat-radio-group>
+                  </div>
+                  <div fxFlex="33" class="pr-1">
+                    <mat-form-field class="full-width" appearance="outline">
+                      <mat-label class="label"><span class="required-asterisk">*</span></mat-label>
+                      <input matInput name="VendorName" [formControl]="AssetInfo.controls['VendorName']" readonly>
+                    </mat-form-field>
+                  </div>
+                  <div fxFlex="33" class="pr-1">
+                    <mat-form-field class="full-width" appearance="outline">
+                      <mat-label class="label">{{Headers.TotalInvoiceValue}}<span class="required-asterisk">*</span></mat-label>
+                      <input matInput name="Qty" [formControl]="AssetInfo.controls['Qty']" readonly>
+                    </mat-form-field>
+                  </div>
+                  <div fxFlex="33" class="pr-1">
+                    <mat-form-field class="full-width" appearance="outline">
+                      <mat-label class="label">{{Headers.PricePerUnit}}</mat-label> 
+                      <input matInput name="Plant" [formControl]="AssetInfo.controls['SBU']" >
+                    </mat-form-field>
+                  </div>  
+                  <div fxFlex="33" class="pr-1">
+                    <mat-form-field class="full-width" appearance="outline">
+                      <mat-label class="label">{{Headers.AmcPercentage}}</mat-label>
+                      <input matInput name="Plant" [formControl]="AssetInfo.controls['Plant']" readonly>
+                    </mat-form-field>
+                  </div>
+                  <div fxFlex="33" class="pr-1">
+                    <mat-form-field class="full-width" appearance="outline">
+                      <mat-label class="label">{{Headers.UploadFile}}</mat-label>
+                      <input matInput name="UOM" [formControl]="AssetInfo.controls['UOM']" readonly>
+                    </mat-form-field>
+                  </div>
+                </div>
+              </form>
+              <button style="float:right;margin-right:2%" class="btn" mat-raised-button color="primary"
+              >Save</button>
+            </div>
+ 
+      </div>
+    </mat-dialog-content>
+  </div>

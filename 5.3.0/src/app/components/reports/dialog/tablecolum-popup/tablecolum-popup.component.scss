@@ -1,0 +1,69 @@
+// .mat-toolbar.mat-primary {
+//   background:#0C3057 !important;;
+//   color: white !important;
+// }
+
+.md-dialog-container{
+  margin: -24px;
+  overflow: hidden;
+}
+
+.example-spacer {
+  flex: 1 1 auto;
+}
+.md-dialog-content{
+    margin-left: 10%;
+    
+}
+
+.mat-chip:not(.mat-basic-chip) {
+  display: flex;
+}
+
+.mat-standard-chip.mat-chip-with-trailing-icon{
+  margin-top:2px;
+}
+
+.mat-toolbar{
+  background-color: rgb(56, 131, 175);  
+
+}
+
+.example-form {
+  min-width: 150px;
+  max-width: 500px;
+  width: 100%;
+}
+.example-chip-list{
+  min-width: 150px;
+  max-width: 800px;
+  width: 100%;
+}
+.example-full-width {
+  width: 100%;
+}
+.mat-dialog-container {
+  display: block;
+  padding: 0px;
+  overflow: hidden !important;
+}
+
+mat-nav-list.list-horizontal {
+  padding: 0;
+  .mat-list-item {
+    display: inline-block;
+    height: auto;
+    width: auto;
+  }
+}
+.mat-card.default .mat-card-title {
+  padding-top: 0rem !important;
+}
+
+:host ::ng-deep .mat-list-base .mat-list-item .mat-list-item-content
+{
+
+  // padding: 0 10px !important;
+  padding: 0 5px !important;
+}
+

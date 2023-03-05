@@ -1,0 +1,415 @@
+<div fxLayout='row wrap' fxLayoutAlign='space-between' fxLayout.lt-sm="column" style="min-height: fit-content;">
+    <div fxFlex="50%" class="example-container mat-elevation-z4 responsive">
+      <mat-card class="cardmat">
+        <mat-card-header class="headercard" style="margin-bottom: -5px !important;">
+          <div fxFlex="100" fxFlex.gt-xs="20">
+            <h3><strong style=" color:#008bd0 !important;"> Hours Spent Issue Wise</strong></h3>
+          </div>
+        </mat-card-header>
+        <mat-card-content>
+    
+          <div fxLayout='row wrap' fxLayoutAlign='space-between' fxLayout.lt-sm="column" style="min-height: fit-content;">
+            <div fxFlex="100" fxFlex.gt-xs="10" class="pr-1">
+                <mat-form-field class="formfield full-width" color="primary">
+                  <mat-select disableOptionCentering [(ngModel)]="issueVal" [ngModelOptions]="{standalone: true}"
+                    placeholder="Issue Types" [multiple]="true" #multiSelect>
+                    <mat-option>
+                      <ngx-mat-select-search [placeholderLabel]="'Search'"  [formControl]="orderTypeFilterCtrl">
+                      </ngx-mat-select-search>
+                    </mat-option>
+                    <mat-option *ngFor="let type of issueTypes" [value]="type">
+                      {{type}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+         
+              <div fxFlex="100" fxFlex.gt-xs="10" class="pr-1">
+                <mat-form-field class="formfield full-width" color="primary">
+                  <mat-select disableOptionCentering [(ngModel)]="locVal" [ngModelOptions]="{standalone: true}"
+                    placeholder="Locations" [multiple]="true" #multiSelect>
+                    <mat-option>
+                      <ngx-mat-select-search [placeholderLabel]="'Search'" [formControl]="plantMultiFilterCtrl">
+                      </ngx-mat-select-search>
+                    </mat-option>
+                    <!-- <mat-option value="" [disabled]="!!cityMultiCtrl"> {{Headers.All}} </mat-option>
+                    <div class="select-all">
+                      <mat-checkbox [checked]="cityMultiCtrl.length === ListOfSBU.length ? true : false"
+                        [indeterminate]="cityMultiCtrl.length < ListOfSBU.length ? true : false"
+                        (change)="toggleSelectAllCity($event)">Select All</mat-checkbox>
+                    </div> -->
+                    <mat-option *ngFor="let type of filteredPlantsMulti | async" [value]="type.LocationId">
+                      {{type.LocationName}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+                </div>
+        
+            <div fxFlex="100" fxFlex.gt-xs="10" class="pr-1" >
+                <mat-form-field class="formfield full-width" color="primary">
+                  <mat-select disableOptionCentering [(ngModel)]="category" [ngModelOptions]="{standalone: true}"
+                    placeholder="Category" [multiple]="true" #multiSelect>
+                    <mat-option>
+                      <ngx-mat-select-search [placeholderLabel]="'Search'" [formControl]="categoryFilterCtrl">
+                      </ngx-mat-select-search>
+                    </mat-option>
+                    <!-- <mat-option value="" [disabled]="!!cityMultiCtrl"> {{Headers.All}} </mat-option> -->
+                    <!-- <div class="select-all">
+                      <mat-checkbox [checked]="cityMultiCtrl.length === categories.length ? true : false"
+                        [indeterminate]="cityMultiCtrl.length < categories.length ? true : false"
+                        (change)="toggleSelectAllCategories($event)">Select All</mat-checkbox>
+                    </div> -->
+                    <mat-option  *ngFor="let type of filteredcategoryMulti | async" [value]="type.AssetCategoryId" (click)="GetAllTypeData()"
+                      >
+                      {{type.AssetCategoryName}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+            <div fxFlex="100" fxFlex.gt-xs="10" class="pr-1" >
+              <mat-form-field class="formfield full-width" color="primary">
+                <mat-select disableOptionCentering [(ngModel)]="type" [ngModelOptions]="{standalone: true}"
+                  placeholder="Type" [multiple]="true" #multiSelect>
+                  <mat-option>
+                    <ngx-mat-select-search [placeholderLabel]="'Search'" [formControl]="assettypeFilterCtrl">
+                    </ngx-mat-select-search>
+                  </mat-option>
+                  <!-- <mat-option value="" [disabled]="!!categoryMultiCtrl"> {{Headers.All}} </mat-option> -->
+                  <!-- <div class="select-all">
+                    <mat-checkbox [checked]="categoryMultiCtrl.length === ListOfCategory.length ? true : false"
+                      [indeterminate]="categoryMultiCtrl.length < ListOfCategory.length ? true : false"
+                      (change)="toggleSelectAllcategory($event)">Select All</mat-checkbox>
+                  </div> -->
+                  <mat-option *ngFor="let type of filteredAssetTypeMulti | async" [value]="type.TAId" (click)="GetAllSubTypeByCategoryIdTypeId()" [hidden]="type.TypeOfAsset == ''">
+                    {{type.TypeOfAsset}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div fxFlex="100" fxFlex.gt-xs="10" class="pr-1" >
+              <mat-form-field class="formfield full-width" color="primary">
+                <mat-select disableOptionCentering [(ngModel)]="subtype" [ngModelOptions]="{standalone: true}"
+                  placeholder="Sub Type" [multiple]="true" #multiSelect>
+                  <mat-option>
+                    <ngx-mat-select-search [placeholderLabel]="'Search'" [formControl]="subtypeFilterCtrl">
+                    </ngx-mat-select-search>
+                  </mat-option>
+                  <!-- <mat-option value="" [disabled]="!!assetclassMultiCtrl"> {{Headers.All}} </mat-option> -->
+                  <!-- <div class="select-all">
+                    <mat-checkbox [checked]="assetclassMultiCtrl.length === ListOfBlocks.length ? true : false"
+                      [indeterminate]="assetclassMultiCtrl.length < ListOfBlocks.length ? true : false"
+                      (change)="toggleSelectAllassetclass($event)">Select All</mat-checkbox>
+                  </div> -->
+                  <mat-option  *ngFor="let type of filteredsubtypeMulti | async"
+                    [value]="type.STAId">
+                    {{type.SubTypeOfAsset}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          
+            <div fxFlex="100" fxFlex.gt-xs="10" class="pr-1" >
+              <mat-form-field class="formfield full-width" color="primary">
+                <mat-select disableOptionCentering [(ngModel)]="subtype" [ngModelOptions]="{standalone: true}"
+                  placeholder="Fiscal Year" [multiple]="false" #singleSelect>
+                  <mat-option>
+                    <ngx-mat-select-search [placeholderLabel]="'Search'" [formControl]="subtypeFilterCtrl">
+                    </ngx-mat-select-search>
+                  </mat-option>
+                  <!-- <mat-option value="" [disabled]="!!assetclassMultiCtrl"> {{Headers.All}} </mat-option> -->
+                  <!-- <div class="select-all">
+                    <mat-checkbox [checked]="assetclassMultiCtrl.length === ListOfBlocks.length ? true : false"
+                      [indeterminate]="assetclassMultiCtrl.length < ListOfBlocks.length ? true : false"
+                      (change)="toggleSelectAllassetclass($event)">Select All</mat-checkbox>
+                  </div> -->
+                  <mat-option  *ngFor="let type of fiscalYearData"
+                    [value]="type">
+                    {{type}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+        
+            <div fxFlex="100" fxFlex.gt-xs="10" class="pr-1" >
+              <mat-form-field class="formfield full-width" color="primary">
+                <mat-select disableOptionCentering [(ngModel)]="subtype" [ngModelOptions]="{standalone: true}"
+                  placeholder="Period" [multiple]="true" #multiSelect>
+                  <mat-option>
+                    <ngx-mat-select-search [placeholderLabel]="'Search'" [formControl]="subtypeFilterCtrl">
+                    </ngx-mat-select-search>
+                  </mat-option>
+                  <!-- <mat-option value="" [disabled]="!!assetclassMultiCtrl"> {{Headers.All}} </mat-option> -->
+                  <!-- <div class="select-all">
+                    <mat-checkbox [checked]="assetclassMultiCtrl.length === ListOfBlocks.length ? true : false"
+                      [indeterminate]="assetclassMultiCtrl.length < ListOfBlocks.length ? true : false"
+                      (change)="toggleSelectAllassetclass($event)">Select All</mat-checkbox>
+                  </div> -->
+                  <mat-option  *ngFor="let type of periodsData"
+                    [value]="type">
+                    {{type}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          
+            <div fxFlex="100" fxFlex.gt-xs="25">
+              <!-- <button mat-icon-button mat-sm-button class="mr-24" *ngIf="!!transfertypeMultiCtrl && !!plantMultiCtrl"
+              (click)="GetAssetForTransfser()">
+              <mat-icon class="example-icon MatBtnClass" style="font-size: 50px;height: 30px;width: 35px;" ><img
+                  style="height: 38px;width:40px;padding-top: 6px;" src="assets/images/assetrak/23_10_2020/GO 5.png" /></mat-icon>
+            </button> -->
+              <button mat-raised-button class="submitbtn" (click)="GetAssetForTransfserBindData('')">
+                <mat-icon class="matbtn">shortcut</mat-icon>Submit
+              </button>
+              <span   >
+                <a  routerLink="/h12/i"   style="margin-left: 8px !important;text-decoration: underline;color: blue;"
+                >
+                  <span >View Report</span>
+              </a></span>
+            </div>
+              <span class="example-spacer"></span>
+              <mat-panel-description style="float: right;">
+                <mat-icon [matMenuTriggerFor]="msgMenu" (click)="$event.stopPropagation()" class="text-muted">
+                  more_vert</mat-icon>
+                <mat-menu #msgMenu="matMenu">
+                  <!-- <button mat-menu-item style="height: 40px !important;" *ngIf="setflag">
+                    <mat-icon style="margin-right: 6px;color: #0c3057;"> filter_list
+                    </mat-icon> Create Filter
+                  </button> -->
+                  <button mat-menu-item  style="height: 40px !important;">
+                    <mat-icon style="margin-right: 6px;color: #0c3057;"> download
+                    </mat-icon> Export
+                  </button>
+                  <button mat-menu-item (click)="editGridpop()" style="height: 40px !important;">
+                    <mat-icon style="margin-right: 6px;color: #0c3057;"> view_column
+                    </mat-icon> Edit Grid Display
+                  </button>
+                  <!-- <button mat-menu-item (click)="multiSearchAdd()" style="height: 40px !important;" >
+                    <mat-icon style="margin-right: 6px;color: #0c3057;"> search
+                    </mat-icon> Multiple Search
+                  </button> -->
+                </mat-menu>
+              </mat-panel-description>
+            <!-- </div> -->
+          </div>
+          <div>
+            <canvasjs-chart [options]="chartOptions" [styles]="{width: '100%', height:'360px'}"></canvasjs-chart>    
+        </div> 
+        </mat-card-content>
+      </mat-card>
+    </div>
+    
+    <div fxFlex="50%" class="example-container mat-elevation-z4 responsive">
+      <mat-card class="cardmat">
+        <mat-card-header class="headercard" style="margin-bottom: -5px !important;">
+          <div fxFlex="100" fxFlex.gt-xs="20">
+            <h3><strong style=" color:#008bd0 !important;"> Hours Spent Technician Wise</strong></h3>
+          </div>
+        </mat-card-header>
+        <mat-card-content>
+    
+   
+          <div fxLayout='row wrap' fxLayoutAlign='space-between' fxLayout.lt-sm="column" style="min-height: fit-content;">
+            <div fxFlex="100" fxFlex.gt-xs="10" class="pr-1">
+                <mat-form-field class="formfield full-width" color="primary">
+                  <mat-select disableOptionCentering [(ngModel)]="issueVal" [ngModelOptions]="{standalone: true}"
+                    placeholder="Technicians" [multiple]="false" #singleSelect>
+                    <mat-option>
+                      <ngx-mat-select-search [placeholderLabel]="'Search'"  [formControl]="orderTypeFilterCtrl">
+                      </ngx-mat-select-search>
+                    </mat-option>
+                    <mat-option *ngFor="let type of techniciansData" [value]="type">
+                      {{type}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+         
+              <div fxFlex="100" fxFlex.gt-xs="10" class="pr-1">
+                <mat-form-field class="formfield full-width" color="primary">
+                  <mat-select disableOptionCentering [(ngModel)]="locVal" [ngModelOptions]="{standalone: true}"
+                    placeholder="Locations" [multiple]="false" #singleSelect>
+                    <mat-option>
+                      <ngx-mat-select-search [placeholderLabel]="'Search'" [formControl]="plantMultiFilterCtrl">
+                      </ngx-mat-select-search>
+                    </mat-option>
+                    <!-- <mat-option value="" [disabled]="!!cityMultiCtrl"> {{Headers.All}} </mat-option>
+                    <div class="select-all">
+                      <mat-checkbox [checked]="cityMultiCtrl.length === ListOfSBU.length ? true : false"
+                        [indeterminate]="cityMultiCtrl.length < ListOfSBU.length ? true : false"
+                        (change)="toggleSelectAllCity($event)">Select All</mat-checkbox>
+                    </div> -->
+                    <mat-option *ngFor="let type of filteredPlantsMulti | async" [value]="type.LocationId">
+                      {{type.LocationName}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+                </div>
+        
+            <div fxFlex="100" fxFlex.gt-xs="10" class="pr-1" >
+                <mat-form-field class="formfield full-width" color="primary">
+                  <mat-select disableOptionCentering [(ngModel)]="category" [ngModelOptions]="{standalone: true}"
+                    placeholder="Category" [multiple]="true" #multiSelect>
+                    <mat-option>
+                      <ngx-mat-select-search [placeholderLabel]="'Search'" [formControl]="categoryFilterCtrl">
+                      </ngx-mat-select-search>
+                    </mat-option>
+                    <!-- <mat-option value="" [disabled]="!!cityMultiCtrl"> {{Headers.All}} </mat-option> -->
+                    <!-- <div class="select-all">
+                      <mat-checkbox [checked]="cityMultiCtrl.length === categories.length ? true : false"
+                        [indeterminate]="cityMultiCtrl.length < categories.length ? true : false"
+                        (change)="toggleSelectAllCategories($event)">Select All</mat-checkbox>
+                    </div> -->
+                    <mat-option  *ngFor="let type of filteredcategoryMulti | async" [value]="type.AssetCategoryId" (click)="GetAllTypeData()"
+                      >
+                      {{type.AssetCategoryName}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+            <div fxFlex="100" fxFlex.gt-xs="10" class="pr-1" >
+              <mat-form-field class="formfield full-width" color="primary">
+                <mat-select disableOptionCentering [(ngModel)]="type" [ngModelOptions]="{standalone: true}"
+                  placeholder="Type" [multiple]="true" #multiSelect>
+                  <mat-option>
+                    <ngx-mat-select-search [placeholderLabel]="'Search'" [formControl]="assettypeFilterCtrl">
+                    </ngx-mat-select-search>
+                  </mat-option>
+                  <!-- <mat-option value="" [disabled]="!!categoryMultiCtrl"> {{Headers.All}} </mat-option> -->
+                  <!-- <div class="select-all">
+                    <mat-checkbox [checked]="categoryMultiCtrl.length === ListOfCategory.length ? true : false"
+                      [indeterminate]="categoryMultiCtrl.length < ListOfCategory.length ? true : false"
+                      (change)="toggleSelectAllcategory($event)">Select All</mat-checkbox>
+                  </div> -->
+                  <mat-option *ngFor="let type of filteredAssetTypeMulti | async" [value]="type.TAId" (click)="GetAllSubTypeByCategoryIdTypeId()" [hidden]="type.TypeOfAsset == ''">
+                    {{type.TypeOfAsset}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div fxFlex="100" fxFlex.gt-xs="10" class="pr-1" >
+              <mat-form-field class="formfield full-width" color="primary">
+                <mat-select disableOptionCentering [(ngModel)]="subtype" [ngModelOptions]="{standalone: true}"
+                  placeholder="Sub Type" [multiple]="true" #multiSelect>
+                  <mat-option>
+                    <ngx-mat-select-search [placeholderLabel]="'Search'" [formControl]="subtypeFilterCtrl">
+                    </ngx-mat-select-search>
+                  </mat-option>
+                  <!-- <mat-option value="" [disabled]="!!assetclassMultiCtrl"> {{Headers.All}} </mat-option> -->
+                  <!-- <div class="select-all">
+                    <mat-checkbox [checked]="assetclassMultiCtrl.length === ListOfBlocks.length ? true : false"
+                      [indeterminate]="assetclassMultiCtrl.length < ListOfBlocks.length ? true : false"
+                      (change)="toggleSelectAllassetclass($event)">Select All</mat-checkbox>
+                  </div> -->
+                  <mat-option  *ngFor="let type of filteredsubtypeMulti | async"
+                    [value]="type.STAId">
+                    {{type.SubTypeOfAsset}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+        
+            <div fxFlex="100" fxFlex.gt-xs="10" class="pr-1" >
+              <mat-form-field class="formfield full-width" color="primary">
+                <mat-select disableOptionCentering [(ngModel)]="subtype" [ngModelOptions]="{standalone: true}"
+                  placeholder="Fiscal Year" [multiple]="false" #singleSelect>
+                  <mat-option>
+                    <ngx-mat-select-search [placeholderLabel]="'Search'" [formControl]="subtypeFilterCtrl">
+                    </ngx-mat-select-search>
+                  </mat-option>
+                  <!-- <mat-option value="" [disabled]="!!assetclassMultiCtrl"> {{Headers.All}} </mat-option> -->
+                  <!-- <div class="select-all">
+                    <mat-checkbox [checked]="assetclassMultiCtrl.length === ListOfBlocks.length ? true : false"
+                      [indeterminate]="assetclassMultiCtrl.length < ListOfBlocks.length ? true : false"
+                      (change)="toggleSelectAllassetclass($event)">Select All</mat-checkbox>
+                  </div> -->
+                  <mat-option  *ngFor="let type of fiscalYearData"
+                    [value]="type">
+                    {{type}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+        
+            <div fxFlex="100" fxFlex.gt-xs="10" class="pr-1" >
+              <mat-form-field class="formfield full-width" color="primary">
+                <mat-select disableOptionCentering [(ngModel)]="subtype" [ngModelOptions]="{standalone: true}"
+                  placeholder="Period" [multiple]="true" #multiSelect>
+                  <mat-option>
+                    <ngx-mat-select-search [placeholderLabel]="'Search'" [formControl]="subtypeFilterCtrl">
+                    </ngx-mat-select-search>
+                  </mat-option>
+                  <!-- <mat-option value="" [disabled]="!!assetclassMultiCtrl"> {{Headers.All}} </mat-option> -->
+                  <!-- <div class="select-all">
+                    <mat-checkbox [checked]="assetclassMultiCtrl.length === ListOfBlocks.length ? true : false"
+                      [indeterminate]="assetclassMultiCtrl.length < ListOfBlocks.length ? true : false"
+                      (change)="toggleSelectAllassetclass($event)">Select All</mat-checkbox>
+                  </div> -->
+                  <mat-option  *ngFor="let type of periodsData"
+                    [value]="type">
+                    {{type}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+          
+          
+            <div fxFlex="100" fxFlex.gt-xs="25">
+              <!-- <button mat-icon-button mat-sm-button class="mr-24" *ngIf="!!transfertypeMultiCtrl && !!plantMultiCtrl"
+              (click)="GetAssetForTransfser()">
+              <mat-icon class="example-icon MatBtnClass" style="font-size: 50px;height: 30px;width: 35px;" ><img
+                  style="height: 38px;width:40px;padding-top: 6px;" src="assets/images/assetrak/23_10_2020/GO 5.png" /></mat-icon>
+            </button> -->
+              <button mat-raised-button class="submitbtn" (click)="GetAssetForTransfserBindData('')">
+                <mat-icon class="matbtn">shortcut</mat-icon>Submit
+              </button>
+              <span  >
+                <a routerLink="/h12/j"  style="margin-left: 8px !important;text-decoration: underline;color: blue;"
+                >
+                 <span >View Report</span>
+              </a></span>
+            </div>
+              <span class="example-spacer"></span>
+              <mat-panel-description style="float: right;">
+                <mat-icon [matMenuTriggerFor]="msgMenu" (click)="$event.stopPropagation()" class="text-muted">
+                  more_vert</mat-icon>
+                <mat-menu #msgMenu="matMenu">
+                  <!-- <button mat-menu-item style="height: 40px !important;" *ngIf="setflag">
+                    <mat-icon style="margin-right: 6px;color: #0c3057;"> filter_list
+                    </mat-icon> Create Filter
+                  </button> -->
+                  <button mat-menu-item  style="height: 40px !important;">
+                    <mat-icon style="margin-right: 6px;color: #0c3057;"> download
+                    </mat-icon> Export
+                  </button>
+                  <button mat-menu-item (click)="editGridpop()" style="height: 40px !important;">
+                    <mat-icon style="margin-right: 6px;color: #0c3057;"> view_column
+                    </mat-icon> Edit Grid Display
+                  </button>
+                  <!-- <button mat-menu-item (click)="multiSearchAdd()" style="height: 40px !important;" >
+                    <mat-icon style="margin-right: 6px;color: #0c3057;"> search
+                    </mat-icon> Multiple Search
+                  </button> -->
+                </mat-menu>
+              </mat-panel-description>
+            <!-- </div> -->
+          </div>
+          <div>
+            <!-- <canvasjs-chart [options]="chartOptions" [styles]="{width: '100%', height:'360px'}"></canvasjs-chart>     -->
+            <ngx-charts-pie-chart
+            [scheme]="colorScheme"
+            [results]="single"
+            [legend]="showLegend"
+            [labels]="showLabels"
+            [gradient]="gradient"
+          ></ngx-charts-pie-chart>
+          </div> 
+          
+        </mat-card-content>
+      </mat-card>
+    </div>
+  
+    </div>
+  
+    
+    

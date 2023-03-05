@@ -1,0 +1,111 @@
+
+<div class="md-dialog-container">
+  <mat-toolbar cdkDrag cdkDragRootElement=".cdk-overlay-pane" cdkDragHandle class="mat-toolbar"  style="background-color:rgb(12, 48, 87);color:white">
+    <span style="position: relative;left: 40%;">{{data.value==='insert'?'Add':'Edit'}} Group</span>
+    <span class="example-spacer"></span>
+    <button mat-icon-button class="example-icon" aria-label="Example icon-button with close icon" (click)="onclosetab()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-toolbar>
+  <div mat-dialog-content class="p-1 m-0"  cdkDrag cdkDragRootElement=".cdk-overlay-pane" cdkDragHandle>
+  
+    <form [formGroup]="dialogGroupForm" (ngSubmit)="onSubmit()">
+      <div fxLayout="row wrap" fxLayout.lt-sm="column">
+       
+        <div fxFlex="100" class="pr-1">
+          <div fxFlex="50" class="pr-1">
+            <mat-form-field class="full-width">
+              <mat-label class="label asterisk_input">Enter Group Name</mat-label>
+              <input matInput groupname="groupname" [formControl]="dialogGroupForm.controls['groupname']" autocomplete="off" maxlength="30">
+              <mat-error *ngIf="submitted || f1.groupname.errors || f1.groupname.dirty || f1.groupname.touched || f1.groupname.hasError('whitespace')">
+                <span *ngIf="f1.groupname.errors?.required || f1.groupname.hasError('whitespace')">Group Name is required </span>
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div fxFlex="50" class="pr-1">
+            <mat-form-field class="full-width">
+              <input matInput groupCode="groupCode" [formControl]="dialogGroupForm.controls['groupCode']" placeholder="Enter Group Code" autocomplete="off" maxlength="30">
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div fxFlex="100" class="pr-1">
+        <div fxFlex="50" class="pr-1">
+          <mat-form-field class="full-width">
+            <mat-label class="label asterisk_input">Select Currency</mat-label>
+            <mat-select disableOptionCentering  [formControl]="dialogGroupForm.controls['currency']" [(value)]="selectedcurrency">
+              <mat-option>
+                <ngx-mat-select-search [placeholderLabel]="'Search'" [formControl]="dialogGroupForm.controls['currencyFilter']" noEntriesFoundLabel="{{header.NoRecordFound}}"></ngx-mat-select-search>
+              </mat-option>
+              <mat-option *ngFor="let Currency of filteredCurrency  | async" [value]="Currency.CurrencyId">
+                {{Currency.Currency}}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="submitted && f1.currency.errors || f1.currency.dirty || f1.currency.touched">
+              <span *ngIf="f1.currency.errors?.required">currency is a required</span>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div fxFlex="50" class="pr-1" *ngIf="data.value =='insert'">
+          <mat-form-field class="full-width">
+            <mat-label class="label asterisk_input">Enter Employee Id</mat-label>
+            <input matInput employeeId="employeeId" [formControl]="dialogGroupForm.controls['employeeId']"  autocomplete="off" maxlength="30">
+            <mat-error *ngIf="submitted || f1.employeeId.errors || f1.employeeId.dirty || f1.employeeId.touched">
+              <span *ngIf="f1.employeeId.errors?.required">Employee Id is required </span>
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div fxFlex="100" class="pr-1" *ngIf="data.value =='insert'">
+        <div fxFlex="50" class="pr-1">
+          <mat-form-field class="full-width">
+            <mat-label class="label asterisk_input">Enter Employee Email</mat-label>
+            <input matInput employeeEmail="employeeEmail" [formControl]="dialogGroupForm.controls['employeeEmail']"  autocomplete="off" maxlength="50">
+            <mat-error *ngIf="submitted || f1.employeeEmail.errors || f1.employeeEmail.dirty || f1.employeeEmail.touched">
+              <span *ngIf="f1.employeeEmail.errors?.required">Employee Email is required </span>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div fxFlex="50" class="pr-1">
+          <mat-form-field class="full-width">
+            <mat-label class="label asterisk_input">Enter First Name</mat-label>
+            <input matInput firstName="firstName" [formControl]="dialogGroupForm.controls['firstName']"  autocomplete="off" maxlength="30">
+            <mat-error *ngIf="submitted || f1.firstName.errors || f1.firstName.dirty || f1.firstName.touched">
+              <span *ngIf="f1.firstName.errors?.required">First Name is required </span>
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+
+      <div fxFlex="100" class="pr-1" *ngIf="data.value =='insert'">
+        <div fxFlex="50" class="pr-1">
+          <mat-form-field class="full-width">
+            <mat-label class="label asterisk_input">Enter Last Name</mat-label>
+            <input matInput lastName="lastName" [formControl]="dialogGroupForm.controls['lastName']" autocomplete="off" maxlength="30">
+            <mat-error *ngIf="submitted || f1.lastName.errors || f1.lastName.dirty || f1.lastName.touched">
+              <span *ngIf="f1.lastName.errors?.required">Last Name is required </span>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div fxFlex="50" class="pr-1">
+          <mat-form-field class="full-width">
+            <mat-label class="label asterisk_input">Enter Contact No</mat-label>
+            <input matInput contactNo="contactNo" [formControl]="dialogGroupForm.controls['contactNo']" autocomplete="off" maxlength="10" [pattern]="contactNumberPattern">
+            <mat-error *ngIf="submitted || f1.contactNo.errors || f1.contactNo.dirty || f1.contactNo.touched">
+              <span *ngIf="f1.contactNo.errors?.required">Contact No is required </span>
+              <span *ngIf="f1.contactNo.errors?.pattern">Contact No not valid </span>
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+       
+        <div fxFlex="100" class="mt-1">
+          <button mat-raised-button class="success" *ngIf="data.value =='insert'" style="float:right !important;" [disabled]="dialogGroupForm.invalid"><mat-icon>check</mat-icon>Add Group</button>
+          <button mat-raised-button class="success" *ngIf="data.value !='insert'" style="float:right !important;" [disabled]="dialogGroupForm.invalid"><mat-icon>check</mat-icon>Save</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+

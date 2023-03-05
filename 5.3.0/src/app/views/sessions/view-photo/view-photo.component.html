@@ -1,0 +1,565 @@
+<div fxLayout='row wrap' fxLayoutAlign='space-between' fxLayout.lt-sm="column" style="min-height: fit-content;">
+  <h3><strong style=" color:#008bd0 !important;margin-left: 10px;"> {{menuheader['Approve Tagging Status']}}</strong></h3>
+</div>
+
+<div fxLayout='row wrap' fxLayoutAlign='space-between' fxLayout.lt-sm="column" style="min-height: fit-content;">
+  <div fxFlex="100" fxFlex.gt-xs="12" class="pr-1 pl-1">
+    <mat-form-field class="formfield" color="primary" style="width: 100%;">
+      <mat-select disableOptionCentering [(ngModel)]="SBUMultiCtrl" [ngModelOptions]="{standalone: true}"
+        placeholder="{{Headers[HeaderLayerText]}}" [multiple]="false" #singleSelect>
+        <mat-option>
+          <ngx-mat-select-search [placeholderLabel]="'Search'" [showToggleAllCheckbox]="false"
+            [formControl]="SBUMultiFilterCtrl">
+          </ngx-mat-select-search>
+        </mat-option>
+        <mat-option value=""> {{Headers.All}} </mat-option>
+        <mat-option *ngFor="let type of filteredSBUMulti | async" [value]="type[Layertext]" (click)="onChangeSBU(type[Layertext])">
+          {{type[Layertext]}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div fxFlex="100" fxFlex.gt-xs="12" class="pr-1 pl-1">
+    <mat-form-field class="formfield" color="primary" style="width: 100%;">
+      <mat-select disableOptionCentering [(ngModel)]="plantMultiCtrl" [ngModelOptions]="{standalone: true}"
+        placeholder="{{Headers.Location}}" [multiple]="true" #multiSelect>
+        <mat-option>
+          <ngx-mat-select-search [placeholderLabel]="'Search'" noEntriesFoundLabel="{{Headers.NoRecordFound}}" [showToggleAllCheckbox]="false"
+            [formControl]="plantMultiFilterCtrl">
+          </ngx-mat-select-search>
+        </mat-option>
+        <mat-option [value]="">
+          ALL
+        </mat-option>
+        <mat-option *ngFor="let bank of filteredPlantsMulti | async" [value]="bank.LocationId">
+          {{bank.LocationName}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div fxFlex="100" fxFlex.gt-xs="12" class="pr-1 pl-1">
+    <mat-form-field class="formfield" color="primary" style="width: 100%;" >
+      <mat-select disableOptionCentering [(ngModel)]="categoryMultiCtrl" [ngModelOptions]="{standalone: true}"
+        placeholder="{{ Headers.AssetCategory}}"  [multiple]="true" #multiSelect>
+        <mat-option>
+          <ngx-mat-select-search [placeholderLabel]="'Search'" noEntriesFoundLabel="{{Headers.NoRecordFound}}" [showToggleAllCheckbox]="false" [formControl]="categoryFilterCtrl">
+          </ngx-mat-select-search>
+        </mat-option>
+        <mat-option *ngFor="let type of filteredcategoryMulti| async" [value]="type.AssetCategoryId">
+          {{type.AssetCategoryName}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div fxFlex="100" fxFlex.gt-xs="12" class="pr-1 pl-1">
+    <mat-form-field class="formfield" color="primary" style="width: 100%;">
+      <mat-select disableOptionCentering [(ngModel)]="modificationstatusMultiCtrl" [ngModelOptions]="{standalone: true}" placeholder="Status" >
+        <mat-option *ngFor="let status of filteredModificationstatusMulti | async" [value]="status.id">
+          {{status.name}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div fxFlex="100" fxFlex.gt-xs="12" class="pr-1 pl-1" *ngIf="modificationstatusMultiCtrl == 'Modified' || modificationstatusMultiCtrl == 'RecordsForReview'">
+    <mat-form-field class="formfield" color="primary" style="width: 100%;" *ngIf="modificationstatusMultiCtrl == 'Modified'">
+      <mat-select disableOptionCentering [(ngModel)]="ModifiedMultiCtrl" [ngModelOptions]="{standalone: true}"
+        placeholder="Modified Field" [multiple]="true" #multiSelect>
+        <mat-option>
+          <ngx-mat-select-search [placeholderLabel]="'Search'" noEntriesFoundLabel="{{Headers.NoRecordFound}}" [showToggleAllCheckbox]="false"
+            [formControl]="ModifiedFilterCtrl">
+          </ngx-mat-select-search>
+        </mat-option>
+        <mat-option *ngFor="let type of modified | async" [value]="type">
+          {{Headers[type]}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field class="formfield" color="primary" style="width: 100%;" *ngIf="modificationstatusMultiCtrl == 'RecordsForReview'">
+      <mat-select disableOptionCentering [(ngModel)]="ModifiedMultiCtrl" [ngModelOptions]="{standalone: true}"
+        placeholder="Modified Field" [multiple]="true" #multiSelect>
+        <mat-option>
+          <ngx-mat-select-search [placeholderLabel]="'Search'" noEntriesFoundLabel="{{Headers.NoRecordFound}}" [showToggleAllCheckbox]="false"
+            [formControl]="ModifiedReviewFilterCtrl">
+          </ngx-mat-select-search>
+        </mat-option>
+        <mat-option *ngFor="let type of ReviewList | async" [value]="type">
+          {{Headers[type]}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  
+  <div fxFlex="100" fxFlex.gt-xs="40" class="pr-1 pl-1">
+    <button mat-raised-button class="submitbtn" (click)="Submit()">
+      <mat-icon class="matbtn">shortcut</mat-icon>Submit
+    </button>  
+  </div>
+  <div fxFlex="100" fxFlex.gt-xs="12" class="pr-1" *ngIf="modificationstatusMultiCtrl != 'Modified' && modificationstatusMultiCtrl != 'RecordsForReview'"></div>
+</div>
+<!-- <mat-form-field class="formfield" color="primary">
+    <mat-select disableOptionCentering [(ngModel)]="inventoryMultiCtrl" [ngModelOptions]="{standalone: true}"
+      placeholder="Inventory Note"  [multiple]="true" #multiSelect>
+      <mat-option>
+        <ngx-mat-select-search [placeholderLabel]="'Search'" [showToggleAllCheckbox]="false"
+          [formControl]="InventoryFilterCtrl">
+        </ngx-mat-select-search>
+      </mat-option>
+      <mat-option *ngFor="let inventory of inventorynote| async" [value]="inventory.id">
+        {{inventory.name}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field> -->
+
+  
+  <!-- <mat-form-field class="formfield" color="primary">
+    <mat-select disableOptionCentering [(ngModel)]="inventoryMultiCtrl" [ngModelOptions]="{standalone: true}" placeholder="Inventory Note"
+       [multiple]="true" #multiSelect>
+      <mat-option>
+        <ngx-mat-select-search [placeholderLabel]="'Search'" [showToggleAllCheckbox]="false"
+          [formControl]="InventoryFilterCtrl">
+        </ngx-mat-select-search>
+      </mat-option>
+      <mat-option *ngFor="let inventory of inventorynote| async" [value]="inventory.id">
+        {{inventory.name}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field> -->
+
+<!-- <span class="example-spacer"></span>
+<mat-toolbar style="padding-top: 30px;padding-left: 10px;">
+</mat-toolbar> -->
+<!-- <div style="margin-bottom: 26px;">
+
+</div> -->
+<div class="flex" fxLayout="row wrap" *ngIf="showDiv">
+  <div fxFlex="100" fxFlex.gt-xs="62" class="pl-1 pr-1" style="max-height: calc( 100vh - 200px) !important;">
+    <mat-tab-group animationDuration="200ms" [selectedIndex]="selectedIndex" (selectedTabChange)="tabChanged($event)">
+      <mat-tab label="Asset Info" style="color: grey !important;" >
+        <br />
+        <!-- <div fxLayout="row wrap" *ngIf="ModifiedFieldList.indexOf('Barcode') < 0" >
+          <div fxFlex="100" fxFlex.gt-xs="100" class="pr-1" style="margin-top: 16px !important;">
+            <mat-form-field class="full-width" appearance="outline" style="margin-top: 16px !important;">
+              <mat-label class="label">{{Headers.Barcode}}</mat-label>
+              <input matInput [(ngModel)]="bindData.Barcode" [ngModelOptions]="{standalone: true}" style="color: #008bd0 !important;"  autocomplete="off" readonly style="margin-top: 16px !important;">
+            </mat-form-field>
+          </div>          
+        </div> -->
+      <div class="view" style="display: flex; flex-flow: wrap;">
+        <div fxLayout="row wrap" >
+          <div fxFlex="100" fxFlex.gt-xs="50"  class="pr-1" *ngIf="ModifiedFieldList.indexOf('AssetId') < 0">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">{{Headers.AssetId}}</mat-label>
+              <input matInput [(ngModel)]="bindData.AssetId" [ngModelOptions]="{standalone: true}" style="color: black !important;"  autocomplete="off" readonly>
+            </mat-form-field>      
+          </div>  
+          <div fxFlex="100" fxFlex.gt-xs="50" class="pr-1" *ngIf="ModifiedFieldList.indexOf('SubAssetId') < 0">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">{{Headers.SubAssetId}}</mat-label>
+              <input matInput [(ngModel)]="bindData.SubAssetId" [ngModelOptions]="{standalone: true}" style="color: black !important;"  autocomplete="off" readonly>
+            </mat-form-field>
+          </div>  
+          <div fxFlex="100" fxFlex.gt-xs="50" class="pr-1" *ngIf="ModifiedFieldList.indexOf('ADL2') < 0">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">{{Headers.ADL2}}</mat-label>
+              <input matInput [(ngModel)]="bindData.ADL2" [ngModelOptions]="{standalone: true}"  style="color: black !important;"  autocomplete="off" readonly>
+            </mat-form-field>
+          </div>   
+          <div fxFlex="100" fxFlex.gt-xs="50" class="pr-1" *ngIf="ModifiedFieldList.indexOf('AcquisitionCost') < 0">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">{{Headers.AcquisitionCost}}</mat-label>
+              <input matInput [(ngModel)]="bindData.AcquisitionCost" [ngModelOptions]="{standalone: true}" style="color: black !important;"  autocomplete="off" readonly>
+            </mat-form-field>
+          </div>     
+          <div fxFlex="100" fxFlex.gt-xs="50" class="pr-1" *ngIf="ModifiedFieldList.indexOf('WDV') < 0">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">{{Headers.WDV}}</mat-label>
+              <input matInput [(ngModel)]="bindData.WDV" [ngModelOptions]="{standalone: true}" style="color: black !important;"  autocomplete="off" readonly>
+            </mat-form-field>
+          </div>  
+          <div fxFlex="100" fxFlex.gt-xs="50" class="pr-1" *ngIf="ModifiedFieldList.indexOf('SerialNo') < 0">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">{{Headers.SerialNo}}</mat-label>
+              <input matInput [(ngModel)]="bindData.SerialNo" [ngModelOptions]="{standalone: true}" style="color: black !important;"  autocomplete="off" readonly>
+            </mat-form-field>
+          </div>  
+          <div fxFlex="100" fxFlex.gt-xs="50" class="pr-1" *ngIf="ModifiedFieldList.indexOf('BlockOfAsset') < 0">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">{{Headers.BlockOfAsset}}</mat-label>
+              <input matInput [(ngModel)]="bindData.BlockOfAsset" [ngModelOptions]="{standalone: true}" style="color: black !important;"  autocomplete="off" readonly>
+            </mat-form-field>
+          </div>
+          <div fxFlex="100" fxFlex.gt-xs="50" class="pr-1" *ngIf="ModifiedFieldList.indexOf('TypeOfAsset') < 0">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">{{Headers.TypeOfAsset}}</mat-label>
+              <input matInput [(ngModel)]="bindData.TypeOfAsset" [ngModelOptions]="{standalone: true}" style="color: black !important;"  autocomplete="off" readonly>
+            </mat-form-field>
+          </div>  
+          <div fxFlex="100" fxFlex.gt-xs="50" class="pr-1" *ngIf="ModifiedFieldList.indexOf('subTypeOfAsset') < 0">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">{{Headers.subTypeOfAsset}}</mat-label>
+              <input matInput [(ngModel)]="bindData.subTypeOfAsset" [ngModelOptions]="{standalone: true}" style="color: black !important;"  autocomplete="off" readonly>
+            </mat-form-field>
+          </div> 
+          <div fxFlex="100" fxFlex.gt-xs="50" class="pr-1" *ngIf="ModifiedFieldList.indexOf('AssetCondition') < 0">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">{{Headers.AssetCondition}}</mat-label>
+              <input matInput [(ngModel)]="bindData.AssetCondition" [ngModelOptions]="{standalone: true}" style="color: black !important;"  autocomplete="off" readonly>
+            </mat-form-field>
+          </div>
+          <div fxFlex="100" fxFlex.gt-xs="50" class="pr-1" *ngIf="ModifiedFieldList.indexOf('AssetCriticality') < 0">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">{{Headers.AssetCriticality}}</mat-label>
+              <input matInput [(ngModel)]="bindData.AssetCriticality" [ngModelOptions]="{standalone: true}" style="color: black !important;"  autocomplete="off" readonly>
+            </mat-form-field>
+          </div>
+          <div fxFlex="100" fxFlex.gt-xs="50" class="pr-1" *ngIf="ModifiedFieldList.indexOf('Rack') < 0">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">{{Headers.Rack}}</mat-label>
+              <input matInput [(ngModel)]="bindData.Rack" [ngModelOptions]="{standalone: true}" style="color: black !important;"  autocomplete="off" readonly>
+            </mat-form-field>
+          </div>  
+          <div fxFlex="100" fxFlex.gt-xs="50" class="pr-1" *ngIf="ModifiedFieldList.indexOf('Room') < 0">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">{{Headers.Room}}</mat-label>
+              <input matInput [(ngModel)]="bindData.Room" [ngModelOptions]="{standalone: true}" style="color: black !important;"  autocomplete="off" readonly>
+            </mat-form-field>
+          </div> 
+        </div>
+        
+        
+        <!-- <div fxLayout="row wrap" *ngIf="ModifiedFieldList.indexOf('InventoryComment') < 0">
+          <div fxFlex="100" fxFlex.gt-xs="100" class="pr-1">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">{{Headers.InventoryComment}}</mat-label>
+              <input matInput [(ngModel)]="bindData.InventoryComment" [ngModelOptions]="{standalone: true}" style="color: #008bd0 !important;"  autocomplete="off" readonly>
+            </mat-form-field>
+          </div>          
+        </div> -->
+        <!-- <div fxLayout="row wrap" *ngIf="ModifiedFieldList.indexOf('Indicator') < 0">
+          <div fxFlex="100" fxFlex.gt-xs="100" class="pr-1">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">{{Headers.Indicator}}</mat-label>
+              <input matInput [(ngModel)]="bindData.Indicator" [ngModelOptions]="{standalone: true}" style="color: #008bd0 !important;"  autocomplete="off" readonly>
+            </mat-form-field>
+          </div>          
+        </div> -->
+       
+        <!-- <div fxLayout="row wrap" *ngIf="ModifiedFieldList.indexOf('InventoryMode') < 0">
+          <div fxFlex="100" fxFlex.gt-xs="100" class="pr-1">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">{{Headers.InventoryMode}}</mat-label>
+              <input matInput [(ngModel)]="bindData.InventoryMode" [ngModelOptions]="{standalone: true}" style="color: #008bd0 !important;"  autocomplete="off" readonly>
+            </mat-form-field>
+          </div>          
+        </div> -->
+        <!-- <div fxLayout="row wrap" *ngIf="ModifiedFieldList.indexOf('InventoryNote') < 0">
+          <div fxFlex="100" fxFlex.gt-xs="100" class="pr-1">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">{{Headers.InventoryNote}}</mat-label>
+              <input matInput [(ngModel)]="TaggingStatus" [ngModelOptions]="{standalone: true}" style="color: #008bd0 !important;"  autocomplete="off" readonly>
+            </mat-form-field>
+          </div>          
+        </div> -->
+        
+       
+      </div>
+      </mat-tab>
+      <mat-tab label="{{Headers.InventoryInfoTab}}" >
+        <br />
+        <div class="view" style="display: flex; flex-flow: wrap;">
+          <div fxLayout="row wrap">
+            <div fxFlex="100" fxFlex.gt-xs="50" class="pr-1">
+              <mat-form-field class="full-width" appearance="outline">
+                <mat-label class="label">{{Headers.Barcode}}</mat-label>
+                <input matInput [(ngModel)]="bindData.Barcode" [ngModelOptions]="{standalone: true}" style="color: black !important;"  autocomplete="off" readonly>
+              </mat-form-field>
+            </div> 
+            <div fxFlex="100" fxFlex.gt-xs="50" class="pr-1">
+              <mat-form-field class="full-width" appearance="outline">
+                <mat-label class="label">{{Headers.InventoryNote}}</mat-label>
+                <input matInput [(ngModel)]="bindData.InventoryNote" [ngModelOptions]="{standalone: true}" style="color: black !important;"  autocomplete="off" readonly>
+              </mat-form-field>
+            </div>     
+            <div fxFlex="100" fxFlex.gt-xs="50" class="pr-1">
+              <mat-form-field class="full-width" appearance="outline">
+                <mat-label class="label">{{Headers.InventoryComment}}</mat-label>
+                <input matInput [(ngModel)]="bindData.InventoryComment" [ngModelOptions]="{standalone: true}" style="color: black !important;"  autocomplete="off" readonly>
+              </mat-form-field>
+            </div>     
+            <div fxFlex="100" fxFlex.gt-xs="50" class="pr-1">
+              <mat-form-field class="full-width" appearance="outline">
+                <mat-label class="label">{{Headers.Indicator}}</mat-label>
+                <input matInput [(ngModel)]="bindData.Indicator" [ngModelOptions]="{standalone: true}" style="color: black !important;"  autocomplete="off" readonly>
+              </mat-form-field>
+            </div>    
+            <div fxFlex="100" fxFlex.gt-xs="50" class="pr-1">
+              <mat-form-field class="full-width" appearance="outline">
+                <mat-label class="label">{{Headers.LabelSize}}</mat-label>
+                <input matInput [(ngModel)]="bindData.LabelSize" [ngModelOptions]="{standalone: true}" style="color: black !important;"  autocomplete="off" readonly>
+              </mat-form-field>
+            </div>  
+            <div fxFlex="100" fxFlex.gt-xs="50" class="pr-1">
+              <mat-form-field class="full-width" appearance="outline">
+                <mat-label class="label">{{Headers.LabelMaterial}}</mat-label>
+                <input matInput [(ngModel)]="bindData.LabelMaterial" [ngModelOptions]="{standalone: true}" style="color: black !important;"  autocomplete="off" readonly>
+              </mat-form-field>
+            </div>   
+            <div fxFlex="100" fxFlex.gt-xs="50" class="pr-1">
+              <mat-form-field class="full-width" appearance="outline">
+                <mat-label class="label">{{Headers.InventoryMode}}</mat-label>
+                <input matInput [(ngModel)]="bindData.InventoryMode" [ngModelOptions]="{standalone: true}" style="color: black !important;"  autocomplete="off" readonly>
+              </mat-form-field>
+            </div>  
+            <div fxFlex="100" fxFlex.gt-xs="50" class="pr-1">
+              <mat-form-field class="full-width" appearance="outline">
+                <mat-label class="label">{{Headers.InventoryBy}}</mat-label>
+                <input matInput [(ngModel)]="bindData.InventoryBy" [ngModelOptions]="{standalone: true}" style="color: black !important;"  autocomplete="off" readonly>
+              </mat-form-field>
+            </div>
+            <div fxFlex="100" fxFlex.gt-xs="50" class="pr-1">
+              <mat-form-field class="full-width" appearance="outline">
+                <mat-label class="label">{{Headers.InventoryOn}}</mat-label>
+                <input matInput [(ngModel)]="bindData.InventoryOn" [ngModelOptions]="{standalone: true}" style="color: black !important;"  autocomplete="off" readonly>
+              </mat-form-field>
+            </div> 
+            <div fxFlex="100" fxFlex.gt-xs="50" class="pr-1">
+              <mat-form-field class="full-width" appearance="outline">
+                <mat-label class="label">{{Headers.GeoCity}}</mat-label>
+                <input matInput [(ngModel)]="bindData.GPS_Location" [ngModelOptions]="{standalone: true}" style="color: black !important;"  autocomplete="off" readonly>
+              </mat-form-field>
+            </div>
+            <div fxFlex="100" fxFlex.gt-xs="50" class="pr-1">
+              <mat-form-field class="full-width" appearance="outline">
+                <mat-label class="label">{{Headers.GeoLocation}}</mat-label>
+                <input matInput [(ngModel)]="bindData.GPS_CoOrdinate" [ngModelOptions]="{standalone: true}"  (click)="mapLocation()" style="color: black !important;cursor: pointer; text-decoration: underline;"  autocomplete="off" readonly>
+              </mat-form-field>
+            </div>    
+          </div>
+         
+        </div>
+      </mat-tab>
+      <mat-tab label="{{Headers.ModifiedField}}" >
+        <br />
+        <div class="view" style="display: flex; flex-flow: wrap;">
+          <div fxLayout="row wrap" *ngFor="let column of modifiedList">
+            <div fxFlex="100" fxFlex.gt-xs="50" class="pr-1" *ngIf="!column.EditableDuringTaggingReview">
+              <mat-form-field class="full-width" appearance="outline" style="width: 400px !important;">
+                <mat-label class="label">{{Headers[column.FieldName]}} <span style="color: red;" *ngIf="PageMandatoryFields.indexOf(column.FieldName) > -1">*</span></mat-label>
+                <input matInput [(ngModel)]="column.NewValue" [ngModelOptions]="{standalone: true}" style="color: black !important; width: 320px !important;" *ngIf="column.NewValueHeader != column.OldValueHeader" autocomplete="off" [disabled]='true'>
+                <input matInput [(ngModel)]="column.NewValue" [ngModelOptions]="{standalone: true}" style="color: black !important; width: 320px !important;" *ngIf="column.NewValueHeader == column.OldValueHeader" autocomplete="off" readonly>
+              </mat-form-field>
+            </div>      
+            
+            <div fxFlex="100" fxFlex.gt-xs="50" class="pr-1" *ngIf="!!column.EditableDuringTaggingReview">
+              <mat-form-field class="full-width" appearance="outline" style="width: 400px !important;">
+                <mat-label class="label">{{Headers[column.FieldName]}} <span style="color: red;" *ngIf="PageMandatoryFields.indexOf(column.FieldName) > -1">*</span></mat-label>
+                <input matInput [(ngModel)]="column.NewValue" [ngModelOptions]="{standalone: true}" style="color: black !important;width: 320px !important;" *ngIf="column.NewValueHeader != column.OldValueHeader" autocomplete="off"  [disabled]='true'>
+                <input matInput [(ngModel)]="column.NewValue" [ngModelOptions]="{standalone: true}" style="color: black !important;width: 320px !important;" *ngIf="column.NewValueHeader == column.OldValueHeader" autocomplete="off" readonly>
+              </mat-form-field>
+            </div>    
+            <div *ngIf="!!column.EditableDuringTaggingReview" style="display: flex !important;margin-left: -48px !important; width: 30px !important;height: 23px !important;margin-top: 10px !important; position: relative;padding-left: 25px;">            
+              <mat-icon matTooltip ="Original Value : {{column.OldValueHeader}} , New value : {{column.NewValueHeader}}" matTooltipPosition="above" style="padding-right: 5px;color: rgb(73, 66, 66) !important;cursor: pointer !important;"> info</mat-icon>
+              <mat-icon title="Reject Modification" *ngIf="!column.btnReject" (click)="btnRejectClick(column)" style="color: red; cursor: pointer !important;font-size: 22px;padding-top: 2px !important;"> thumb_down</mat-icon>
+              <mat-icon title="Reinstate Modification" *ngIf="!!column.btnReject" (click)="btnReinstateClick(column)" style="font-size: 22px;;color: green;cursor: pointer !important;"> thumb_up</mat-icon>
+            </div>       
+          </div>
+        </div>
+       
+        <!-- <div fxLayout="row wrap">
+          <div fxFlex="100" fxFlex.gt-xs="100" class="pr-1">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">{{Headers.SubAssetId}}</mat-label>
+              <input matInput [(ngModel)]="bindData.SubAssetId" [ngModelOptions]="{standalone: true}"
+                style="color: #008bd0 !important;" autocomplete="off" readonly>
+            </mat-form-field>
+          </div>                   
+        </div> -->
+        <!-- <div fxLayout="row wrap">
+          <div fxFlex="85" fxFlex.gt-xs="85" class="pr-1">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">{{Headers.ADL2}}</mat-label>
+              <input matInput [(ngModel)]="bindData.ADL2" [ngModelOptions]="{standalone: true}"
+                style="color: #008bd0 !important;" autocomplete="off"  [disabled]='true'>
+            </mat-form-field>
+          </div>    
+          <div fxFlex="15" fxFlex.gt-xs="15">
+            <ng-template #tipContent>Hello, <b>Hello</b>!</ng-template>
+            <mat-icon matTooltip ="Old Value : fridge , New value : Washing Mac" matTooltipPosition="above"
+             style="padding-right: 10PX;font-size: 30px;padding-top: 10px;color: #0c3057!important;"> info</mat-icon>
+            <mat-icon title="Reject Modification" *ngIf="!btnReject" (click)="btnRejectClick()" style="font-size: 30px;;color: #d93025;"> thumb_down</mat-icon>
+            <mat-icon title="Reinstate Modification" *ngIf="!!btnReject" (click)="btnRejectClick()" style="font-size: 30px;;color: #4d8c57;"> thumb_up</mat-icon>
+          </div>       
+        </div> -->
+      </mat-tab>
+      <mat-tab label="Other Info" style="color: black !important;">
+        <br />
+       <div class="view" style="display: flex; flex-flow:wrap;">
+        <div fxLayout="row wrap" >
+          <div fxFlex="100" fxFlex.gt-xs="50" class="pr-1" *ngIf="ModifiedFieldList.indexOf('ADL3') < 0">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">{{Headers.ADL3}}</mat-label>
+              <input matInput [(ngModel)]="bindData.ADL3" [ngModelOptions]="{standalone: true}" style="color: black !important;"  autocomplete="off" readonly>
+            </mat-form-field>
+          </div> 
+          <div fxFlex="100" fxFlex.gt-xs="50" class="pr-1" *ngIf="ModifiedFieldList.indexOf('Suplier') < 0">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">{{Headers.Suplier}}</mat-label>
+              <input matInput [(ngModel)]="bindData.Suplier" [ngModelOptions]="{standalone: true}" style="color: black !important;"  autocomplete="off" readonly>
+            </mat-form-field>
+          </div>     
+          <div fxFlex="100" fxFlex.gt-xs="50" class="pr-1" *ngIf="ModifiedFieldList.indexOf('Unit') < 0">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">{{Headers.Unit}}</mat-label>
+              <input matInput [(ngModel)]="bindData.Unit" [ngModelOptions]="{standalone: true}" style="color: black !important;"  autocomplete="off" readonly>
+            </mat-form-field>
+          </div>   
+          <div fxFlex="100" fxFlex.gt-xs="50" class="pr-1" *ngIf="ModifiedFieldList.indexOf('GRNNo') < 0">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">{{Headers.GRNNo}}</mat-label>
+              <input matInput [(ngModel)]="bindData.GRNNo" [ngModelOptions]="{standalone: true}" style="color: black !important;"  autocomplete="off" readonly>
+            </mat-form-field>
+          </div> 
+          <div fxFlex="100" fxFlex.gt-xs="50" class="pr-1" *ngIf="ModifiedFieldList.indexOf('PONumber') < 0">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">{{Headers.PONumber}}</mat-label>
+              <input matInput [(ngModel)]="bindData.PONumber" [ngModelOptions]="{standalone: true}" style="color: black !important;"  autocomplete="off" readonly>
+            </mat-form-field>
+          </div>   
+          <div fxFlex="100" fxFlex.gt-xs="50" class="pr-1" *ngIf="ModifiedFieldList.indexOf('CPPNumber') < 0">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">{{Headers.CPPNumber}}</mat-label>
+              <input matInput [(ngModel)]="bindData.CPPNumber" [ngModelOptions]="{standalone: true}" style="color: black !important;"  autocomplete="off" readonly>
+            </mat-form-field>
+          </div>  
+          <div fxFlex="100" fxFlex.gt-xs="50" class="pr-1" *ngIf="ModifiedFieldList.indexOf('UserEmailId') < 0">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">{{Headers.UserEmailId}}</mat-label>
+              <input matInput [(ngModel)]="bindData.UserEmailId" [ngModelOptions]="{standalone: true}" style="color: black !important;"  autocomplete="off" readonly>
+            </mat-form-field>
+          </div> 
+          <div fxFlex="100" fxFlex.gt-xs="50" class="pr-1" *ngIf="ModifiedFieldList.indexOf('AMCStartDate') < 0">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">{{Headers.AMCStartDate}}</mat-label>
+              <input matInput [(ngModel)]="bindData.AMCStartDate" [ngModelOptions]="{standalone: true}" style="color: black !important;"  autocomplete="off" readonly>
+            </mat-form-field>
+          </div>
+          <div fxFlex="100" fxFlex.gt-xs="50" class="pr-1" *ngIf="ModifiedFieldList.indexOf('AMCExpiryDate') < 0">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">{{Headers.AMCExpiryDate}}</mat-label>
+              <input matInput [(ngModel)]="bindData.AMCExpiryDate" [ngModelOptions]="{standalone: true}" style="color: black !important;"  autocomplete="off" readonly>
+            </mat-form-field>
+          </div> 
+          <div fxFlex="100" fxFlex.gt-xs="50" class="pr-1" *ngIf="ModifiedFieldList.indexOf('AMCVendor') < 0">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">{{Headers.AMCVendor}}</mat-label>
+              <input matInput [(ngModel)]="bindData.AMCVendor" [ngModelOptions]="{standalone: true}" style="color: black !important;"  autocomplete="off" readonly>
+            </mat-form-field>
+          </div>   
+          <div fxFlex="100" fxFlex.gt-xs="50" class="pr-1" *ngIf="ModifiedFieldList.indexOf('ApplicationType') < 0">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">{{Headers.ApplicationType}}</mat-label>
+              <input matInput [(ngModel)]="bindData.ApplicationType" [ngModelOptions]="{standalone: true}" style="color: black !important;"  autocomplete="off" readonly>
+            </mat-form-field>
+          </div> 
+          <div fxFlex="100" fxFlex.gt-xs="50" class="pr-1" *ngIf="ModifiedFieldList.indexOf('CPUClass') < 0">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">{{Headers.CPUClass}}</mat-label>
+              <input matInput [(ngModel)]="bindData.CPUClass" [ngModelOptions]="{standalone: true}" style="color: black !important;"  autocomplete="off" readonly>
+            </mat-form-field>
+          </div> 
+          <div fxFlex="100" fxFlex.gt-xs="50" class="pr-1" *ngIf="ModifiedFieldList.indexOf('CPUSubClass') < 0">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">{{Headers.CPUSubClass}}</mat-label>
+              <input matInput [(ngModel)]="bindData.CPUSubClass" [ngModelOptions]="{standalone: true}" style="color: black !important;"  autocomplete="off" readonly>
+            </mat-form-field>
+          </div> 
+          <div fxFlex="100" fxFlex.gt-xs="50" class="pr-1" *ngIf="ModifiedFieldList.indexOf('HDD') < 0">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">{{Headers.HDD}}</mat-label>
+              <input matInput [(ngModel)]="bindData.HDD" [ngModelOptions]="{standalone: true}" style="color: black !important;"  autocomplete="off" readonly>
+            </mat-form-field>
+          </div>  
+          <div fxFlex="100" fxFlex.gt-xs="50" class="pr-1" *ngIf="ModifiedFieldList.indexOf('HostName') < 0">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">{{Headers.HostName}}</mat-label>
+              <input matInput [(ngModel)]="bindData.HostName" [ngModelOptions]="{standalone: true}" style="color: black !important;"  autocomplete="off" readonly>
+            </mat-form-field>
+          </div>  
+          <div fxFlex="100" fxFlex.gt-xs="50" class="pr-1"  *ngIf="ModifiedFieldList.indexOf('InsuranceFrom') < 0">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">{{Headers.InsuranceFrom}}</mat-label>
+              <input matInput [(ngModel)]="bindData.InsuranceFrom" [ngModelOptions]="{standalone: true}" style="color: black !important;"  autocomplete="off" readonly>
+            </mat-form-field>
+          </div> 
+          <div fxFlex="100" fxFlex.gt-xs="50" class="pr-1" *ngIf="ModifiedFieldList.indexOf('InsuranceTo') < 0">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">{{Headers.InsuranceTo}}</mat-label>
+              <input matInput [(ngModel)]="bindData.InsuranceTo" [ngModelOptions]="{standalone: true}" style="color: black !important;"  autocomplete="off" readonly>
+            </mat-form-field>
+          </div> 
+          <div fxFlex="100" fxFlex.gt-xs="50" class="pr-1" *ngIf="ModifiedFieldList.indexOf('InsuranceVendor') < 0">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">{{Headers.InsuranceVendor}}</mat-label>
+              <input matInput [(ngModel)]="bindData.InsuranceVendor" [ngModelOptions]="{standalone: true}" style="color: black !important;"  autocomplete="off" readonly>
+            </mat-form-field>
+          </div> 
+          <div fxFlex="100" fxFlex.gt-xs="50" class="pr-1" *ngIf="ModifiedFieldList.indexOf('Model') < 0">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">{{Headers.Model}}</mat-label>
+              <input matInput [(ngModel)]="bindData.Model" [ngModelOptions]="{standalone: true}" style="color: black !important;"  autocomplete="off" readonly>
+            </mat-form-field>
+          </div> 
+          <div fxFlex="100" fxFlex.gt-xs="50" class="pr-1" *ngIf="ModifiedFieldList.indexOf('Manufacturer') < 0">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">{{Headers.Manufacturer}}</mat-label>
+              <input matInput [(ngModel)]="bindData.Manufacturer" [ngModelOptions]="{standalone: true}" style="color: black !important;"  autocomplete="off" readonly>
+            </mat-form-field>
+          </div> 
+          <div fxFlex="100" fxFlex.gt-xs="50" class="pr-1" *ngIf="ModifiedFieldList.indexOf('OperatingSystem') < 0">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">{{Headers.OperatingSystem}}</mat-label>
+              <input matInput [(ngModel)]="bindData.OperatingSystem" [ngModelOptions]="{standalone: true}" style="color: black !important;"  autocomplete="off" readonly>
+            </mat-form-field>
+          </div> 
+          <div fxFlex="100" fxFlex.gt-xs="50" class="pr-1" *ngIf="ModifiedFieldList.indexOf('RAM') < 0">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">{{Headers.RAM}}</mat-label>
+              <input matInput [(ngModel)]="bindData.RAM" [ngModelOptions]="{standalone: true}" style="color: black !important;"  autocomplete="off" readonly>
+            </mat-form-field>
+          </div> 
+        </div>
+      </div>
+      </mat-tab>
+    </mat-tab-group>
+  </div>
+  <div fxFlex="100" fxFlex.gt-xs="38" style="text-align:center;padding-top: 10px;" *ngIf="bindData.Photopath != ''" class="pr-1">
+    <img class="myImg" src="{{imagepath}}">
+  </div>
+  <div fxFlex="100" fxFlex.gt-xs="38" style="text-align: center;padding-top: 10px;"
+    *ngIf="bindData.Photopath == ''" class="pr-1">
+    <div class="NotAvailabe" style="margin-left: 150px !important; margin-top: 200px !important;">
+      <span style="font-weight: bold !important;font-size: 20px !important;"> Image Not Available ! </span>
+    </div>
+    <!-- <img class="myImg" src="../../../../assets/images/noimage.png" width="300px"> -->
+  </div>
+  <!-- <div class="flex">
+    
+  </div> -->
+</div>
+<div fxLayout="row wrap" *ngIf="showDiv" style="padding-top: 15px;">
+  <div fxFlex="100" fxFlex.gt-xs="50" style="font-weight: bold;padding-top: 7px;font-size: 19px;" class="pl-1">
+    <!-- {{totalCount}} entries pending -->
+   <span style="color: red; margin-right: 100px;">Assets pending for review - {{totalCount}}</span><span style="color: blue;">Assets skipped - {{skipIdList.length}}</span>  
+  </div>
+  <div fxFlex="100" fxFlex.gt-xs="50" style="text-align:right;" class="pr-1">    
+    <button class="btn" (click)="ApproveAudit()" mat-raised-button color="accent" [disabled]="btndisabled"> <mat-icon style="padding-bottom: 2px;">check_circle</mat-icon>Approve & Next </button>
+    <button class="btn" (click)="openApproveRejectDialog()" mat-raised-button color="warn" ><mat-icon style="padding-bottom: 2px;">question_answer</mat-icon> Request Information </button>    
+    <button class="btn" (click)="Skip()" mat-raised-button color="primary"> <mat-icon style="padding-bottom: 2px;">skip_next</mat-icon>Skip </button>
+    <button class="btn" (click)="previous()" mat-raised-button color="primary" [disabled]="skipIdList.length == 0"> <mat-icon style="padding-bottom: 2px;">skip_previous</mat-icon>Previous </button>
+  </div>
+</div>
+<div fxLayout="row wrap" style="padding-top: 10px;" *ngIf="!showDiv">
+  <div fxFlex="100" fxFlex.gt-xs="100" style="text-align: center;font-size: 20px;font-weight: bold;padding-top: 200px;" class="pr-1">
+    <span> Data Not Found! </span>
+  </div> 
+</div>

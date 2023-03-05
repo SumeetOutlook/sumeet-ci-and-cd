@@ -1,0 +1,46 @@
+<div class="md-dialog-container" cdkDrag cdkDragRootElement=".cdk-overlay-pane">
+  <mat-toolbar  cdkDragHandle class="mat-toolbar" style="background-color:rgb(12, 48, 87);color:white">
+    <span style="position: relative;left: 40%;">{{data.value==='insert'?'Add':'Edit'}} {{products.AssetClass}}</span>
+    <span class="example-spacer"></span>
+    <button mat-icon-button class="example-icon" aria-label="Example icon-button with close icon"
+      (click)="onclosetab()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-toolbar><br><br>
+  <mat-dialog-content>
+    <div class="md-dialog-content">
+      <form [formGroup]="dialogForm">
+        <div fxLayout="row wrap" fxLayout.lt-sm="column">
+          <div fxFlex="50" class="pr-1">
+            <mat-form-field class="full-width">
+              <mat-label class="label asterisk_input">{{products.AssetClass}} Name</mat-label>
+              <input matInput [formControl]="dialogForm.controls['AssetClass']"
+                autocomplete="off" [maxlength]="blockLength" >
+              <mat-error *ngIf="submitted || f.AssetClass.errors || f.AssetClass.dirty || f.AssetClass.touched || f.AssetClass.hasError('whitespace')">
+                <span *ngIf="f.AssetClass.errors?.required || f.AssetClass.hasError('whitespace')">{{products.AssetClass}} is required </span>
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div fxFlex="50" class="pr-1">
+            <mat-form-field class="full-width">
+              <mat-label class="label asterisk_input">{{products.ShortName}}</mat-label>
+              <input matInput [formControl]="dialogForm.controls['ShortName']"
+                autocomplete="off" [maxlength]="AcronymLength" >
+              <mat-error *ngIf="submitted || f.ShortName.errors || f.ShortName.dirty || f.ShortName.touched || f.ShortName.hasError('whitespace')">
+                <span *ngIf="f.ShortName.errors?.required || f.ShortName.hasError('whitespace')">{{products.ShortName}} is required </span>
+              </mat-error>
+            </mat-form-field>
+          </div>
+          <div fxFlex="100" class="mt-1" style="margin-bottom: 10px;">
+            <button mat-raised-button class="success" *ngIf="data.value =='insert'" style="float:right !important;"  [disabled]="dialogForm.invalid"(click)="onSubmit()">
+              <mat-icon>check</mat-icon> Add {{products.AssetClass}}
+            </button>
+            <button mat-raised-button class="success" *ngIf="data.value !='insert'"  style="float:right !important;" [disabled]="dialogForm.invalid" (click)="onSubmit()">
+              <mat-icon>check</mat-icon> Save
+            </button>
+
+          </div>
+        </div>
+      </form>
+    </div>
+  </mat-dialog-content>

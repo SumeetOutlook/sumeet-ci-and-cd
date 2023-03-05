@@ -1,0 +1,52 @@
+<div class="md-dialog-container">
+    <mat-toolbar class="mat-toolbar"  style="background-color:rgb(12, 48, 87);color:white">
+      <span style="position: relative;left: 40%;">View Documents</span>
+      <span class="example-spacer"></span>
+      <button mat-icon-button class="example-icon" aria-label="Example icon-button with close icon" (click)="dialogRef.close(false)">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-toolbar><br><br>
+    <mat-dialog-content> 
+    <form [formGroup]="dialogForm"> 
+      <div fxLayout="row wrap">
+        <div fxFlex="100" fxFlex.gt-xs="100" class="pr-1" *ngIf="uploader.length > 0">   
+            <table class="default-table mat-box-shadow mb-24" style="width: 100%">
+            <thead>
+              <tr>
+                <th width="30%">Name</th> 
+                <th>View</th>                
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let item of uploader">                
+                <td> 
+                    {{item.DocumentName}}
+                </td>                
+                <td>
+                    <a style="color:#008bd0 !important;cursor: pointer;" (click)="viewpath(item)"> View </a>
+                </td>
+              </tr>              
+            </tbody>            
+          </table>
+        </div>  
+        <div fxFlex="100" fxFlex.gt-xs="100" class="pr-1" style="text-align: center" *ngIf="uploader.length == 0">
+          No Document Available.
+        </div>
+      </div>   
+    </form>
+    <div fxLayout="row wrap">
+      <div fxFlex="100" class="pr-1 full" >
+        <span fxFlex></span>
+        <button mat-raised-button color="primary" *ngIf="flag" [disabled]="dialogForm.invalid"
+          (click)="Submit()">Submit</button>
+      </div>
+    </div>   
+      
+    </mat-dialog-content>
+    </div>
+    
+    
+
+
+
+

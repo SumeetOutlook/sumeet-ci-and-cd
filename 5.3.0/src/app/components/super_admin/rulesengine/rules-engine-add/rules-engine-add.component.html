@@ -1,0 +1,869 @@
+<!-- <ng-snotify></ng-snotify> -->
+<!-- <ng-snotify></ng-snotify> -->
+<mat-card class="p-0">
+  <mat-card-title class="">
+    <div class="card-title-text">Create Rules</div>
+    <mat-divider></mat-divider>
+  </mat-card-title>
+  <mat-card-content>
+    <form [formGroup]="rulesengineForm">
+      <div fxLayout="row wrap" fxLayout.lt-sm="column">
+        <div fxFlex="100" fxFlex.gt-xs="10">
+
+        </div>
+
+        <div fxFlex="100" fxFlex.gt-xs="30" class="pr-1">
+          <mat-form-field class="full-width">
+            <input matInput name="rules" placeholder="Rule Name" formControlName="ruleName" (change)="onchangeRules()">
+            <mat-error *ngIf="submitted || f.ruleName.errors || f.ruleName.dirty || f.ruleName.touched">
+              <span *ngIf="f.ruleName.errors?.required"> Rule Name is required </span>
+           </mat-error>
+           
+          </mat-form-field>
+        </div>
+        <div fxFlex="100" fxFlex.gt-xs="45" class="pr-1">
+          <mat-error *ngIf="ruleAlredyExist != ''">
+            {{ruleAlredyExist}}
+          </mat-error>
+        </div>
+        <!-- <div fxFlex="100" fxFlex.gt-xs="45" class="pr-1">
+          <mat-form-field class="full-width">
+            <input matInput name="copyRule" placeholder="Copy Rule" formControlName="copyRule">
+          </mat-form-field>
+        </div> -->
+      </div>
+    </form>
+    <div fxLayout="row wrap" fxLayout.lt-sm="column">
+      <mat-tree [dataSource]="dataSource" [treeControl]="treeControl" fxLayout="row wrap" fxLayout.lt-sm="column">
+        <mat-tree-node *matTreeNodeDef="let node; when: hasNoContent" fxLayout="row wrap" fxLayout.lt-sm="column"
+          fxFlex="100" matTreeNodePadding>
+          <!-- <button mat-icon-button disabled></button> -->
+          <!-- <mat-form-field>
+            <input matInput #itemValue placeholder="New item...">
+          </mat-form-field> -->
+
+          <div fxFlex="100" *ngIf="node.type != '' && node.type != 'first'">
+            <div fxFlex="100" fxFlex.gt-xs="10">
+              <button mat-icon-button disabled style="height: 35px;"></button>
+              <label>IF </label>
+            </div>
+            <div fxFlex="100" fxFlex.gt-xs="10" class="pr-1">
+              <mat-form-field class="full-width">
+                <mat-select placeholder="Condition" [(ngModel)]="node.type">
+                  <mat-option *ngFor="let type of Types" [value]="type.value"> {{type.viewValue}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div fxFlex="100" style="text-align: right;" *ngIf="node.fact != 'none'">
+              <button mat-button color="primary" (click)="saveNode(node)" title="Save">
+                <mat-icon>add_circle_outline</mat-icon>
+              </button>
+              <button mat-button color="primary" (click)="removeNode(node)" title="remove">
+                <mat-icon>remove_circle_outline</mat-icon>
+              </button>
+            </div>
+          </div>
+          <div fxFlex="100" *ngIf="node.type == 'first'">
+            <div fxFlex="100" fxFlex.gt-xs="6" class="pr-1">
+
+            </div>
+            <div fxFlex="100" fxFlex.gt-xs="30" class="pr-1">
+              <mat-form-field class="full-width">
+                <input matInput placeholder="Select First" [(ngModel)]="node.fact" [disabled]='true'>
+              </mat-form-field>
+            </div>
+            <div fxFlex="100" fxFlex.gt-xs="30" class="pr-1">
+              <mat-form-field class="full-width">
+                <mat-select placeholder="Select Operator" [(ngModel)]="node.operator" [disabled]='true'>
+                  <mat-option *ngFor="let type of operatorTypes" [value]="type.value"> {{type.viewValue}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div fxFlex="100" fxFlex.gt-xs="30" class="pr-1" *ngIf="node.fact == 'Approval@'">
+              <mat-form-field class="full-width">
+                <mat-select placeholder="Select Value" [(ngModel)]="node.value">
+                  <mat-option *ngFor="let type of approvalTypes" [value]="type.value"> {{type.viewValue}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div fxFlex="100" fxFlex.gt-xs="30" class="pr-1" *ngIf="node.fact != 'Approval@'">
+              <mat-form-field class="full-width">
+                <input matInput [matDatepicker]="picker1" placeholder="Select Value" [(ngModel)]="node.value">
+                <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                <mat-datepicker #picker1></mat-datepicker>
+              </mat-form-field>
+            </div>
+            <!-- <div fxFlex="100" style="text-align: right;">
+              <button mat-button color="primary" (click)="saveNode(node)" title="Save">
+                <mat-icon>add_circle_outline</mat-icon>
+              </button>              
+            </div> -->
+          </div>
+         
+          <div fxFlex="100" *ngIf="node.type == ''">
+            <div fxFlex="100" fxFlex.gt-xs="6" class="pr-1">
+
+            </div>
+            <div fxFlex="100" fxFlex.gt-xs="30" class="pr-1">
+              <mat-form-field class="full-width">
+                <mat-select placeholder="Select First" [(ngModel)]="node.fact">
+                  <mat-option *ngFor="let type of optionOneTypes" [value]="type.value"> {{type.viewValue}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <!-- <div fxFlex="100" fxFlex.gt-xs="30" class="pr-1"
+              *ngIf="node.fact == 'Transaction Amount' ||  node.fact == 'Cumulative Transaction Amount'">
+              <mat-form-field class="full-width">
+                <mat-select placeholder="Select Operator" [(ngModel)]="node.operator">
+                  <mat-option *ngFor="let type of operatorTypes" [value]="type.value"> {{type.viewValue}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div fxFlex="100" fxFlex.gt-xs="30" class="pr-1"
+              *ngIf="node.fact != 'Transaction Amount' && node.fact != 'Cumulative Transaction Amount'">
+              <mat-form-field class="full-width">
+                <mat-select placeholder="Select Operator" [(ngModel)]="node.operator">
+                  <mat-option *ngFor="let type of operatorTypes1" [value]="type.value"> {{type.viewValue}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div fxFlex="100" fxFlex.gt-xs="30" class="pr-1" *ngIf="node.fact == 'Relationship Group'">
+              <mat-form-field class="full-width">
+                <mat-select placeholder="Select Value" [(ngModel)]="node.value">
+                  <mat-option *ngFor="let type of relationshipGroups" [value]="type.id"
+                    (click)="onChangeRelation(node.fact , type)">
+                    {{type.name}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div fxFlex="100" fxFlex.gt-xs="30" class="pr-1" *ngIf="node.fact == 'Relationship Category'">
+              <mat-form-field class="full-width">
+                <mat-select placeholder="Select Value" [(ngModel)]="node.value">
+                  <mat-option *ngFor="let type of categoryTypes" [value]="type.id"
+                    (click)="onChangeRelation(node.fact , type)">
+                    {{type.name}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div fxFlex="100" fxFlex.gt-xs="30" class="pr-1" *ngIf="node.fact == 'Relationship Type'">
+              <mat-form-field class="full-width">
+                <mat-select placeholder="Select Value" [(ngModel)]="node.value">
+                  <mat-option *ngFor="let type of relationshipTypes" [value]="type.id"
+                    (click)="onChangeRelation(node.fact , type)">
+                    {{type.name}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div fxFlex="100" fxFlex.gt-xs="30" class="pr-1" *ngIf="node.fact == 'Relationship SubType'">
+              <mat-form-field class="full-width">
+                <mat-select placeholder="Select Value" [(ngModel)]="node.value">
+                  <mat-option *ngFor="let type of relationshipSubTypes" [value]="type.id"
+                    (click)="onChangeRelation(node.fact , type)">
+                    {{type.name}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div fxFlex="100" fxFlex.gt-xs="30" class="pr-1" *ngIf="node.fact == 'Related Party'">
+              <mat-form-field class="full-width">
+                <mat-select placeholder="Select Value" [(ngModel)]="node.value">
+                  <mat-option *ngFor="let type of relpartyTypes" [value]="type.id">
+                    {{type.name}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div fxFlex="100" fxFlex.gt-xs="30" class="pr-1" *ngIf="node.fact == 'Transaction Category'">
+              <mat-form-field class="full-width">
+                <mat-select placeholder="Select Value" [(ngModel)]="node.value">
+                  <mat-option *ngFor="let type of transactionCategoryTypes" [value]="type.id"
+                    (click)="onChangeTransaction(node.fact , type)">
+                    {{type.name}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div fxFlex="100" fxFlex.gt-xs="30" class="pr-1" *ngIf="node.fact == 'Transaction Type'">
+              <mat-form-field class="full-width">
+                <mat-select placeholder="Select Value" [(ngModel)]="node.value">
+                  <mat-option *ngFor="let type of transactionTypes" [value]="type.id"
+                    (click)="onChangeTransaction(node.fact , type)">
+                    {{type.name}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div fxFlex="100" fxFlex.gt-xs="30" class="pr-1" *ngIf="node.fact == 'Transaction SubType'">
+              <mat-form-field class="full-width">
+                <mat-select placeholder="Select Value" [(ngModel)]="node.value">
+                  <mat-option *ngFor="let type of transactionSubTypes" [value]="type.id"
+                    (click)="onChangeTransaction(node.fact , type)">
+                    {{type.name}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div fxFlex="100" fxFlex.gt-xs="30" class="pr-1" *ngIf="node.fact == 'Transaction Name'">
+              <mat-form-field class="full-width">
+                <mat-select placeholder="Select Value" [(ngModel)]="node.value">
+                  <mat-option *ngFor="let type of transactionNameTypes" [value]="type.id">
+                    {{type.name}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+
+            <div fxFlex="100" fxFlex.gt-xs="30" class="pr-1"
+              *ngIf="node.fact == 'ALP' || node.fact == 'OCB' || node.fact == 'audit committee is available' || node.fact == 'SEBI LODR is applicable'">
+              <mat-form-field class="full-width">
+                <mat-select placeholder="Select Value" [(ngModel)]="node.value">
+                  <mat-option *ngFor="let type of ALPTypes" [value]="type.value"> {{type.viewValue}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div fxFlex="100" fxFlex.gt-xs="30" class="pr-1" *ngIf="node.fact == 'Transaction Amount'">
+              <mat-form-field class="full-width">
+                <mat-select placeholder="Threshold" [(ngModel)]="node.value">
+                  <mat-option *ngFor="let type of thresholdTypes" [value]="type.value"> {{type.viewValue}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div fxFlex="100" fxFlex.gt-xs="30" class="pr-1"
+              *ngIf="node.fact == '' || node.fact == 'Cumulative Transaction Amount'">
+              <mat-form-field class="full-width">
+                <mat-select placeholder="Threshold Amount" [(ngModel)]="node.value">
+                  <mat-option *ngFor="let type of thresholdTypes" [value]="type.value"> {{type.viewValue}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div> -->
+            
+            <div fxFlex="100" fxFlex.gt-xs="25" class="pr-1" *ngIf="node.fact == 'Cost' || node.fact == 'Wdv'">
+              <mat-form-field class="full-width">
+                <mat-select placeholder="Select Operator" [(ngModel)]="node.operator">
+                  <mat-option *ngFor="let type of operator1Types" [value]="type.value"> {{type.viewValue}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div fxFlex="100" fxFlex.gt-xs="25" class="pr-1" *ngIf="node.fact == 'Class'">
+              <mat-form-field class="full-width">
+                <mat-select placeholder="Select Operator" [(ngModel)]="node.operator">
+                  <mat-option *ngFor="let type of operator2Types" [value]="type.value"> {{type.viewValue}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div fxFlex="100" fxFlex.gt-xs="25" class="pr-1" *ngIf="node.fact == 'Quantity' ">
+              <mat-form-field class="full-width">
+                <mat-select placeholder="Select Operator" [(ngModel)]="node.operator">
+                  <mat-option *ngFor="let type of operator1Types" [value]="type.value"> {{type.viewValue}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div fxFlex="100" fxFlex.gt-xs="25" class="pr-1" *ngIf="node.fact == 'Asset Type' || node.fact == 'Asset SubType' || node.fact == 'Asset Name' || node.fact == 'Asset Description'">
+              <mat-form-field class="full-width">
+                <mat-select placeholder="Select Operator" [(ngModel)]="node.operator">
+                  <mat-option *ngFor="let type of operator3Types" [value]="type.value"> {{type.viewValue}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div fxFlex="100" fxFlex.gt-xs="25" class="pr-1" *ngIf="node.fact == 'Cost'">
+              <mat-form-field class="full-width">
+                <input matInput placeholder=" Cost" [(ngModel)]="node.value" (change)="doSomething(node)">
+                <!-- <mat-select placeholder="Select Cost" [(ngModel)]="node.value" >
+                  <mat-option *ngFor="let type of categoryTypes" [value]="type.relationshipCategory" (click)="onChangeRelation(node.fact , type)">
+                    {{type.relationshipCategory}}
+                  </mat-option>
+                </mat-select>   -->
+              </mat-form-field>
+            </div>
+            <div fxFlex="100" fxFlex.gt-xs="25" class="pr-1" *ngIf="node.fact == 'Wdv'">
+              <mat-form-field class="full-width">
+                <input matInput placeholder=" Wdv" [(ngModel)]="node.value" (change)="doSomething(node)">
+                <!-- <mat-select placeholder="Select Wdv" [(ngModel)]="node.value">
+                  <mat-option *ngFor="let type of relationshipTypes" [value]="type.relationshipType" (click)="onChangeRelation(node.fact , type)">
+                    {{type.relationshipType}}
+                  </mat-option>
+                </mat-select> -->
+              </mat-form-field>
+            </div>
+            <div fxFlex="100" fxFlex.gt-xs="25" class="pr-1" *ngIf="node.fact == 'Class'">
+              <mat-form-field class="full-width">
+                <input matInput placeholder=" Class" [(ngModel)]="node.value" (change)="doSomething(node)">
+                <!-- <mat-select placeholder="Select Class" [(ngModel)]="node.value" >
+                  <mat-option *ngFor="let type of relationshipSubTypes" [value]="type.relationshipSubType" (click)="onChangeRelation(node.fact , type)">
+                    {{type.relationshipSubType}}
+                  </mat-option>
+                </mat-select> -->
+              </mat-form-field>
+            </div>
+            <div fxFlex="100" fxFlex.gt-xs="25" class="pr-1" *ngIf="node.fact == 'Quantity'">
+              <mat-form-field class="full-width">
+                <input matInput placeholder=" Quantity" [(ngModel)]="node.value" (change)="doSomething(node)">
+                <!-- <mat-select placeholder="Select Quantity" [(ngModel)]="node.value">
+                  <mat-option *ngFor="let type of relpartyTypes" [value]="type.relatedPartyName">
+                    {{type.relatedPartyName}}
+                  </mat-option>
+                </mat-select> -->
+              </mat-form-field>
+            </div>
+            <div fxFlex="100" fxFlex.gt-xs="25" class="pr-1" *ngIf="node.fact == 'Asset Type'">
+              <mat-form-field class="full-width">
+                <input matInput placeholder=" Asset Type" [(ngModel)]="node.value" (change)="doSomething(node)">
+                <!-- <mat-select placeholder="Select Asset Type" [(ngModel)]="node.value">
+                  <mat-option *ngFor="let type of transactionCategoryTypes" [value]="type.transactionCategory" (click)="onChangeTransaction(node.fact , type)">
+                    {{type.transactionCategory}}
+                  </mat-option>
+                </mat-select> -->
+              </mat-form-field>
+            </div>
+            <div fxFlex="100" fxFlex.gt-xs="25" class="pr-1" *ngIf="node.fact == 'Asset SubType'">
+              <mat-form-field class="full-width">
+                <input matInput placeholder="Asset  SubType" [(ngModel)]="node.value" (change)="doSomething(node)">
+                <!-- <mat-select placeholder="Select Asset SubType" [(ngModel)]="node.value">
+                  <mat-option *ngFor="let type of transactionTypes" [value]="type.transactionType" (click)="onChangeTransaction(node.fact , type)">
+                    {{type.transactionType}}
+                  </mat-option>
+                </mat-select> -->
+              </mat-form-field>
+            </div>
+            <div fxFlex="100" fxFlex.gt-xs="25" class="pr-1" *ngIf="node.fact == 'Location'">
+              <mat-form-field class="full-width">
+                <input matInput placeholder=" Location" [(ngModel)]="node.value" (change)="doSomething(node)">
+                <!-- <mat-select placeholder="Select Location" [(ngModel)]="node.value">
+                  <mat-option *ngFor="let type of transactionSubTypes" [value]="type.transactionSubType" (click)="onChangeTransaction(node.fact , type)">
+                    {{type.transactionSubType}}
+                  </mat-option>
+                </mat-select> -->
+              </mat-form-field>
+            </div>
+            <div fxFlex="100" fxFlex.gt-xs="25" class="pr-1" *ngIf="node.fact == 'Asset Name'">
+              <mat-form-field class="full-width">
+                <input matInput placeholder=" Asset Name" [(ngModel)]="node.value" (change)="doSomething(node)">
+                <!-- <mat-select placeholder="Select Asset Name " [(ngModel)]="node.value">
+                  <mat-option *ngFor="let type of transactionNameTypes" [value]="type.transactionName">
+                    {{type.transactionName}}
+                  </mat-option>
+                </mat-select> -->
+              </mat-form-field>
+            </div>
+
+            <div fxFlex="100" fxFlex.gt-xs="25" class="pr-1" *ngIf="node.fact == 'Asset Description'">
+              <mat-form-field class="full-width">
+                <input matInput placeholder=" Asset Description " [(ngModel)]="node.value" (change)="doSomething(node)">
+                <!-- <mat-select placeholder="Select Asset Description" [(ngModel)]="node.value">
+                  <mat-option *ngFor="let type of ALPTypes" [value]="type.value"> {{type.viewValue}}
+                  </mat-option>
+                </mat-select> -->
+              </mat-form-field>
+
+            </div>
+            <div fxFlex="100" fxFlex.gt-xs="25" class="pr-1" *ngIf="node.fact == 'Cost'|| node.fact == 'Wdv'">
+              <mat-form-field class="full-width">
+                <!-- <input matInput currency="currency" [formControl]="dialogGroupForm.controls['currency']" placeholder="Select Currency" autocomplete="off"> -->
+                <mat-select disableOptionCentering [Formontrol]="Currency"  placeholder="Select Currency" [(ngModel)]="node.Currency"  required>
+                  <mat-option>
+                    <ngx-mat-select-search [placeholderLabel]="'Search'" [Formontrol]="CurrencyFilter" ></ngx-mat-select-search>
+                  </mat-option>
+                  <mat-option *ngFor="let Currency of filteredCurrency | async" [value]="Currency.Currency">
+                    {{Currency.Currency}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div fxFlex="100" fxFlex.gt-xs="25" class="pr-1" *ngIf="node.fact == 'OCB'">
+              <mat-form-field class="full-width">
+                <mat-select placeholder="OCB" [(ngModel)]="node.value">
+                  <mat-option *ngFor="let type of OCBTypes" [value]="type.value"> {{type.viewValue}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div fxFlex="100" fxFlex.gt-xs="25" class="pr-1" *ngIf="node.fact == 'Threshold % - Txn Amount'">
+              <mat-form-field class="full-width">
+                <mat-select placeholder="Threshold % - Txn Amount" [(ngModel)]="node.value">
+                  <mat-option *ngFor="let type of thresholdTypes" [value]="type.value"> {{type.viewValue}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div fxFlex="100" fxFlex.gt-xs="25" class="pr-1"
+              *ngIf="node.fact == '' || node.fact == 'Threshold Value - Revenue'">
+              <mat-form-field class="full-width">
+                <input matInput placeholder="Bydefault" [(ngModel)]="node.value">
+              </mat-form-field>
+            </div>
+            <div fxFlex="100" style="text-align: right;">
+              <button mat-button color="primary" (click)="saveNode(node)" title="Save">
+                <mat-icon>add_circle_outline</mat-icon>
+              </button>
+              <button mat-button color="primary" (click)="removeNode(node)" title="remove">
+                <mat-icon>remove_circle_outline</mat-icon>
+              </button>
+              <!-- <button mat-button (click)="saveNode(node, itemValue.value)">Save</button> -->
+            </div>
+          </div>
+        
+         
+        </mat-tree-node>
+
+        <mat-tree-node *matTreeNodeDef="let node; when: hasChild" fxLayout="row wrap" fxLayout.lt-sm="column"
+          fxFlex="100" matTreeNodePadding>
+          <div fxFlex="100" *ngIf="node.type != '' && node.type != 'first'">
+            <div fxFlex="100" fxFlex.gt-xs="10">
+              <button mat-icon-button matTreeNodeToggle style="height: 0px;padding-top: 7px;"
+                [attr.aria-label]="'toggle ' + node.filename">
+                <mat-icon class="mat-icon-rtl-mirror">
+                  {{treeControl.isExpanded(node) ? 'expand_more' : 'chevron_right'}}
+                </mat-icon>
+              </button>
+              <label>IF</label>
+            </div>
+            <div fxFlex="100" fxFlex.gt-xs="10" class="pr-1">
+              <mat-form-field class="full-width">
+                <mat-select placeholder="Condition" [(ngModel)]="node.type"  
+                  (selectionChange)="doSomething(node)">
+                  <mat-option *ngFor="let type of Types" [value]="type.value"> {{type.viewValue}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div fxFlex="100" style="text-align: right;">
+              <button mat-button color="primary" (click)="addSubNode(node)" 
+                title="Add another condition">
+                <mat-icon>add_circle_outline</mat-icon>
+              </button>
+              <button mat-button color="primary" *ngIf="node.fact != 'none'" [disabled]="node.actiondisabled"
+                (click)="addNestedNode(node)" title="Add nested condition">
+                <mat-icon>add_circle_outline</mat-icon>
+              </button>
+              <button mat-button color="primary"  *ngIf="node.fact != 'none'" [disabled]="node.actiondisabled" (click)="removeNode(node)" 
+              title="remove">
+              <mat-icon>remove_circle_outline</mat-icon>
+            </button>
+            </div>
+          </div>
+          <div fxFlex="100" *ngIf="node.type == 'first'">
+            <div fxFlex="100" fxFlex.gt-xs="6" class="pr-1">
+
+            </div>
+            <!-- <div fxFlex="100" fxFlex.gt-xs="30" class="pr-1">
+              <mat-form-field class="full-width">
+                <input matInput placeholder="Select First" [(ngModel)]="node.fact" [disabled]='true'>
+              </mat-form-field>
+            </div>
+            <div fxFlex="100" fxFlex.gt-xs="30" class="pr-1">
+              <mat-form-field class="full-width">
+                <mat-select placeholder="Select Operator" [(ngModel)]="node.operator" [disabled]='true'>
+                  <mat-option *ngFor="let type of operatorTypes" [value]="type.value"> {{type.viewValue}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div fxFlex="100" fxFlex.gt-xs="30" class="pr-1" *ngIf="node.fact == 'Approval@'">
+              <mat-form-field class="full-width">
+                <mat-select placeholder="Select Value" [(ngModel)]="node.value" (selectionChange)="doSomething(node)">
+                  <mat-option *ngFor="let type of approvalTypes" [value]="type.value"> {{type.viewValue}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div fxFlex="100" fxFlex.gt-xs="30" class="pr-1" *ngIf="node.fact != 'Approval@'">
+              <mat-form-field class="full-width">
+                <input matInput [matDatepicker]="picker1" placeholder="Select Value" [(ngModel)]="node.value"
+                  (ngModelChange)="doSomething(node)">
+                <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                <mat-datepicker #picker1></mat-datepicker>
+              </mat-form-field>
+            </div>-->
+          </div> 
+         
+          <div fxFlex="100" *ngIf="node.type == ''">
+            <div fxFlex="100" fxFlex.gt-xs="6" class="pr-1">
+
+            </div>
+            <div fxFlex="100" fxFlex.gt-xs="30" class="pr-1">
+              <mat-form-field class="full-width">
+                <mat-select placeholder="Select First" [(ngModel)]="node.fact" (selectionChange)="doSomething(node)">
+                  <mat-option *ngFor="let type of optionOneTypes" [value]="type.value"> {{type.viewValue}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div fxFlex="100" fxFlex.gt-xs="25" class="pr-1" *ngIf="node.fact == 'Cost' || node.fact == 'Wdv'">
+              <mat-form-field class="full-width">
+                <mat-select placeholder="Select Operator" [(ngModel)]="node.operator" (selectionChange)="doSomething(node)">
+                  <mat-option *ngFor="let type of operator1Types" [value]="type.value"> {{type.viewValue}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div fxFlex="100" fxFlex.gt-xs="25" class="pr-1" *ngIf="node.fact == 'Class'">
+              <mat-form-field class="full-width">
+                <mat-select placeholder="Select Operator" [(ngModel)]="node.operator">
+                  <mat-option *ngFor="let type of operator2Types" [value]="type.value"> {{type.viewValue}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div fxFlex="100" fxFlex.gt-xs="25" class="pr-1" *ngIf="node.fact == 'Quantity' ">
+              <mat-form-field class="full-width">
+                <mat-select placeholder="Select Operator" [(ngModel)]="node.operator">
+                  <mat-option *ngFor="let type of operator1Types" [value]="type.value"> {{type.viewValue}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div fxFlex="100" fxFlex.gt-xs="25" class="pr-1" *ngIf="node.fact == 'Asset Type' || node.fact == 'Asset SubType' || node.fact == 'Asset Name' || node.fact == 'Asset Description'">
+              <mat-form-field class="full-width">
+                <mat-select placeholder="Select Operator" [(ngModel)]="node.operator">
+                  <mat-option *ngFor="let type of operator3Types" [value]="type.value"> {{type.viewValue}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div fxFlex="100" fxFlex.gt-xs="25" class="pr-1" *ngIf="node.fact == 'Cost'">
+              <mat-form-field class="full-width">
+                <input matInput placeholder=" Cost" [(ngModel)]="node.value"  (change)="doSomething(node)">
+                <!-- <mat-select placeholder="Select Cost" [(ngModel)]="node.value" >
+                  <mat-option *ngFor="let type of categoryTypes" [value]="type.relationshipCategory" (click)="onChangeRelation(node.fact , type)">
+                    {{type.relationshipCategory}}
+                  </mat-option>
+                </mat-select>   -->
+              </mat-form-field>
+            </div>
+            <div fxFlex="100" fxFlex.gt-xs="25" class="pr-1" *ngIf="node.fact == 'Wdv'">
+              <mat-form-field class="full-width">
+                <input matInput placeholder=" Wdv" [(ngModel)]="node.value" (change)="doSomething(node)">
+                <!-- <mat-select placeholder="Select Wdv" [(ngModel)]="node.value">
+                  <mat-option *ngFor="let type of relationshipTypes" [value]="type.relationshipType" (click)="onChangeRelation(node.fact , type)">
+                    {{type.relationshipType}}
+                  </mat-option>
+                </mat-select> -->
+              </mat-form-field>
+            </div>
+            <div fxFlex="100" fxFlex.gt-xs="25" class="pr-1" *ngIf="node.fact == 'Class'">
+              <mat-form-field class="full-width">
+                <input matInput placeholder=" Class" [(ngModel)]="node.value" (change)="doSomething(node)">
+                <!-- <mat-select placeholder="Select Class" [(ngModel)]="node.value" >
+                  <mat-option *ngFor="let type of relationshipSubTypes" [value]="type.relationshipSubType" (click)="onChangeRelation(node.fact , type)">
+                    {{type.relationshipSubType}}
+                  </mat-option>
+                </mat-select> -->
+              </mat-form-field>
+            </div>
+            <div fxFlex="100" fxFlex.gt-xs="25" class="pr-1" *ngIf="node.fact == 'Quantity'">
+              <mat-form-field class="full-width">
+                <input matInput placeholder=" Quantity" [(ngModel)]="node.value" (change)="doSomething(node)">
+                <!-- <mat-select placeholder="Select Quantity" [(ngModel)]="node.value">
+                  <mat-option *ngFor="let type of relpartyTypes" [value]="type.relatedPartyName">
+                    {{type.relatedPartyName}}
+                  </mat-option>
+                </mat-select> -->
+              </mat-form-field>
+            </div>
+            <div fxFlex="100" fxFlex.gt-xs="25" class="pr-1" *ngIf="node.fact == 'Asset Type'">
+              <mat-form-field class="full-width">
+                <input matInput placeholder=" Asset Type" [(ngModel)]="node.value" (change)="doSomething(node)">
+                <!-- <mat-select placeholder="Select Asset Type" [(ngModel)]="node.value">
+                  <mat-option *ngFor="let type of transactionCategoryTypes" [value]="type.transactionCategory" (click)="onChangeTransaction(node.fact , type)">
+                    {{type.transactionCategory}}
+                  </mat-option>
+                </mat-select> -->
+              </mat-form-field>
+            </div>
+            <div fxFlex="100" fxFlex.gt-xs="25" class="pr-1" *ngIf="node.fact == 'Asset SubType'">
+              <mat-form-field class="full-width">
+                <input matInput placeholder="Asset  SubType" [(ngModel)]="node.value" (change)="doSomething(node)">
+                <!-- <mat-select placeholder="Select Asset SubType" [(ngModel)]="node.value">
+                  <mat-option *ngFor="let type of transactionTypes" [value]="type.transactionType" (click)="onChangeTransaction(node.fact , type)">
+                    {{type.transactionType}}
+                  </mat-option>
+                </mat-select> -->
+              </mat-form-field>
+            </div>
+            <div fxFlex="100" fxFlex.gt-xs="25" class="pr-1" *ngIf="node.fact == 'Location'">
+              <mat-form-field class="full-width">
+                <input matInput placeholder=" Location" [(ngModel)]="node.value" (change)="doSomething(node)">
+                <!-- <mat-select placeholder="Select Location" [(ngModel)]="node.value">
+                  <mat-option *ngFor="let type of transactionSubTypes" [value]="type.transactionSubType" (click)="onChangeTransaction(node.fact , type)">
+                    {{type.transactionSubType}}
+                  </mat-option>
+                </mat-select> -->
+              </mat-form-field>
+            </div>
+            <div fxFlex="100" fxFlex.gt-xs="25" class="pr-1" *ngIf="node.fact == 'Asset Name'">
+              <mat-form-field class="full-width">
+                <input matInput placeholder=" Asset Name" [(ngModel)]="node.value" (change)="doSomething(node)">
+                <!-- <mat-select placeholder="Select Asset Name " [(ngModel)]="node.value">
+                  <mat-option *ngFor="let type of transactionNameTypes" [value]="type.transactionName">
+                    {{type.transactionName}}
+                  </mat-option>
+                </mat-select> -->
+              </mat-form-field>
+            </div>
+
+            <div fxFlex="100" fxFlex.gt-xs="25" class="pr-1" *ngIf="node.fact == 'Asset Description'">
+              <mat-form-field class="full-width">
+                <input matInput placeholder=" Asset Description " [(ngModel)]="node.value" (change)="doSomething(node)">
+                <!-- <mat-select placeholder="Select Asset Description" [(ngModel)]="node.value">
+                  <mat-option *ngFor="let type of ALPTypes" [value]="type.value"> {{type.viewValue}}
+                  </mat-option>
+                </mat-select> -->
+              </mat-form-field>
+
+            </div>
+            <div fxFlex="100" fxFlex.gt-xs="25" class="pr-1" *ngIf="node.fact == 'Cost' || node.fact == 'Wdv'">
+              <mat-form-field class="full-width">
+                <!-- <input matInput currency="currency" [formControl]="dialogGroupForm.controls['currency']" placeholder="Select Currency" autocomplete="off"> -->
+                <mat-select  placeholder="Select Currency" [Formontrol]="Currency1" [(ngModel)]="node.Currency" (selectionChange)="doSomething(node)">
+                  <mat-option>
+                    <ngx-mat-select-search [placeholderLabel]="'Search'" [Formontrol]="CurrencyFilter" ></ngx-mat-select-search> 
+                  </mat-option>
+                  <mat-option *ngFor="let Currency of filteredCurrency | async"  [value]="Currency.Currency">
+                    {{Currency.Currency}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div fxFlex="100" fxFlex.gt-xs="25" class="pr-1" *ngIf="node.fact == 'OCB'">
+              <mat-form-field class="full-width">
+                <mat-select placeholder="OCB" [(ngModel)]="node.value">
+                  <mat-option *ngFor="let type of OCBTypes" [value]="type.value"> {{type.viewValue}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div fxFlex="100" fxFlex.gt-xs="25" class="pr-1" *ngIf="node.fact == 'Threshold % - Txn Amount'">
+              <mat-form-field class="full-width">
+                <mat-select placeholder="Threshold % - Txn Amount" [(ngModel)]="node.value">
+                  <mat-option *ngFor="let type of thresholdTypes" [value]="type.value"> {{type.viewValue}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div fxFlex="100" fxFlex.gt-xs="25" class="pr-1"
+              *ngIf="node.fact == '' || node.fact == 'Threshold Value - Revenue'">
+              <mat-form-field class="full-width">
+                <input matInput placeholder="Bydefault" [(ngModel)]="node.value">
+              </mat-form-field>
+            </div>
+
+<!-- 
+            <div fxFlex="100" fxFlex.gt-xs="30" class="pr-1"
+              *ngIf="node.fact == 'Transaction Amount' ||  node.fact == 'Cumulative Transaction Amount'">
+              <mat-form-field class="full-width">
+                <mat-select placeholder="Select Operator" [(ngModel)]="node.operator"
+                  (selectionChange)="doSomething(node)">
+                  <mat-option *ngFor="let type of operatorTypes" [value]="type.value"> {{type.viewValue}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div fxFlex="100" fxFlex.gt-xs="30" class="pr-1"
+              *ngIf="node.fact != 'Transaction Amount' && node.fact != 'Cumulative Transaction Amount'">
+              <mat-form-field class="full-width">
+                <mat-select placeholder="Select Operator" [(ngModel)]="node.operator"
+                  (selectionChange)="doSomething(node)">
+                  <mat-option *ngFor="let type of operatorTypes1" [value]="type.value"> {{type.viewValue}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+
+            <div fxFlex="100" fxFlex.gt-xs="30" class="pr-1" *ngIf="node.fact == 'Relationship Group'">
+              <mat-form-field class="full-width">
+                <mat-select placeholder="Select Value" [(ngModel)]="node.value" (selectionChange)="doSomething(node)">
+                  <mat-option *ngFor="let type of relationshipGroups" [value]="type.id"
+                    (click)="onChangeRelation(node.fact , type)">
+                    {{type.name}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div fxFlex="100" fxFlex.gt-xs="30" class="pr-1" *ngIf="node.fact == 'Relationship Category'">
+              <mat-form-field class="full-width">
+                <mat-select placeholder="Select Value" [(ngModel)]="node.value" (selectionChange)="doSomething(node)">
+                  <mat-option *ngFor="let type of categoryTypes" [value]="type.id"
+                    (click)="onChangeRelation(node.fact , type)">
+                    {{type.name}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div fxFlex="100" fxFlex.gt-xs="30" class="pr-1" *ngIf="node.fact == 'Relationship Type'">
+              <mat-form-field class="full-width">
+                <mat-select placeholder="Select Value" [(ngModel)]="node.value" (selectionChange)="doSomething(node)">
+                  <mat-option *ngFor="let type of relationshipTypes" [value]="type.id"
+                    (click)="onChangeRelation(node.fact , type)">
+                    {{type.name}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div fxFlex="100" fxFlex.gt-xs="30" class="pr-1" *ngIf="node.fact == 'Relationship SubType'">
+              <mat-form-field class="full-width">
+                <mat-select placeholder="Select Value" [(ngModel)]="node.value" (selectionChange)="doSomething(node)">
+                  <mat-option *ngFor="let type of relationshipSubTypes" [value]="type.id"
+                    (click)="onChangeRelation(node.fact , type)">
+                    {{type.name}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div fxFlex="100" fxFlex.gt-xs="30" class="pr-1" *ngIf="node.fact == 'Related Party'">
+              <mat-form-field class="full-width">
+                <mat-select placeholder="Select Value" [(ngModel)]="node.value" (selectionChange)="doSomething(node)">
+                  <mat-option *ngFor="let type of relpartyTypes" [value]="type.id">
+                    {{type.name}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div fxFlex="100" fxFlex.gt-xs="30" class="pr-1" *ngIf="node.fact == 'Transaction Category'">
+              <mat-form-field class="full-width">
+                <mat-select placeholder="Select Value" [(ngModel)]="node.value" (selectionChange)="doSomething(node)">
+                  <mat-option *ngFor="let type of transactionCategoryTypes" [value]="type.id"
+                    (click)="onChangeTransaction(node.fact , type)">
+                    {{type.name}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div fxFlex="100" fxFlex.gt-xs="30" class="pr-1" *ngIf="node.fact == 'Transaction Type'">
+              <mat-form-field class="full-width">
+                <mat-select placeholder="Select Value" [(ngModel)]="node.value" (selectionChange)="doSomething(node)">
+                  <mat-option *ngFor="let type of transactionTypes" [value]="type.id"
+                    (click)="onChangeTransaction(node.fact , type)">
+                    {{type.name}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div fxFlex="100" fxFlex.gt-xs="30" class="pr-1" *ngIf="node.fact == 'Transaction SubType'">
+              <mat-form-field class="full-width">
+                <mat-select placeholder="Select Value" [(ngModel)]="node.value" (selectionChange)="doSomething(node)">
+                  <mat-option *ngFor="let type of transactionSubTypes" [value]="type.id"
+                    (click)="onChangeTransaction(node.fact , type)">
+                    {{type.name}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div fxFlex="100" fxFlex.gt-xs="30" class="pr-1" *ngIf="node.fact == 'Transaction Name'">
+              <mat-form-field class="full-width">
+                <mat-select placeholder="Select Value" [(ngModel)]="node.value" (selectionChange)="doSomething(node)">
+                  <mat-option *ngFor="let type of transactionNameTypes" [value]="type.id">
+                    {{type.name}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div fxFlex="100" fxFlex.gt-xs="30" class="pr-1"
+              *ngIf="node.fact == 'ALP' || node.fact == 'OCB' || node.fact == 'audit committee is available' || node.fact == 'SEBI LODR is applicable'">
+              <mat-form-field class="full-width">
+                <mat-select placeholder="Select Value" [(ngModel)]="node.value" (selectionChange)="doSomething(node)">
+                  <mat-option *ngFor="let type of ALPTypes" [value]="type.value"> {{type.viewValue}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div> -->
+            <!-- <div fxFlex="100" fxFlex.gt-xs="30" class="pr-1" *ngIf="node.fact == 'OCB'">
+              <mat-form-field class="full-width">
+                <mat-select placeholder="OCB" [(ngModel)]="node.value" (selectionChange)="doSomething(node)">
+                  <mat-option *ngFor="let type of OCBTypes" [value]="type.value"> {{type.viewValue}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div> -->
+            <!-- <div fxFlex="100" fxFlex.gt-xs="30" class="pr-1" *ngIf="node.fact == 'Transaction Amount'">
+              <mat-form-field class="full-width">
+                <mat-select placeholder="Threshold" [(ngModel)]="node.value" (selectionChange)="doSomething(node)">
+                  <mat-option *ngFor="let type of thresholdTypes" [value]="type.value"> {{type.viewValue}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div fxFlex="100" fxFlex.gt-xs="30" class="pr-1"
+              *ngIf="node.fact == '' || node.fact == 'Cumulative Transaction Amount'">
+              <mat-form-field class="full-width">
+                <mat-select placeholder="Threshold Amount" [(ngModel)]="node.value"
+                  (selectionChange)="doSomething(node)">
+                  <mat-option *ngFor="let type of thresholdTypes" [value]="type.value"> {{type.viewValue}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div> -->
+            <div fxFlex="100" style="text-align: right;">
+              <button mat-button color="primary" (click)="removeNode(node)" title="remove">
+                <mat-icon>remove_circle_outline</mat-icon>
+              </button>
+            </div>
+          </div>
+         
+          <!-- <button mat-icon-button (click)="addNewItem(node)"><mat-icon>add</mat-icon></button>  -->
+        </mat-tree-node>
+      </mat-tree>
+
+
+      <!-- Copyright 2018 Google Inc. All Rights Reserved.
+          Use of this source code is governed by an MIT-style license that
+          can be found in the LICENSE file at http://angular.io/license -->
+
+    </div>
+    <div fxLayout="row wrap" fxLayout.lt-sm="column" class="pr-1">
+      THEN
+    </div>
+    <form [formGroup]="rulesengineForm">
+    <div fxLayout="row wrap" fxLayout.lt-sm="column" class="pr-1" >
+      <div fxFlex="100" fxFlex.gt-xs="20" class="pr-1">
+        <section class="example-section" >
+          <mat-form-field class="full-width">
+            <mat-select placeholder="Approval Type" formControlName="approval">            
+              <mat-option *ngFor="let type of actionApprovalTypes" [value]="type.value"> {{type.viewValue}} 
+              </mat-option>
+             
+            </mat-select>
+            <!-- <input matInput name="rules" placeholder="Approval" formControlName="approval" > -->
+            <mat-error *ngIf="submitted || f.approval.errors || f.approval.dirty || f.approval.touched">
+              <span *ngIf="f.approval.errors?.required"> It is required </span>
+           </mat-error>
+          </mat-form-field>
+          <!-- <mat-checkbox class="example-margin" value="selectedActions.indexOf(type.id) > -1" (click)="changeValue(type)">
+           {{type.value}} </mat-checkbox> -->
+        </section>
+      </div>
+      <!-- <div fxFlex="100" fxFlex.gt-xs="20" class="pr-1">
+        <mat-form-field class="full-width">
+          <mat-select placeholder="Approval Type" [(ngModel)]="type.value" [ngModelOptions]="{standalone: true}">            
+            <mat-option *ngFor="let type of actionApprovalTypes" [value]="type.value"> {{type.viewValue}} 
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+      </div> -->
+     
+    </div>
+  </form>
+    <div fxLayout="row wrap" fxLayout.lt-sm="column" class="pr-1">
+      <button mat-raised-button color="primary"  [disabled]="rulesengineForm.invalid" (click)="onSubmit()">Submit</button>
+      <span fxFlex></span>
+      <button mat-raised-button color="primary" (click)="onBack()">Cancel</button>
+    </div>
+
+  </mat-card-content>
+</mat-card>
+ 

@@ -1,0 +1,138 @@
+<mat-toolbar class="topbar" style="background: #0C3057 !important;">   
+    <div class="branding" style="width: auto;padding: 0 16px;height: 48px !important;background: #0C3057 !important;">     
+      <img  src="assets/images/assetrak/Assetrak-logo.png" alt=""  class="app-logo" style="height:24px !important;margin-right:0px">           
+  </div>
+    <span fxFlex></span>
+    <span style="color: white !important;font-size: 16px !important;">Assetrak Solutions Private Limited</span>
+    <span fxFlex></span>    
+</mat-toolbar>
+<h3 style="padding: 5px;"><strong style="color:#008bd0 !important;"> {{Headers.MissingAssets}}</strong></h3>
+<span class="example-spacer"></span>
+
+<mat-toolbar>    
+    <mat-form-field class="formfield" color="primary">        
+        <mat-select [(ngModel)]="TpMissingStatusCtrl" [ngModelOptions]="{standalone: true}" placeholder="Not Found Note">
+            <mat-option *ngFor="let type of missingNote " [value]="type.AllocationType">
+              {{type.AllocationType}}
+            </mat-option>
+          </mat-select>
+    </mat-form-field>
+    <mat-form-field class="formfield"  style="width: 148px !important;" color="primary"  *ngIf="TpMissingStatusCtrl == 'Other'">
+      <mat-label class="label">Other</mat-label>
+      <input matInput [(ngModel)]="TpMissingStatus1Ctrl" [ngModelOptions]="{standalone: true}">
+    </mat-form-field>
+    <!-- <mat-form-field class="formfield" color="primary"> 
+      <input matInput  [(ngModel)]="TpMissingStatus1Ctrl" *ngIf="TpMissingStatusCtrl == 'Other'" [ngModelOptions]="{standalone: true}"  style="border: 1px solid;" class="bg-transparente">      
+    </mat-form-field>   -->
+    
+    <!-- <button mat-icon-button mat-sm-button  class="mr-24"  ><mat-icon class="example-icon MatBtnClass"  style="font-size: 50px;height: 30px;width: 35px;"><img style="height: 38px;width:40px;padding-top: 6px;"  src="assets/images/assetrak/23_10_2020/GO 5.png" /></mat-icon></button> -->
+    <button mat-icon-button mat-sm-button class="mr-1" (click)="SetMissingStatus()" *ngIf="selection.selected.length > 0 && !!TpMissingStatusCtrl">
+      <mat-icon matTooltip="Submit" class="example-icon MatBtnClass"
+        style="font-size: 50px;height: 40px;width: 40px;cursor: pointer;"><img
+          src="assets/images/assetrak/Archive/Approve.png" /></mat-icon>
+    </button>
+
+    <span class="example-spacer"></span>
+    <!-- <mat-icon class="example-icon FixBtnClass" matTooltip="Filter" [style.fontSize]="'24px'" style="margin-bottom: -2px;cursor: pointer;"><img src="assets/images/assetrak/Latest/FilterNew.png" /></mat-icon>
+    <mat-icon class="example-icon FixBtnClass" matTooltip="Export" [style.fontSize]="'24px'" style="margin-left: -5px;margin-bottom: -2px;cursor: pointer;"><img src="assets/images/assetrak/Latest/ExportNew.png" /></mat-icon> -->
+    <mat-icon class="example-icon FixBtnClass" matTooltip="Edit Grid Display" (click)="editGridpop()" [style.fontSize]="'24px'" style="margin-left: -5px;margin-bottom: -2px;cursor: pointer;"><img src="assets/images/assetrak/Latest/GridDisplayNew.png" /></mat-icon>
+
+</mat-toolbar>
+
+
+<div class=" example-container mat-elevation-z8">
+    <table mat-table #table [dataSource]="dataSource" matSort>
+      <ng-container [matColumnDef]="column" *ngFor="let column of displayedColumns; index as i">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header>
+          <span *ngIf="column === 'Select'">
+            <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="selection.hasValue() && isAllSelected"
+              [indeterminate]="selection.hasValue() && !isAllSelected">
+            </mat-checkbox>
+          </span>
+          <span *ngIf="column === 'AssetId'">
+            <span *ngIf="this.isButtonVisible == false"> {{ Headers.AssetId }} </span>
+            <span *ngIf="this.isButtonVisible == true">
+              <mat-form-field
+                style="padding-bottom: 0px !important;margin-bottom: -9px !important;margin-top: -7px !important;">
+                <input matInput class="form-field" [formControl]="AssetNoFilter" placeholder="{{ Headers.AssetId }}">
+              </mat-form-field>
+            </span>
+            <mat-icon *ngIf="this.isButtonVisible == false" class="maticon"
+              (click)="this.isButtonVisible= !this.isButtonVisible"
+              style="height: 17px;width: 24px;font-size:17px;color:#1d3478;margin-right: -7px;">search</mat-icon>
+            <mat-panel-description *ngIf="this.isButtonVisible == true">
+              <mat-icon [matMenuTriggerFor]="msgMenu" (click)="$event.stopPropagation()" class="text-muted">
+                more_vert</mat-icon>
+              <mat-menu #msgMenu="matMenu">
+                <button mat-menu-item (click)="opentablePopup('position')" style="height: 40px !important;">
+                  <mat-icon style="margin-right: 6px;"> <img src="assets/images/assetrak/23_10_2020/Multiple.png" />
+                  </mat-icon> Multiple Search
+                </button>
+                <button mat-menu-item (click)="this.isButtonVisible= !this.isButtonVisible"
+                  style="height: 40px !important;">
+                  <mat-icon style="margin-right: 6px;"> <img src="assets/images/assetrak/23_10_2020/Cross.png" />
+                  </mat-icon> Clear Search
+                </button>
+              </mat-menu>
+            </mat-panel-description>
+          </span>
+          <span *ngIf="column != 'AssetId' && column != 'Select'">
+            {{Headers[column]}}
+          </span>
+        </th>
+        <td mat-cell *matCellDef="let element">
+          <span *ngIf="column === 'Select'">
+            <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? isSelected(element) : null"
+              [checked]="getselectedIds.indexOf(element.PreFarId) > -1">
+            </mat-checkbox>
+          </span>
+          <span *ngIf="column === 'AssetId'" style="float: left;padding-left: 10px;padding-right: 10px;">
+            <a style="color:#0645ad !important;cursor: pointer;font-style: italic;text-decoration: underline;" (click)="openPopUp(element)">{{element.AssetId}}</a>
+          </span> 
+          <span *ngIf="column === 'AcquisitionDate' || column === 'ProposedRetireDate'">
+            {{element[column] | date:'dd-MMM-yyyy'}}
+          </span>
+          <span *ngIf="column === 'AcquisitionCost'">
+            {{element.AcquisitionCost | number : '1.2-2'}}
+          </span>
+          <span *ngIf="column === 'WDV'">
+            {{element.WDV | number : '1.2-2'}}
+          </span>       
+          <span *ngIf="column === 'InventoryNote'">
+            <span *ngIf="element.TaggingStatus  === 1">Verified and Tagged</span>
+            <span *ngIf="element.IsPreNumberedTag === true && element.Barcode != '' && element.Barcode != '' "></span>
+            <span *ngIf="element.TaggingStatus === 2">Verified But Not Tagged</span>
+            <span *ngIf="element.TaggingStatus === 3">Verified but Damaged</span>
+            <span *ngIf="element.TaggingStatus === 4">Verified but not in Use</span>
+            <span *ngIf="element.TaggingStatus === 5">Not Verifiable</span>
+            <span *ngIf="element.TaggingStatus === 6 || element.TaggingStatus === '' ">Not Found</span>
+            <span *ngIf="element.TaggingStatus === 7 || element.TaggingStatus === ''">Pending Verification</span>
+          </span>   
+          <span *ngIf="column === 'Upload'">
+            <input type="file"   (change)="fileChange($event)" placeholder="Upload file" class="uploadSelectClass" accept=".xlx,.xlsx,.csv,.pdf,.jpeg,.gif,.png,.jpg"  />
+            <button mat-icon-button mat-sm-button style="height: 24px;"  (click)="upload(element)"><mat-icon [style.fontSize]="'30px'" matTooltip="Upload" style="color: #1d3478 !important;margin-top:-6px;margin-bottom:-6px" class="authorize-click icon" >file_upload</mat-icon></button> 
+          </span>
+          <span *ngIf="column === 'ViewDocument'">
+            <a style="color:#008bd0 !important;cursor: pointer;" *ngIf="!!element.FileName" (click)="viewDocument(element)"> View Document</a>
+          </span>
+          <span
+            *ngIf="column != 'AssetId' && column != 'Select' && column != 'AcquisitionDate'&& column != 'AcquisitionCost' && column != 'WDV' && column != 'ProposedRetireDate' && column != 'NotFoundNote' && column != 'Upload' && column != 'ViewDocument'">
+            {{element[column]}}
+          </span>
+
+        </td>
+      </ng-container>
+      <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+    </table>
+    <div style="text-align: center;" *ngIf="dataSource.data.length === 0">{{message.NoDataAvailable}}</div>
+  </div>
+  <mat-paginator class="expedientes-paginator" [showFirstLastButtons]="true" [length]="paginationParams.totalCount"
+    [pageSize]="paginationParams.pageSize" [pageSizeOptions]="[50, 100, 200,500]" (page)="handlePage($event)">
+  </mat-paginator>
+
+
+
+
+

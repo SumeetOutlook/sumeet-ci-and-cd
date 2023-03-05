@@ -1,0 +1,107 @@
+<div class="md-dialog-container" cdkDrag cdkDragRootElement=".cdk-overlay-pane">
+    <mat-toolbar  cdkDragHandle class="mat-toolbar" style="background-color:rgb(12, 48, 87);color:white">
+      <span style="position: relative;left: 40%;">Add License Type</span>
+      <span class="example-spacer"></span>
+      <button mat-icon-button class="example-icon" aria-label="Example icon-button with close icon"
+        (click)="dialogRef.close(false)">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-toolbar><br><br>
+    <mat-dialog-content>     
+      <form [formGroup]="dialogForm" class="mt-8">
+        <div fxLayout="row wrap">
+          <div fxFlex="100" fxFlex.gt-xs="50" class="pr-1">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label asterisk_input">License Type</mat-label>
+              <input matInput maxlength="45" formControlName="LicenseTypeCtrl"  autocomplete="off">              
+            </mat-form-field>
+          </div>
+          <!-- <div fxFlex="100" fxFlex.gt-xs="50" class="pr-1">
+            <mat-form-field class="full-width" appearance="outline" >
+              <mat-label class="label asterisk_input" style="font-size: 15px !important;">Manufacturer</mat-label>
+              <mat-select formControlName="ManufacturerCtrl" class="bg-transparente">
+                <mat-option *ngFor="let type of typeOfManufacturers" [value]="type.ID" >
+                  {{type.Name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div> -->
+          <div fxFlex="100" fxFlex.gt-xs="50" class="pr-1">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label asterisk_input">Track By</mat-label>
+              <mat-select formControlName="TrackByDataCtrl" class="bg-transparente">
+                <mat-option *ngFor="let type of TrackByData" [value]="type.ID" (click)="getInstallationsallowed(type.ID)">
+                  {{type.TrackBy}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <!-- <div fxFlex="100" fxFlex.gt-xs="50" class="pr-1">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label asterisk_input" *ngIf="dialogForm.controls['TrackByDataCtrl'].value !='2' ">Installations Allowed</mat-label>
+              <mat-label class="label asterisk_input" *ngIf="dialogForm.controls['TrackByDataCtrl'].value =='2' ">Users Allowed</mat-label>
+              <mat-select formControlName="AllowedDataCtrl" class="bg-transparente">
+                <mat-option value="1" > Multiple </mat-option>
+                <mat-option value="2" *ngIf="dialogForm.controls['TrackByDataCtrl'].value !='2' "> OEM </mat-option>
+                <mat-option value="3" > Single </mat-option>
+                <mat-option value="4" > Unlimited </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>   -->
+          <div fxFlex="100" fxFlex.gt-xs="50" class="pr-1">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label asterisk_input">Installations Allowed</mat-label>
+              <mat-select formControlName="AllowedDataCtrl" class="bg-transparente">
+                <mat-option *ngFor="let type of AllowedData" [value]="type.ID" (click)="GetSoftwareLicenseOption()">
+                  {{type.OptionName}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div fxFlex="100" fxFlex.gt-xs="50" class="pr-1">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label asterisk_input">Option Type</mat-label>
+              <mat-select formControlName="OptionTypeCtrl" class="bg-transparente">
+                <mat-option *ngFor="let type of OptionTypes" [value]="type.LicenseTypeOptionMapID">
+                  {{type.licensetypeoptions}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <!-- <div fxFlex="100" fxFlex.gt-xs="100" class="pr-1">
+            <span class="pr-1" *ngIf="dialogForm.controls['TrackByDataCtrl'].value !='2'"><mat-checkbox (change)="isNodeLocked = !isNodeLocked">Is Node Locked</mat-checkbox></span>
+            <span class="pr-1"><mat-checkbox (change)="isPerpetual = !isPerpetual">Is Perpetual</mat-checkbox></span>
+            <span class="pr-1"><mat-checkbox (change)="IsFreelicense = !IsFreelicense">Is Free License</mat-checkbox></span>
+            
+          </div>
+          <div fxFlex="100" fxFlex.gt-xs="50" class="pr-1" style="margin-top: 20px;">
+            <mat-form-field class="demo-chip-list">
+              <mat-label class="label asterisk_input">License Options</mat-label>
+              <mat-chip-list #chipList>
+                <mat-chip *ngFor="let fruit of fruits" [selectable]="selectable"
+                         [removable]="removable" (removed)="remove(fruit)">
+                  {{fruit.LicenseOption}}
+                  <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                </mat-chip>
+                <input 
+                       style="width: 100%;" 
+                       [matChipInputFor]="chipList"
+                       [matChipInputSeparatorKeyCodes]="separatorKeysCodes"
+                       [matChipInputAddOnBlur]="addOnBlur"
+                       (matChipInputTokenEnd)="add($event)"
+                       (paste)="paste($event)"/>
+              </mat-chip-list>
+            </mat-form-field>
+          </div>   -->
+        </div>
+      </form>
+      <div fxLayout="row wrap">
+        <div fxFlex="100" class="pr-1 full">
+          <span fxFlex></span>
+          <button mat-raised-button class="success" [disabled]="dialogForm.invalid" (click)="Submit()">
+            <mat-icon>check</mat-icon>Save
+          </button>
+        </div>
+      </div>
+    </mat-dialog-content>
+  </div>

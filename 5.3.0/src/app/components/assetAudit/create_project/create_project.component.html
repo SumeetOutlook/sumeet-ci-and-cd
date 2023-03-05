@@ -1,0 +1,504 @@
+<!-- <h3><strong style=" color:#008bd0 !important;">{{menuheader['Create Project']}}</strong> </h3> -->
+<div fxLayout='row wrap' fxLayoutAlign='space-between' fxLayout.lt-sm="column" style="min-height: fit-content;">
+  <div fxFlex="100" fxFlex.gt-xs="20"><h3><strong style=" color:#008bd0 !important;"> {{menuheader['Create Project']}}</strong></h3></div>
+  <div fxFlex="100" fxFlex.gt-xs="80" style="padding-left: 70px;">
+<span *ngIf="numSelected > 0"><i>{{numSelected}} Plants selected </i></span>
+<span *ngIf="numSelected > 0" ><a style="color:#008bd0 !important;margin-left: 5px !important;cursor: pointer;" (click)="viewSelected()"><u>View</u></a></span>
+<span *ngIf="numSelected > 0" ><a style="color:red !important;margin-left: 5px !important;cursor: pointer;" (click)="clearSelectedView()">Clear</a></span>
+</div>
+</div>
+
+<mat-toolbar>
+  <mat-form-field class="formfield" style="width: 148px !important;" color="primary">
+    <mat-select disableOptionCentering [(ngModel)]="projectMultiCtrl" [ngModelOptions]="{standalone: true}"
+      (selectionChange)="selected($event.value)" placeholder="{{Headers.Project}}" required>
+      <mat-option *ngFor="let project of filteredprojectMulti | async" [value]="project.id">
+        {{project.name}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field class="formfield" [ngClass]="{disabledDiv: !!disabledField}" style="width: 148px !important;"
+    color="primary" *ngIf="selectedProject==='PhysicalVerification' || selectedProject==='SelfCertification'">
+    <mat-label class="label">{{Headers.ProjectName}}</mat-label>
+    <input matInput [(ngModel)]="ProjectNameCtrl" [ngModelOptions]="{standalone: true}" [readonly]="!!disabledField">
+  </mat-form-field>
+
+  <mat-form-field style="width: 130px !important;" class="formfield" color="primary"
+    *ngIf="selectedProject==='PhysicalVerification' || selectedProject==='SelfCertification'">
+    <mat-label class="label asterisk_input">{{Headers.InventoryDeadline}}</mat-label>
+    <input matInput [matDatepicker]="picker1" [(ngModel)]="InventoryDeadline"
+      (click)="picker1.open();" (dateChange)="InventoryDeadlineValidation()" [min]="today" autocomplete="off" [formControl]="ReportForm.controls['inventorytiFilterCtrl']">
+    <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+    <mat-datepicker #picker1></mat-datepicker>
+  </mat-form-field>
+
+  <mat-form-field class="formfield " color="primary"
+  *ngIf="selectedProject==='PhysicalVerification' || selectedProject==='SelfCertification'">
+  <mat-select disableOptionCentering [(ngModel)]="typeMulti" [ngModelOptions]="{standalone: true}"
+    placeholder="{{Headers.IncludeAssets}}" (selectionChange)="Onchangetype($event.value)" >
+    <mat-option *ngFor="let type of typenote| async" [value]="type.id">
+      By {{type.name}}
+    </mat-option>
+  </mat-select>
+</mat-form-field>
+
+<div  *ngIf="!newflag">
+  <button mat-raised-button class="minibtn" (click)="openUploadType()"  style="margin-left: 8px !important;height: 36px;" >
+    <mat-icon style="color: white;">file_upload</mat-icon></button>
+  </div>
+<div  *ngIf="newflag">
+  <mat-form-field class="formfield" color="primary"
+    *ngIf="selectedProject==='PhysicalVerification' || selectedProject==='SelfCertification'">
+    <mat-select disableOptionCentering [(ngModel)]="cityMultiCtrl" [ngModelOptions]="{standalone: true}"
+      placeholder="{{Headers[HeaderLayerText]}}" [multiple]="true" #multiSelect>
+      <mat-option>
+        <ngx-mat-select-search [placeholderLabel]="'Search'" noEntriesFoundLabel="{{Headers.NoRecordFound}}" [showToggleAllCheckbox]="false"
+         [formControl]="cityMultiFilterCtrl">
+        </ngx-mat-select-search>
+      </mat-option>
+      <mat-option value="" [disabled]="!!cityMultiCtrl"> All</mat-option>
+      <div class="select-all">
+        <mat-checkbox [disabled]="!cityMultiCtrl" [checked]="cityMultiCtrl.length === ListOfSBU.length ? true : false" [indeterminate]="cityMultiCtrl.length < ListOfSBU.length ? true : false"
+                        (change)="toggleSelectAllCity($event)">Select All</mat-checkbox>
+      </div>      
+      <mat-option [disabled]="!cityMultiCtrl" *ngFor="let type of filteredCityMulti | async" [value]="type[Layertext]"
+        (click)="onchangeSBU(type[Layertext])">
+        {{type[Layertext]}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  </div>
+  <div  *ngIf="newflag">
+  <mat-form-field class="formfield" color="primary"
+    *ngIf="selectedProject==='PhysicalVerification' || selectedProject==='SelfCertification'">
+    <mat-select disableOptionCentering [(ngModel)]="plantMultiCtrl" [ngModelOptions]="{standalone: true}"
+      placeholder="{{ Headers.Location }}" [multiple]="true" #multiSelect (infiniteScroll)="getFilterPlantType()" [complete]="offset === ListOfLoc.length" msInfiniteScroll> 
+      <mat-option>
+        <ngx-mat-select-search [placeholderLabel]="'Search'" noEntriesFoundLabel="{{Headers.NoRecordFound}}" [showToggleAllCheckbox]="false" [formControl]="plantMultiFilterCtrl">
+        </ngx-mat-select-search>
+      </mat-option>
+      <mat-option value="" [disabled]="!!plantMultiCtrl"> All</mat-option>
+      <div class="select-all">
+        <mat-checkbox [disabled]="!plantMultiCtrl" [checked]="plantMultiCtrl.length === ListOfLoc.length ? true : false" [indeterminate]="plantMultiCtrl.length < ListOfLoc.length ? true : false"
+                        (change)="toggleSelectAll($event)">Select All</mat-checkbox>
+      </div>
+      <mat-option [disabled]="!plantMultiCtrl" *ngFor="let type of filteredPlantsMulti | async" [value]="type" (click)="CategoryGetdata()">
+        {{type.LocationName}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  </div>
+  <div  *ngIf="newflag">
+  <mat-form-field class="formfield" color="primary"
+    *ngIf="selectedProject==='PhysicalVerification' || selectedProject==='SelfCertification'">
+    <mat-select disableOptionCentering [(ngModel)]="categoryMultiCtrl" [ngModelOptions]="{standalone: true}"
+      placeholder="{{ Headers.AssetCategory}}" [multiple]="true" #multiSelect>
+      <mat-option>
+        <ngx-mat-select-search [placeholderLabel]="'Search'" noEntriesFoundLabel="{{Headers.NoRecordFound}}" [showToggleAllCheckbox]="false"
+        [formControl]="categoryFilterCtrl">
+        </ngx-mat-select-search>
+      </mat-option>
+      <mat-option value="" [disabled]="!!categoryMultiCtrl"> All</mat-option>
+      <div class="select-all">
+        <mat-checkbox [disabled]="!categoryMultiCtrl" [checked]="categoryMultiCtrl.length === ListOfCategory.length ? true : false" [indeterminate]="categoryMultiCtrl.length < ListOfCategory.length ? true : false"
+                        (change)="toggleSelectAllcategory($event)">Select All</mat-checkbox>
+      </div>  
+      <mat-option [disabled]="!categoryMultiCtrl" *ngFor="let type of filteredcategoryMulti| async" [value]="type">
+        {{type.AssetCategoryName}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  </div>
+
+  <!-- <button mat-icon-button mat-sm-button class="mr-24" (click)="viewSummary()" *ngIf="!!InventoryDeadline">
+    <mat-icon class="example-icon MatBtnClass" style="font-size: 50px;height: 30px;width: 35px;"><img
+        style="height: 38px;width:40px;padding-top: 6px;" src="assets/images/assetrak/23_10_2020/GO 5.png" /></mat-icon>
+  </button> -->
+  <button  mat-raised-button class="submitbtn" *ngIf="newflag" (click)="viewSummary()" > <mat-icon class="matbtn" >shortcut</mat-icon>Submit </button>
+
+</mat-toolbar>
+
+<div fxLayout="row wrap" *ngIf="selectedProject==='PhysicalVerification'" style="float: left !important;">
+  <mat-slide-toggle (click)="changeToggle('vendorAssets')" *ngIf="ProjectPermissionIdList.indexOf('99') > -1"
+    style="margin-left:120px;">Vendor Location Assets</mat-slide-toggle>
+  <mat-slide-toggle (click)="changeToggle('zerovalueAssets')" *ngIf="ProjectPermissionIdList.indexOf('20') > -1"
+    style="margin-left: 120px;">Non-FAR Assets</mat-slide-toggle>
+  <mat-slide-toggle (click)="changeToggle('grnAssets')" *ngIf="ProjectPermissionIdList.indexOf('19') > -1"
+    style="margin-left:130px;">GRN Assets</mat-slide-toggle>
+</div>
+
+
+<div class="example-container mat-elevation-z8" *ngIf="selectedProject==='PhysicalVerification' && displayTable">
+  <table mat-table #table [dataSource]="dataSource" multiTemplateDataRows matSort>
+
+    <ng-container matColumnDef="Select">
+      <th mat-sort-header="Select" mat-header-cell *matHeaderCellDef>
+        <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="selection.hasValue() && isAllSelected"
+          [indeterminate]="selection.hasValue() && !isAllSelected">
+        </mat-checkbox>
+      </th>
+      <td mat-cell *matCellDef="let element let i=index">
+        <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? isSelected(element) : null"
+          *ngIf="element.SelcetedForProjectQty > 0" [checked]="getselectedIds.indexOf(element.LocationId) > -1">
+        </mat-checkbox>
+      </td>
+      <td mat-footer-cell *matFooterCellDef="let element"></td>
+    </ng-container>
+
+    <ng-container matColumnDef="City">
+      <th mat-sort-header="City" style="width: 20px;" mat-header-cell *matHeaderCellDef>{{displayedHeaders[1]}}</th>
+      <td mat-cell *matCellDef="let element"> </td>
+      <td mat-footer-cell *matFooterCellDef> </td>
+    </ng-container>
+
+    <ng-container matColumnDef="Plant">
+      <th mat-sort-header="Plant" style="width: 200px;" mat-header-cell *matHeaderCellDef>        
+        <span *ngIf="this.isButtonVisible == false"> {{displayedHeaders[2]}} </span>
+        <span *ngIf="this.isButtonVisible == true">
+            <mat-form-field style="padding-bottom: 0px !important;margin-bottom: -9px !important;margin-top: -7px !important;">
+                <input matInput class="form-field" (keyup)="applyFilter($event)" placeholder="{{Headers.Location}}" autocomplete="off">
+            </mat-form-field>
+        </span>
+        <mat-icon *ngIf="this.isButtonVisible == false" class="maticon"
+            (click)="this.isButtonVisible = true"
+            style="height: 17px;width: 24px;font-size:17px;color:#1d3478;margin-right: -7px;">search
+        </mat-icon>
+        <mat-panel-description *ngIf="this.isButtonVisible == true">
+            <mat-icon [matMenuTriggerFor]="msgMenu" (click)="$event.stopPropagation()"
+                class="text-muted">
+                more_vert</mat-icon>
+            <mat-menu #msgMenu="matMenu">
+                <button mat-menu-item  
+                    style="height: 40px !important;" *ngIf="setflag">
+                    <mat-icon style="margin-right: 6px;"> <img
+                            src="assets/images/assetrak/23_10_2020/Multiple.png" />
+                    </mat-icon> Multiple Search
+                </button>
+                <button mat-menu-item (click)="ClearSerch(column,isButtonVisible)"
+                    style="height: 40px !important;">
+                    <mat-icon style="margin-right: 6px;"> <img
+                            src="assets/images/assetrak/23_10_2020/Cross.png" />
+                    </mat-icon> Clear Search
+                </button>
+            </mat-menu>
+        </mat-panel-description>
+      </th>
+      <td mat-cell *matCellDef="let element">{{element.Location}} </td>
+      <td mat-footer-cell *matFooterCellDef> Total</td>
+    </ng-container>
+
+    <ng-container matColumnDef="totalCount">
+      <th mat-sort-header="totalCount" style="width: 150px;" mat-header-cell *matHeaderCellDef>{{displayedHeaders[3]}}</th>
+      <td mat-cell *matCellDef="let element" ><span style="float: right;margin-right: 12%;"> {{element.TotalAssetQty}}</span> </td>
+      <td mat-footer-cell *matFooterCellDef> <span style="float: right;margin-right: 12%;"> {{totalAssetCount1}} </span>  </td>
+    </ng-container>
+
+    <ng-container matColumnDef="totalCost">
+      <th mat-sort-header="totalCost" style="width: 150px;" mat-header-cell *matHeaderCellDef>{{displayedHeaders[4]}}</th>
+      <td mat-cell *matCellDef="let element"> <span style="float: right;margin-right: 12%;"> {{element.TotalAssetCost | number : '1.2-2'}} </span>  </td>
+      <td mat-footer-cell *matFooterCellDef> <span style="float: right;margin-right: 12%;"> {{totalAssetCost1 | number : '1.2-2'}} </span>  </td>
+    </ng-container>
+
+    <ng-container matColumnDef="totalWDV">
+      <th mat-sort-header="totalWDV" style="width: 150px;" mat-header-cell *matHeaderCellDef>{{displayedHeaders[5]}}</th>
+      <td mat-cell *matCellDef="let element"> <span style="float: right;margin-right: 12%;">{{element.TotalAssetWDV | number : '1.2-2'}}</span>  </td>
+      <td mat-footer-cell *matFooterCellDef> <span style="float: right;margin-right: 12%;">{{totalAssetWDV1 | number : '1.2-2'}}</span>  </td>
+    </ng-container>
+
+    <ng-container matColumnDef="selectedForProjectCount">
+      <th mat-sort-header="selectedForProjectCount" style="width: 200px;" mat-header-cell *matHeaderCellDef>Total Assets Available For "PV"</th>
+      <td mat-cell *matCellDef="let element"> <span style="float: right;margin-right: 12%;">{{element.SelcetedForProjectQty }}</span>  </td>
+      <td mat-footer-cell *matFooterCellDef> <span style="float: right;margin-right: 12%;">{{totalSelecForInveAssetCount1}}</span>  </td>
+    </ng-container>
+
+    <ng-container matColumnDef="selectedForProjectCost">
+      <th mat-sort-header="selectedForProjectCost" style="width: 150px;" mat-header-cell *matHeaderCellDef>{{displayedHeaders[4]}}</th>
+      <td mat-cell *matCellDef="let element"> <span style="float: right;margin-right: 12%;">{{element.SelcetedForProjectCost | number : '1.2-2'}}</span>  </td>
+      <td mat-footer-cell *matFooterCellDef> <span style="float: right;margin-right: 12%;"> {{totalSelecForInveAssetCost1 | number : '1.2-2'}} </span> </td>
+    </ng-container>
+
+    <ng-container matColumnDef="selectedForProjectWDV">
+      <th mat-sort-header="selectedForProjectWDV" style="width: 150px;" mat-header-cell *matHeaderCellDef>{{displayedHeaders[5]}}</th>
+      <td mat-cell *matCellDef="let element"> <span style="float: right;margin-right: 12%;">{{element.SelcetedForProjectWDV | number : '1.2-2'}}</span>  </td>
+      <td mat-footer-cell *matFooterCellDef> <span style="float: right;margin-right: 12%;">{{totalSelecForInveAssetWDV1 | number : '1.2-2'}} </span> </td>
+    </ng-container>
+
+    <!-- <ng-container matColumnDef="Actions">
+      <th mat-sort-header="Actions" mat-header-cell *matHeaderCellDef></th>
+      <td mat-cell *matCellDef="let element">
+        <a style="color:#008bd0 !important;cursor: pointer;" (click)="openMappingDailog(element)">View</a>
+      </td>
+      <td mat-footer-cell *matFooterCellDef> </td>
+    </ng-container> -->
+    <ng-container matColumnDef="Actions">
+      <th mat-sort-header="Actions" mat-header-cell *matHeaderCellDef></th>
+      <td mat-cell *matCellDef="let element">     
+          <mat-icon [style.fontSize]="'27px'"
+              style="color: #e67e4a !important;margin-left: -7px;cursor: pointer;font-weight: bold;"
+              (click)="openMappingDailog(element)" class="authorize-click icon" *ngIf="!element.showbtn">add
+          </mat-icon>
+          <mat-icon [style.fontSize]="'27px'" 
+              style="color: #e67e4a !important;margin-left: -7px;cursor: pointer;font-weight: bold;"
+             (click)="hidetab(element)" class="authorize-click icon" *ngIf="!!element.showbtn">remove</mat-icon>        
+      </td>
+      <td mat-footer-cell *matFooterCellDef> </td>
+    </ng-container>
+
+    <!-- <ng-container matColumnDef=" ">
+      <th mat-header-cell *matHeaderCellDef [attr.colspan]="2" style="text-align: center;border-bottom-width: 0px;">
+      </th>
+    </ng-container>
+    <ng-container matColumnDef="Total">
+      <th mat-header-cell *matHeaderCellDef [attr.colspan]="3" style="text-align: center;">
+        {{Headers.TOTAL}}
+      </th>
+    </ng-container>
+    <ng-container matColumnDef="SelectedForProject">
+      <th mat-header-cell *matHeaderCellDef [attr.colspan]="4" style="text-align: center;">
+        {{Headers.SelectedForProject}} </th>
+    </ng-container> -->
+
+    <ng-container matColumnDef="expandedDetail">
+      <td mat-cell *matCellDef="let search" [attr.colspan]="displayedColumns.length" style="padding-left: 0px;">
+        <div class="example-element-detail" [@detailExpand]="search === expandedElement ? 'expanded' : 'collapsed'" *ngIf="!!search.popupdata">
+          <table mat-table [dataSource]="search.popupdata" matSort style="padding-top: 0px;padding-bottom: 10px;margin-left: 254px;width: 80%;">
+  
+            <ng-container matColumnDef="Select1">
+              <th mat-sort-header="Select1" mat-header-cell *matHeaderCellDef>
+                <!-- <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="selection.hasValue() && isAllSelected"
+                  [indeterminate]="selection.hasValue() && !isAllSelected">
+                </mat-checkbox> -->
+              </th>
+              <td mat-cell *matCellDef="let element let i=index">
+                <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? isSelectednew(element) : null"
+                  [checked]="getselectedIdsnew.indexOf(element.AssetCategoryId) > -1">
+                </mat-checkbox>
+              </td>
+              <td mat-footer-cell *matFooterCellDef="let element"></td>
+            </ng-container>
+    
+            <ng-container matColumnDef="AssetCategory">
+              <th mat-header-cell *matHeaderCellDef> {{ Headers.AssetCategory}} </th>
+              <td mat-cell *matCellDef="let element" style="border-left: 1px solid rgba(0, 0, 0, 0.12);width: 28%;" >{{element.AssetCategoryName}}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="Assets">
+              <th mat-header-cell *matHeaderCellDef style="text-align: center;">Total Assets Available For "PV" </th>
+              <td mat-cell *matCellDef="let element" style="padding-top: 5px;"><span style="float: right;margin-right: 20%;">{{element.Qty}}</span> </td>
+            </ng-container>
+
+            <ng-container matColumnDef="ActualCost">
+              <th mat-header-cell *matHeaderCellDef style="text-align: center;"> {{Headers.ActualCost}} </th>
+              <td mat-cell *matCellDef="let element" style="width: 28%;"> <span style="float: right;margin-right: 12%;">{{element.Cost | number : '1.2-2'}} </span></td>
+            </ng-container>
+
+            <ng-container matColumnDef="WDV">
+              <th mat-header-cell *matHeaderCellDef style="text-align: center;"> {{Headers.WDV}} </th>
+              <td mat-cell *matCellDef="let element"><span style="float: right;margin-right: 12%;">{{element.WDV | number : '1.2-2'}} </span></td>
+            </ng-container>
+  
+            <tr mat-header-row *matHeaderRowDef="displayedNestedColumns;sticky: true" style="background-color: #F5F5DC;"></tr>
+            <tr mat-row *matRowDef="let row2; columns: displayedNestedColumns" style="background-color:#f9f9f9"></tr>
+          </table>
+        </div>
+      </td>
+    </ng-container>
+
+    <!-- <tr mat-header-row *matHeaderRowDef="displayedUpperColumns;sticky: true"></tr> -->
+    <tr mat-header-row *matHeaderRowDef="displayedColumns;sticky: true" style="background-color: #F5F5DC;"></tr>
+    <tr mat-row *matRowDef="let search; columns: displayedColumns;" class="example-element-row"
+      [class.example-expanded-row]="expandedElement === search">
+    </tr>
+    <tr mat-row *matRowDef="let row; columns: ['expandedDetail']" class="example-detail-row"></tr>
+    <tr mat-footer-row *matFooterRowDef="displayedColumns;sticky: true"></tr>
+
+  </table>
+</div>
+<div *ngIf="selectedProject==='PhysicalVerification' && displayTable" fxLayout="row wrap" style="justify-content: flex-end;float: right;" class="mt-8">
+  <button mat-raised-button class="success" [disabled]="getselectedIds.length == 0"
+    (click)="CreateMultipleVerificationProjectJSON()"
+    style="margin-right: 10px;height: 39px;font-size: 15px;"> <mat-icon style="padding-bottom: 5px;">check</mat-icon> Submit</button>
+</div>
+
+
+
+<mat-card *ngIf="selectedProject==='SelfCertification'">
+
+
+    <div class="example-container mat-elevation-z8" *ngIf="displayTable">
+      <table mat-table #table [dataSource]="dataSource" matSort>
+
+        <ng-container matColumnDef="Select">
+          <th mat-sort-header="Select" mat-header-cell *matHeaderCellDef>
+            <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="isChecked"
+              [indeterminate]="selection.hasValue() && !isAllSelected()">
+            </mat-checkbox>
+          </th>
+          <td mat-cell *matCellDef="let row let i=index">
+            <mat-checkbox (click)="$event.stopPropagation()" (change)="EnableDisable(row,i)"
+              [checked]="newdataSource.indexOf(row.ID) > -1">
+            </mat-checkbox>
+          </td>
+          <td mat-footer-cell *matFooterCellDef></td>
+        </ng-container>
+
+        <ng-container matColumnDef="City">
+          <th mat-sort-header="City" mat-header-cell *matHeaderCellDef>{{displayedHeaders[1]}}</th>
+          <td mat-cell *matCellDef="let element">{{element.city}} </td>
+          <td mat-footer-cell *matFooterCellDef> </td>
+        </ng-container>
+
+        <ng-container matColumnDef="Plant">
+          <th mat-sort-header="Plant" mat-header-cell *matHeaderCellDef>{{displayedHeaders[2]}}</th>
+          <td mat-cell *matCellDef="let element">{{element.plant}} </td>
+          <td mat-footer-cell *matFooterCellDef> Total</td>
+        </ng-container>
+
+        <ng-container matColumnDef="totalCount">
+          <th mat-sort-header="totalCount" mat-header-cell *matHeaderCellDef>{{displayedHeaders[3]}}</th>
+          <td mat-cell *matCellDef="let element">{{element.total[0].count}} </td>
+          <td mat-footer-cell *matFooterCellDef> 7,435 </td>
+        </ng-container>
+
+        <ng-container matColumnDef="totalCost">
+          <th mat-sort-header="totalCost" mat-header-cell *matHeaderCellDef>{{displayedHeaders[4]}}</th>
+          <td mat-cell *matCellDef="let element"> {{element.total[0].cost}} </td>
+          <td mat-footer-cell *matFooterCellDef> 7,064,065 </td>
+        </ng-container>
+
+        <ng-container matColumnDef="totalWDV">
+          <th mat-sort-header="totalWDV" mat-header-cell *matHeaderCellDef>{{displayedHeaders[5]}}</th>
+          <td mat-cell *matCellDef="let element"> {{element.total[0].wdv}} </td>
+          <td mat-footer-cell *matFooterCellDef> 5,290,489 </td>
+        </ng-container>
+
+        <!--  <ng-container matColumnDef="availableForProjectCount">
+        <th mat-sort-header="availableForProjectCount" mat-header-cell *matHeaderCellDef>{{displayedHeaders[2]}}</th>
+        <td mat-cell *matCellDef="let element">{{element.availableForProject[0].count}} </td>
+      </ng-container>
+  
+      <ng-container matColumnDef="availableForProjectCost">
+        <th mat-sort-header="availableForProjectCost" mat-header-cell *matHeaderCellDef>{{displayedHeaders[3]}}</th>
+        <td mat-cell *matCellDef="let element"> {{element.availableForProject[0].cost}} </td>
+      </ng-container>
+  
+      <ng-container matColumnDef="availableForProjectWDV">
+        <th mat-sort-header="availableForProjectWDV" mat-header-cell *matHeaderCellDef>{{displayedHeaders[4]}}</th>
+        <td mat-cell *matCellDef="let element"> {{element.availableForProject[0].wdv}} </td>
+      </ng-container>-->
+
+        <ng-container matColumnDef="selectedForProjectCount">
+          <th mat-sort-header="selectedForProjectCount" mat-header-cell *matHeaderCellDef>{{displayedHeaders[3]}}</th>
+          <td mat-cell *matCellDef="let element">{{element.selectedForProject[0].count}} </td>
+          <td mat-footer-cell *matFooterCellDef> 0 </td>
+        </ng-container>
+
+        <ng-container matColumnDef="selectedForProjectCost">
+          <th mat-sort-header="selectedForProjectCost" mat-header-cell *matHeaderCellDef>{{displayedHeaders[4]}}</th>
+          <td mat-cell *matCellDef="let element"> {{element.selectedForProject[0].cost}} </td>
+          <td mat-footer-cell *matFooterCellDef> 0 </td>
+        </ng-container>
+
+        <ng-container matColumnDef="selectedForProjectWDV">
+          <th mat-sort-header="selectedForProjectWDV" mat-header-cell *matHeaderCellDef>{{displayedHeaders[5]}}</th>
+          <td mat-cell *matCellDef="let element"> {{element.selectedForProject[0].wdv}} </td>
+          <td mat-footer-cell *matFooterCellDef> 0 </td>
+        </ng-container>
+
+        <ng-container matColumnDef="Actions">
+          <th mat-sort-header="Actions" mat-header-cell *matHeaderCellDef></th>
+          <td mat-cell *matCellDef="let element">
+            <a style="color:#008bd0 !important;cursor: pointer;" (click)="openUpdateAuditRightsMapping_PopUp()">View</a>
+          </td>
+          <td mat-footer-cell *matFooterCellDef> </td>
+        </ng-container>
+
+        <ng-container matColumnDef=" ">
+          <th mat-header-cell *matHeaderCellDef [attr.colspan]="1" style="text-align: center;border-bottom-width: 0px;">
+          </th>
+        </ng-container>
+
+        <ng-container matColumnDef="Total">
+          <th mat-header-cell *matHeaderCellDef [attr.colspan]="3" style="text-align: center;">
+            {{Headers.TOTAL}}
+          </th>
+        </ng-container>
+
+        <!--   <ng-container matColumnDef="AvailableForProject">
+        <th mat-header-cell *matHeaderCellDef [attr.colspan]="3" style="text-align: center;"> {{header.AvailableForProject}} </th>
+      </ng-container>-->
+
+        <ng-container matColumnDef="SelectedForProject">
+          <th mat-header-cell *matHeaderCellDef [attr.colspan]="3" style="text-align: center;">
+            {{header.SelectedForProject}} </th>
+        </ng-container>
+
+
+        <tr mat-header-row *matHeaderRowDef="displayedUpperColumns;sticky: true"></tr>
+        <tr mat-header-row *matHeaderRowDef="displayedColumns;sticky: true"></tr>
+        <tr mat-row *matRowDef="let row; columns:displayedColumns"></tr>
+        <tr mat-footer-row *matFooterRowDef="displayedColumns"></tr>
+
+      </table>
+    </div>
+    
+  
+
+  <!-- <div fxLayout="row wrap" style="justify-content: flex-end;" class="mt-8">
+    <button mat-raised-button color="primary" >Submit</button>
+  </div> -->
+
+</mat-card>
+<div *ngIf="selectedProject==='SelfCertification'" fxLayout="row wrap" style="justify-content: flex-end;" class="mt-8">
+  <button class="success" mat-raised-button
+    style="margin-right: 10px;height: 39px;width: 92px;font-size: 15px;">Submit</button>
+</div>
+
+
+
+
+
+<!-- <ng-container matColumnDef="City">
+      <th mat-sort-header="City" mat-header-cell *matHeaderCellDef>
+        <span *ngIf="this.isButtonVisible == false"> {{displayedHeaders[1]}} </span>
+         <span *ngIf="this.isButtonVisible == true">
+          <mat-form-field  style="padding-bottom: 0px !important;margin-bottom: -9px !important;margin-top: -7px !important;">
+            <input matInput class="form-field"  [formControl]="CityFilter" placeholder="City"> 
+          </mat-form-field> 
+          </span>          
+         <mat-icon *ngIf="this.isButtonVisible == false" class="maticon" (click)="this.isButtonVisible= !this.isButtonVisible" style="height: 17px;width: 24px;font-size:17px;color:#1d3478;margin-right: -7px;" >search</mat-icon>         
+        <mat-panel-description *ngIf="this.isButtonVisible == true"> 
+            <mat-icon [matMenuTriggerFor]="msgMenu" (click)="$event.stopPropagation()" class="text-muted">more_vert</mat-icon>
+            <mat-menu #msgMenu="matMenu" >             
+              <button mat-menu-item (click)="opentablePopup('City',CreateProject_Data)" style="height: 40px !important;" ><mat-icon style="margin-right: 6px;"> <img src="assets/images/assetrak/23_10_2020/Multiple.png" /></mat-icon> Multiple Search</button>
+              <button mat-menu-item (click)="this.isButtonVisible= !this.isButtonVisible" style="height: 40px !important;" ><mat-icon style="margin-right: 6px;"> <img src="assets/images/assetrak/23_10_2020/Cross.png" /></mat-icon> Clear Search</button>
+              
+            </mat-menu>
+          </mat-panel-description>
+        </th>
+      <td mat-cell *matCellDef="let element"> {{element.city}} </td>
+      <td mat-footer-cell *matFooterCellDef="let element"> </td>
+    </ng-container> -->
+
+<!-- <ng-container matColumnDef="Plant">
+      <th mat-sort-header="Plant" mat-header-cell *matHeaderCellDef>
+        <span *ngIf="this.isButtonVisible1 == false"> {{displayedHeaders[2]}} </span>
+         <span *ngIf="this.isButtonVisible1 == true">
+          <mat-form-field  style="padding-bottom: 0px !important;margin-bottom: -9px !important;margin-top: -7px !important;">
+            <input matInput class="form-field"  [formControl]="PlantFilter" placeholder="Plant"> 
+          </mat-form-field> 
+          </span>          
+         <mat-icon *ngIf="this.isButtonVisible1 == false" class="maticon" (click)="this.isButtonVisible1= !this.isButtonVisible1" style="height: 17px;width: 24px;font-size:17px;color:#1d3478;margin-right: -7px;" >search</mat-icon> 
+         
+        <mat-panel-description *ngIf="this.isButtonVisible1 == true"> 
+            <mat-icon [matMenuTriggerFor]="msgMenu" (click)="$event.stopPropagation()" class="text-muted">more_vert</mat-icon>
+            <mat-menu #msgMenu="matMenu" >              
+              <button mat-menu-item (click)="opentablePopup('Plant',CreateProject_Data)" style="height: 40px !important;" ><mat-icon style="margin-right: 6px;"> <img src="assets/images/assetrak/23_10_2020/Multiple.png" /></mat-icon> Multiple Search</button>            
+              <button mat-menu-item (click)="this.isButtonVisible1= !this.isButtonVisible1" style="height: 40px !important;" ><mat-icon style="margin-right: 6px;"> <img src="assets/images/assetrak/23_10_2020/Cross.png" /></mat-icon> Clear Search</button>              
+            </mat-menu>
+          </mat-panel-description>
+        </th>
+      <td mat-cell *matCellDef="let element"> {{element.plant}} </td>
+      <td mat-footer-cell *matFooterCellDef="let element"> Total </td>
+    </ng-container> -->

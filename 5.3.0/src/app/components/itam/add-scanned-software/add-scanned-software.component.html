@@ -1,0 +1,174 @@
+<h3><strong style=" color:#008bd0 !important;">Add Software <span *ngIf="typeOfSoftware == 'nss'">Package</span> </strong>
+</h3>
+<form [formGroup]="softwareForm" class="mt-16">
+  <div fxLayout="row wrap" fxLayout.lt-sm="column" class="formscroll mt-12" style="margin-bottom: -8px !important;">
+    <!-- <div fxFlex="15" class="pr-1 full">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label" style="font-size: 15px !important;">{{header.InventoryNumber}} <span *ngIf="UploadNameBy != 'GRNNo'" style="color: red;">*</span> </mat-label>
+              <input matInput name="InventoryNo" maxlength="30" [formControl]="AssetInfo.controls['InventoryNo']"
+                class="bg-transparente" autocomplete="off">
+            </mat-form-field>
+          </div> -->
+
+
+    <div fxFlex="25" class="pr-1">
+      <mat-form-field class="full-width" appearance="outline">
+        <mat-label class="label asterisk_input" *ngIf="typeOfSoftware == 'ns'">Software Name  </mat-label>
+        <mat-label class="label asterisk_input" *ngIf="typeOfSoftware == 'nss'">Software Package  </mat-label>
+        <input matInput maxlength="45" [formControl]="softwareForm.controls['SoftwareName']" autocomplete="off">
+        <mat-error *ngIf="submitted || s1.SoftwareName.errors || s1.SoftwareName.dirty || s1.SoftwareName.touched">
+          <span *ngIf="s1.SoftwareName.errors?.required">Software Name is required</span>
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+
+    <!-- If Capitalized Software Selected -->
+    <div fxFlex="25" class="pr-1">
+      <mat-form-field class="full-width" appearance="outline">
+        <mat-label class="label">Version</mat-label>
+        <input matInput maxlength="45" [formControl]="softwareForm.controls['SoftwareVersion']" autocomplete="off">
+      </mat-form-field>
+    </div>
+
+    <div fxFlex="25" class="pr-1" *ngIf="typeOfSoftware == 'ns'">
+      <mat-form-field class="full-width" appearance="outline">
+        <mat-label class="label asterisk_input">Type Of Software</mat-label>
+        <mat-select disableOptionCentering [formControl]="softwareForm.controls['SoftwareType']">
+          <mat-option>
+            <ngx-mat-select-search [placeholderLabel]="'Search'" noEntriesFoundLabel="{{header.NoRecordFound}}"
+              [formControl]="softwareForm.controls['SoftwareTypeFilter']"></ngx-mat-select-search>
+          </mat-option>
+          <mat-option *ngFor="let type of typeOfSoftwares" [value]="type.SoftwareTypeId" (click)="ChangeType(type)">
+            {{type.SoftwareTypeName}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="submitted || s1.SoftwareType.errors || s1.SoftwareType.dirty || s1.SoftwareType.touched">
+          <span *ngIf="s1.SoftwareType.errors?.required">Software Type is required</span>
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+
+    <div fxFlex="25" class="pr-1">
+      <mat-form-field class="full-width" appearance="outline">
+        <mat-label class="label asterisk_input">Software Category</mat-label>
+        <mat-select disableOptionCentering [formControl]="softwareForm.controls['SoftwareCategory']">
+          <mat-option>
+            <ngx-mat-select-search [placeholderLabel]="'Search'" noEntriesFoundLabel="{{header.NoRecordFound}}"
+              [formControl]="softwareForm.controls['SoftwareCategoryFilter']"></ngx-mat-select-search>
+          </mat-option>
+          <mat-option *ngFor="let type of typeOfCategorys" [value]="type.ID">
+            {{type.SoftwareCategory}}
+          </mat-option>
+        </mat-select>
+        <mat-error
+          *ngIf="submitted || s1.SoftwareCategory.errors || s1.SoftwareCategory.dirty || s1.SoftwareCategory.touched">
+          <span *ngIf="s1.SoftwareCategory.errors?.required">Software Category is required</span>
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div fxFlex="25" class="pr-1">
+      <mat-form-field class="full-width" appearance="outline">
+        <mat-label class="label asterisk_input">Manufacturer</mat-label>
+        <mat-select disableOptionCentering [formControl]="softwareForm.controls['Manufacturer']">          
+          <mat-option>
+            <ngx-mat-select-search [placeholderLabel]="'Search'" noEntriesFoundLabel="{{header.NoRecordFound}}" [formControl]="softwareForm.controls['ManufacturerFilter']" (keyup)="applyManufactureFilter()"
+              ></ngx-mat-select-search>
+          </mat-option>
+          <mat-option *ngFor="let type of typeOfManufacturers" [value]="type.ID"
+            (click)="getSuiteComponentSoftware(type.ID)">
+            {{type.Name}}
+          </mat-option>
+        </mat-select>
+        <mat-icon matSuffix (click)="$event.stopPropagation()" (click)="addManufacturer()">add</mat-icon>
+        <mat-error *ngIf="submitted || s1.Manufacturer.errors || s1.Manufacturer.dirty || s1.Manufacturer.touched">
+          <span *ngIf="s1.Manufacturer.errors?.required">Manufacturer is required</span>
+        </mat-error>
+      </mat-form-field>
+    </div>
+
+    <div fxFlex="25" class="pr-1" *ngIf="softwareForm.controls['SoftwareType'].value == '5' && typeOfSoftware == 'ns'">
+      <mat-form-field class="full-width" appearance="outline">
+        <mat-label class="label asterisk_input">Software Packages</mat-label>
+        <mat-select disableOptionCentering [formControl]="softwareForm.controls['SoftwareSuite']">
+          <mat-option>
+            <ngx-mat-select-search [placeholderLabel]="'Search'" noEntriesFoundLabel="{{header.NoRecordFound}}"
+              [formControl]="softwareForm.controls['SoftwareSuiteFilter']"></ngx-mat-select-search>
+          </mat-option>
+          <mat-option *ngFor="let type of typeOfSoftwareSuites" [value]="type.SoftwareSuiteID">
+            {{type.SoftwareName}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="submitted || s1.SoftwareSuite.errors || s1.SoftwareSuite.dirty || s1.SoftwareSuite.touched">
+          <span *ngIf="s1.SoftwareSuite.errors?.required">Software Suite is required</span>
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <!-- <div fxFlex="25" class="pr-1">
+      <mat-form-field class="full-width" appearance="outline">
+        <mat-label class="label">Cost</mat-label>
+        <input matInput maxlength="45" [formControl]="softwareForm.controls['Cost']" autocomplete="off">
+        <mat-error *ngIf="submitted || s1.AsstNo.errors || s1.AsstNo.dirty || s1.AsstNo.touched">
+          <span *ngIf="s1.AsstNo.errors?.required">Software Category is required</span>
+        </mat-error>
+      </mat-form-field>
+    </div> -->
+    <div fxFlex="25" class="pr-1" *ngIf="typeOfSoftware == 'nss'">
+      <mat-form-field class="full-width" appearance="outline" >
+        <mat-label class="label asterisk_input">Software Component</mat-label>
+        <mat-select disableOptionCentering [formControl]="softwareForm.controls['ComponentSoftware']"  [multiple]="true" #multiSelect [disabled]="!softwareForm.controls['Manufacturer'].value">
+          <mat-option>
+            <ngx-mat-select-search [placeholderLabel]="'Search'" noEntriesFoundLabel="{{header.NoRecordFound}}"
+              [formControl]="softwareForm.controls['ComponentSoftwareFilter']"></ngx-mat-select-search>
+          </mat-option>
+          <mat-option *ngFor="let type of softwareComponents" [value]="type">
+            {{type.SoftwareName}}
+          </mat-option>
+        </mat-select>
+      </mat-form-field>
+
+    </div>
+    <!-- <div fxFlex="25" class="pr-1" *ngIf="softwareForm.controls['SoftwareType'].value == '5'">
+      <mat-form-field class="full-width" appearance="outline">
+        <mat-label class="label asterisk_input">Software Manager Role</mat-label>
+        <mat-select disableOptionCentering [formControl]="softwareForm.controls['Role']">         
+          <mat-option *ngFor="let type of roleList" [value]="type.RoleId">
+            {{type.RoleName}}
+          </mat-option>
+        </mat-select>
+        <mat-error *ngIf="submitted || s1.Role.errors || s1.Role.dirty || s1.Role.touched">
+          <span *ngIf="s1.Role.errors?.required">Role is required</span>
+        </mat-error>
+      </mat-form-field>
+    </div> -->
+    <div fxFlex="25" class="pr-1">
+      <mat-form-field class="full-width" appearance="outline">
+        <mat-label class="label">Description</mat-label>
+        <textarea matInput [formControl]="softwareForm.controls['Description']" autocomplete="off"></textarea>
+
+      </mat-form-field>
+    </div>
+   
+    <div fxFlex="25" class="pr-1">
+      <button mat-raised-button class="minibtn" (click)="addAnotherPhoto()" style="margin-left: 8px !important">
+        <mat-icon style="color: white;">add</mat-icon>
+        <span style="color: white;">Upload</span>
+       
+      </button>
+      
+    </div>
+    
+  </div>
+  <div fxLayout="row wrap">
+    <div fxFlex="50" fxFlex.gt-xs="50" class="pr-1" style="text-align: left;">
+      <button (click)="onExit()" mat-raised-button class="warn"><span>Back</span>
+    </button>
+    </div>
+    <div fxFlex="50" fxFlex.gt-xs="50" class="pr-1" style="text-align: right;">
+      <button (click)="onSave()" [disabled]="softwareForm.invalid" mat-raised-button class="success"><span>Save</span>
+    </button>
+    </div>
+  </div>
+</form>

@@ -1,0 +1,451 @@
+<mat-toolbar class="topbar" style="background: #0C3057 !important;">   
+    <div class="branding" style="width: auto;padding: 0 16px;height: 48px !important;background: #0C3057 !important;">     
+      <img  src="assets/images/assetrak/Assetrak-logo.png" alt=""  class="app-logo" style="height:24px !important;margin-right:0px">           
+  </div>
+    <span fxFlex></span>
+    <span style="color: white !important;font-size: 16px !important;">Assetrak Solutions Private Limited</span>
+    <span fxFlex></span>    
+</mat-toolbar>
+<h3><strong style=" color:#008bd0 !important;"> Transfer Approval</strong>
+    <span *ngIf="numSelected > 0" style="margin-left: 245px !important;font: italic;"><i>{{numSelected}} assets selected</i></span>
+    <span *ngIf="numSelected > 0"><a style="color:#008bd0 !important;margin-left: 5px !important;cursor: pointer;"
+            (click)="viewSelected()"><u>View</u></a></span><span *ngIf="numSelected > 0"><a
+            style="color:red !important;margin-left: 5px !important;cursor: pointer;"
+            (click)="clearSelectedView()">Clear</a></span>
+          <span *ngIf="appliedfilters.length > 0" style="margin-left: 200px !important;font: italic;"><span>other filters
+            applied<i *ngFor="let fil of appliedfilters;let i=index" style="font-weight: 700;"> {{fil}}<i
+                    *ngIf="i!=appliedfilters.length-1">/</i> </i></span></span><span
+        *ngIf="appliedfilters.length > 0"><a style="color:red !important;margin-left: 15px !important;cursor: pointer;"
+            (click)="clearfilter()">Clear</a></span>
+</h3>
+<span class="example-spacer"></span>
+
+<div fxLayout='row wrap' fxLayoutAlign='space-between' fxLayout.lt-sm="column" style="min-height: fit-content;">
+    <div fxFlex="100" fxFlex.gt-xs="12" class="pr-1">    
+    <mat-form-field class="formfield full-width" color="primary">
+        <mat-select disableOptionCentering [(ngModel)]="transfertypeMultiCtrl" [ngModelOptions]="{standalone: true}"
+            placeholder="{{ Headers.TransferType }}*" [disabled]="true">
+            <mat-option *ngFor="let type of filteredTransferTypeMulti | async" [value]="type">
+                {{type.DisplayName}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>   
+    </div>
+    <div fxFlex="100" fxFlex.gt-xs="12" class="pr-1">   
+    <mat-form-field class="formfield full-width" color="primary">
+        <mat-select disableOptionCentering [(ngModel)]="companyMultiCtrl" [ngModelOptions]="{standalone: true}"
+            placeholder="Company Name*" [multiple]="false" #singleSelect>
+            <mat-option>
+                <ngx-mat-select-search [placeholderLabel]="'Search'" noEntriesFoundLabel="{{Headers.NoRecordFound}}"[showToggleAllCheckbox]="false"
+                    (toggleAll)="toggleSelectAllCompany($event)" [formControl]="companyMultiFilterCtrl">
+                </ngx-mat-select-search>
+            </mat-option>
+            <mat-option *ngFor="let type of filteredCompanyMulti | async" [value]="type" (click)="GetLocationByCompanyId(type.CompanyId)">
+                {{type.CompanyName}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+    </div>
+    <div fxFlex="100" fxFlex.gt-xs="12" class="pr-1">   
+    <mat-form-field class="formfield full-width" color="primary">
+        <mat-select disableOptionCentering [(ngModel)]="cityMultiCtrl" [ngModelOptions]="{standalone: true}"
+            placeholder="{{Headers[HeaderLayerText]}}" [multiple]="false" #singleSelect>
+            <mat-option>
+                <ngx-mat-select-search [placeholderLabel]="'Search'" [showToggleAllCheckbox]="false"
+                    (toggleAll)="toggleSelectAllCity($event)" [formControl]="cityMultiFilterCtrl">
+                </ngx-mat-select-search>
+            </mat-option>
+            <mat-option  [value]=""  (click)="onchangeSBU('')"> {{Headers.Select}} </mat-option>
+            <mat-option *ngFor="let type of filteredCityMulti | async" [value]="type[Layertext]" (click)="onchangeSBU(type[Layertext])">
+                {{type[Layertext]}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+    </div>
+    <div fxFlex="100" fxFlex.gt-xs="12" class="pr-1">   
+    <mat-form-field class="formfield full-width" color="primary">
+        <mat-select disableOptionCentering [(ngModel)]="plantMultiCtrl" [ngModelOptions]="{standalone: true}"
+            placeholder="{{ Headers.Location }}" [multiple]="true" #multiSelect>
+            <mat-option>
+                <ngx-mat-select-search [placeholderLabel]="'Search'" noEntriesFoundLabel="{{Headers.NoRecordFound}}" [showToggleAllCheckbox]="false"
+                    (toggleAll)="toggleSelectAll($event)" [formControl]="plantMultiFilterCtrl">
+                </ngx-mat-select-search>
+            </mat-option>
+            <mat-option *ngFor="let type of filteredPlantsMulti | async" [value]="type" (click)="GetTransferIds()">
+                {{type.LocationName}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+    </div>
+    <div fxFlex="100" fxFlex.gt-xs="12" class="pr-1">   
+    <mat-form-field class="formfield full-width" color="primary">
+        <mat-select disableOptionCentering [(ngModel)]="categoryMultiCtrl" [ngModelOptions]="{standalone: true}"
+            placeholder="{{ Headers.AssetCategory}}" [multiple]="true" #multiSelect>
+            <mat-option>
+                <ngx-mat-select-search [placeholderLabel]="'Search'" noEntriesFoundLabel="{{Headers.NoRecordFound}}" [showToggleAllCheckbox]="false"
+                    (toggleAll)="toggleSelectAllcategory($event)" [formControl]="categoryFilterCtrl">
+                </ngx-mat-select-search>
+            </mat-option>
+            <mat-option *ngFor="let type of filteredcategoryMulti| async" [value]="type">
+                {{type.AssetCategoryName}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+    </div>
+    <div fxFlex="100" fxFlex.gt-xs="12" class="pr-1">   
+    <mat-form-field class="formfield full-width" color="primary">
+        <mat-select disableOptionCentering [(ngModel)]="transferIdMultiCtrl" [ngModelOptions]="{standalone: true}"
+            placeholder="{{Headers.TransferId}}*">
+            <mat-option>
+                <ngx-mat-select-search [placeholderLabel]="'Search'" [showToggleAllCheckbox]="true"
+                    (toggleAll)="toggleSelectAlltransferId($event)" [formControl]="transferIdFilterCtrl">
+                </ngx-mat-select-search>
+            </mat-option>
+            <mat-option *ngFor="let type of ListOfTransferId" [value]="type">
+                {{type}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+    </div>
+    <div fxFlex="100" fxFlex.gt-xs="12" class="pr-1">   
+    <mat-form-field class="formfield full-width" color="primary">
+        <mat-select disableOptionCentering [(ngModel)]="approvalLevelMultiCtrl" [ngModelOptions]="{standalone: true}"
+            placeholder="{{Headers.ApprovalStatus}}" [multiple]="true" #multiSelect>
+            <mat-option *ngFor="let type of ListOfApprovalLevel" [value]="type.value">
+                {{type.viewValue}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+    </div>
+    <div fxFlex="100" fxFlex.gt-xs="16">
+    
+    
+    <button mat-raised-button class="submitbtn" (click)="GetAssetListForTransferApproval()">
+        <mat-icon class="matbtn">shortcut</mat-icon>Submit
+      </button>
+    <!-- <button mat-icon-button mat-sm-button  class="mr-24" (click)="GetAssetListForTransferApproval()" ><mat-icon class="example-icon MatBtnClass"  style="font-size: 50px;height: 30px;width: 35px;"><img style="height: 38px;width:40px;padding-top: 6px;"  src="assets/images/assetrak/23_10_2020/GO 5.png" /></mat-icon></button> -->
+    
+
+    <span class="example-spacer"></span>
+    <!-- <mat-icon class="example-icon FixBtnClass" matTooltip="Filter" [style.fontSize]="'24px'" style="margin-bottom: -2px;cursor: pointer;"><img src="assets/images/assetrak/Latest/FilterNew.png" /></mat-icon> -->
+    <!-- <mat-icon class="example-icon FixBtnClass" matTooltip="Export" [style.fontSize]="'24px'" style="margin-left: -5px;margin-bottom: -2px;cursor: pointer;"><img src="assets/images/assetrak/Latest/ExportNew.png" /></mat-icon> -->
+    <mat-icon class="example-icon FixBtnClass" matTooltip="Edit Grid Display" (click)="editGridpop()" [style.fontSize]="'24px'" style="margin-left: -5px;margin-bottom: -2px;cursor: pointer;float: right;"><img src="assets/images/assetrak/Latest/GridDisplayNew.png" /></mat-icon>
+    <!-- <mat-panel-description style="float: right;">
+        <mat-icon [matMenuTriggerFor]="msgMenu" (click)="$event.stopPropagation()" class="text-muted">
+          more_vert</mat-icon>
+        <mat-menu #msgMenu="matMenu">
+          <button mat-menu-item style="height: 40px !important;">
+            <mat-icon style="margin-right: 6px;color: #0c3057;"> filter_list
+            </mat-icon> Create Filter
+          </button>
+          <button mat-menu-item  style="height: 40px !important;">
+            <mat-icon style="margin-right: 6px;color: #0c3057;"> download
+            </mat-icon> Export
+          </button>
+          <button mat-menu-item (click)="editGridpop()" style="height: 40px !important;">
+            <mat-icon style="margin-right: 6px;color: #0c3057;"> view_column
+            </mat-icon> Edit Grid Display
+          </button>
+        </mat-menu>
+      </mat-panel-description> -->
+      </div>
+      </div>
+      
+
+
+
+<!-- <div class=" example-container mat-elevation-z8">
+    <table mat-table #table [dataSource]="dataSource" matSort>
+        <ng-container matColumnDef="select">
+            <th mat-header-cell *matHeaderCellDef>
+                <mat-checkbox (change)="$event ? masterToggle() : null"
+                        [checked]="selection.hasValue() && isAllSelected"
+                        [indeterminate]="selection.hasValue() && !isAllSelected">
+                    </mat-checkbox>
+            </th>
+            <td mat-cell *matCellDef="let row let i=index">
+                <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? isSelected(row) : null" *ngIf="row.UserIDlist.indexOf(sessionId) > -1"
+                    [checked]="getselectedIds.indexOf(row.PreFarId) > -1">
+               </mat-checkbox>
+            </td>
+        </ng-container>
+        <ng-container matColumnDef="2">
+            <th mat-sort-header="2" mat-header-cell *matHeaderCellDef>{{ Headers.InventoryNumber }}</th>
+            <td mat-cell *matCellDef="let element"> {{element.Barcode}} </td>
+        </ng-container>        
+        <ng-container matColumnDef="3">            
+            <th mat-sort-header="3" mat-header-cell *matHeaderCellDef>
+                <span *ngIf="this.isButtonVisible == false"> {{ Headers.AID }} </span>
+                <span *ngIf="this.isButtonVisible == true">
+                    <mat-form-field
+                        style="padding-bottom: 0px !important;margin-bottom: -9px !important;margin-top: -7px !important;">
+                        <input matInput class="form-field" [formControl]="AssetNoFilter" placeholder="AssetNo">
+                    </mat-form-field>
+                </span>
+
+                <mat-icon *ngIf="this.isButtonVisible == false" class="maticon"
+                    (click)="this.isButtonVisible= !this.isButtonVisible"
+                    style="height: 17px;width: 24px;font-size:17px;color:#1d3478;margin-right: -7px;">search</mat-icon>
+                
+                <mat-panel-description *ngIf="this.isButtonVisible == true">
+                    <mat-icon [matMenuTriggerFor]="msgMenu" (click)="$event.stopPropagation()" class="text-muted">
+                        more_vert</mat-icon>
+                    <mat-menu #msgMenu="matMenu">
+                        <button mat-menu-item (click)="opentablePopup('position')" style="height: 40px !important;">
+                            <mat-icon style="margin-right: 6px;"> <img
+                                    src="assets/images/assetrak/23_10_2020/Multiple.png" /></mat-icon> Multiple Search
+                        </button>
+
+                        <button mat-menu-item (click)="this.isButtonVisible= !this.isButtonVisible"
+                            style="height: 40px !important;">
+                            <mat-icon style="margin-right: 6px;"> <img
+                                    src="assets/images/assetrak/23_10_2020/Cross.png" /></mat-icon> Clear Search
+                        </button>
+
+                    </mat-menu>
+                </mat-panel-description>
+
+            </th>
+
+            <td mat-cell *matCellDef="let element"><a style="color:#008bd0 !important;cursor: pointer;"
+                    (click)="openPopUp(element)">{{element.AssetId}}</a></td>
+        </ng-container>
+
+        
+        <ng-container matColumnDef="4">
+            <th mat-sort-header="4" mat-header-cell *matHeaderCellDef>{{ Headers.SAID }}</th>
+            <td mat-cell *matCellDef="let element"> {{element.SubAssetId}} | {{element.SplitId}} </td>
+        </ng-container>
+
+        
+        <ng-container matColumnDef="5">
+            <th mat-sort-header="5" mat-header-cell *matHeaderCellDef>{{ Headers.AssetClass }}</th>
+            <td mat-cell *matCellDef="let element"> {{element.BlockOfAsset}} </td>
+        </ng-container>
+        <ng-container matColumnDef="6">
+            <th mat-sort-header="6" mat-header-cell *matHeaderCellDef>{{ Headers.ADL2 }}</th>
+            <td mat-cell *matCellDef="let element"> {{element.ADL2}} </td>
+        </ng-container>        
+        
+        <ng-container matColumnDef="7">
+            <th mat-sort-header="7" mat-header-cell *matHeaderCellDef>{{ Headers.ActualCost }}</th>
+            <td mat-cell *matCellDef="let element"> {{element.AcquisitionCost | number}} </td>
+
+        </ng-container>
+        <ng-container matColumnDef="8">
+            <th mat-sort-header="8" mat-header-cell *matHeaderCellDef>{{ Headers.WDV }}</th>
+            <td mat-cell *matCellDef="let element"> {{element.WDV | number}} </td>
+        </ng-container>
+        
+        <ng-container matColumnDef="9">
+            <th mat-sort-header="9" mat-header-cell *matHeaderCellDef>{{ Headers.EqipmentNumber }}</th>
+            <td mat-cell *matCellDef="let element"> {{element.equipmentNo}} </td>
+        </ng-container>
+        <ng-container matColumnDef="10">
+            <th mat-sort-header="10" mat-header-cell *matHeaderCellDef>{{ Headers.OutwardLocation }}</th>
+            <td mat-cell *matCellDef="let element"> {{element.OutwardLocation}} </td>
+        </ng-container>
+        <ng-container matColumnDef="11">
+            <th mat-sort-header="11" mat-header-cell *matHeaderCellDef>{{ Headers.TransferId }}</th>
+            <td mat-cell *matCellDef="let element"> {{element.TransferId }} </td>
+        </ng-container>
+        <ng-container matColumnDef="12">
+            <th mat-sort-header="12" mat-header-cell *matHeaderCellDef>{{ Headers.InitiatedBy }}</th>
+            <td mat-cell *matCellDef="let element"> {{element.InitiatiatedByName}} </td>
+        </ng-container>
+        <ng-container matColumnDef="13">
+            <th mat-sort-header="13" mat-header-cell *matHeaderCellDef>{{ Headers.AssetCondition }}</th>
+            <td mat-cell *matCellDef="let element"> {{element.AssetCondition}} | {{element.ConditionEffectiveDate | date:'dd-MMM-yyyy'}} </td>
+        </ng-container>
+        <ng-container matColumnDef="14">
+            <th mat-sort-header="14" mat-header-cell *matHeaderCellDef>{{ Headers.AssetCriticality }}</th>
+            <td mat-cell *matCellDef="let element"> {{element.AssetCriticality}} </td>
+        </ng-container>
+        <ng-container matColumnDef="15">
+            <th mat-sort-header="15" mat-header-cell *matHeaderCellDef>{{ Headers.TransferredDate }}</th>
+            <td mat-cell *matCellDef="let element"> {{element.OutwardDate | date:'dd-MMM-yyyy'}} </td>
+        </ng-container>
+        <ng-container matColumnDef="16">
+            <th mat-sort-header="16" mat-header-cell *matHeaderCellDef>{{ Headers.TransferComment}}</th>
+            <td mat-cell class="ellipsis" *matCellDef="let element" title="{{element.transfercomment}}"> {{element.transfercomment }} </td>
+        </ng-container>
+        <ng-container matColumnDef="17">
+            <th mat-sort-header="17" mat-header-cell *matHeaderCellDef>{{ Headers.TransferDocument}}</th>
+            <td mat-cell *matCellDef="let element"> {{element.DocumentDocName}} </td>
+        </ng-container>
+        <ng-container matColumnDef="18">
+            <th mat-sort-header="18" mat-header-cell *matHeaderCellDef>{{ Headers.TransferPhoto}}</th>
+            <td mat-cell *matCellDef="let element"> {{element.DocumentPhotoName}} </td>
+        </ng-container>
+        <ng-container matColumnDef="19">
+            <th mat-sort-header="19" mat-header-cell *matHeaderCellDef>
+                <span *ngIf="this.isApprovalLevelButtonVisible == false"> Approval Level </span>
+                <span *ngIf="this.isApprovalLevelButtonVisible == true">
+                    <mat-form-field
+                        style="padding-bottom: 0px !important;margin-bottom: -9px !important;margin-top: -7px !important;">
+                        <input matInput class="form-field" [formControl]="ApprovalLevelFilter" placeholder="Approval Level">
+                    </mat-form-field>
+                </span>
+
+                <mat-icon *ngIf="this.isApprovalLevelButtonVisible == false" class="maticon"
+                    (click)="this.isApprovalLevelButtonVisible= !this.isApprovalLevelButtonVisible"
+                    style="height: 17px;width: 24px;font-size:17px;color:#1d3478;margin-right: -7px;">search</mat-icon>
+               
+
+
+                <mat-panel-description *ngIf="this.isApprovalLevelButtonVisible == true">
+                    <mat-icon [matMenuTriggerFor]="msgMenu" (click)="$event.stopPropagation()" class="text-muted">
+                        more_vert</mat-icon>
+                    <mat-menu #msgMenu="matMenu">
+                        <button mat-menu-item (click)="opentablePopup('position')" style="height: 40px !important;">
+                            <mat-icon style="margin-right: 6px;"> <img
+                                    src="assets/images/assetrak/23_10_2020/Multiple.png" /></mat-icon> Multiple Search
+                        </button>
+
+                        <button mat-menu-item (click)="this.isApprovalLevelButtonVisible= !this.isApprovalLevelButtonVisible"
+                            style="height: 40px !important;">
+                            <mat-icon style="margin-right: 6px;"> <img
+                                    src="assets/images/assetrak/23_10_2020/Cross.png" /></mat-icon> Clear Search
+                        </button>
+
+                    </mat-menu>
+                </mat-panel-description>
+
+            </th>
+            <td mat-cell *matCellDef="let element">  {{ Headers[element.ApprovalLevel] }} </td>
+        </ng-container>
+        <ng-container matColumnDef="20">
+            <th mat-sort-header="20" mat-header-cell *matHeaderCellDef>Pending With</th>
+            <td mat-cell *matCellDef="let element"> {{element.PendingForApproval}} </td>
+        </ng-container>
+        <ng-container matColumnDef="21">
+            <th mat-sort-header="21" mat-header-cell *matHeaderCellDef>Approval Details</th>
+            <td mat-cell *matCellDef="let element"> <button mat-icon-button mat-sm-button color="primary" style="height: 20px;" class="mr-1" (click)="openApprovalDetails(element)" ><mat-icon>check_box</mat-icon></button> </td>
+        </ng-container>
+             
+        <tr mat-header-row *matHeaderRowDef="displayedColumns;sticky: true "></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+</div> -->
+<div class=" example-container mat-elevation-z8">
+    <table mat-table #table [dataSource]="dataSource" matSort>
+        <ng-container [matColumnDef]="column" *ngFor="let column of displayedColumns; index as i">
+            <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                <span *ngIf="column === 'Select'">
+                    <mat-checkbox (change)="$event ? masterToggle() : null"
+                        [checked]="selection.hasValue() && isAllSelected"
+                        [indeterminate]="selection.hasValue() && !isAllSelected">
+                    </mat-checkbox>
+                </span>
+                <span *ngIf="column === 'AssetId' ">
+                    <span *ngIf="this.isButtonVisible == false"> {{ Headers.AID }} </span>
+                    <span *ngIf="this.isButtonVisible == true">
+                      <mat-form-field
+                        style="padding-bottom: 0px !important;margin-bottom: -9px !important;margin-top: -7px !important;">
+                        <input matInput class="form-field" [formControl]="AssetNoFilter" placeholder="{{Headers.AID}}"
+                          (change)="SerchAssetid(column)" autocomplete="off">
+                      </mat-form-field>
+                    </span>
+                    <mat-icon *ngIf="this.isButtonVisible == false" class="maticon searchicon"
+                      (click)="Serchicon(column,isButtonVisible)"
+                      style="height: 17px;width: 24px;font-size:17px;color:#1d3478;margin-right: -7px;">search</mat-icon>
+                    <mat-panel-description *ngIf="this.isButtonVisible == true">
+                      <mat-icon [matMenuTriggerFor]="msgMenu" (click)="$event.stopPropagation()" class="text-muted">
+                        more_vert</mat-icon>
+                      <mat-menu #msgMenu="matMenu">
+                        <button mat-menu-item (click)="opentablePopup('position')"  *ngIf="setflag" style="height: 40px !important;">
+                          <mat-icon style="margin-right: 6px;"> <img src="assets/images/assetrak/23_10_2020/Multiple.png" />
+                          </mat-icon> Multiple Search
+                        </button>
+                        <button mat-menu-item (click)="ClearSerch(column,isButtonVisible)" style="height: 40px !important;">
+                          <mat-icon style="margin-right: 6px;"> <img src="assets/images/assetrak/23_10_2020/Cross.png" />
+                          </mat-icon> Clear Search
+                        </button>
+                      </mat-menu>
+                    </mat-panel-description>
+                  </span>
+                <span *ngIf="column != 'AssetId' && column != 'Select'">
+                    {{Headers[column]}}
+                </span>
+            </th>
+            <td mat-cell *matCellDef="let element">
+                <span *ngIf="column === 'Select'">
+                    <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? isSelected(element) : null" 
+                         [checked]="getselectedIds.indexOf(element.PreFarId) > -1">
+                    </mat-checkbox>
+                </span>
+                <span *ngIf="column === 'AssetId'" style="float: left;padding-left: 10px;padding-right: 10px;">
+                    <a style="color:#0645ad !important;cursor: pointer;font-style: italic;text-decoration: underline;" (click)="openPopUp(element)">{{element.AssetId}}</a>
+                </span> 
+                <span *ngIf="column === 'AcquisitionDate' || column === 'ProposedTransferDate'">
+                    {{element[column] | date:'dd-MMM-yyyy'}}
+                  </span>
+                  <span *ngIf="column === 'RequestInfoOn'" style="color: red;">
+                    {{element[column] | date:'dd-MMM-yyyy'}}
+                  </span>
+                  <span *ngIf="column === 'RequestInfoByName'" style="color: red;">
+                    {{element[column]}}
+                  </span>
+                  <span class="ellipsis" *ngIf="column === 'RequestInfoComment'" style="color: red;" title="{{element[column]}}">
+                    {{element[column]}}
+                  </span>
+                  <span class="ellipsis" *ngIf="column === 'TransferComment'" title="{{element[column]}}">
+                    {{element[column]}}
+                  </span>
+                  <span *ngIf="column === 'AcquisitionCost' || column ==='GlobalCost'">
+                    {{element[column] | number : '1.2-2'}}
+                  </span>
+                  <span *ngIf="column === 'WDV' || column ==='GlobalWDV'">
+                    {{element[column] | number : '1.2-2'}}
+                  </span>
+                  <span *ngIf="column === 'ApprovalLevel'">
+                    {{ Headers[element.ApprovalLevel] }}
+                </span>
+                <span *ngIf="column != 'AssetId' && column != 'Select'  && column != 'PendingWith'&& column != 'AcquisitionDate'&& column != 'AcquisitionCost' && column != 'WDV' && column != 'TransferDocument' && column != 'ProposedTransferDate' && column != 'RequestInfoOn' && column !='GlobalWDV' && column !='GlobalCost' && column != 'RequestInfoByName' && column != 'RequestInfoComment' && column != 'TransferComment'">
+                    {{element[column]}}
+                </span>
+                
+                <span *ngIf="column === 'PendingWith'">
+                    {{element.PendingForApproval}}
+                </span>
+                <span *ngIf="column === 'ApprovalDetails'">                   
+                    <a style="color:#008bd0 !important;cursor: pointer;" (click)="openApprovalDetails(element)"> View Details </a>
+                </span>
+                <span *ngIf="column === 'TransferDocument'">
+                    <a style="color:#008bd0 !important;cursor: pointer;" (click)="viewDocuments(element)"> View Documents </a>
+                </span>
+               
+            </td>   
+        </ng-container>     
+        <tr mat-header-row *matHeaderRowDef="displayedColumns;sticky:true"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    <div style="text-align: center;" *ngIf="dataSource.data.length === 0">{{message.NoDataAvailable}}</div>
+</div>
+<div style="margin-top: 8px;"> 
+<mat-paginator class="expedientes-paginator"  [showFirstLastButtons]="true" [length]="paginationParams.totalCount"
+               [pageSize]="paginationParams.pageSize"
+               [pageSizeOptions]="[50, 100, 200,500]"
+               (page)="handlePage($event)">
+</mat-paginator>
+</div>
+
+<form [formGroup]="dialogForm"> 
+    <div fxLayout="row wrap" style="padding-top: 10px;">
+      <div fxFlex="100" fxFlex.gt-xs="25" class="pr-1">
+        <mat-form-field class="full-width" appearance="outline">
+          <mat-label  style="font-size: 15px !important;" >Transfer Comment</mat-label>          
+          <textarea matInput   formControlName="commentCtrl" maxlength="100"  class="bg-transparente"></textarea>                    
+        </mat-form-field>
+      </div>  
+      <div fxFlex="100" fxFlex.gt-xs="75" class="pr-1" style="text-align: right;"> 
+        <button mat-raised-button color="accent" class="mr-12"
+        (click)="RequestInformation()" ><mat-icon>priority_high</mat-icon>Request Information</button>
+        <button mat-raised-button color="warn" class="mr-12" 
+        (click)="Submit('Reject')" ><mat-icon>close</mat-icon>Reject</button>
+        <button mat-raised-button color="primary" class="mr-12" 
+        (click)="Submit('Accept')"> <mat-icon>check</mat-icon> Approve</button>
+      </div>        
+    </div>   
+  </form>
+

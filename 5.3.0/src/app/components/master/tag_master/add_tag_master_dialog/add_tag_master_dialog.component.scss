@@ -1,0 +1,155 @@
+.example-spacer {
+  flex: 1 1 auto;
+}
+
+
+.md-dialog-container{
+  margin: -24px;
+  overflow: hidden;
+}
+.example-icon{
+  background-color: none;
+}
+
+.mat-input-wrapper{
+  background-color: lightgray;
+}
+
+.givemargin{
+  margin-right:5px;
+}
+
+.mat-dialog-content{
+  margin: -25px 0px 0px 0px;
+  padding:0px 12px;
+  overflow:hidden;
+}
+
+.egret-navy .mat-icon-button{
+  background:none;
+}
+
+
+.label{
+ color: rgba(0, 0, 0, 0.54);
+ font-weight: 700;
+ font-size: 14px !important;
+}
+
+
+:host ::ng-deep .mat-form-field-appearance-outline .mat-form-field-label{
+
+font-weight: 700;
+font-size: 14px !important;
+}
+
+
+.uploadSelectClass{
+
+padding-top: 7px;
+width: 100% !important;
+height: 28px !important;
+border: 1px solid lightgray !important;
+border-radius: 4px !important;
+}
+
+
+:host ::ng-deep .mat-tab-group.mat-primary .mat-ink-bar
+{
+
+  background-color: #10174c;
+}
+
+:host ::ng-deep  .mat-ink-bar {
+height: 3px !important;
+}
+
+::ng-deep .mat-form-field-required-marker { 
+  color: red 
+}
+
+:host ::ng-deep .mat-tab-group.mat-primary .mat-ink-bar
+{
+
+  background-color: #e67e4a !important;
+}
+
+:host ::ng-deep .mat-tab-label:focus
+{
+
+  color:black !important;
+}
+
+
+:host ::ng-deep .mat-tab-label .mat-tab-label-content {
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+  white-space: nowrap;
+  font-size: 18px !important;
+  font-weight: 650;
+  margin-bottom: -10px !important;
+  color: black !important;
+}
+
+:host ::ng-deep .mat-tab-label.mat-tab-disabled
+{
+  cursor: not-allowed;
+  color:gray !important;
+  opacity:0.4;
+}
+
+:host ::ng-deep .md-label{
+  max-height: 60vh;
+  min-height: 25vh;
+  overflow: auto;
+  padding-bottom: 0px !important;
+}
+
+:host ::ng-deep .mat-tab-label{
+  font-size: 18px !important;
+  font-weight: 750;
+  height: 36px !important;
+  padding: 0 24px;
+  padding-bottom: 6px;
+  opacity:1;
+
+}
+
+p {
+  margin: 0 0 6px !important;
+}
+
+
+.mat-input-element {
+  
+  font-weight: 500;
+}
+
+.absolute {
+  position: absolute;
+ width: 61% !important;
+ bottom: 78px !important;
+}
+
+
+ ///////////////////// Dropdown Placeholder and After select value /////////////////////
+
+ :host ::ng-deep .mat-select-value-text {
+  // font-size: 14px !important;
+  // font-weight: 600;
+
+  font-size: 13px !important;
+  font-weight: 450;
+}
+
+:host ::ng-deep .mat-form-field-appearance-legacy .mat-form-field-label {
+  
+  color: gray!important;
+  font-style: italic;
+}
+
+    .success {
+      background-color: green;
+      color: white;
+    }

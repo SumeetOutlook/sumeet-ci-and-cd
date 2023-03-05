@@ -1,0 +1,37 @@
+<div class="md-dialog-container" cdkDrag cdkDragRootElement=".cdk-overlay-pane">
+  <mat-toolbar  cdkDragHandle class="mat-toolbar" style="background-color:rgb(12, 48, 87);color:white">
+    <span style="position: relative;left: 38%;">{{data.value==='insert'?'Add':'Edit'}} {{header.StorageLocation}}</span>
+    <span class="example-spacer"></span>
+    <button mat-icon-button class="example-icon" aria-label="Example icon-button with close icon"
+      (click)="onclosetab()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-toolbar>
+  <div mat-dialog-content class="p-1 m-0">
+
+    <form [formGroup]="dialogSLForm" (ngSubmit)="onSubmit()">
+      <div fxLayout="row wrap" fxLayout.lt-sm="column">
+
+        <div fxFlex="100" class="pr-1">
+          <mat-form-field class="full-width">
+            <mat-label class="label asterisk_input">{{header.StorageLocation}} Name</mat-label>
+            <input matInput name="rackName" [formControl]="dialogSLForm.controls['rackName']"
+              autocomplete="off"  maxlength="40">
+            <mat-error *ngIf="submitted || f1.rackName.errors || f1.rackName.dirty || f1.rackName.touched || f1.rackName.hasError('whitespace')">
+              <span *ngIf="f1.rackName.errors?.required || f1.rackName.hasError('whitespace')">{{header.StorageLocation}} is required </span>
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div fxFlex="100" class="mt-1">
+          <button mat-raised-button class="success" style="float:right !important;" *ngIf="data.value =='insert'"
+            [disabled]="dialogSLForm.invalid"><mat-icon>check</mat-icon>Add {{header.StorageLocation}}</button>
+
+            <button mat-raised-button class="success" style="float:right !important;" *ngIf="data.value !='insert'"
+            [disabled]="dialogSLForm.invalid"><mat-icon>check</mat-icon>Save</button>
+
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

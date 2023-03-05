@@ -1,0 +1,148 @@
+<div class="md-dialog-container" cdkDrag cdkDragRootElement=".cdk-overlay-pane">
+  <mat-toolbar  cdkDragHandle class="mat-toolbar" style="background-color:rgb(12, 48, 87);color:white">
+    <span> {{ Headers.PrintTag }}</span>
+    <span class="example-spacer"></span>
+    <button mat-icon-button class="example-icon" aria-label="Example icon-button with close icon"
+      (click)="onclosetab()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-toolbar><br><br>
+  <mat-dialog-content >
+    <div class="md-dialog-content">
+      <form [formGroup]="dialogForm">
+        <div fxLayout="row wrap" fxLayout.lt-sm="column">
+          <div fxFlex="50" class="pr-1">
+            <mat-form-field *ngIf="Global Value" class="full-width">
+              <mat-select disableOptionCentering placeholder="{{Headers.AssetClass}}"
+                [(ngModel)]="Selectedvalueforglobal" [ngModelOptions]="{standalone: true}" [disabled]="true"
+                style="font-size: 12px !important;">
+                <mat-option value="Global">{{Headers.Global}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field class="full-width" *ngIf="!Global">
+              <mat-select disableOptionCentering placeholder="{{Headers.AssetClass}}"
+                [formControl]="dialogForm.controls['CategoryCtrl']" (selectionChange)="changeCategory($event)"
+                style="font-size: 12px !important;" reqiured>
+                <mat-option>
+                  <ngx-mat-select-search [placeholderLabel]="'Search'" noEntriesFoundLabel="{{Headers.NoRecordFound}}" [formControl]="CategoryFilter"
+                    [showToggleAllCheckbox]="false"></ngx-mat-select-search>
+                </mat-option>
+                <mat-option *ngFor="let Category of filteredCategory | async" [value]="Category">
+                  {{Category.BlockName}}</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div fxFlex="50" class="pr-1">
+            <mat-form-field class="full-width" *ngIf="Global Value">
+              <mat-select disableOptionCentering [formControl]="dialogForm.controls['plantMultiCtrl']" [disabled]="true" [multiple]="false"
+                placeholder="{{ Headers.Location }}" (selectionChange)="Selectedchangeplant($event)" #multiSelect 
+                reqiured>
+                <mat-option>
+                  <ngx-mat-select-search [placeholderLabel]="'Search'" noEntriesFoundLabel="{{Headers.NoRecordFound}}" [showToggleAllCheckbox]="false"
+                    [formControl]="plantMultiFilterCtrl">
+                  </ngx-mat-select-search>
+                </mat-option>
+                <mat-option [value]="0">All</mat-option>
+                <mat-option *ngFor="let bank of filteredPlantsMulti | async" [value]="bank">
+                  {{bank.LocationName}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            <mat-form-field class="full-width" *ngIf="!Global">
+              <mat-select disableOptionCentering [formControl]="dialogForm.controls['plantMultiCtrl']" [disabled]="true" [multiple]="false"
+                placeholder="{{ Headers.Location }}" (selectionChange)="Selectedchangeplant($event)" #multiSelect 
+                reqiured>                
+                <mat-option *ngFor="let bank of filteredPlantsMulti | async" [value]="bank">
+                  {{bank.LocationName}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          <div fxFlex="50" class="pr-1">
+            <mat-form-field class="full-width">
+              <input matInput placeholder="{{ Headers.CountAvailable }}"
+                [formControl]="dialogForm.controls['CountAvailable']" readonly autocomplete="off">
+
+            </mat-form-field>
+          </div>
+          <div fxFlex="50" class="pr-1">
+            <mat-form-field class="full-width">
+              <mat-label class="label">{{ Headers.NumberofLabels }}  <span style="color: red;">*</span></mat-label>
+              <input matInput type="text" min="1"  [maxlength]="10" [formControl]="dialogForm.controls['nolabels']" [pattern]="decimalNumericPattern"
+                (change)="checkValidNumber1()" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');" autocomplete="off">
+              <mat-error *ngIf="submitted || f.nolabels.errors || f.nolabels.dirty || f.nolabels.touched || f.nolabels.hasError('whitespace') || f.nolabels.errors?.pattern">
+                <span *ngIf="f.nolabels.errors?.required || f.nolabels.hasError('whitespace') || f.nolabels.errors?.pattern">label Count is requred </span>
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <div fxFlex="50" class="pr-1">
+            <mat-form-field class="full-width">
+              <input matInput type="text" placeholder="{{ Headers.Prefix }}"
+                [formControl]="dialogForm.controls['Prfix']" readonly [maxlength]="10" autocomplete="off">
+
+            </mat-form-field>
+          </div>
+          <div fxFlex="50" class="pr-1">
+            <mat-form-field class="full-width">
+              <input matInput type="text" [maxlength]="16" placeholder="{{ Headers.StartInventoryNumber }} " readonly
+                [formControl]="dialogForm.controls['StartNumber']" autocomplete="off">
+
+            </mat-form-field>
+          </div>
+          <div fxFlex="50" class="pr-1">
+            <mat-form-field class="full-width">
+              <input matInput type="text" [maxlength]="16" placeholder="{{ Headers.EndInventoryNumber }}" readonly
+                disabled [formControl]="dialogForm.controls['EndNumber']" autocomplete="off">
+
+            </mat-form-field>
+          </div>
+          <div fxFlex="50" class="pr-1">
+            <mat-form-field class="full-width">
+              <mat-label class="label">{{ Headers.LabelSize }} <span style="color: red;">*</span></mat-label>
+              <mat-select disableOptionCentering [formControl]="dialogForm.controls['labelsizeCtrl']"
+                placeholder="{{ Headers.LabelSize }}" (selectionChange)="Selectedlabelsize($event.value)" #multiSelect
+                reqiured>
+
+                <mat-option *ngFor="let size of filterlabelsize | async" [value]="size">
+                  {{size.LabelSize}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div fxFlex="50" class="pr-1">
+            <mat-form-field class="full-width">
+              <mat-label class="label">{{ Headers.LabelMaterial }} <span style="color: red;">*</span></mat-label>
+              <mat-select disableOptionCentering [formControl]="dialogForm.controls['labelmaterialCtrl']"
+                placeholder="{{ Headers.LabelMaterial }}" (selectionChange)="SelectedMaterial($event.value)"
+                #multiSelect reqiured>
+
+                <mat-option *ngFor="let material of filterlabelmaterial | async" [value]="material">
+                  {{material.Material}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+
+
+
+
+          <div fxFlex="50" class="pr-1">
+            <mat-form-field class="full-width">
+              <input matInput placeholder="{{ Headers.Remark }}" [formControl]="dialogForm.controls['Remark']"
+                autocomplete="off">
+
+            </mat-form-field>
+          </div>
+          <div fxFlex="100" class="mt-1" style="margin-top: 22px !important;margin-bottom: 20px !important;">
+            <span fxFlex></span>
+            <button style="margin-left: 5px;min-width: 62px !important;height: 35px !important;" class="btn success"
+              mat-raised-button [disabled]="dialogForm.invalid || this.dialogForm.value.nolabels == 0"  (click)="onSubmit()">Submit</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </mat-dialog-content>
+</div>

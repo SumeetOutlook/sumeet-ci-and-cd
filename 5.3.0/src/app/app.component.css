@@ -1,0 +1,3 @@
+.sidenav li.open a .mat-icon:not(.menu-caret) {
+    border-color: #1d3478 !important;
+}

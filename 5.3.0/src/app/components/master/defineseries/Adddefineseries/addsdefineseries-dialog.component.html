@@ -1,0 +1,83 @@
+<div class="md-dialog-container" cdkDrag cdkDragRootElement=".cdk-overlay-pane">
+  <mat-toolbar  cdkDragHandle class="mat-toolbar" style="background-color:rgb(12, 48, 87);color:white">
+    <span style="position: relative;left: 38%;"> {{ Headers.CreateNewSeries }}</span>
+    <span class="example-spacer"></span>
+    <button mat-icon-button class="example-icon" aria-label="Example icon-button with close icon"
+      (click)="onclosetab()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-toolbar><br><br>
+  <mat-dialog-content >
+    <div class="md-dialog-content">
+      <form [formGroup]="dialogForm">
+        <div fxLayout="row wrap" fxLayout.lt-sm="column">
+          <div fxFlex="50" class="pr-1">
+            <mat-form-field *ngIf="Global Value" class="full-width">
+              <mat-select disableOptionCentering placeholder="{{Headers.AssetClass}}" [(ngModel)]="Selectedvalueforglobal" [ngModelOptions]="{standalone: true}"  [disabled]="true"
+                   style="font-size: 12px !important;">
+                <mat-option value="Global">{{Headers.Global}}</mat-option>
+                <!--  [(ngModel)]="Selectedvalueforglobal"-->
+              </mat-select>
+
+            </mat-form-field>
+
+            <mat-form-field class="full-width" *ngIf="!Global">
+              <mat-select disableOptionCentering placeholder="{{Headers.AssetClass}}" [formControl]="dialogForm.controls['CategoryCtrl']" (selectionChange)="changeCategory($event.value)"style="font-size: 12px !important;">
+                <mat-option>
+                  <ngx-mat-select-search [placeholderLabel]="'Search'" noEntriesFoundLabel="{{Headers.NoRecordFound}}" [formControl]="CategoryFilter" [showToggleAllCheckbox]="true" ></ngx-mat-select-search>
+                </mat-option>
+                <mat-option *ngFor="let Category of filteredCategory | async" [value]="Category">
+                  {{Category.BlockName}}</mat-option>
+              </mat-select>
+             </mat-form-field>
+          </div>
+          <div fxFlex="50" class="pr-1">
+            <mat-form-field class="full-width">
+              <input matInput type="text"   placeholder="{{ Headers.Prefix }}"  [maxlength]="10" autocomplete="off" [pattern]="unamePattern" (change)="checkPrefixVal()" [formControl]="dialogForm.controls['Prfix']">
+                          
+                <span *ngIf="f.Prfix.errors?.pattern"> Numeric values not allow in last of prefix. </span> 
+           
+            </mat-form-field>
+          </div>
+          <div fxFlex="50" class="pr-1">
+            <mat-form-field class="full-width">
+              <mat-label class="label asterisk_input">{{  Headers.StartInventoryNumber }}</mat-label> 
+              <input matInput type="text" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');" [maxlength]="16" (change)="compaireBarcode()" (mouseout)="compaireBarcode()" [formControl]="dialogForm.controls['StartNumber']"
+                autocomplete="off">
+                <mat-error *ngIf="submitted || f.StartNumber.errors || f.StartNumber.dirty || f.StartNumber.touched">
+                  <span *ngIf="f.StartNumber.errors?.required">Start Number is required </span>
+                  
+                </mat-error>  
+            </mat-form-field>
+          </div>
+          <div fxFlex="50" class="pr-1">
+            <mat-form-field class="full-width">
+              <mat-label class="label asterisk_input">{{ Headers.EndInventoryNumber }}</mat-label> 
+              <input matInput type="text" oninput="this.value = this.value.replace(/[^0-9]/g, '').replace(/(\..*)\./g, '$1');"[maxlength]="16" (change)="compaireBarcode()" (mouseout)="compaireBarcode()" [formControl]="dialogForm.controls['EndNumber']"
+                autocomplete="off">
+                <mat-error *ngIf="submitted || f.EndNumber.errors || f.EndNumber.dirty || f.EndNumber.touched">
+                  <span *ngIf="f.EndNumber.errors?.required">End  Number is required </span>
+                  
+                </mat-error>   
+            </mat-form-field>
+          </div>
+          <div fxFlex="50" class="pr-1">
+            <mat-form-field class="full-width">
+              <input matInput placeholder="{{ Headers.Record }}" [formControl]="dialogForm.controls['Record']" readonly autocomplete="off">
+              
+            </mat-form-field>
+          </div>
+
+          <div fxFlex="50" class="pr-1">           
+            
+            <!-- <button style="margin-left: 160px;;margin-right: 10px !important;min-width: 62px !important;height: 35px !important;" class="btn" mat-raised-button color="warn" type="button"
+              (click)="onclosetab()">Cancel</button> -->
+              
+            <button style="margin-left: 5px;height: 35px !important;float: right;" class="btn" mat-raised-button class="success"
+              [disabled]="submittedvalue" (click)="onSubmit()"><mat-icon>check</mat-icon> {{ Headers.CreateNewSeries }}</button>
+          </div>
+        </div>
+      </form>
+    </div>
+  </mat-dialog-content>
+</div>

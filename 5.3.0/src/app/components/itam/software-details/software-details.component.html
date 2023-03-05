@@ -1,0 +1,25 @@
+<h3><strong style=" color:#008bd0 !important;">Details</strong> </h3>
+
+<mat-tab-group animationDuration="200ms" [selectedIndex]="selectedIndex" (selectedTabChange)="tabChanged($event)">
+  <mat-tab label="Details" style="color: black !important;">
+    <h3><strong style=" color:#008bd0 !important;margin-bottom: 15px;">Software Details</strong> </h3>
+    
+    <!-- </div> -->
+  </mat-tab>
+  <mat-tab label="License Agreements">
+    <h3><strong style=" color:#008bd0 !important;margin-bottom: 15px;">License Agreements</strong> </h3>
+    <button>Add New License</button>
+   
+  </mat-tab>
+  <mat-tab label="Installations">
+    <h3><strong style=" color:#008bd0 !important;margin-bottom: 15px;">Installations</strong> </h3>
+    <button>Add Software Installations</button>
+    
+  </mat-tab>
+  <mat-tab label="Licenses" >
+    <h3><strong style=" color:#008bd0 !important;margin-bottom: 15px;">Licenses</strong> </h3>
+    <button>New Standard License</button>
+    
+  </mat-tab>
+
+</mat-tab-group>

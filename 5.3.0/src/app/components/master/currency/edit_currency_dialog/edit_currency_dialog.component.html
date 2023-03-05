@@ -1,0 +1,58 @@
+<div class="md-dialog-container">
+  <div class="event-dialog-wrapper" cdkDrag cdkDragRootElement=".cdk-overlay-pane"> 
+    <mat-toolbar  cdkDragHandle matDialogTitle class="mat-primary m-0" style="background-color:#0C3057 !important;color:white">
+      <div fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+        <span style="position: relative;left: 40%;" class="title dialog-title">
+          {{header.EditCurrencyRate}}
+        </span>
+        <button mat-icon-button (click)="dialogRef.close()" aria-label="Close dialog">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+    </mat-toolbar>
+
+    <div mat-dialog-content class="p-1 m-0">
+      <form [formGroup]="dialogform" (ngSubmit)="save()" name="eventForm" class="event-form" fxFlex>
+        <div fxLayout="row wrap" fxLayout.lt-sm="column">
+          <div fxFlex="45" class="ml-12">
+            <mat-form-field class="full-width">
+              <mat-label>{{header.FromCurrency}}</mat-label>
+              <input matInput formControlName="FromCurrency" type="text" [disabled] = "true"  autocomplete="off">
+            </mat-form-field>
+          </div>
+          <div fxFlex="45" class="ml-12">
+            <mat-form-field class="full-width">
+              <mat-label>{{header.ToCurrency}}</mat-label>
+              <input matInput formControlName="ToCurrency" type="text"  [disabled] = "true"  autocomplete="off">
+            </mat-form-field>
+          </div>
+        </div>
+        <div fxLayout="row wrap" fxLayout.lt-sm="column">
+          <div fxFlex="45" class="ml-12">
+            <mat-form-field class="full-width">
+              <mat-label class="label asterisk_input">{{header.ConversionRate}}</mat-label>
+              <input matInput formControlName="conversionrate" type="text" name='conversionrate' autocomplete="off">
+            </mat-form-field>
+          </div>
+          <div fxFlex="45" class="ml-12">
+            <mat-form-field class="full-width">
+              <mat-label>{{header.EffectiveDate}} <span style="color: red;">*</span> </mat-label>
+              <input matInput #input [matDatepicker]="picker" (focus)="picker.open()" [max]="today" formControlName="upadateddate">
+              <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+              <mat-datepicker #picker (closed)="input.blur()"></mat-datepicker>
+
+            </mat-form-field>
+          </div>
+
+        </div>
+      </form>
+    </div>
+
+
+    <div style="text-align: right !important; height: 50px !important;">    
+      <button mat-raised-button class="success" style="float:right;margin-right: 25px !important;" [disabled]="dialogform.invalid"
+        (click)="save()"><mat-icon>check</mat-icon> Save</button>
+
+    </div>
+  </div>
+</div>

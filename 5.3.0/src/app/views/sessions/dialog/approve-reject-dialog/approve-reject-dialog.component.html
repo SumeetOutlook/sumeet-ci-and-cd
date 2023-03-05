@@ -1,0 +1,43 @@
+<div class="md-dialog-container">
+    <div fxLayout="row wrap" class="example-container mat-elevation-z8">
+      <mat-toolbar class="mat-toolbar" style="background-color:rgb(12, 48, 87);color:white">
+        <span style="position: relative;left: 25%;">{{ header.RequestInformation }}</span>
+        <span class="example-spacer"></span>
+        <button mat-icon-button class="example-icon" aria-label="Example icon-button with close icon"
+          (click)="onclosetab()">
+          <mat-icon>close</mat-icon>
+        </button>
+      </mat-toolbar>
+    </div>
+    <div style="padding: 20px !important;">
+      <form>
+        <div fxLayout="row wrap" fxLayout.lt-sm="column">
+          <mat-label style="font-weight: 500 !important;font-size: 18px !important;">Write a comment to let the user know about the required information.</mat-label>
+          <div fxFlex="100" style="padding-top: 22px !important;padding-right: 0px !important;">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label asterisk_input">Comment</mat-label>
+              <textarea [formControl]="dialogRejectForm.controls['Rejectctrl']" matInput autocomplete="off" maxlength="200">
+                <mat-error *ngIf="Rejectctrl.hasError('whitespace')"><span *ngIf="Rejectctrl.hasError('whitespace')"></span>
+                </mat-error>
+              </textarea>
+            </mat-form-field>
+          </div>
+    
+    
+        </div>
+        <!-- <div fxLayout="row wrap" fxLayout.lt-sm="column" style="margin-top: -10px !important;">
+          <button class="btn" (click)="onclosetab()" mat-raised-button color="warn"
+            style="margin-left: 0px !important;">No</button>
+          <span fxFlex></span>
+          <button class="btn" (click)="ContinueRejectbtn()" mat-raised-button color="primary">Yes </button>
+        </div>   -->
+        <div style="text-align: right;">                
+          <!--<button class="btn" (click)="onclosetab()" mat-raised-button color="warn"><mat-icon>close</mat-icon> No</button>
+          <button class="btn" (click)="ContinueRejectbtn()" mat-raised-button color="primary"> <mat-icon>check</mat-icon>Yes </button>-->
+          <button class="btn" (click)="onclosetab()" mat-raised-button color="warn"><mat-icon style="padding-bottom: 4px;">close</mat-icon> Cancel</button>
+          <button class="btn success" (click)="ContinueRejectbtn()" [disabled]="dialogRejectForm.invalid" mat-raised-button><mat-icon style="padding-bottom: 4px;">check</mat-icon> Submit</button>
+        </div>  
+      </form>
+    </div>
+    
+  </div>

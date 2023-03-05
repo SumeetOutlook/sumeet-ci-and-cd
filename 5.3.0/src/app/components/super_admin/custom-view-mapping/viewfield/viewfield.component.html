@@ -1,0 +1,63 @@
+
+<div class="md-dialog-container" >
+    <div class="event-dialog-wrapper" cdkDrag cdkDragRootElement=".cdk-overlay-pane" >
+      <mat-toolbar cdkDragHandle matDialogTitle class="mat-primary m-0" style="background-color:#0C3057 !important;color:white">
+        <div fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+          <span class="title dialog-title" style="position: relative;left: 40%;">View Mapped Fields</span>
+          <button mat-icon-button (click)="dialogRef.close()" aria-label="Close dialog">
+            <mat-icon>close</mat-icon>
+          </button>
+        </div>
+      </mat-toolbar>
+      <!--<mat-form-field  style="margin-bottom: -32px;margin-left: 75%;">     
+         <input matInput class="form-field" [(ngModel)]="searchText" [ngModelOptions]="{standalone: true}" (ngModelChange)="Onsearch($event)">
+      </mat-form-field>-->
+      <div fxLayout="row wrap" fxLayout.lt-sm="column">
+        <div fxFlex="40" class="ml-12">
+        <!--<mat-form-field class="formfield full-width" color="primary">
+            <mat-select disableOptionCentering formcontol="fieldMultiCtrl" placeholder="Select Table" >            
+              
+              <mat-option *ngFor="let type of TablefilteredFieldMulti | async" [value]="type" >
+                    {{type.Name}}
+                </mat-option>
+            </mat-select>
+        </mat-form-field>-->
+        </div>
+        
+      
+      <div mat-dialog-content class="p-1 m-0" >
+        <form name="eventForm" class="event-form" fxFlex>
+          <div fxLayout="row wrap" fxLayout.lt-sm="column">
+            <div fxFlex="100" formGroupName="color">
+              <mat-card class="default" style="height: auto !important; padding-bottom: 10px;width: 100% !important;padding-bottom: 10px !important;">
+                <mat-card-content class="p-0" fxLayout="column">
+                  <div class="activity-data">
+                    <mat-nav-list class="list-horizontal">
+                      <mat-list-item *ngFor="let n of ListOfField">                                                                                         
+                        <mat-checkbox [checked]="n.Custom2" [disabled]="disableview" (change)="checkboxclick(n)">
+                         
+                        </mat-checkbox>
+
+                        <span style="padding-left:7px !important;font-size: 13px;font-weight: bold;">{{Headers[n.Custom1]}}</span>
+                        <!-- <mat-checkbox [checked]="isActive" (change)="checkboxclick(n)"> -->
+                          <!-- <span *ngIf="n?.headerName?.length > 35" title="{{n.headerName}}">{{n.headerName |slice:0:35}}</span>
+                          <span *ngIf="n?.headerName?.length <= 35">{{n.headerName}}</span> -->
+                        <!-- </mat-checkbox> -->
+                      </mat-list-item>                    
+                    </mat-nav-list>
+                  </div>
+                </mat-card-content>
+              </mat-card>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>
+
+      <div style="text-align: right !important; height: 50px !important;padding-top: 10px;" >
+        <!--<button mat-raised-button id="loginBtn" class="success loginBtn"  style="float:right;margin-right: 25px !important;"(click)="save()">Save</button>-->
+       <!--<button mat-raised-button color="warn" id="loginBtn" class="btn loginBtn" type="button" style="float:right;margin-right: 25px !important;"(click)="save()">Cancel</button>-->
+  
+      </div>
+  </div>
+</div>

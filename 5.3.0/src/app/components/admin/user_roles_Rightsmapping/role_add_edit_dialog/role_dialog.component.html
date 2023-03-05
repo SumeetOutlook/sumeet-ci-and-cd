@@ -1,0 +1,81 @@
+<div class="md-dialog-container" cdkDrag cdkDragRootElement=".cdk-overlay-pane">
+  <mat-toolbar cdkDragHandle class="mat-toolbar" style="background-color:rgb(12, 48, 87);color:white">
+    <span style="position: relative;left: 40%;">{{data.value==='insert'?'Assign Role':'Edit Role'}} </span>
+    <span class="example-spacer"></span>
+    <button mat-icon-button class="example-icon" aria-label="Example icon-button with close icon"
+      (click)="onclosetab()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-toolbar>
+  <div mat-dialog-content style="padding: 22px !important;"  >
+
+    <form [formGroup]="dialogRoleForm" (ngSubmit)="onSubmit()">
+      <div fxLayout="row wrap" fxLayout.lt-sm="column">
+        
+          <div fxFlex="100">
+          <mat-form-field class="full-width">
+            <mat-label class="label asterisk_input">Select Role</mat-label>
+            <mat-select disableOptionCentering [formControl]="dialogRoleForm.controls['roleCtrl']">
+              <mat-option>
+                <ngx-mat-select-search [placeholderLabel]="'Search'" noEntriesFoundLabel="No Matching Data Found" [formControl]="dialogRoleForm.controls['roleFilterCtrl']"></ngx-mat-select-search>
+              </mat-option>
+              <mat-option *ngFor="let role of filteredRoles | async" [value]="role.RoleId"> {{role.RoleName}} </mat-option>
+            </mat-select>
+            <mat-error *ngIf="submitted && f1.roleCtrl.errors || f1.roleCtrl.dirty || f1.roleCtrl.touched">
+              <span *ngIf="f1.roleCtrl.errors?.required">Role is a required field</span>
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div fxFlex="100" *ngIf="IsCompanyLevel">
+          <mat-form-field class="full-width" >
+            <mat-label class="label asterisk_input">{{Headers.SBU}}</mat-label>
+            <mat-select disableOptionCentering [formControl]="dialogRoleForm.controls['sbuMultiCtrl']" placeholder="SBU" [multiple]="true" #multiSelect>
+              <mat-option>
+                <ngx-mat-select-search [placeholderLabel]="'Search'" noEntriesFoundLabel="No Matching Data Found"  [showToggleAllCheckbox]="true" (toggleAll)="toggleSelectAllSBU($event)" [formControl]="dialogRoleForm.controls['sbuMultiFilterCtrl']"> </ngx-mat-select-search>
+              </mat-option>
+              <mat-option *ngFor="let data of filteredsbuMulti | async" [value]="data.SBU" (click)="onChangeSBU(data.SBU)"> {{data.SBU}} </mat-option>
+            </mat-select>
+            <mat-error *ngIf="submitted && f1.sbuMultiCtrl.errors || f1.sbuMultiCtrl.dirty || f1.sbuMultiCtrl.touched">
+              <span *ngIf="f1.sbuMultiCtrl.errors?.required">{{Headers.SBU}} is a required field</span>
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div fxFlex="100" *ngIf="IsCompanyLevel">
+          <mat-form-field class="full-width">
+            <mat-label class="label asterisk_input">{{Headers.Location}}</mat-label>
+            <mat-select disableOptionCentering [formControl]="dialogRoleForm.controls['plantMultiCtrl']" placeholder="Plant" [multiple]="true" #multiSelect>
+              <mat-option>
+                <ngx-mat-select-search [placeholderLabel]="'Search'" noEntriesFoundLabel="No Matching Data Found" [showToggleAllCheckbox]="true" (toggleAll)="toggleSelectPlantAll($event)" [formControl]="dialogRoleForm.controls['plantMultiFilterCtrl']"> </ngx-mat-select-search>
+              </mat-option>
+              <mat-option *ngFor="let data of filteredPlantsMulti | async" [value]="data.LocationId"> {{data.LocationName}} </mat-option>
+            </mat-select>
+            <mat-error *ngIf="submitted && f1.plantMultiCtrl.errors || f1.plantMultiCtrl.dirty || f1.plantMultiCtrl.touched">
+              <span *ngIf="f1.plantMultiCtrl.errors?.required">Location is a required field</span>
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div fxFlex="100" *ngIf="IsCategoryConfig">
+          <mat-form-field class="full-width" >
+            <mat-label class="label asterisk_input">Category</mat-label>
+            <mat-select disableOptionCentering [formControl]="dialogRoleForm.controls['categoryMultiCtrl']" placeholder="Category" [multiple]="true" #multiSelect >
+              <mat-option>
+                <ngx-mat-select-search [placeholderLabel]="'Search'" noEntriesFoundLabel="No Matching Data Found" [showToggleAllCheckbox]="true" (toggleAll)="toggleSelectCategoryAll($event)" [formControl]="dialogRoleForm.controls['categoryMultiFilterCtrl']"> </ngx-mat-select-search>
+              </mat-option>
+              <mat-option *ngFor="let data of filteredCategorysMulti | async" [value]="data.AssetCategoryId"> {{data.AssetCategoryName}} </mat-option>
+            </mat-select>
+            <mat-error *ngIf="submitted && f1.categoryMultiCtrl.errors || f1.categoryMultiCtrl.dirty || f1.categoryMultiCtrl.touched">
+              <span *ngIf="f1.categoryMultiCtrl.errors?.required">Asset Category is a required field</span>
+            </mat-error>
+          </mat-form-field>
+        </div>
+       
+        <div fxFlex="100" class="mt-1">
+          <button mat-raised-button color="primary" style="float:right !important;" [disabled]="dialogRoleForm.invalid">Save</button>
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

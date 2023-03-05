@@ -1,0 +1,48 @@
+<div class="md-dialog-container" >
+  <div class="event-dialog-wrapper" cdkDrag cdkDragRootElement=".cdk-overlay-pane" >
+    <mat-toolbar cdkDragHandle matDialogTitle class="mat-primary m-0" style="background-color:#0C3057 !important;color:white">
+      <div fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+        <span class="title dialog-title">{{data.title}}</span>
+        <button mat-icon-button (click)="dialogRef.close()" aria-label="Close dialog">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+    </mat-toolbar>
+    <div style="margin-top: 21px !important;
+    margin-left: 26px !important;position: absolute !important;">
+      <mat-checkbox (click)="selectAllFields()" >
+        <span>Select all</span>
+      </mat-checkbox>
+    </div>
+    <mat-form-field  style="margin-bottom: -32px;margin-left: 75%;">     
+       <input matInput class="form-field" [(ngModel)]="searchText" [ngModelOptions]="{standalone: true}" (ngModelChange)="Onsearch($event)">
+    </mat-form-field>
+    <div mat-dialog-content class="p-1 m-0" >
+      <form name="eventForm" class="event-form" fxFlex>
+        <div fxLayout="row wrap" fxLayout.lt-sm="column">
+          <div fxFlex="100" formGroupName="color">
+            <mat-card class="default" style="height: auto !important; padding-bottom: 10px;width: 100% !important;padding-bottom: 10px !important;">
+             
+              <mat-card-content class="p-0" fxLayout="column">
+                <div class="activity-data">
+                  <mat-nav-list class="list-horizontal">
+                    <mat-list-item *ngFor="let n of ListOfField | orderBy: order ">
+                      <mat-checkbox [checked]="n.Custom2" (change)="checkboxclick(n)">
+                        <span *ngIf="n?.headerName?.length > 35" title="{{n.headerName}}">{{n.headerName |slice:0:35}}</span>
+                        <span *ngIf="n?.headerName?.length <= 35">{{n.headerName}}</span>
+                      </mat-checkbox>
+                    </mat-list-item>                    
+                  </mat-nav-list>
+                </div>
+              </mat-card-content>
+            </mat-card>
+          </div>
+        </div>
+      </form>
+    </div>
+    <div style="text-align: right !important; height: 50px !important;padding-top: 10px;" >
+      <button mat-raised-button color="primary" style="float:right;margin-right: 25px !important;"(click)="save()">Export</button>
+
+    </div>
+  </div>
+</div>

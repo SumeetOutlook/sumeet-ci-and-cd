@@ -1,0 +1,1409 @@
+CREATE DEFINER=`root`@`localhost` PROCEDURE `QuantitySplit`(p_CmpnyId numeric(18, 0), p_Modifier numeric(18, 0), p_PrefarIds varchar(1000))
+BEGIN
+
+		declare v_PreFARId numeric(18, 0);
+        declare v_ExcelMasterID numeric(18, 0);
+        declare v_GroupID numeric(18, 0);
+        declare v_CompanyID numeric(18, 0);
+        declare v_LocationID numeric(18, 0);
+        declare v_AssetID varchar(50);
+        declare v_SubAssetID varchar(25);
+        declare v_BarCode varchar(25);
+        declare v_BlockId numeric(18,0);
+        declare v_AcquisitionDate date;
+        declare v_Quantity decimal(18, 2);
+        declare v_AcquisitionCost varchar(50);
+        declare v_WDV varchar(50);
+        declare v_Building varchar(1000);
+        declare v_Room varchar(1000);
+        declare v_RackId numeric(18,0);
+        declare v_ADL2 varchar(1500);
+        declare v_ADL3 varchar(1500);
+        declare v_UsefulLife varchar(100);
+        declare v_UserName varchar(200);
+        declare v_UserEmailID varchar(200);
+        declare v_Taggable varchar(50);
+        declare v_IsNetworkScan tinyint;
+        declare v_NetworkHostName varchar(150);
+        declare v_MergeID numeric(18, 0);
+        declare v_SplitID numeric(18, 0);
+        declare v_IsQtySplit tinyint;
+        declare v_AssetStage int;
+        declare v_TPID numeric(18, 0);
+        declare v_TaggingStatus int;
+        declare v_TpMissingStatus varchar(500);
+        declare v_TpMissingFile varchar(550);
+        declare v_TpComplete tinyint;
+        declare v_IsSync tinyint;
+        declare v_StatusSettingMode char(1);
+        declare v_LastModifiedBy numeric(18, 0);
+        declare v_GPS_Date date;
+        declare v_OutwardLocationId numeric(18, 0);
+        declare v_IsIntward tinyint;
+        declare v_TransitType int;
+        declare v_AdditionalLocation numeric(18, 0);
+        declare v_GPS_CoOrdinate varchar(150);
+        declare v_GPS_Location varchar(150);
+        declare v_Suplier varchar(150);
+        declare v_CreatedBy numeric(18, 0);
+        declare v_CreatedOn date;
+        declare v_IsActive tinyint;
+        declare v_MEdit tinyint;
+        declare v_MScan tinyint;
+        declare v_ReplacementValue varchar(1000);
+        declare v_ReplacementDate date;
+        declare v_WDVDate date;
+        declare v_AllocationStatus varchar(100);
+        declare v_Temp3 varchar(100);
+        declare v_LastModifiedOn datetime(3);
+        declare v_ADDL_Tag int;
+        declare v_LastStatusUpdatedDate        datetime(3);
+        declare v_DiscardDate        datetime(3);
+        declare v_VerifiedAt        decimal(18, 0);
+        declare v_InventoryOn datetime(3);
+        declare v_DynamicInventoryBy numeric(18, 0);
+        declare v_SerialNo varchar(300);
+        declare v_AssetOutwardDate datetime(3);
+        declare v_RemainingUseFulLife varchar(200);
+  declare v_LabelStatus varchar(100);
+  declare v_InventoryComment varchar(100);
+  declare v_OldAssetId varchar(200);
+  declare v_Unit varchar(15);
+  declare v_Parent_Flag varchar(1);
+  declare v_Fiscal_Year varchar(4);
+  declare v_Block varchar(60);
+  declare v_AssetLocation varchar(150);
+  declare v_StorageLocation varchar(60);
+  declare v_ExpiryDate date;
+  declare v_ITSerialNo varchar(30);  
+  declare v_RetireIndicator int;
+  declare v_IsRePrint tinyint;
+  declare v_LastScanDate datetime;
+  declare v_AssetCondition varchar(50);
+        declare v_Count numeric(18, 0);
+        declare v_RowCount int;
+        declare v_forloop int;
+        declare v_qty numeric(18, 0);
+        declare v_ChildCost numeric(18, 3);
+        declare v_ChildWDV numeric(18, 3);
+        declare v_WDVRoundOff numeric(18, 3);
+        declare v_CostRoundOff numeric(18, 3);
+        declare v_ChildReplacementValue numeric(18, 2);
+        declare v_ReplacementValueRoundOff numeric(18, 2);
+DECLARE v_SetPoint INT;
+DECLARE v_VALUE varchar(50);
+DECLARE v_SetPoint1 INT;
+DECLARE v_VALUE1 varchar(50);
+DECLARE v_idList varchar(1000);
+DECLARE v_idList1 varchar(1000);
+declare v_ConditionEffectiveDate datetime;
+declare v_BlockOwnerMailFlag varchar(50);
+declare v_warrantyVendor varchar(50);
+declare v_EquipmentNumber varchar(20);
+declare v_InventoryStatus varchar(50);
+declare v_TransferStatus varchar(50);
+declare v_RetirementStatus varchar(50);
+declare v_SplitFlag tinyint;
+declare v_Temp9        varchar(200);
+declare v_LastRemark        varchar(600);
+declare v_AssetCriticality varchar(50);
+declare v_TAId bigint(6);
+declare v_TypeOfAsset varchar(50);
+declare v_STAId bigint(6);
+declare v_SubTypeOfAsset varchar(50);
+declare v_Acronym varchar(30);
+declare v_InventoryNote varchar(30);
+#Remove currency from prefar declare v_Currency  varchar(15);
+declare v_GrnNo varchar(50);
+declare v_TransactionCurrency varchar(15);
+declare v_TransactionAcqCost varchar(50);
+declare v_TransactionWDV varchar(50);
+declare v_SCBlockOwnerMailFlag varchar(50);
+declare v_SelfCertComment varchar(1000);
+declare v_SelfCertProjectId bigint(20);
+declare v_SelfCertActionFlag tinyint(1);
+declare v_SelfCertBy bigint(10);
+declare v_SelfCertOn date;
+declare v_SelfCertApproverIP varchar(50);
+declare v_SelfCertInventoryNote varchar(30);
+declare v_SelfCertMissingStatus varchar(250);
+declare v_SelfCertMissingFile varchar(550);
+declare v_SelfCertComplete tinyint(1);
+declare v_SCUserFlag varchar(20);
+declare v_Zone varchar(50);
+declare v_AssetCategoryId bigint(20);
+declare v_CategoryName varchar(100);
+  declare v_InvoiceDate datetime;
+  declare v_RegionId bigint(20);
+declare vp_prefarids varchar(10000);
+Declare vp_config int;
+  Declare vp_GroupId int;
+  Declare vp_Assetid varchar(50);
+DECLARE front TEXT DEFAULT NULL;
+DECLARE frontlen INT DEFAULT NULL;
+DECLARE TempValue TEXT DEFAULT NULL;
+
+SELECT GroupID INTO vp_GroupId FROM CompanyMaster where CompanyID = p_CmpnyId;
+SELECT SelectedValue INTO vp_config FROM groupwiseconfigurationmaster where ConfigurationMasterId = 21 and GroupID = vp_GroupId;
+  
+DROP TABLE IF EXISTS TableOfArrayItems;
+ CREATE TEMPORARY TABLE  TableOfArrayItems (Item double);
+
+DROP TABLE IF EXISTS TableOfsplitedPrefarids;
+ CREATE TEMPORARY TABLE  TableOfsplitedPrefarids (Item double);
+
+set v_idList = p_PrefarIds;
+
+   WHILE LOCATE(',',v_idList) > 0
+   DO
+		SET  v_SetPoint = instr(v_idList,',');
+		SET  v_VALUE = LEFT(v_idList , (v_SetPoint - 1));
+		SET  v_idList = INSERT(v_idList, 1, v_SetPoint, '')  ;
+        
+        INSERT INTO TableOfArrayItems (Item) VALUES (v_VALUE)  ;
+	END WHILE;
+
+	INSERT INTO TableOfArrayItems (Item) VALUES (v_idList)  ;
+
+  DROP TEMPORARY TABLE IF EXISTS  TempCapitalizeNonCapitalizeCommonFields;
+    CREATE TEMPORARY TABLE  TempCapitalizeNonCapitalizeCommonFields
+    (
+   `CommonFieldID` bigint(20) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `PONumber` varchar(45) DEFAULT NULL,
+  `InvoiceNo` varchar(45) DEFAULT NULL,
+  `AllocationTypeId` bigint(20) DEFAULT NULL,
+  `InsuranceVendor` varchar(60) DEFAULT NULL,
+  `InsuranceFrom` date DEFAULT NULL,
+  `InsuranceTo` date DEFAULT NULL,
+  `AMCVendor` varchar(60) DEFAULT NULL,
+  `AMCExpiryDate` date DEFAULT NULL,
+  `AMCStartDate` date DEFAULT NULL,
+  `WarrantyExpiryDate` date DEFAULT NULL,
+  `InstallationDate` date DEFAULT NULL,
+  `MachineRegNo` varchar(45) DEFAULT NULL,
+  `PreFARId` bigint(20) DEFAULT NULL,
+  `ITAssetId` int(11) DEFAULT NULL,
+  `CreatedOn` datetime DEFAULT NULL,
+  `CreatedBy` bigint(20) DEFAULT NULL,
+  `CompanyId` bigint(20) DEFAULT NULL,
+  `LocationId` bigint(20) DEFAULT NULL,
+  `BlockId` bigint(20) DEFAULT NULL,
+  `WarrantyPeriod` varchar(50) DEFAULT NULL,
+  `WarrantyCost` varchar(50) DEFAULT NULL,
+  `WarrantyTerms` varchar(50) DEFAULT NULL,
+  `WarrantyRemarks` varchar(250) DEFAULT NULL
+  );
+
+  DROP TEMPORARY TABLE IF EXISTS  TempPrepurchasedItAssets;
+
+    CREATE TEMPORARY TABLE  TempPrepurchasedItAssets
+    (
+   `Id` bigint(20) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+  `PreFARId` bigint(20) DEFAULT NULL,
+  `CreationDate` datetime DEFAULT NULL,
+  `CreatedBy` bigint(20) DEFAULT NULL,
+  `LastModifiedBy` bigint(20) DEFAULT NULL,
+  `LastModifiedOn` datetime DEFAULT NULL,
+  `CompanyId` bigint(20) DEFAULT NULL,
+  `LocationId` bigint(20) DEFAULT NULL,
+  `BlockId` bigint(20) DEFAULT NULL,
+  `GroupID` bigint(20) DEFAULT NULL,
+  `CPUClass` varchar(50) DEFAULT NULL,
+  `CPUSubClass` varchar(50) DEFAULT NULL,
+  `Model` varchar(50) DEFAULT NULL,
+  `OperatingSystem` varchar(50) DEFAULT NULL,
+  `ApplicationType` varchar(50) DEFAULT NULL,
+  `Manufacturer` varchar(50) DEFAULT NULL
+  );
+
+DROP TEMPORARY TABLE IF EXISTS  TempClientCustomizeColumn;
+
+    CREATE TEMPORARY TABLE  TempClientCustomizeColumn
+    (
+   `ClientCCID` bigint(20) NOT NULL AUTO_INCREMENT PRIMARY KEY,
+   `GroupID` bigint(20) DEFAULT NULL,
+  `CompanyId` bigint(20) DEFAULT NULL,
+  `LocationId` bigint(20) DEFAULT NULL,
+  `BlockId` bigint(20) DEFAULT NULL,
+  `PreFARId` bigint(20) DEFAULT NULL
+  );
+
+DROP TEMPORARY TABLE IF EXISTS ActiveCustomer;
+CREATE TEMPORARY TABLE ActiveCustomer (
+ RowID INTEGER NOT NULL AUTO_INCREMENT PRIMARY KEY
+,PreFARId numeric(18, 0)
+,ExcelMasterID numeric(18, 0)
+,GroupID numeric(18, 0)
+,CompanyID numeric(18, 0)
+,LocationID numeric(18, 0)
+,AssetID varchar(50)
+,SubAssetID varchar(25)
+,BarCode varchar(25)
+,BlockId numeric(18,0)
+,AcquisitionDate date
+,Quantity decimal(18, 2)
+,AcquisitionCost varchar(50)
+,WDV varchar(50)
+,Building varchar(1000)
+,Room varchar(1000)
+,RackId numeric(18,0)
+,ADL2 varchar(1500)
+,ADL3 varchar(1500)
+,UsefulLife varchar(100)
+,UserName varchar(200)
+,UserEmailID varchar(200)
+,Taggable varchar(50)
+,IsNetworkScan tinyint
+,NetworkHostName varchar(150)
+,MergeID numeric(18, 0)
+,SplitID numeric(18, 0)
+,IsQtySplit tinyint
+,AssetStage int
+,TPID numeric(18, 0)
+,TaggingStatus int
+,TpMissingStatus varchar(500)
+,TpMissingFile varchar(550)
+,TpComplete tinyint
+,IsSync tinyint
+,StatusSettingMode char(1)
+,LastModifiedBy numeric(18, 0)
+,GPS_Date date
+,OutwardLocationId numeric(18, 0)
+,IsIntward tinyint
+,TransitType int
+,AdditionalLocation numeric(18, 0)
+,GPS_CoOrdinate varchar(150)
+,GPS_Location varchar(150)
+,Suplier varchar(150)
+,CreatedBy numeric(18, 0)
+,CreatedOn date
+,IsActive tinyint
+,MEdit tinyint
+,MScan tinyint
+,ReplacementValue varchar(1000)
+,ReplacementDate date
+,WDVDate date
+,AllocationStatus varchar(1000)
+,Temp3 varchar(100)
+,LastModifiedOn datetime(3)
+,ADDL_Tag int
+,LastStatusUpdatedDate        datetime(3)
+,DiscardDate        datetime(3)
+,VerifiedAt        decimal(18, 0)
+,InventoryOn datetime(3)
+,DynamicInventoryBy numeric(18, 0)
+,SerialNo varchar(300)
+,AssetOutwardDate datetime(3)
+,RemainingUseFulLife varchar(200)
+,LabelStatus varchar(100)
+,InventoryComment varchar(100)
+,OldAssetId varchar(200)
+,Unit varchar(15)
+,Parent_Flag varchar(1)
+,Fiscal_Year varchar(4)
+,Block varchar(60)
+,AssetLocation varchar(150)
+,StorageLocation varchar(60)
+,ExpiryDate date
+,ITSerialNo varchar(30)
+,RetireIndicator tinyint
+,IsRePrint tinyint
+,LastScanDate datetime
+,AssetCondition varchar(50)
+,ConditionEffectiveDate datetime
+,BlockOwnerMailFlag varchar(50)
+,warrantyVendor varchar(50)
+,EquipmentNumber varchar(50)
+,InventoryStatus varchar(50)
+,TransferStatus varchar(50)
+,RetirementStatus varchar(50)
+,SplitFlag tinyint
+, Temp9        varchar(200)
+,LastRemark        varchar(600)
+,AssetCriticality varchar(50) 
+  ,TAId bigint(6) 
+  ,TypeOfAsset varchar(50) 
+  ,STAId bigint(6) 
+  ,SubTypeOfAsset varchar(50)
+  ,Acronym varchar(30)
+  ,InventoryNote varchar(30)
+  ,GrnNo varchar(50)
+  ,TransactionCurrency varchar(15)
+  ,TransactionAcqCost varchar(50)
+  ,TransactionWDV varchar(50)
+  ,SCBlockOwnerMailFlag varchar(50)
+,SelfCertComment varchar(1000)
+,SelfCertProjectId bigint(20)
+,SelfCertActionFlag tinyint(1)
+,SelfCertBy bigint(10)
+,SelfCertOn date
+,SelfCertApproverIP varchar(50)
+,SelfCertInventoryNote varchar(30)
+,SelfCertMissingStatus varchar(250)
+,SelfCertMissingFile varchar(550)
+,SelfCertComplete tinyint(1)
+,SCUserFlag varchar(20)
+,Zone varchar(50)
+,AssetCategoryId bigint(20)
+,CategoryName varchar(100)
+,InvoiceDate datetime
+,RegionId bigint(20)
+,RejectFlag tinyint(1)
+,RejectedComment varchar(400)
+);
+
+DROP TEMPORARY TABLE IF EXISTS  TempSplittedRecords;
+CREATE TEMPORARY TABLE  TempSplittedRecords (
+ExcelMasterID numeric(18, 0)
+,GroupID numeric(18, 0)
+,CompanyID numeric(18, 0)
+,LocationID numeric(18, 0)
+,AssetID varchar(50)
+,SubAssetID varchar(25)
+,BarCode varchar(25)
+,BlockId numeric(18,0)
+,AcquisitionDate date
+,Quantity decimal(18, 2)
+,AcquisitionCost varchar(50)
+,WDV varchar(50)
+,Building varchar(1000)
+,Room varchar(1000)
+,RackId numeric(18,0)
+,ADL2 varchar(1500)
+,ADL3 varchar(1500)
+,UsefulLife varchar(100)
+,UserName varchar(200)
+,UserEmailID varchar(200)
+,Taggable varchar(50)
+,IsNetworkScan tinyint
+,NetworkHostName varchar(150)
+,MergeID numeric(18, 0)
+,SplitID numeric(18, 0)#25
+,IsQtySplit tinyint
+,AssetStage int
+,TPID numeric(18, 0)
+,TaggingStatus int
+,TpMissingStatus varchar(500)
+,TpMissingFile varchar(550)
+,TpComplete tinyint
+,IsSync tinyint
+,StatusSettingMode char(1)
+,LastModifiedBy numeric(18, 0)
+,GPS_Date date
+,OutwardLocationId numeric(18, 0)
+,IsIntward tinyint
+,TransitType int
+,AdditionalLocation numeric(18, 0)
+,GPS_CoOrdinate varchar(150)
+,GPS_Location varchar(150)
+,Suplier varchar(150)
+,CreatedBy numeric(18, 0)
+,CreatedOn date
+,IsActive tinyint
+,MEdit tinyint
+,MScan tinyint
+,ReplacementValue varchar(1000)
+,ReplacementDate date
+,WDVDate date
+,AllocationStatus varchar(100)
+,Temp3 varchar(100)
+,LastModifiedOn datetime(3)
+,ADDL_Tag int
+,LastStatusUpdatedDate        datetime(3)
+,DiscardDate        datetime(3)
+,VerifiedAt        decimal(18, 0)
+,InventoryOn datetime(3)
+,DynamicInventoryBy numeric(18, 0)
+,SerialNo varchar(300)
+,AssetOutwardDate datetime(3)
+,RemainingUseFulLife varchar(200)
+,LabelStatus varchar(100)
+,InventoryComment varchar(100)
+,OldAssetId varchar(200)
+,Unit varchar(15)
+,Parent_Flag varchar(1)
+,Fiscal_Year varchar(4)
+,Block varchar(60)
+,AssetLocation varchar(150)
+,StorageLocation varchar(60)
+,ExpiryDate date
+,ITSerialNo varchar(30)
+,RetireIndicator tinyint
+,IsRePrint tinyint
+,LastScanDate datetime
+,AssetCondition varchar(50)
+,ConditionEffectiveDate datetime
+,BlockOwnerMailFlag varchar(50)
+,warrantyVendor varchar(50)
+,EquipmentNumber varchar(50)
+,InventoryStatus varchar(50)
+,TransferStatus varchar(50)
+,RetirementStatus varchar(50)
+,SplitFlag tinyint
+, Temp9        varchar(200)
+,LastRemark        varchar(600)
+,AssetCriticality varchar(50) 
+  ,TAId bigint(6) 
+  ,TypeOfAsset varchar(50) 
+  ,STAId bigint(6) 
+  ,SubTypeOfAsset varchar(50) 
+  ,Acronym varchar(30) 
+  ,InventoryNote varchar(30) 
+  #Remove currency from prefar ,Currency varchar(15) 
+  ,GrnNo varchar(50)
+  ,TransactionCurrency varchar(15)
+  ,TransactionAcqCost varchar(50)
+  ,TransactionWDV varchar(50)
+  ,SCBlockOwnerMailFlag varchar(50)#100
+,SelfCertComment varchar(1000)
+,SelfCertProjectId bigint(20)
+,SelfCertActionFlag tinyint(1)
+,SelfCertBy bigint(10)
+,SelfCertOn date
+,SelfCertApproverIP varchar(50)
+,SelfCertInventoryNote varchar(30)
+,SelfCertMissingStatus varchar(250)
+,SelfCertMissingFile varchar(550)
+,SelfCertComplete tinyint(1)
+,SCUserFlag varchar(20)
+,Zone varchar(50)
+,AssetCategoryId bigint(20)
+,CategoryName varchar(100)
+,InvoiceDate datetime
+,RegionId bigint(20)
+,RejectFlag tinyint(1)
+,RejectedComment varchar(400)
+);
+
+INSERT INTO  ActiveCustomer (
+                PreFARId
+                ,ExcelMasterID
+                ,GroupID
+                ,CompanyID
+                ,LocationID
+                ,AssetID
+                ,SubAssetID
+                ,BarCode
+                ,BlockId
+                ,AcquisitionDate
+                ,Quantity
+                ,AcquisitionCost
+                ,WDV
+                ,Building
+                ,Room
+                ,RackId
+                ,ADL2
+                ,ADL3
+                ,UsefulLife
+                ,UserName
+                ,UserEmailID
+                ,Taggable
+                ,IsNetworkScan
+                ,NetworkHostName
+                ,MergeID
+                ,SplitID
+                ,IsQtySplit
+                ,AssetStage
+                ,TPID
+                ,TaggingStatus
+                ,TpMissingStatus
+                ,TpMissingFile
+                ,TpComplete
+                ,IsSync
+                ,StatusSettingMode
+                ,LastModifiedBy
+                ,GPS_Date
+                ,OutwardLocationId
+                ,IsIntward
+                ,TransitType
+                ,AdditionalLocation
+                ,GPS_CoOrdinate
+                ,GPS_Location
+                ,Suplier
+                ,CreatedBy
+                ,CreatedOn
+                ,IsActive
+                ,MEdit
+                ,MScan
+                ,ReplacementValue
+                ,ReplacementDate
+                ,WDVDate
+                ,AllocationStatus
+                ,Temp3
+                ,LastModifiedOn
+                ,ADDL_Tag
+                ,LastStatusUpdatedDate
+                ,DiscardDate
+                ,VerifiedAt
+                ,InventoryOn
+                ,DynamicInventoryBy
+                ,SerialNo
+                ,AssetOutwardDate
+                ,RemainingUseFulLife
+                ,LabelStatus
+    ,InventoryComment
+    ,OldAssetId
+    ,Unit
+    ,Parent_Flag
+    ,Fiscal_Year
+    ,Block
+    ,AssetLocation
+    ,StorageLocation
+    ,ExpiryDate
+    ,ITSerialNo
+    ,RetireIndicator 
+    ,IsRePrint
+    ,LastScanDate
+    ,AssetCondition
+    ,ConditionEffectiveDate
+        ,BlockOwnerMailFlag
+        ,warrantyVendor
+    ,EquipmentNumber
+        ,InventoryStatus 
+        ,TransferStatus 
+        ,RetirementStatus
+    ,SplitFlag 
+    , Temp9
+,LastRemark
+,AssetCriticality 
+  ,TAId 
+  ,TypeOfAsset 
+  ,STAId 
+  ,SubTypeOfAsset
+  ,Acronym 
+  ,InventoryNote
+  ,GrnNo
+  ,TransactionCurrency
+  ,TransactionAcqCost
+  ,TransactionWDV
+  ,SCBlockOwnerMailFlag 
+,SelfCertComment
+,SelfCertProjectId
+,SelfCertActionFlag
+,SelfCertBy
+,SelfCertOn
+,SelfCertApproverIP
+,SelfCertInventoryNote
+,SelfCertMissingStatus
+,SelfCertMissingFile
+,SelfCertComplete
+,SCUserFlag
+,Zone
+,AssetCategoryId
+,CategoryName
+,InvoiceDate
+,RegionId
+,RejectFlag
+,RejectedComment)
+
+SELECT
+                PreFARId
+                ,ExcelMasterID
+                ,GroupID
+                ,CompanyID
+                ,LocationID
+                ,AssetID
+                ,SubAssetID
+                ,BarCode
+                ,BlockId
+                ,AcquisitionDate
+                ,Quantity
+                ,AcquisitionCost
+                ,WDV
+                ,Building
+                ,Room
+                ,RackId
+                ,ADL2
+                ,ADL3
+                ,UsefulLife
+                ,UserName
+                ,UserEmailID
+                ,Taggable
+                ,IsNetworkScan
+                ,NetworkHostName
+                ,MergeID
+                ,SplitID
+                ,IsQtySplit
+                ,AssetStage
+                ,TPID
+                ,TaggingStatus
+                ,TpMissingStatus
+                ,TpMissingFile
+                ,TpComplete
+                ,IsSync
+                ,StatusSettingMode
+                ,LastModifiedBy
+                ,GPS_Date
+                ,OutwardLocationId
+                ,IsIntward
+                ,TransitType
+                ,AdditionalLocation
+                ,GPS_CoOrdinate
+                ,GPS_Location
+                ,Suplier
+                ,CreatedBy
+                ,CreatedOn
+                ,IsActive
+                ,MEdit
+                ,MScan
+                ,ReplacementValue
+                ,ReplacementDate
+                ,WDVDate
+                ,AllocationStatus
+                ,Temp3
+                ,LastModifiedOn
+                ,ADDL_Tag
+                ,LastStatusUpdatedDate
+                ,DiscardDate
+                ,VerifiedAt
+                ,InventoryOn
+                ,DynamicInventoryBy
+                ,SerialNo
+                ,AssetOutwardDate
+                ,RemainingUseFulLife
+               ,LabelStatus
+   ,InventoryComment
+    ,OldAssetId
+    ,Unit
+    ,Parent_Flag
+    ,Fiscal_Year
+    ,Block
+   ,AssetLocation
+   ,StorageLocation
+   ,ExpiryDate
+     ,ITSerialNo
+    ,RetireIndicator 
+     ,IsRePrint
+     ,LastScanDate
+    ,AssetCondition
+    ,ConditionEffectiveDate
+        ,BlockOwnerMailFlag
+        ,warrantyVendor
+    ,EquipmentNumber
+        ,InventoryStatus 
+        ,TransferStatus 
+        ,RetirementStatus
+    ,SplitFlag 
+    , Temp9
+,LastRemark
+,AssetCriticality
+  ,TAId 
+  ,TypeOfAsset 
+  ,STAId 
+  ,SubTypeOfAsset 
+  ,Acronym 
+  ,InventoryNote 
+  ,GrnNo
+  ,TransactionCurrency
+  ,TransactionAcqCost
+  ,TransactionWDV
+    ,SCBlockOwnerMailFlag 
+,SelfCertComment
+,SelfCertProjectId
+,SelfCertActionFlag
+,SelfCertBy
+,SelfCertOn
+,SelfCertApproverIP
+,SelfCertInventoryNote
+,SelfCertMissingStatus
+,SelfCertMissingFile
+,SelfCertComplete
+,SCUserFlag
+,Zone
+,AssetCategoryId
+,CategoryName
+,InvoiceDate
+,RegionId
+,RejectFlag
+,RejectedComment
+
+    from PreFAR WHERE CompanyId = p_CmpnyId and IsActive = 1 and  PreFARId IN (SELECT Item FROM TableOfArrayItems);
+
+set v_Count = FOUND_ROWS();
+set v_RowCount = 1;
+
+WHILE v_RowCount <= v_Count
+DO
+        SELECT
+         PreFARId
+                , ExcelMasterID
+                , GroupID
+                , CompanyID
+                , LocationID
+                , AssetID
+                , SubAssetID
+                , BarCode
+                , BlockId
+                , AcquisitionDate
+                , Quantity
+                , AcquisitionCost
+                , WDV
+                , Building
+                , Room
+                , RackId
+                , ADL2
+                , ADL3
+                , UsefulLife
+                , UserName
+                , UserEmailID
+                , Taggable
+                , IsNetworkScan
+                , NetworkHostName
+                , MergeID
+                , SplitID
+                , IsQtySplit
+                , AssetStage
+                , TPID
+                , TaggingStatus
+                , TpMissingStatus
+                , TpMissingFile
+                , TpComplete
+                , IsSync
+                , StatusSettingMode
+                , LastModifiedBy
+                , GPS_Date
+                , OutwardLocationId
+                , IsIntward
+                , TransitType
+                , AdditionalLocation
+                , GPS_CoOrdinate
+                , GPS_Location
+                , Suplier
+                , CreatedBy
+                , CreatedOn
+                , IsActive
+                , MEdit
+                , MScan
+                , ReplacementValue
+                , ReplacementDate
+                , WDVDate
+                , AllocationStatus
+                , Temp3
+                , LastModifiedOn
+                , ADDL_Tag
+                , LastStatusUpdatedDate
+                , DiscardDate
+                , VerifiedAt
+                , InventoryOn
+                , DynamicInventoryBy
+                , SerialNo
+                , AssetOutwardDate
+                ,  RemainingUseFulLife
+                , LabelStatus
+    , InventoryComment
+    ,OldAssetId
+    ,Unit
+    ,Parent_Flag
+    ,Fiscal_Year
+    ,Block
+    ,AssetLocation
+    ,StorageLocation
+    ,ExpiryDate
+    ,ITSerialNo
+    ,RetireIndicator 
+    ,IsRePrint
+    ,LastScanDate
+    ,AssetCondition
+        ,ConditionEffectiveDate
+        ,BlockOwnerMailFlag
+		,warrantyVendor
+    ,EquipmentNumber
+        ,InventoryStatus 
+        ,TransferStatus 
+        ,RetirementStatus
+    ,SplitFlag 
+    , Temp9
+,LastRemark
+,AssetCriticality
+  ,TAId
+  ,TypeOfAsset 
+  ,STAId   
+  ,SubTypeOfAsset 
+  ,Acronym 
+  ,InventoryNote 
+  ,GrnNo
+  ,TransactionCurrency
+  ,TransactionAcqCost 
+  ,TransactionWDV
+    ,SCBlockOwnerMailFlag 
+,SelfCertComment
+,SelfCertProjectId
+,SelfCertActionFlag
+,SelfCertBy
+,SelfCertOn
+,SelfCertApproverIP
+,SelfCertInventoryNote
+,SelfCertMissingStatus
+,SelfCertMissingFile
+,SelfCertComplete
+,SCUserFlag
+,Zone
+,AssetCategoryId
+,CategoryName
+,InvoiceDate
+,RegionId
+    
+    INTO v_PreFARId, v_ExcelMasterID, v_GroupID, v_CompanyID, v_LocationID, v_AssetID, v_SubAssetID, v_BarCode, v_BlockId,  v_AcquisitionDate, v_Quantity,  v_AcquisitionCost, v_WDV, 
+    v_Building, v_Room, v_RackId, v_ADL2, v_ADL3, v_UsefulLife, v_UserName, v_UserEmailID, v_Taggable, v_IsNetworkScan, v_NetworkHostName, v_MergeID, v_SplitID, v_IsQtySplit, v_AssetStage, 
+    v_TPID, v_TaggingStatus, v_TpMissingStatus, v_TpMissingFile, v_TpComplete, v_IsSync,  v_StatusSettingMode, v_LastModifiedBy, v_GPS_Date, v_OutwardLocationId, v_IsIntward, v_TransitType, 
+    v_AdditionalLocation, v_GPS_CoOrdinate, v_GPS_Location, v_Suplier, v_CreatedBy, v_CreatedOn, v_IsActive, v_MEdit, v_MScan, v_ReplacementValue, v_ReplacementDate, v_WDVDate, 
+    v_AllocationStatus, v_Temp3, v_LastModifiedOn, v_ADDL_Tag, v_LastStatusUpdatedDate, v_DiscardDate, v_VerifiedAt,  v_InventoryOn, v_DynamicInventoryBy,  v_SerialNo,  v_AssetOutwardDate, 
+    v_RemainingUseFulLife, v_LabelStatus, v_InventoryComment, v_OldAssetId, v_Unit, v_Parent_Flag, v_Fiscal_Year, v_Block, v_AssetLocation, v_StorageLocation, v_ExpiryDate, v_ITSerialNo, 
+    v_RetireIndicator, v_IsRePrint,v_LastScanDate ,v_AssetCondition,v_ConditionEffectiveDate,v_BlockOwnerMailFlag,v_warrantyVendor,v_EquipmentNumber,v_InventoryStatus ,v_TransferStatus ,
+    v_RetirementStatus,v_SplitFlag, v_Temp9,v_LastRemark,v_AssetCriticality,v_TAId,v_TypeOfAsset,v_STAId ,v_SubTypeOfAsset,v_Acronym,v_InventoryNote,v_GrnNo,v_TransactionCurrency
+    ,v_TransactionAcqCost,v_TransactionWDV ,v_SCBlockOwnerMailFlag ,v_SelfCertComment,v_SelfCertProjectId,v_SelfCertActionFlag,v_SelfCertBy,v_SelfCertOn,v_SelfCertApproverIP
+    ,v_SelfCertInventoryNote,v_SelfCertMissingStatus,v_SelfCertMissingFile,v_SelfCertComplete,v_SCUserFlag,v_Zone,v_AssetCategoryId,v_CategoryName,v_InvoiceDate,v_RegionId
+    
+    FROM ActiveCustomer WHERE RowID = v_RowCount;
+    
+    set v_ChildCost = Round( (v_AcquisitionCost  / v_Quantity) ,3);
+    set v_ChildWDV = round( (v_WDV  /  v_Quantity ),3);
+    
+    if(v_ReplacementValue <> '')
+    then
+		set v_ChildReplacementValue = ROUND((v_ReplacementValue / v_Quantity) ,2);
+        set v_ReplacementValueRoundOff = (v_ReplacementValue - (v_ChildReplacementValue * v_Quantity));
+	else
+		set v_ChildReplacementValue=0;
+        set v_ReplacementValueRoundOff=0;
+	end if;
+
+	set v_CostRoundOff = (v_AcquisitionCost - (v_ChildCost * v_Quantity));
+    set v_WDVRoundOff = (v_WDV - (v_ChildWDV * v_Quantity));
+    set v_qty = 2;
+    set v_forloop = v_Quantity;
+
+	WHILE v_forloop > 1
+    DO
+		insert into TempSplittedRecords(
+                                ExcelMasterID
+                                ,GroupID
+                                ,CompanyID
+                                ,LocationID
+                                ,AssetID
+                                ,SubAssetID
+                                ,BarCode
+                                ,BlockId
+                                ,AcquisitionDate
+                                ,Quantity
+                                ,AcquisitionCost
+                                ,WDV
+                                ,Building
+                                ,Room
+                                ,RackId
+                                ,ADL2
+                                ,ADL3
+                                ,UsefulLife
+                                ,UserName
+                                ,UserEmailID
+                                ,Taggable
+                                ,IsNetworkScan
+                                ,NetworkHostName
+                                ,MergeID
+                                ,SplitID
+                                ,IsQtySplit
+                                ,AssetStage
+                                ,TPID
+                                ,TaggingStatus
+                                ,TpMissingStatus
+                                ,TpMissingFile
+                                ,TpComplete
+                                ,IsSync
+                                ,StatusSettingMode
+                                ,LastModifiedBy
+                                ,GPS_Date
+                                ,OutwardLocationId
+                                ,IsIntward
+                                ,TransitType
+                                ,AdditionalLocation
+                                ,GPS_CoOrdinate
+                                ,GPS_Location
+                                ,Suplier
+                                ,CreatedBy
+                                ,CreatedOn
+                                ,IsActive
+                                ,MEdit
+                                ,MScan
+                                ,ReplacementValue
+                                ,ReplacementDate
+                                ,WDVDate
+                                ,AllocationStatus
+                                ,Temp3
+                                ,LastModifiedOn
+                                ,ADDL_Tag
+                                ,LastStatusUpdatedDate
+                                ,DiscardDate
+                                ,VerifiedAt
+                                ,InventoryOn
+                                ,DynamicInventoryBy
+                                ,SerialNo
+                                ,AssetOutwardDate
+                                ,RemainingUseFulLife
+                                ,LabelStatus
+                                ,InventoryComment
+                                ,OldAssetId
+                                ,Unit
+                                ,Parent_Flag
+                                ,Fiscal_Year
+                                ,Block
+                                ,AssetLocation
+                                ,StorageLocation
+                                ,ExpiryDate
+        ,ITSerialNo
+        ,RetireIndicator
+        ,IsRePrint
+        ,LastScanDate
+        ,AssetCondition
+        ,ConditionEffectiveDate
+        ,BlockOwnerMailFlag
+        ,warrantyVendor
+       ,EquipmentNumber
+                ,InventoryStatus 
+                ,TransferStatus 
+                ,RetirementStatus
+        ,SplitFlag
+        , Temp9
+,LastRemark
+,AssetCriticality
+  ,TAId 
+  ,TypeOfAsset 
+  ,STAId 
+  ,SubTypeOfAsset 
+  ,Acronym   
+  ,InventoryNote 
+  ,GrnNo
+  ,TransactionCurrency
+  ,TransactionAcqCost
+  ,TransactionWDV
+  ,SCBlockOwnerMailFlag 
+,SelfCertComment
+,SelfCertProjectId
+,SelfCertActionFlag
+,SelfCertBy
+,SelfCertOn
+,SelfCertApproverIP
+,SelfCertInventoryNote
+,SelfCertMissingStatus
+,SelfCertMissingFile
+,SelfCertComplete 
+,SCUserFlag
+,Zone
+,AssetCategoryId
+,CategoryName
+,InvoiceDate
+,RegionId
+,RejectFlag
+,RejectedComment)
+                        values(
+                                null
+                                ,v_GroupID
+                                ,v_CompanyID
+                                ,v_LocationID
+                                ,v_AssetID
+                                ,v_SubAssetID
+                                ,null
+                                ,v_BlockId
+                                ,v_AcquisitionDate
+                                ,1
+                                ,v_ChildCost
+                                ,v_ChildWDV
+                                ,v_Building
+                                ,v_Room
+                                ,v_RackId
+                                ,v_ADL2
+                                ,v_ADL3
+                                ,v_UsefulLife
+                                ,v_UserName
+                                ,v_UserEmailID
+                                ,v_Taggable
+                                ,v_IsNetworkScan
+                                ,v_NetworkHostName
+                                ,v_MergeID
+                                ,v_qty
+                                ,1
+                                ,2
+                                ,v_TPID
+                                ,v_TaggingStatus
+                                ,v_TpMissingStatus
+                                ,v_TpMissingFile
+                                ,v_TpComplete
+                                ,v_IsSync
+                                ,v_StatusSettingMode
+                                ,p_Modifier
+                                ,v_GPS_Date
+                                ,v_OutwardLocationId
+                                ,v_IsIntward
+                                ,v_TransitType
+                                ,v_AdditionalLocation
+                                ,v_GPS_CoOrdinate
+                                ,v_GPS_Location
+                                ,v_Suplier
+                                ,v_CreatedBy
+                                ,v_CreatedOn
+                                ,v_IsActive
+                                ,v_MEdit
+                                ,v_MScan
+                                ,CASE WHEN v_ChildReplacementValue = 0 THEN v_ReplacementValue ELSE v_ChildReplacementValue END
+                                ,v_ReplacementDate
+                                ,v_WDVDate
+                                ,v_AllocationStatus
+                                ,v_Temp3
+                                ,NOW()
+                                ,v_ADDL_Tag
+                                ,v_LastStatusUpdatedDate
+                                ,v_DiscardDate
+                                ,v_VerifiedAt
+                                ,v_InventoryOn
+                                ,v_DynamicInventoryBy
+                                ,v_SerialNo
+                                ,v_AssetOutwardDate
+                                ,v_RemainingUseFulLife
+                                ,v_LabelStatus
+        ,v_InventoryComment
+        ,v_OldAssetId
+        , v_Unit
+        , v_Parent_Flag
+        , v_Fiscal_Year
+        ,v_Block
+        ,v_AssetLocation
+        ,v_StorageLocation
+        ,v_ExpiryDate
+        ,v_ITSerialNo
+        ,v_RetireIndicator
+        ,v_IsRePrint
+        ,v_LastScanDate
+        ,v_AssetCondition
+        ,v_ConditionEffectiveDate
+        ,v_BlockOwnerMailFlag
+        ,v_warrantyVendor
+        ,null
+                ,null
+                ,null
+                ,null
+        ,v_SplitFlag
+        , v_Temp9,
+        v_LastRemark,
+        v_AssetCriticality,
+        v_TAId,
+        v_TypeOfAsset,
+        v_STAId ,
+        v_SubTypeOfAsset,
+        v_Acronym,
+        v_InventoryNote ,        
+        v_GrnNo,
+        null,
+  null,
+  null
+  ,v_SCBlockOwnerMailFlag 
+,v_SelfCertComment
+,v_SelfCertProjectId
+,v_SelfCertActionFlag
+,v_SelfCertBy
+,v_SelfCertOn
+,v_SelfCertApproverIP
+,v_SelfCertInventoryNote
+,v_SelfCertMissingStatus
+,v_SelfCertMissingFile
+,v_SelfCertComplete
+,v_SCUserFlag
+,v_Zone
+,v_AssetCategoryId
+,v_CategoryName
+,v_InvoiceDate 
+,v_RegionId
+,0
+,null);
+                        set v_forloop = (v_forloop - 1);
+                        set v_qty = (v_qty + 1);
+                END WHILE;
+
+UPDATE PreFAR 
+SET 
+    WDV = (v_ChildWDV + v_WDVRoundOff),
+    AcquisitionCost = (v_ChildCost + v_CostRoundOff),
+    Quantity = 1,
+    SplitID = 1,
+    LastModifiedBy = p_Modifier,
+    IsQtySplit = 1,
+    IsActive = 1,
+    ReplacementValue = CASE
+        WHEN v_ChildReplacementValue = 0 THEN v_ReplacementValue
+        ELSE (v_ChildReplacementValue + v_ReplacementValueRoundOff)
+    END
+WHERE
+    PreFARId = v_PreFARId;
+    
+SET v_RowCount = v_RowCount + 1;
+
+END WHILE;
+
+INSERT INTO PreFAR SELECT null,
+        ExcelMasterID
+        ,GroupID
+        ,CompanyID
+        ,LocationID
+        ,AssetID
+        ,SubAssetID
+        ,BarCode
+        ,BlockId
+        ,AcquisitionDate
+        ,Quantity
+        ,AcquisitionCost
+        ,WDV
+        ,Building
+        ,Room
+        ,RackId
+        ,ADL2
+        ,ADL3
+        ,UsefulLife
+        ,UserName
+        ,UserEmailID
+        ,Taggable
+        ,IsNetworkScan
+        ,NetworkHostName
+        ,MergeID
+        ,SplitID
+        ,IsQtySplit
+        ,AssetStage
+        ,TPID
+        ,TaggingStatus
+        ,TpMissingStatus
+        ,TpMissingFile
+        ,TpComplete
+        ,IsSync
+        ,StatusSettingMode
+        ,LastModifiedBy
+        ,GPS_Date
+        ,OutwardLocationId
+        ,IsIntward
+        ,TransitType
+        ,AdditionalLocation
+        ,GPS_CoOrdinate
+        ,GPS_Location
+        ,Suplier
+        ,CreatedBy
+        ,CreatedOn
+        ,IsActive
+        ,MEdit
+        ,MScan
+        ,ReplacementValue
+        ,ReplacementDate
+        ,WDVDate
+        ,AllocationStatus
+        ,Temp3
+        ,LastModifiedOn
+        ,ADDL_Tag
+        ,LastStatusUpdatedDate
+        ,DiscardDate
+        ,VerifiedAt
+        ,InventoryOn
+        ,DynamicInventoryBy
+        ,SerialNo
+        ,AssetOutwardDate
+        ,RemainingUseFulLife
+        ,LabelStatus
+  ,InventoryComment
+  ,OldAssetId
+  ,Unit
+  ,Parent_Flag
+  ,Fiscal_Year
+  ,Block
+  ,AssetLocation
+  ,StorageLocation
+  ,ExpiryDate
+  ,ITSerialNo
+  ,RetireIndicator
+  ,IsRePrint
+  ,LastScanDate
+  ,AssetCondition
+  ,ConditionEffectiveDate
+  ,BlockOwnerMailFlag
+    ,warrantyVendor
+  ,EquipmentNumber
+  ,InventoryStatus 
+  ,TransferStatus 
+  ,RetirementStatus
+  ,SplitFlag
+  , Temp9
+,LastRemark
+,AssetCriticality
+  ,TAId 
+  ,TypeOfAsset 
+  ,STAId 
+  ,SubTypeOfAsset 
+  ,Acronym 
+  ,InventoryNote 
+  ,GrnNo
+  ,TransactionCurrency
+  ,TransactionAcqCost
+  ,TransactionWDV
+  ,SCBlockOwnerMailFlag 
+,SelfCertComment
+,SelfCertProjectId
+,SelfCertActionFlag
+,SelfCertBy
+,SelfCertOn
+,SelfCertApproverIP
+,SelfCertInventoryNote
+,SelfCertMissingStatus
+,SelfCertMissingFile
+,SelfCertComplete
+,SCUserFlag
+,Zone
+,AssetCategoryId
+,CategoryName
+,InvoiceDate
+,RegionId
+,RejectFlag
+,RejectedComment
+        from TempSplittedRecords;
+        select "Vinayak";
+insert into TableOfsplitedPrefarids (Item) 
+select PreFARId from prefar where AssetID = v_AssetID and SubAssetID = v_SubAssetID and SplitID > 1 and GroupID = v_GroupID and CompanyID = v_CompanyID and LocationID = v_LocationID and BlockId = v_BlockId;
+ 
+select GROUP_CONCAT(Item) into vp_prefarids from TableOfsplitedPrefarids;
+
+set v_idList1 = concat(vp_prefarids,',');
+
+   WHILE LOCATE(',',v_idList1) > 0
+   DO
+		SET  v_SetPoint1 = instr(v_idList1,',');
+        SET  v_VALUE1 = LEFT(v_idList1 , (v_SetPoint1 - 1));
+        SET  v_idList1 = INSERT(v_idList1, 1, v_SetPoint1, '')  ;
+                                
+Insert into  TempCapitalizeNonCapitalizeCommonFields 
+    ( 
+  `PONumber`,
+  `InvoiceNo`,
+  `AllocationTypeId`,
+  `InsuranceVendor` ,
+  `InsuranceFrom` ,
+  `InsuranceTo`,
+  `AMCVendor`,
+  `AMCExpiryDate`,
+  `AMCStartDate`,
+  `WarrantyExpiryDate`,
+  `InstallationDate`,
+  `MachineRegNo`,
+  `PreFARId` ,
+  `ITAssetId`,
+  `CreatedOn` ,
+  `CreatedBy`,
+  `CompanyId`,
+  `LocationId`,
+  `BlockId`,
+  `WarrantyPeriod`,
+  `WarrantyCost`,
+  `WarrantyTerms`,
+  `WarrantyRemarks`)
+    Select 
+     PONumber, InvoiceNo, AllocationTypeId, InsuranceVendor, InsuranceFrom, InsuranceTo,
+ AMCVendor,  AMCExpiryDate, AMCStartDate, WarrantyExpiryDate, InstallationDate, MachineRegNo, v_VALUE1, ITAssetId,NOW(),p_Modifier
+ ,CompanyId,LocationId,BlockId,WarrantyPeriod,WarrantyCost,WarrantyTerms,WarrantyRemarks from CapitalizeNonCapitalizeCommonFields
+  where PreFARId = v_PreFARId;
+
+  Insert into   TempPrepurchasedItAssets
+    (
+  `PreFARId` ,
+  `CreationDate` ,
+  `CreatedBy`,
+  `LastModifiedBy`,
+  `LastModifiedOn`,
+  `CompanyId`,
+  `LocationId`,
+  `BlockId`,
+  `GroupID`,
+  `CPUClass`,
+  `CPUSubClass`,
+  `Model`,
+  `OperatingSystem`,
+  `ApplicationType`,
+  `Manufacturer`
+  )
+    Select 
+     v_VALUE1,NOW(),p_Modifier,p_Modifier,NOW(),
+     CompanyId,LocationId,BlockId,GroupID,CPUClass,CPUSubClass,Model,OperatingSystem,ApplicationType,Manufacturer from PrepurchasedItAssets
+  where PreFARId = v_PreFARId;
+ 
+ if(vp_config = 1)
+ then
+  Insert into  TempClientCustomizeColumn 
+    (
+  `GroupID`,
+  `CompanyId`,
+  `LocationId`,
+  `BlockId`,
+  `PreFARId`
+  )
+   Select 
+        GroupID,CompanyId,LocationId,BlockId,v_VALUE1 from ClientCustomizeColumn
+  where PreFARId = v_PreFARId;
+end if;
+END WHILE;
+
+#------------------------
+  insert into  CapitalizeNonCapitalizeCommonFields
+    
+    ( 
+  `PONumber`,
+  `InvoiceNo`,
+  `AllocationTypeId`,
+  `InsuranceVendor` ,
+  `InsuranceFrom` ,
+  `InsuranceTo`,
+  `AMCVendor`,
+  `AMCExpiryDate`,
+  `AMCStartDate`,
+  `WarrantyExpiryDate`,
+  `InstallationDate`,
+  `MachineRegNo`,
+  `PreFARId` ,
+  `ITAssetId`,
+  `CreatedOn` ,
+  `CreatedBy`,
+  `CompanyId`,
+  `LocationId`,
+  `BlockId` ,
+  `WarrantyPeriod`,
+  `WarrantyCost`,
+  `WarrantyTerms`,
+  `WarrantyRemarks`)
+          select 
+           PONumber, InvoiceNo, AllocationTypeId, InsuranceVendor, InsuranceFrom, InsuranceTo,
+ AMCVendor,  AMCExpiryDate, AMCStartDate, WarrantyExpiryDate, InstallationDate, MachineRegNo,PreFARId,ITAssetId,CreatedOn,CreatedBy,
+ CompanyId,LocationId,BlockId,WarrantyPeriod,WarrantyCost,WarrantyTerms,WarrantyRemarks from TempCapitalizeNonCapitalizeCommonFields;
+  
+   Insert into  PrepurchasedItAssets 
+    (
+  `PreFARId` ,
+  `CreationDate` ,
+  `CreatedBy`,
+  `LastModifiedBy`,
+  `LastModifiedOn`,
+  `CompanyId`,
+  `LocationId`,
+  `BlockId`,
+  `GroupID`,
+  `CPUClass`,
+  `CPUSubClass`,
+  `Model`,
+  `OperatingSystem`,
+  `ApplicationType`,
+  `Manufacturer`
+  )
+    Select 
+     PreFARId,CreationDate,CreatedBy,LastModifiedBy,LastModifiedOn,CompanyId,
+     LocationId,BlockId,GroupID,CPUClass,CPUSubClass,Model,OperatingSystem,ApplicationType,Manufacturer from TempPrepurchasedItAssets;
+ 
+ if (vp_config = 1)
+ then
+  Insert into  ClientCustomizeColumn 
+    (`GroupID`,
+  `CompanyId`,
+  `LocationId`,
+  `BlockId`,
+  `PreFARId`
+  )
+ Select GroupID,CompanyId,LocationId,BlockId,PreFARId from TempClientCustomizeColumn;
+ end if;
+ END

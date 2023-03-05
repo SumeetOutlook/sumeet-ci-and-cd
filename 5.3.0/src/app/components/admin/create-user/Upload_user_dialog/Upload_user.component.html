@@ -1,0 +1,67 @@
+<!-- <div class="md-dialog-container">
+  <mat-toolbar class="mat-toolbar" style="background-color:rgb(12, 48, 87);color:white">
+    <span>Upload User Detail</span>
+    <span class="example-spacer"></span>
+    <button mat-icon-button class="example-icon" aria-label="Example icon-button with close icon"
+      (click)="onclosetab()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-toolbar><br><br>
+  <mat-dialog-content style="margin-bottom: 20px;">
+    <div class="md-dialog-content">
+      <form [formGroup]="AssetInfo">
+        <div fxLayout="row wrap" fxLayout.lt-sm="column">
+          <div fxFlex="50" style="border: 1px solid lightgrey;margin-right: 10px;" class="pr-1">
+            <input type="file" ng2FileSelect style="padding-top: 7px" />
+          </div>
+          <div fxFlex="10" class="pr-1">
+            <button class="btn" mat-raised-button color="primary">
+              <mat-icon style="color: white;">file_upload</mat-icon>Upload
+            </button>
+          </div>
+
+        </div>
+      </form>
+    </div>
+  </mat-dialog-content>
+  <div style="text-align: right !important;margin-right: 10px !important;"><button mat-raised-button color="warn">Close</button></div>
+
+</div> -->
+
+<div class="md-dialog-container">
+  <mat-toolbar class="mat-toolbar" style="background-color:rgb(12, 48, 87);color:white">
+    <span style="position: relative;left: 40%;">Upload User Details</span>
+    <span class="example-spacer"></span>
+    <button mat-icon-button class="example-icon" aria-label="Example icon-button with close icon"
+      (click)="onclosetab()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-toolbar><br><br>
+  <mat-dialog-content style="margin-bottom: 20px;"  cdkDrag cdkDragRootElement=".cdk-overlay-pane" cdkDragHandle>
+    <div class="md-dialog-content">
+      <form [formGroup]="AssetInfo">
+        <div fxLayout="row wrap" class="ml-16" fxLayout.lt-sm="column">
+          <div fxFlex="60" class="mt-12 responsive"  >
+            <input type="file" ng2FileSelect class="uploadSelectClass"  />
+          </div>
+          <div fxFlex="20" class="mt-12 ml-16 responsive">
+            <button class="btn" mat-raised-button color="primary">
+              <mat-icon class="maticon" style="padding-top: 4px !important;padding-right: 4px !important;">file_upload</mat-icon>Upload
+            </button>
+          </div>
+         
+        </div>
+        <div fxLayout="row wrap" class="mt-24" fxLayout.lt-sm="column">
+          <div fxFlex="40" class="responsive" style="text-align: right;">
+            <button class="btn ml-16" mat-raised-button color="primary" style="float: left !important;">
+              <mat-icon class="maticon" style="padding-top: 4px !important;padding-right: 4px !important;" >insert_drive_file</mat-icon>Download  Template
+            </button>
+          </div>
+          </div>
+      </form>
+    </div>
+  </mat-dialog-content>
+  
+</div>
+  
+  

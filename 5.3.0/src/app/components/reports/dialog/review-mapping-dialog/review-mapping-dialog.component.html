@@ -1,0 +1,116 @@
+<div class="md-dialog-container" cdkDrag cdkDragRootElement=".cdk-overlay-pane">
+    <mat-toolbar  cdkDragHandle class="mat-toolbar" style="background-color:rgb(12, 48, 87);color:white">
+      <span style="position: relative;">Review of scanned hardware with assets</span>
+      <span class="example-spacer"></span>
+      <button mat-icon-button class="example-icon" aria-label="Example icon-button with close icon"
+        (click)="dialogRef.close(false)">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-toolbar><br><br>
+    <mat-dialog-content>     
+      <!-- <form [formGroup]="dialogForm" class="mt-8">
+        <div fxLayout="row wrap">
+          <div fxFlex="100" fxFlex.gt-xs="20" class="pr-1">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label" style="font-size: 15px !important;">Suggestions by</mat-label>
+              <mat-select formControlName="mappedCtrl" class="bg-transparente">
+                <mat-option *ngFor="let type of mappedByList" [value]="type.value" >
+                  {{type.name}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>  
+          <div fxFlex="100" fxFlex.gt-xs="20" class="pr-1">
+            <button mat-raised-button class="success" [disabled]="dialogForm.invalid" (click)="Showsuggestion()">
+             
+              Show Suggestions
+            </button>
+          </div>          
+        </div>
+      </form>   -->
+      
+      <div class="example-container mat-elevation-z8 mt-8">
+        <div style="font-weight: bold; color: #1d3478 !important;" ></div>
+        <table mat-table #table [dataSource]="dataSource" matSort>
+  
+          <!-- <ng-container matColumnDef="Select">            
+            <th mat-header-cell *matHeaderCellDef>
+              <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="selection.hasValue() && isAllSelected"
+                [indeterminate]="selection.hasValue() && !isAllSelected">
+              </mat-checkbox>
+            </th>
+            <td mat-cell *matCellDef="let element let i=index">
+              <mat-checkbox (click)="$event.stopPropagation()"  (change)="$event ? isSelected(element) : null"
+                 [checked]="getselectedIds.indexOf(element.PreFARId) > -1">
+              </mat-checkbox>
+            </td>
+          </ng-container> -->
+  
+          <ng-container matColumnDef="Col1">
+            
+            <td mat-cell *matCellDef="let element" [ngClass]="'w-100'">{{element.Col1}}</td>
+          </ng-container>
+  
+          <ng-container matColumnDef="Col2">
+           
+            <td mat-cell *matCellDef="let element" [ngClass]="'w-100'">{{element.Col2}}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="Col7">
+           
+            <td mat-cell *matCellDef="let element" style="background-color: #fff;border-bottom: 0px;border-top: 0px;" [ngClass]="'w-50'"></td>
+          </ng-container>
+  
+          <ng-container matColumnDef="Col3">
+           
+            <td mat-cell *matCellDef="let element" [ngClass]="'w-100'">{{element.Col3}}</td>
+          </ng-container>
+
+          <ng-container matColumnDef="Col4">
+           
+            <td mat-cell *matCellDef="let element" [ngClass]="'w-100'">{{element.Col4}}</td>
+          </ng-container>
+  
+          
+          <ng-container matColumnDef="Col6">
+           
+            <td mat-cell *matCellDef="let element" [ngClass]="'w-100'">{{element.Col6}}</td>
+          </ng-container>
+  
+         
+          
+          <ng-container matColumnDef="header-row-first-group">
+            <th mat-header-cell *matHeaderCellDef style="text-align: center;background-color: #d2d2a0;" [attr.colspan]="2">
+              Mapped Asset Information	
+            </th>
+          </ng-container>
+          <ng-container matColumnDef="header-row-forth-group">
+            <th mat-header-cell *matHeaderCellDef style="text-align: center;background-color: #fff" [attr.colspan]="1">
+             
+            </th>
+          </ng-container>
+          <ng-container matColumnDef="header-row-sec-group">
+            <th mat-header-cell *matHeaderCellDef style="text-align: center;background-color: #d2d2a0;" [attr.colspan]="2">
+              Mapped hardware Information	
+            </th>
+          </ng-container>
+          <ng-container matColumnDef="header-row-third-group">
+            <th mat-header-cell *matHeaderCellDef style="text-align: center;background-color: #d2d2a0;" [attr.colspan]="1">
+              Newly available hardware information
+            </th>
+          </ng-container>
+  
+          <tr mat-header-row
+            *matHeaderRowDef="['header-row-first-group','header-row-forth-group','header-row-sec-group' ,'header-row-third-group'];sticky:true">
+          </tr>         
+          <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+        </table>
+      </div>
+      
+      <!-- <div fxLayout="row wrap">
+        <button mat-raised-button class="success" [disabled]= "getselectedIds.length == 0" (click)="Submit()">
+          <mat-icon>check</mat-icon>Map Hardwares with selected Assets
+        </button>
+      </div> -->
+    </mat-dialog-content>
+  </div>

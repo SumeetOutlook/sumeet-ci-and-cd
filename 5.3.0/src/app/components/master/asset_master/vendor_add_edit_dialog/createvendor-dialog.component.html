@@ -1,0 +1,59 @@
+<div class="md-dialog-container" cdkDrag cdkDragRootElement=".cdk-overlay-pane">
+  <mat-toolbar  cdkDragHandle class="mat-toolbar"  style="background-color:rgb(12, 48, 87);color:white">
+    <span style="position: relative;left: 40%;">{{data.value==='insert'?'Add':'Edit'}} {{headers.Suplier}}</span>
+    <span class="example-spacer"></span>
+    <button mat-icon-button class="example-icon" aria-label="Example icon-button with close icon" (click)="onclosetab()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-toolbar><br><br>
+  <mat-dialog-content>
+    <div class="md-dialog-content">
+<form [formGroup]="dialogForm">
+<div fxLayout="row wrap" fxLayout.lt-sm="column">
+ <div fxFlex="50"  class="pr-1">
+    <mat-form-field class="full-width">
+      <input matInput placeholder="{{headers.Suplier}} Code " [formControl]="dialogForm.controls['SupplierCode']" autocomplete="off" maxlength="30">
+
+    </mat-form-field>
+  </div>
+  <div fxFlex="50"  class="pr-1">
+     <mat-form-field class="full-width">
+      <mat-label class="label asterisk_input">{{headers.Suplier}} Name</mat-label>
+      <input matInput [formControl]="dialogForm.controls['SupplierName']" autocomplete="off" maxlength="100">
+      <mat-error *ngIf="submitted || f.SupplierName.errors || f.SupplierName.dirty || f.SupplierName.touched || f.SupplierName.hasError('whitespace')">
+        <span *ngIf="f.SupplierName.errors?.required || f.SupplierName.hasError('whitespace')">{{headers.Suplier}} Name is required </span>
+      </mat-error>
+    </mat-form-field>
+   </div>
+   <div fxFlex="50"  class="pr-1">
+    <mat-form-field class="full-width">
+      <input matInput placeholder="{{headers.Suplier}} Email" [formControl]="dialogForm.controls['employeeEmail']" autocomplete="off"  [pattern]="emailPattern">
+      <mat-error>
+        <span *ngIf="f.employeeEmail.errors?.pattern">Vendor Email is invalid</span>
+         </mat-error>
+    </mat-form-field>
+  </div>
+  <div fxFlex="50"  class="pr-1">
+    <mat-form-field class="full-width">
+      <input matInput [formControl]="dialogForm.controls['contactNo']"  [pattern]="contactNumberPattern"  autocomplete="off" placeholder="Contact No"  maxlength="12" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');" > 
+      <mat-error>
+       <span *ngIf="f.contactNo.errors?.pattern">Contact No is invalid</span>
+        </mat-error>
+   </mat-form-field>
+  </div>
+  <div fxFlex="100" class="mt-1" style="padding-bottom: 20px;">
+    <button  class="btn" mat-raised-button class="success" style="float: right;" *ngIf="data.value =='insert'"  (click)="onSubmit()"
+     [disabled]="dialogForm.invalid"><mat-icon>check</mat-icon>Add {{headers.Suplier}}</button>
+    <button mat-raised-button class="success" style="float:right !important;" *ngIf="data.value !='insert'"  [disabled]="dialogForm.invalid" (click)="onSubmit()" >
+      <mat-icon>check</mat-icon> Save</button>
+    <!--<span fxFlex></span>
+    <button style="margin-left: 2%" class="btn" mat-raised-button color="warn" type="button" (click)="onclosetab()">Cancel</button>-->
+  </div>
+</div>
+</form>
+</div>
+</mat-dialog-content>
+</div>
+
+
+

@@ -1,0 +1,38 @@
+<div class="md-dialog-container" cdkDrag cdkDragRootElement=".cdk-overlay-pane">
+  <mat-toolbar  cdkDragHandle class="mat-toolbar" style="background-color:rgb(12, 48, 87);color:white">
+    <span style="left: 35%; position: relative;">{{data.value==='insert'?'Add':'Edit'}} {{header.AssetCategory}}</span>
+    <span class="example-spacer"></span>
+    <button mat-icon-button class="example-icon" aria-label="Example icon-button with close icon"
+      (click)="onclosetab()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-toolbar>
+  <div mat-dialog-content class="p-1 m-0" >
+
+    <form [formGroup]="dialogCategoryForm" (ngSubmit)="onSubmit()">
+      <div fxLayout="row wrap" fxLayout.lt-sm="column">
+
+        <div fxFlex="100" class="pr-1">
+          <mat-form-field class="full-width">
+            <mat-label class="label asterisk_input">{{header.AssetCategory}} Name</mat-label>
+            <input matInput categoryName="categoryName" [formControl]="dialogCategoryForm.controls['categoryName']"
+               autocomplete="off"  maxlength="50">
+            <mat-error *ngIf="submitted || f1.categoryName.errors || f1.categoryName.dirty || f1.categoryName.touched || f1.categoryName.hasError('whitespace')">
+              <span *ngIf="f1.categoryName.errors?.required || f1.categoryName.hasError('whitespace')">{{header.AssetCategory}} is required </span>
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div fxFlex="100" class="mt-1">
+          <button mat-raised-button class="success" style="float:right !important;" *ngIf="data.value =='insert'"
+            [disabled]="dialogCategoryForm.invalid"><mat-icon>check</mat-icon> Add {{header.AssetCategory}}</button>
+
+          <button mat-raised-button class="success" style="float:right !important;" *ngIf="data.value !='insert'"
+            [disabled]="dialogCategoryForm.invalid"><mat-icon>check</mat-icon> Save</button>
+
+        </div>
+        
+      </div>
+    </form>
+  </div>
+</div>

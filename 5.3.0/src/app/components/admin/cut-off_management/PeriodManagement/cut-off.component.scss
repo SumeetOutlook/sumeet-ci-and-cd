@@ -1,0 +1,324 @@
+h3{
+    font-size: 14PX;
+    margin-bottom: -1px;
+   
+}
+// .formfield{
+//     margin-left: 20px;
+//     width:12%;
+    
+// }
+
+.mat-header-cell {
+    font-size: 12px !important;
+    font-weight: 700;
+}
+
+.mat-cell {
+    font-size: 12px !important;
+}
+
+.mat-select-trigger { 
+    min-width: 50px;
+ }
+
+ table{
+   
+    width:100% !important
+
+ }
+
+// .mat-table {
+//    // max-height: 570px !important;
+//     max-height: 600px !important;
+//     background-color: rgba(255, 255, 255, 0.959);
+//     overflow: auto;   
+//     width:100%;
+//   }
+
+
+  .mat-select-panel { min-width: 100% !important; }
+    
+  .btn{
+    margin-left:15px;
+    margin-top: 20px;
+    background-color: rgb(12, 48, 87);
+    cursor: pointer;
+  }
+.mat-divider{
+    padding-top: 5px;
+}
+.mat-header-cell, .mat-cell {
+    padding-top: 3px;
+    padding-bottom: 3px;
+    padding-left: 43px;
+    
+}
+// .mat-column-equnum{
+//     flex: 0 0 70%;
+// }
+// .mat-column-position {
+//     max-width: 30px;
+// }
+// .mat-column-weight {
+//     max-width: 80px;
+// }
+// .mat-column-assetcricality {
+//     max-width: 70px;
+// }
+
+
+
+.mat-row, .mat-header-row {
+    min-width: 800px;
+    white-space: nowrap;
+    height: 5px;
+   
+  }
+  .example-container {
+    display: flex;
+    flex-direction: column;
+    flex-basis: 300px;
+    box-shadow:0 0 black;
+    max-height: 600px !important;
+    background-color: rgba(255, 255, 255, 0.959);
+    overflow: auto;   
+    width:100%;
+    
+  }
+  .container{
+    background-color: white;
+    border: 1.5px solid black;
+    border-radius: 5px;
+    text-align: center;
+}
+
+.mat-paginator{
+    background-color: white;
+}
+
+
+.example-icon {
+    padding: 0 3px;
+  }
+  .example-spacer {
+    flex: 1 1 auto;
+  }
+
+  .mat-toolbar-multiple-rows {
+    min-height: 48px !important;
+}
+
+.mat-toolbar {
+    background: white !important;
+    color: rgba(0, 0, 0, 0.87);
+    font: 500 12px/30px Roboto, "Helvetica Neue", sans-serif;
+}
+
+.app-admin-container .rightside-content-hold {
+    display: flex;
+    flex-direction: column;
+    flex-grow: 1;
+    padding: 0.333333rem;
+    overflow-x: hidden;
+    position: relative;
+    min-height: 450px;
+    padding-top: 0px !important;
+}
+
+.mat-paginator-page-size {
+    height: 50px !important;
+}
+.mat-paginator-range-actions {
+    display: flex;
+    align-items: center;
+    height: 50px !important;
+}
+
+.mat-form-field {
+
+    margin-right: 12px;
+}
+
+.mat-toolbar-row, .mat-toolbar-single-row {
+    display: flex;
+    box-sizing: border-box;
+    padding: 0 4px;
+}
+
+.mat-toolbar-row, .mat-toolbar-single-row{
+    display: flex;
+    box-sizing: border-box;
+    padding: 0 5px;
+}
+
+:host ::ng-deep th.mat-header-cell
+{
+    font-size: 13px !important;
+
+}
+
+
+.MatBtnClass
+{
+  
+   // margin-bottom: 30px;
+  // margin-bottom: 28px;
+  margin-bottom: 15px;
+}
+.FixBtnClass
+{
+  
+   // margin-bottom: 30px;
+  // margin-bottom: 28px;
+  margin-bottom: 15px;
+}
+
+
+:host ::ng-deep .mat-form-field-appearance-outline .mat-form-field-outline {
+    display: flex;
+    position: absolute;
+    top: 1.25em !important;
+}
+
+:host ::ng-deep .mat-form-field-appearance-outline .mat-form-field-flex {
+    padding: 0 .75em 0 0.75em;
+    margin-top: -1.25em !important;
+    position: relative;
+}
+
+
+// .mat-paginator-range-actions {
+//     display: flex;
+//     align-items: center;
+//     height: 16px !important;
+// }
+
+// .mat-paginator {
+//     color: rgba(0,0,0,.54);
+//     height: 38px !important;
+// }
+
+// .expedientes-paginator {
+//     height: 50px;
+  
+//   }
+
+//   :host ::ng-deep .mat-paginator-range-actions {
+//     display: flex;
+//     align-items: center;
+//     height: 24px !important;
+// }
+
+// :host ::ng-deep .mat-paginator-page-size {
+//     display: flex;
+//     align-items: baseline;
+//     margin-right: 8px;
+//     height: 35px !important;
+// }
+
+:host ::ng-deep .mat-paginator-container
+{
+
+    margin-top: -10px;
+    margin-bottom: -10px;
+    color: black !important;
+
+}
+
+:host ::ng-deep .mat-sort-header-arrow
+{
+
+ opacity: 0 !important;
+}
+
+
+:host ::ng-deep .mat-input-element:disabled {
+
+    color: black !important;
+    font-size: 12px !important;
+}
+
+:host ::ng-deep .mat-input-element {
+
+    color: black !important;
+    font-size: 12px !important;
+}
+
+:host ::ng-deep .mat-header-cell {
+   // color: rgb(0 0 0 / 85%) !important;
+    color:black !important;
+}
+
+:host ::ng-deep .mat-header-cell, .mat-cell {
+    padding-top: 3px;
+    padding-bottom: 3px;
+    padding-left: 10px !important;
+}
+.adduser{
+    margin-left: 20px;
+}
+:host ::ng-deep .mat-paginator-page-size {
+   
+    color: black !important;
+}
+
+:host ::ng-deep .mat-paginator-range-actions {
+   
+    color: black !important;
+}
+
+
+
+ .highlight{
+    color: green; 
+  }
+  .highlight2{
+    color: red; 
+  }
+  .highlight3{
+      color:white;
+  }
+  .w-160{
+    width: 160px;
+    flex:0 0 160px;
+  }
+
+  .w-130{
+    width: 130px;
+    flex:0 0 130px;
+  }
+ 
+  .mat-cell{
+   // display:flex !important;
+    justify-content:center!important;
+    
+  }
+  
+  .mat-header-cell {
+    //display:flex;
+    justify-content:center;
+  }
+  .mat-card {
+    margin: 0px !important;
+    padding-top: 2px !important;
+  }
+
+
+  ///////////////////// Dropdown Placeholder and After select value /////////////////////
+
+:host ::ng-deep .mat-select-value-text {
+    // font-size: 14px !important;
+    // font-weight: 600;
+  
+    font-size: 13px !important;
+    font-weight: 450;
+  }
+  
+  :host ::ng-deep .mat-form-field-appearance-legacy .mat-form-field-label {
+    
+    color: gray!important;
+    font-style: italic;
+  }
+  
+  ///////////////////// Dropdown Placeholder and After select value /////////////////////

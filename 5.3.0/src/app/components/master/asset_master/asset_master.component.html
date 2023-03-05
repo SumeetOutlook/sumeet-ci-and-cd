@@ -1,0 +1,588 @@
+<h3><strong style=" color:#008bd0 !important; margin-left: 10px;">{{menuheader['Other Master']}}</strong> </h3>
+<!-- <h3 *ngIf="SelectedAssetmaster=='CPU Class'"><strong style=" color:#008bd0 !important; margin-left: 10px;">CPU Class</strong> </h3> -->
+
+<mat-toolbar>
+
+  <mat-form-field class="ml-4" style="margin-top: 6px !important;margin-bottom: -6px !important;">
+    <mat-select   disableOptionCentering placeholder="Select Master" (selectionChange)="selected($event.value)" style="font-size: 12px !important;">
+      <mat-option *ngFor="let asset of SelectAssetMaster" [value]="asset">{{asset}}</mat-option>
+    </mat-select>
+   </mat-form-field>
+
+   <div *ngIf="SelectedAssetmaster=='CPU Class'">
+  <!--  <mat-icon  (click)="openAddCPUClass('insert',{})"  [style.fontSize]="'34px'" class="mr-8"
+    style="color: #1d3478 !important;cursor: pointer !important;" matTooltip="Create CPUClass">add</mat-icon>
+    <mat-icon  (click)="openUploadCPUClass()"   [style.fontSize]="'33px'"  style="color: #1d3478 !important;cursor:pointer" matTooltip="Upload CPUClass">file_upload</mat-icon>
+    <mat-icon  (click)="openExportCPUClass()" class="example-icon FixBtnClass"  matTooltip="Export" [style.fontSize]="'30px'" style="margin-top: 18px;margin-left: 8px;cursor: pointer;width:31px !important;height: 26px !important;"><img style="height: 31px !important;" src="assets/images/assetrak/Latest/ExportNew.png" /></mat-icon> -->
+  
+    <button mat-raised-button matTooltip="Add {{headers.CPUClass}}" *ngIf="PermissionIdList.indexOf(32) > -1" class="minibtn" style="margin-left: 8px !important;" (click)="openAddCPUClass('insert',{})"> 
+      <mat-icon style="color: white;">add</mat-icon> </button>
+      <button mat-raised-button matTooltip="Upload {{headers.CPUClass}}" *ngIf="PermissionIdList.indexOf(32) > -1" class="minibtn" style="margin-left: 8px !important;" (click)="openUploadCPUClass()"> 
+        <mat-icon style="color: white;">file_upload</mat-icon> </button>
+
+        <button mat-raised-button matTooltip="Export" class="minibtn"  style="margin-left: 8px !important;" (click)="openExportCPUClass()"> 
+          <mat-icon style="color: white;">download</mat-icon> </button>
+
+  </div>
+
+  <div *ngIf="SelectedAssetmaster=='Operating System'">
+    <!--<mat-icon   (click)="openAddOperatingSystem('insert',{})"  [style.fontSize]="'34px'" class="mr-8"
+    style="color: #1d3478 !important;cursor: pointer !important;" matTooltip="Create Operating System">add</mat-icon>
+    <mat-icon  (click)="openUploadOperatingSystem()"   [style.fontSize]="'33px'"  style="color: #1d3478 !important;cursor:pointer" matTooltip="Upload Operating System">file_upload</mat-icon>
+    <mat-icon (click)="openExportOperatingSystem()"  class="example-icon FixBtnClass"  matTooltip="Export" [style.fontSize]="'30px'" style="margin-top: 18px;margin-left: 8px;cursor: pointer;width:31px !important;height: 26px !important;"><img style="height: 31px !important;" src="assets/images/assetrak/Latest/ExportNew.png" /></mat-icon> -->
+    <button mat-raised-button matTooltip="Add {{headers.OperatingSystem}}" *ngIf="PermissionIdList.indexOf(32) > -1" class="minibtn" style="margin-left: 8px !important;" (click)="openAddOperatingSystem('insert',{})"> 
+      <mat-icon style="color: white;">add</mat-icon> </button>
+    <button mat-raised-button matTooltip="Upload {{headers.OperatingSystem}}" *ngIf="PermissionIdList.indexOf(32) > -1" class="minibtn" style="margin-left: 8px !important;" (click)="openUploadOperatingSystem()"> 
+        <mat-icon style="color: white;">file_upload</mat-icon> </button>
+    <button mat-raised-button matTooltip="Export" class="minibtn" style="margin-left: 8px !important;" (click)="openExportOperatingSystem()"> 
+          <mat-icon style="color: white;">download</mat-icon> </button>
+  
+  </div>
+
+  <div *ngIf="SelectedAssetmaster=='CPU SubClass'">
+    <!--<mat-icon   (click)="openAddCPUSubClass('insert',{})"  [style.fontSize]="'34px'" class="mr-8"
+    style="color: #1d3478 !important;cursor: pointer !important;" matTooltip="Create CPU SubClass">add</mat-icon>
+    <mat-icon  (click)="openUploadCPUSubClass()"   [style.fontSize]="'33px'"  style="color: #1d3478 !important;cursor:pointer" matTooltip="Upload CPU SubClass">file_upload</mat-icon>
+    <mat-icon  (click)="openExportCPUSubClass()" class="example-icon FixBtnClass"  matTooltip="Export" [style.fontSize]="'30px'" style="margin-top: 18px;margin-left: 8px;cursor: pointer;width:31px !important;height: 26px !important;"><img style="height: 31px !important;" src="assets/images/assetrak/Latest/ExportNew.png" /></mat-icon> -->
+   
+	
+  <button mat-raised-button matTooltip="Add {{headers.CPUSubClass}}" *ngIf="PermissionIdList.indexOf(32) > -1" class="minibtn" style="margin-left: 8px !important;" (click)="openAddCPUSubClass('insert',{})"> 
+      <mat-icon style="color: white;">add</mat-icon> </button>
+    <button mat-raised-button matTooltip="Upload {{headers.CPUSubClass}}" *ngIf="PermissionIdList.indexOf(32) > -1" class="minibtn" style="margin-left: 8px !important;" (click)="openUploadCPUSubClass()"> 
+        <mat-icon style="color: white;">file_upload</mat-icon> </button>
+    <button mat-raised-button matTooltip="Export" class="minibtn" style="margin-left: 8px !important;" (click)="openExportCPUSubClass()"> 
+          <mat-icon style="color: white;">download</mat-icon> </button>
+   </div>
+  
+  <div *ngIf="SelectedAssetmaster=='Application Type'">
+    <!--<mat-icon  *ngIf="SelectedAssetmaster=='Application Type'" (click)="openAddApplicationType('insert',{})"  [style.fontSize]="'34px'" class="mr-8"
+    style="color: #1d3478 !important;cursor: pointer !important;" matTooltip="Create Application Type">add</mat-icon>
+    <mat-icon  (click)="openUploadApplicationType()"   [style.fontSize]="'33px'"  style="color: #1d3478 !important;cursor:pointer" matTooltip="Upload CPU SubClass">file_upload</mat-icon>
+    <mat-icon (click)="openExportApplicationType()" class="example-icon FixBtnClass"  matTooltip="Export" [style.fontSize]="'30px'" style="margin-top: 18px;margin-left: 8px;cursor: pointer;width:31px !important;height: 26px !important;"><img style="height: 31px !important;" src="assets/images/assetrak/Latest/ExportNew.png" /></mat-icon> -->
+    <button mat-raised-button matTooltip="Add {{headers.ApplicationType}}" *ngIf="PermissionIdList.indexOf(32) > -1" class="minibtn" style="margin-left: 8px !important;" (click)="openAddApplicationType('insert',{})"> 
+      <mat-icon style="color: white;">add</mat-icon> </button>
+    <button mat-raised-button matTooltip="Upload {{headers.ApplicationType}}" *ngIf="PermissionIdList.indexOf(32) > -1" class="minibtn" style="margin-left: 8px !important;" (click)="openUploadApplicationType()"> 
+        <mat-icon style="color: white;">file_upload</mat-icon> </button>
+    <button mat-raised-button matTooltip="Export" class="minibtn" style="margin-left: 8px !important;" (click)="openExportApplicationType()"> 
+          <mat-icon style="color: white;">download</mat-icon> </button>
+  </div>
+
+  <div *ngIf="SelectedAssetmaster=='Model'">
+   <!--<mat-icon   (click)="openAddModel('insert',{})"  [style.fontSize]="'34px'" class="mr-8"
+    style="color: #1d3478 !important;cursor: pointer !important;" matTooltip="Create Model">add</mat-icon>
+    <mat-icon  (click)="openUploadModel()"   [style.fontSize]="'33px'"  style="color: #1d3478 !important;cursor:pointer" matTooltip="Upload Model">file_upload</mat-icon>
+    <mat-icon  (click)="openExportModel()" class="example-icon FixBtnClass"  matTooltip="Export" [style.fontSize]="'30px'" style="margin-top: 18px;margin-left: 8px;cursor: pointer;width:31px !important;height: 26px !important;"><img style="height: 31px !important;" src="assets/images/assetrak/Latest/ExportNew.png" /></mat-icon>-->
+    
+    <button mat-raised-button matTooltip="Add {{headers.Model}}" *ngIf="PermissionIdList.indexOf(32) > -1" class="minibtn" style="margin-left: 8px !important;" (click)="openAddModel('insert',{})"> 
+      <mat-icon style="color: white;">add</mat-icon> </button>
+    <button mat-raised-button matTooltip="Upload {{headers.Model}}" *ngIf="PermissionIdList.indexOf(32) > -1" class="minibtn" style="margin-left: 8px !important;" (click)="openUploadModel()"> 
+        <mat-icon style="color: white;">file_upload</mat-icon> </button>
+    <button mat-raised-button matTooltip="Export" class="minibtn" style="margin-left: 8px !important;" (click)="openExportModel()"> 
+          <mat-icon style="color: white;">download</mat-icon> </button>
+  </div>
+
+  <div *ngIf="SelectedAssetmaster=='Manufacturer'">
+    <!--<mat-icon   (click)="openAddManufacturer('insert',{})"  [style.fontSize]="'34px'" class="mr-8"
+    style="color: #1d3478 !important;cursor: pointer !important;" matTooltip="Create Manufacturer">add</mat-icon>
+    <mat-icon  (click)="openUploadManufacturer()"   [style.fontSize]="'33px'"  style="color: #1d3478 !important;cursor:pointer" matTooltip="Upload Manufacturer">file_upload</mat-icon>
+    <mat-icon   (click)="openExportManufacturer()" class="example-icon FixBtnClass"  matTooltip="Export" [style.fontSize]="'30px'" style="margin-top: 18px;margin-left: 8px;cursor: pointer;width:31px !important;height: 26px !important;"><img style="height: 31px !important;" src="assets/images/assetrak/Latest/ExportNew.png" /></mat-icon>-->
+    <button mat-raised-button matTooltip="Add {{headers.Manufacturer}}" *ngIf="PermissionIdList.indexOf(32) > -1" class="minibtn" style="margin-left: 8px !important;" (click)="openAddManufacturer('insert',{})"> 
+      <mat-icon style="color: white;">add</mat-icon> </button>
+    <button mat-raised-button matTooltip="Upload {{headers.Manufacturer}}"  *ngIf="PermissionIdList.indexOf(32) > -1" class="minibtn" style="margin-left: 8px !important;" (click)="openUploadManufacturer()"> 
+        <mat-icon style="color: white;">file_upload</mat-icon> </button>
+    <button mat-raised-button matTooltip="Export" class="minibtn" style="margin-left: 8px !important;" (click)="openExportManufacturer()"> 
+          <mat-icon style="color: white;">download</mat-icon> </button>
+  </div>
+
+  <div *ngIf="SelectedAssetmaster=='Vendor'">
+   <!--<mat-icon   (click)="openAddVendor('insert',{})"  [style.fontSize]="'34px'" class="mr-8"
+    style="color: #1d3478 !important;cursor: pointer !important;" matTooltip="Create Vendor">add</mat-icon>
+    <mat-icon  (click)="openUploadVendor()"   [style.fontSize]="'33px'"  style="color: #1d3478 !important;cursor:pointer" matTooltip="Upload Vendor">file_upload</mat-icon>
+   <mat-icon  (click)="openExportVendor()"  class="example-icon FixBtnClass"  matTooltip="Export" [style.fontSize]="'30px'" style="margin-top: 18px;margin-left: 8px;cursor: pointer;width:31px !important;height: 26px !important;"><img style="height: 31px !important;" src="assets/images/assetrak/Latest/ExportNew.png" /></mat-icon> 
+    <mat-icon  (click)="openExportVendorData()"  class="example-icon FixBtnClass"  matTooltip="Export" [style.fontSize]="'30px'" style="margin-top: 18px;margin-left: 8px;
+    cursor: pointer;width:31px !important;height: 26px !important;"><img style="height: 31px !important;" src="assets/images/assetrak/Latest/ExportNew.png" /></mat-icon>-->
+    <button mat-raised-button matTooltip="Add {{headers.Suplier}}" *ngIf="PermissionIdList.indexOf(32) > -1" class="minibtn" style="margin-left: 8px !important;" (click)="openAddVendor('insert',{})"> 
+      <mat-icon style="color: white;">add</mat-icon> </button>
+    <button mat-raised-button matTooltip="Upload {{headers.Suplier}}" *ngIf="PermissionIdList.indexOf(32) > -1" class="minibtn" style="margin-left: 8px !important;" (click)="openUploadVendor()"> 
+        <mat-icon style="color: white;">file_upload</mat-icon> </button>
+    <button mat-raised-button matTooltip="Export" class="minibtn" style="margin-left: 8px !important;" (click)="openExportVendorData()"> 
+          <mat-icon style="color: white;">download</mat-icon> </button>
+  </div>
+
+  <div *ngIf="SelectedAssetmaster=='Cost Center'">
+    <!--<mat-icon   (click)="openAddCostCenter('insert',{})"  [style.fontSize]="'34px'" class="mr-8"
+    style="color: #1d3478 !important;cursor: pointer !important;" matTooltip="Create Cost Center">add</mat-icon>
+    <mat-icon  (click)="openUploadCostCenter()"   [style.fontSize]="'33px'"  style="color: #1d3478 !important;cursor:pointer" matTooltip="Upload Cost Center">file_upload</mat-icon>
+    <mat-icon  (click)="openExportCostCenter()"  class="example-icon FixBtnClass"  matTooltip="Export" [style.fontSize]="'30px'" style="margin-top: 18px;margin-left: 8px;cursor: pointer;width:31px !important;height: 26px !important;"><img style="height: 31px !important;" src="assets/images/assetrak/Latest/ExportNew.png" /></mat-icon>-->
+
+    <button mat-raised-button matTooltip="Add {{headers.Building}}" *ngIf="PermissionIdList.indexOf(32) > -1" class="minibtn" style="margin-left: 8px !important;" (click)="openAddCostCenter('insert',{})"> 
+      <mat-icon style="color: white;">add</mat-icon> </button>
+    <button mat-raised-button matTooltip="Upload {{headers.Building}}" *ngIf="PermissionIdList.indexOf(32) > -1" class="minibtn" style="margin-left: 8px !important;" (click)="openUploadCostCenter()"> 
+        <mat-icon style="color: white;">file_upload</mat-icon> </button>
+    <button mat-raised-button matTooltip="Export" class="minibtn" style="margin-left: 8px !important;" (click)="openExportCostCenter()"> 
+          <mat-icon style="color: white;">download</mat-icon> </button>
+
+
+  </div>
+  
+  
+
+  <span class="example-spacer"></span>
+
+  <mat-form-field *ngIf="SelectedAssetmaster=='CPU Class'" class="margin_bottom">
+    <button  mat-icon-button matSuffix class="example-icon" style="background-color:white;margin-top: 0px;width:30px;height: 30px;" aria-label="Example icon-button with close icon">
+    <mat-icon style="color:white; font-size: 25px;color:#0C3057;cursor:pointer">search</mat-icon>
+    </button>
+    <input matInput (keyup)="applyFilterCPUClass($event)" placeholder="Search" >
+  </mat-form-field>
+
+  <mat-form-field *ngIf="SelectedAssetmaster=='Operating System'"  class="margin_bottom">
+    <button  mat-icon-button matSuffix class="example-icon" style="background-color:white;margin-top: 0px;width:30px;height: 30px;" aria-label="Example icon-button with close icon">
+    <mat-icon style="color:white; font-size: 25px;color:#0C3057;cursor:pointer">search</mat-icon>
+    </button>
+    <input matInput (keyup)="applyFilterOperatingSystem($event)" placeholder="Search" >
+  </mat-form-field>
+
+  <mat-form-field *ngIf="SelectedAssetmaster=='CPU SubClass'"  class="margin_bottom">
+    <button  mat-icon-button matSuffix class="example-icon" style="background-color:white;margin-top: 0px;width:30px;height: 30px;" aria-label="Example icon-button with close icon">
+    <mat-icon style="color:white; font-size: 25px;color:#0C3057;cursor:pointer">search</mat-icon>
+    </button>
+    <input matInput (keyup)="applyFilterCPUSubClass($event)" placeholder="Search" >
+  </mat-form-field>
+
+  <mat-form-field *ngIf="SelectedAssetmaster=='Application Type'"  class="margin_bottom">
+    <button  mat-icon-button matSuffix class="example-icon" style="background-color:white;margin-top: 0px;width:30px;height: 30px;" aria-label="Example icon-button with close icon">
+    <mat-icon style="color:white; font-size: 25px;color:#0C3057;cursor:pointer">search</mat-icon>
+    </button>
+    <input matInput (keyup)="applyFilterApplicationType($event)" placeholder="Search" >
+  </mat-form-field>
+
+  <mat-form-field *ngIf="SelectedAssetmaster=='Model'"  class="margin_bottom">
+    <button  mat-icon-button matSuffix class="example-icon" style="background-color:white;margin-top: 0px;width:30px;height: 30px;" aria-label="Example icon-button with close icon">
+    <mat-icon style="color:white; font-size: 25px;color:#0C3057;cursor:pointer">search</mat-icon>
+    </button>
+    <input matInput (keyup)="applyFilterModel($event)" placeholder="Search" >
+  </mat-form-field>
+  
+  <mat-form-field *ngIf="SelectedAssetmaster=='Manufacturer'"  class="margin_bottom">
+    <button  mat-icon-button matSuffix class="example-icon" style="background-color:white;margin-top: 0px;width:30px;height: 30px;" aria-label="Example icon-button with close icon">
+    <mat-icon style="color:white; font-size: 25px;color:#0C3057;cursor:pointer">search</mat-icon>
+    </button>
+    <input matInput (keyup)="applyFilterManufacturer($event)" placeholder="Search" >
+  </mat-form-field>
+
+  <mat-form-field *ngIf="SelectedAssetmaster=='Vendor'"  class="margin_bottom">
+    <button  mat-icon-button matSuffix class="example-icon" style="background-color:white;margin-top: 0px;width:30px;height: 30px;" aria-label="Example icon-button with close icon">
+    <mat-icon style="color:white; font-size: 25px;color:#0C3057;cursor:pointer">search</mat-icon>
+    </button>
+    <input matInput (keyup)="applyFilterVendor($event)" placeholder="Search" >
+  </mat-form-field>
+
+  <mat-form-field *ngIf="SelectedAssetmaster=='Cost Center'"  class="margin_bottom">
+    <button  mat-icon-button matSuffix class="example-icon" style="background-color:white;margin-top: 0px;width:30px;height: 30px;" aria-label="Example icon-button with close icon">
+    <mat-icon style="color:white; font-size: 25px;color:#0C3057;cursor:pointer">search</mat-icon>
+    </button>
+    <input matInput (keyup)="applyFilterCostCenter($event)" placeholder="Search" >
+  </mat-form-field>
+ 
+</mat-toolbar>
+
+
+
+<!--<mat-card class="example-card" style="padding-top: 0px !important;">-->
+  <div  [hidden]="!(SelectedAssetmaster=='CPU Class')">
+  <!--<mat-card-content >-->
+    <form>
+      <div class="mr-05 pb-1">
+        <div fxLayout="row wrap" class="example-container mat-elevation-z8">
+          <!-- <h4><strong style=" color:#008bd0 !important; margin-left: 10px;">Available CPU Class</strong></h4> -->
+
+          <table mat-table [dataSource]="CPUClass_datasource" matSort>
+            <!-- <ng-container matColumnDef="CpuClassCode">
+              <th mat-sort-header="cpu_class" mat-header-cell *matHeaderCellDef>CPU Class Code</th>
+              <td mat-cell *matCellDef="let element">{{element.CpuClassCode}}</td>
+            </ng-container> -->
+
+            <ng-container matColumnDef="CpuClassName">
+              <th mat-sort-header="cpu_class" mat-header-cell *matHeaderCellDef>{{displayedHeadersCpuClass[0]}}</th>
+              <td mat-cell *matCellDef="let element">{{element.CpuClassName}}</td>
+            </ng-container>
+           
+            <ng-container matColumnDef="Actions">
+              <th mat-header-cell *matHeaderCellDef>{{displayedHeadersCpuClass[1]}}</th>
+              <td mat-cell *matCellDef="let row;let i=index,let element" [ngClass]="'w-100'" style="margin-right: 12%;">
+                <mat-panel-description>
+                  <mat-icon [matMenuTriggerFor]="msgMenu" class="text-muted" style="margin-right: 12%;cursor: pointer;">more_vert
+                  </mat-icon>
+                  <mat-menu #msgMenu="matMenu">
+                    <button mat-menu-item (click)="openAddCPUClass('edit',element)" *ngIf="PermissionIdList.indexOf(33) > -1">
+                      <mat-icon>edit</mat-icon>Edit
+                    </button>
+                    <button mat-menu-item focusable="false" (click)="deleteCPUClass('delete',element)" *ngIf="PermissionIdList.indexOf(33) > -1">
+                      <mat-icon>delete</mat-icon>Delete
+                    </button>
+                  </mat-menu>
+                </mat-panel-description>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumnsCPUClass;sticky:true"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumnsCPUClass;"></tr>
+          </table>
+        
+        </div>
+        <mat-paginator #CPUClasspaginator="matPaginator"  class="expedientes-paginator" [showFirstLastButtons]="true" [pageSize]="50"
+          [pageSizeOptions]="[50, 100, 200,500]"></mat-paginator>
+      </div>
+    </form>
+  <!--</mat-card-content>-->
+</div>
+<div  [hidden]="!(SelectedAssetmaster=='Operating System')">
+  <!--<mat-card-content >-->
+    <form>
+
+      <div class="mr-05 pb-1">
+
+        <div fxLayout="row wrap" class="example-container mat-elevation-z8">
+         
+          <table mat-table [dataSource]="OperatingSystem_datasource" matSort>
+
+            <!-- <ng-container matColumnDef="OperatingSystemCode">
+              <th mat-sort-header="operatingSystem_class_code" mat-header-cell *matHeaderCellDef>Operating System Code</th>
+              <td mat-cell *matCellDef="let element">{{element.OperatingSystemCode}}</td>
+            </ng-container> -->
+
+            <ng-container matColumnDef="OperatingSystemName">
+              <th mat-sort-header="operatingSystem_class_name" mat-header-cell *matHeaderCellDef>{{displayedHeadersOsClass[0]}}</th>
+              <td mat-cell *matCellDef="let element">{{element.OperatingSystemName}}</td>
+            </ng-container>
+           
+            <ng-container matColumnDef="Actions">
+              <th mat-header-cell *matHeaderCellDef>{{displayedHeadersOsClass[1]}}</th>
+              <td mat-cell *matCellDef="let element;let i=index" [ngClass]="'w-100'" style="margin-right: 12%;">
+                <mat-panel-description>
+                  <mat-icon [matMenuTriggerFor]="msgMenu" class="text-muted" style="margin-right: 12%;cursor: pointer;">more_vert
+                  </mat-icon>
+                  <mat-menu #msgMenu="matMenu">
+                    <button mat-menu-item (click)="openAddOperatingSystem('edit',element)" *ngIf="PermissionIdList.indexOf(33) > -1">
+                      <mat-icon>edit</mat-icon>Edit
+                    </button>
+                    <button mat-menu-item focusable="false" (click)="deleteOperatingSystem('delete',element)" *ngIf="PermissionIdList.indexOf(33) > -1">
+                      <mat-icon>delete</mat-icon>Delete
+                    </button>
+                  </mat-menu>
+                </mat-panel-description>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumnsOperatingSystem;sticky:true"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumnsOperatingSystem;"></tr>
+          </table>
+        
+        </div>
+        <!-- <mat-paginator #OperatingSystempaginator="matPaginator" [pageSizeOptions]="[50,100,200,500]" [pageSize]="50"
+        showFirstLastButtons></mat-paginator> -->
+        <mat-paginator #OperatingSystempaginator="matPaginator"  class="expedientes-paginator" [showFirstLastButtons]="true" [pageSize]="50"
+        [pageSizeOptions]="[50, 100, 200,500]">
+
+      </mat-paginator>
+
+      </div>
+    </form>
+  <!--</mat-card-content>-->
+</div>
+<div  [hidden]="!(SelectedAssetmaster=='CPU SubClass')">
+  <!--<mat-card-content  >-->
+    <form>
+
+      <div class="mr-05 pb-1">
+
+        <div fxLayout="row wrap" class="example-container mat-elevation-z8">
+
+          <table mat-table [dataSource]="CPUSubClass_datasource" matSort>
+
+            <!-- <ng-container matColumnDef="CpuSubClassCode">
+              <th mat-sort-header="cpusubclass_code" mat-header-cell *matHeaderCellDef>CPU Sub Class Code</th>
+              <td mat-cell *matCellDef="let element">{{element.CpuSubClassCode}}</td>
+            </ng-container> -->
+
+            <ng-container matColumnDef="CpuSubClassName">
+              <th mat-sort-header="cpusubclass_name" mat-header-cell *matHeaderCellDef>{{displayedHeadersCpuSubClass[0]}}</th>
+              <td mat-cell *matCellDef="let element">{{element.CpuSubClassName}}</td>
+            </ng-container>
+           
+            <ng-container matColumnDef="Actions">
+              <th mat-header-cell *matHeaderCellDef>{{displayedHeadersCpuSubClass[1]}}</th>
+              <td mat-cell *matCellDef="let element;let i=index" [ngClass]="'w-100'" style="margin-right: 12%;">
+                <mat-panel-description>
+                  <mat-icon [matMenuTriggerFor]="msgMenu" class="text-muted" style="margin-right: 12%;cursor: pointer;">more_vert
+                  </mat-icon>
+                  <mat-menu #msgMenu="matMenu">
+                    <button mat-menu-item  (click)="openAddCPUSubClass('edit',element)" *ngIf="PermissionIdList.indexOf(33) > -1">
+                      <mat-icon>edit</mat-icon>Edit
+                    </button>
+                    <button mat-menu-item focusable="false" (click)="deleteCPUSubClass('delete',element)" *ngIf="PermissionIdList.indexOf(33) > -1">
+                      <mat-icon>delete</mat-icon>Delete
+                    </button>
+                  </mat-menu>
+                </mat-panel-description>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumnsCPUSubClass;sticky:true"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumnsCPUSubClass;"></tr>
+          </table>
+        
+        </div>
+        <mat-paginator #CPUSubClasspaginator="matPaginator" [pageSizeOptions]="[50,100,200,500]" [pageSize]="50"
+        showFirstLastButtons></mat-paginator>
+      </div>
+    </form>
+ <!-- </mat-card-content>-->
+</div>
+<div  [hidden]="!(SelectedAssetmaster=='Application Type')">
+  <!--<mat-card-content>-->
+    <form>
+
+      <div class="mr-05 pb-1">
+
+        <div fxLayout="row wrap" class="example-container mat-elevation-z8">
+
+          <table mat-table [dataSource]="ApplicationType_datasource" matSort>
+
+            <!-- <ng-container matColumnDef="ApplicationTypeCode">
+              <th mat-sort-header="application_code" mat-header-cell *matHeaderCellDef>Application Type Code</th>
+              <td mat-cell *matCellDef="let element">{{element.ApplicationTypeCode}}</td>
+            </ng-container> -->
+
+            <ng-container matColumnDef="ApplicationTypeName">
+              <th mat-sort-header="application_name" mat-header-cell *matHeaderCellDef>{{displayedHeadersAppTypeClass[0]}}</th>
+              <td mat-cell *matCellDef="let element">{{element.ApplicationTypeName}}</td>
+            </ng-container>
+           
+            <ng-container matColumnDef="Actions">
+              <th mat-header-cell *matHeaderCellDef>{{displayedHeadersAppTypeClass[1]}}</th>
+              <td mat-cell *matCellDef="let element;let i=index" [ngClass]="'w-100'" style="margin-right: 12%;">
+                <mat-panel-description>
+                  <mat-icon [matMenuTriggerFor]="msgMenu" class="text-muted" style="margin-right: 12%;cursor: pointer;">more_vert
+                  </mat-icon>
+                  <mat-menu #msgMenu="matMenu">
+                    <button mat-menu-item  (click)="openAddApplicationType('edit',element)" *ngIf="PermissionIdList.indexOf(33) > -1">
+                      <mat-icon>edit</mat-icon>Edit
+                    </button>
+                    <button mat-menu-item focusable="false" (click)="deleteApplicationType('delete',element)" *ngIf="PermissionIdList.indexOf(33) > -1">
+                      <mat-icon>delete</mat-icon>Delete
+                    </button>
+                  </mat-menu>
+                </mat-panel-description>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumnsApplicationTypeClass;sticky:true"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumnsApplicationTypeClass;"></tr>
+          </table>
+        
+        </div>
+        <mat-paginator #ApplicationTypepaginator="matPaginator" [pageSizeOptions]="[50,100,200,500]" [pageSize]="50"
+        showFirstLastButtons></mat-paginator>
+      </div>
+    </form>
+  <!--</mat-card-content>-->
+</div>
+<div  [hidden]="!(SelectedAssetmaster=='Model')">
+  <!--<mat-card-content  >-->
+    <form>
+
+      <div class="mr-05 pb-1">
+
+        <div fxLayout="row wrap" class="example-container mat-elevation-z8">
+
+          <table mat-table [dataSource]="Model_datasource" matSort>
+
+            <!-- <ng-container matColumnDef="ModelCode">
+              <th mat-sort-header="model_code" mat-header-cell *matHeaderCellDef>Model Code</th>
+              <td mat-cell *matCellDef="let element">{{element.ModelCode}}</td>
+            </ng-container> -->
+
+            <ng-container matColumnDef="ModelName">
+              <th mat-sort-header="model_name" mat-header-cell *matHeaderCellDef>{{displayedHeadersModelClass[0]}}</th>
+              <td mat-cell *matCellDef="let element">{{element.ModelName}}</td>
+            </ng-container>
+           
+            <ng-container matColumnDef="Actions">
+              <th mat-header-cell *matHeaderCellDef>{{displayedHeadersModelClass[1]}}</th>
+              <td mat-cell *matCellDef="let element;let i=index" [ngClass]="'w-100'" style="margin-right: 12%;">
+                <mat-panel-description>
+                  <mat-icon [matMenuTriggerFor]="msgMenu" class="text-muted" style="margin-right: 12%;cursor: pointer;">more_vert
+                  </mat-icon>
+                  <mat-menu #msgMenu="matMenu">
+                    <button mat-menu-item  (click)="openAddModel('edit',element)" *ngIf="PermissionIdList.indexOf(33) > -1">
+                      <mat-icon>edit</mat-icon>Edit
+                    </button>
+                    <button mat-menu-item focusable="false" (click)="deleteModel('delete',element)" *ngIf="PermissionIdList.indexOf(33) > -1">
+                      <mat-icon>delete</mat-icon>Delete
+                    </button>
+                  </mat-menu>
+                </mat-panel-description>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumnsModelClass;sticky:true"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumnsModelClass;"></tr>
+          </table>
+        
+        </div>
+        <mat-paginator #Modelpaginator="matPaginator" [pageSizeOptions]="[50,100,200,500]" [pageSize]="50"
+        showFirstLastButtons></mat-paginator>
+      </div>
+    </form>
+  <!--</mat-card-content>-->
+</div>
+<div  [hidden]="!(SelectedAssetmaster=='Manufacturer')">
+  <!--<mat-card-content >-->
+    <form>
+
+      <div class="mr-05 pb-1">
+
+        <div fxLayout="row wrap" class="example-container mat-elevation-z8">
+
+          <table mat-table [dataSource]="Manufacturer_datasource" matSort>
+
+            <!-- <ng-container matColumnDef="ManufacturerCode">
+              <th mat-sort-header="manufacturer_code" mat-header-cell *matHeaderCellDef>Manufacturer Code</th>
+              <td mat-cell *matCellDef="let element">{{element.ManufacturerCode}}</td>
+            </ng-container> -->
+
+            <ng-container matColumnDef="ManufacturerName">
+              <th mat-sort-header="manufacturer_name" mat-header-cell *matHeaderCellDef>{{displayedHeadersManufacturerClass[0]}}</th>
+              <td mat-cell *matCellDef="let element">{{element.ManufacturerName}}</td>
+            </ng-container>
+           
+            <ng-container matColumnDef="Actions">
+              <th mat-header-cell *matHeaderCellDef>{{displayedHeadersManufacturerClass[1]}}</th>
+              <td mat-cell *matCellDef="let element;let i=index" [ngClass]="'w-100'" style="margin-right: 12%;">
+                <mat-panel-description>
+                  <mat-icon [matMenuTriggerFor]="msgMenu" class="text-muted" style="margin-right: 12%;cursor: pointer;">more_vert
+                  </mat-icon>
+                  <mat-menu #msgMenu="matMenu">
+                    <button mat-menu-item  (click)="openAddManufacturer('edit',element)" *ngIf="PermissionIdList.indexOf(33) > -1">
+                      <mat-icon>edit</mat-icon>Edit
+                    </button>
+                    <button mat-menu-item focusable="false" (click)="deleteManufacturer('delete',element)" *ngIf="PermissionIdList.indexOf(33) > -1">
+                      <mat-icon>delete</mat-icon>Delete
+                    </button>
+                  </mat-menu>
+                </mat-panel-description>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumnsManufacturerClass;sticky:true"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumnsManufacturerClass;"></tr>
+          </table>
+        
+        </div>
+        <mat-paginator #Manufacturerpaginator="matPaginator" [pageSizeOptions]="[50,100,200,500]" [pageSize]="50"
+        showFirstLastButtons></mat-paginator>
+      </div>
+    </form>
+  <!--</mat-card-content>-->
+</div>
+<div  [hidden]="!(SelectedAssetmaster=='Vendor')">
+  <!--<mat-card-content>-->
+    <form>
+
+      <div class="mr-05 pb-1">
+
+        <div fxLayout="row wrap" class="example-container mat-elevation-z8">
+
+          <table mat-table [dataSource]="Vendor_datasource" matSort>
+
+            <!-- <ng-container matColumnDef="SupplierCode">
+              <th mat-sort-header="vendor_code" mat-header-cell *matHeaderCellDef>{{displayedHeadersVendorClass[0]}}</th>
+              <td mat-cell *matCellDef="let element">{{element.SupplierCode}}</td>
+            </ng-container> -->
+
+            <ng-container matColumnDef="SupplierName">
+              <th mat-sort-header="vendor_name" mat-header-cell *matHeaderCellDef>{{displayedHeadersVendorClass[1]}}</th>
+              <td mat-cell *matCellDef="let element">{{element.SupplierName}}</td>
+            </ng-container>
+           
+            <ng-container matColumnDef="Actions">
+              <th mat-header-cell *matHeaderCellDef>{{displayedHeadersVendorClass[2]}}</th>
+              <td mat-cell *matCellDef="let element;let i=index" [ngClass]="'w-100'" style="margin-right: 12%;">
+                <mat-panel-description>
+                  <mat-icon [matMenuTriggerFor]="msgMenu" class="text-muted" style="margin-right: 12%;cursor: pointer;">more_vert
+                  </mat-icon>
+                  <mat-menu #msgMenu="matMenu">
+                    <button mat-menu-item  (click)="openAddVendor('edit',element)" *ngIf="PermissionIdList.indexOf(33) > -1">
+                      <mat-icon>edit</mat-icon>Edit
+                    </button>
+                    <button mat-menu-item focusable="false" (click)="deleteVendor('delete',element)" *ngIf="PermissionIdList.indexOf(33) > -1">
+                      <mat-icon>delete</mat-icon>Delete
+                    </button>
+                  </mat-menu>
+                </mat-panel-description>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumnsVendorClass;sticky:true"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumnsVendorClass;"></tr>
+          </table>
+        
+        </div>
+        <mat-paginator #Vendorpaginator="matPaginator" [pageSizeOptions]="[50,100,200,500]" [pageSize]="50"
+        showFirstLastButtons></mat-paginator>
+      </div>
+    </form>
+ <!-- </mat-card-content>-->
+</div>
+<div  [hidden]="!(SelectedAssetmaster=='Cost Center')">
+  <!--<mat-card-content>-->
+    <form>
+
+      <div class="mr-05 pb-1">
+
+        <div fxLayout="row wrap" class="example-container mat-elevation-z8">
+         
+          <table mat-table [dataSource]="CostCenter_datasource" matSort>
+
+            <ng-container matColumnDef="CostCenterCode">
+              <th mat-sort-header="costcenter_code" mat-header-cell *matHeaderCellDef>{{displayedHeadersCostCenterClass[0]}} code</th>
+              <td mat-cell *matCellDef="let element">{{element.CostCenterCode}}</td>
+            </ng-container>
+
+            <ng-container matColumnDef="Name">
+              <th mat-sort-header="costcenter_name" mat-header-cell *matHeaderCellDef>{{displayedHeadersCostCenterClass[1]}}</th>
+              <td mat-cell *matCellDef="let element">{{element.Name}}</td>
+            </ng-container>
+           
+            <ng-container matColumnDef="Actions">
+              <th mat-header-cell *matHeaderCellDef>{{displayedHeadersCostCenterClass[2]}}</th>
+              <td mat-cell *matCellDef="let element;let i=index" [ngClass]="'w-100'" style="margin-right: 12%;">
+                <mat-panel-description>
+                  <mat-icon [matMenuTriggerFor]="msgMenu" class="text-muted" style="margin-right: 12%;cursor: pointer;">more_vert
+                  </mat-icon>
+                  <mat-menu #msgMenu="matMenu">
+                    <button mat-menu-item (click)="openAddCostCenter('edit',element)" *ngIf="PermissionIdList.indexOf(33) > -1">
+                      <mat-icon>edit</mat-icon>Edit
+                    </button>
+                    <button mat-menu-item focusable="false" (click)="deleteCostCenter('delete',element)" *ngIf="PermissionIdList.indexOf(33) > -1">
+                      <mat-icon>delete</mat-icon>Delete
+                    </button>
+                  </mat-menu>
+                </mat-panel-description>
+              </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="displayedColumnsCostCenterClass;sticky:true"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumnsCostCenterClass;"></tr>
+          </table>
+        
+        </div>
+        <mat-paginator #CostCenterpaginator="matPaginator" [pageSizeOptions]="[50,100,200,500]" [pageSize]="50"
+        showFirstLastButtons></mat-paginator>
+      </div>
+    </form>
+<!--  </mat-card-content>-->
+</div>
+<!--</mat-card>-->

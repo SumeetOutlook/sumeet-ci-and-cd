@@ -1,0 +1,578 @@
+<div class="md-dialog-container" cdkDrag cdkDragRootElement=".cdk-overlay-pane">
+    <mat-toolbar  class="mat-toolbar" style="background-color:rgb(12, 48, 87);color:white" cdkDragHandle>
+        <span style="position: relative;left: 40%;">Map Additional Asset</span>
+        <span class="example-spacer"></span>
+        <button mat-icon-button class="example-icon" aria-label="Example icon-button with close icon"
+            (click)="onclosetab()">
+            <mat-icon>close</mat-icon>
+        </button>
+    </mat-toolbar>
+    <div mat-dialog-content class="p-1 m-0">
+
+      <div class="example-container mat-elevation-z8 mt-8">
+        <div style="font-weight: bold; color: #1d3478 !important;" >Capitalized Asset</div>
+        <table mat-table #table [dataSource]="dataSourceNew" matSort>
+  
+          <ng-container matColumnDef="Inventory No." >
+            <th mat-sort-header mat-header-cell *matHeaderCellDef  [ngClass]="'w-100'">{{Headers.BarCode}} </th>
+            <td mat-cell *matCellDef="let element"  [ngClass]="'w-100'">{{element.Barcode}}</td>
+          </ng-container>
+  
+          <ng-container matColumnDef="Asset No." >
+            <th mat-sort-header mat-header-cell *matHeaderCellDef  [ngClass]="'w-100'">{{Headers.AssetId}} </th>
+            <td mat-cell *matCellDef="let element"  [ngClass]="'w-100'">{{element.AssetId}}</td>
+          </ng-container>
+      
+          <ng-container matColumnDef="Sub No." >
+            <th mat-sort-header mat-header-cell *matHeaderCellDef  [ngClass]="'w-100'">{{Headers.SubAssetID}} </th>
+            <td mat-cell *matCellDef="let element"  [ngClass]="'w-100'">{{element.SubAssetId}}</td>
+          </ng-container>
+      
+          <ng-container matColumnDef="Asset Class" >
+            <th mat-sort-header mat-header-cell *matHeaderCellDef  [ngClass]="'w-150'">{{Headers.BlockOfAsset}}</th>
+            <td mat-cell *matCellDef="let element"  [ngClass]="'w-150'">{{element.BlockOfAsset}}</td>
+          </ng-container>
+      
+          <ng-container matColumnDef="Asset Name" >
+            <th mat-sort-header mat-header-cell *matHeaderCellDef  [ngClass]="'w-150'">{{Headers.ADL2}} </th>
+            <td mat-cell *matCellDef="let element"  [ngClass]="'w-150'">{{element.ADL2}}</td>
+          </ng-container>
+      
+          <ng-container matColumnDef="Asset Description" >
+            <th mat-sort-header mat-header-cell *matHeaderCellDef  [ngClass]="'w-150'">{{Headers.ADL3}}</th>
+            <td mat-cell *matCellDef="let element"  [ngClass]="'w-150'">{{element.ADL3}}</td>
+          </ng-container>   
+          <ng-container matColumnDef="Serial No" >
+            <th mat-sort-header mat-header-cell *matHeaderCellDef  [ngClass]="'w-150'">{{Headers.SerialNo}}</th>
+            <td mat-cell *matCellDef="let element"  [ngClass]="'w-150'">{{element.SerialNo}}</td>
+          </ng-container>   
+          <ng-container matColumnDef="IT Serial No" >
+            <th mat-sort-header mat-header-cell *matHeaderCellDef  [ngClass]="'w-150'">{{Headers.ITSerialNo}}</th>
+            <td mat-cell *matCellDef="let element"  [ngClass]="'w-150'">{{element.ITSerialNo}}</td>
+          </ng-container>   
+      
+          <ng-container matColumnDef="Plant" >
+            <th mat-sort-header mat-header-cell *matHeaderCellDef  [ngClass]="'w-150'">{{Headers.Location}}</th>
+            <td mat-cell *matCellDef="let element"  [ngClass]="'w-150'">{{element.Location}}</td>
+          </ng-container>
+      
+          <ng-container matColumnDef="Cost" >
+            <th mat-sort-header mat-header-cell *matHeaderCellDef  [ngClass]="'w-150'">{{Headers.AcquisitionCost}}</th>
+            <td mat-cell *matCellDef="let element"  [ngClass]="'w-150'">{{element.AcquisitionCost | number : '1.2-2'}}</td>
+          </ng-container>
+      
+          <ng-container matColumnDef="WDV" >
+            <th mat-sort-header mat-header-cell *matHeaderCellDef  [ngClass]="'w-100'">{{Headers.WDV}}</th>
+            <td mat-cell *matCellDef="let element"  [ngClass]="'w-100'">{{element.WDV | number : '1.2-2'}}</td>
+          </ng-container>
+          <ng-container matColumnDef="Inventory Indicator" >
+            <th mat-sort-header mat-header-cell *matHeaderCellDef  [ngClass]="'w-100'">{{Headers.Taggable}}</th>
+            <td mat-cell *matCellDef="let element"  [ngClass]="'w-100'">{{element.Taggable}}</td>
+          </ng-container>
+          <ng-container matColumnDef="AssetCondition">
+            <th mat-sort-heade mat-header-cell *matHeaderCellDef [ngClass]="'w-100'" >{{Headers.AssetCondition}}</th>
+            <td mat-cell *matCellDef="let element"> {{element.AssetCondition}} </td>
+        </ng-container>
+        <ng-container matColumnDef="AssetCriticality">
+            <th mat-sort-header mat-header-cell *matHeaderCellDef [ngClass]="'w-100'">{{Headers.AssetCriticality}}</th>
+            <td mat-cell *matCellDef="let element"> {{element.AssetCriticality}} </td>
+        </ng-container>
+      
+          <tr mat-header-row *matHeaderRowDef="displayedColumns1;sticky: true "></tr>
+          <tr mat-row *matRowDef="let row; columns: displayedColumns1;"></tr>
+        </table>
+      </div>
+        <div class=" example-container mat-elevation-z8">
+          <div style="font-weight: bold; color: #1d3478 !important;margin-top: 10px;" > Map With Additional Asset </div>
+            <table mat-table #table [dataSource]="dataSource" matSort>
+                <ng-container [matColumnDef]="column" *ngFor="let column of displayedColumns; index as i">
+                    <th mat-header-cell *matHeaderCellDef mat-sort-header>
+                        <span *ngIf="column === 'Select'"></span>
+                        <!-- <span *ngIf="column === 'AssetNo' ">
+                            <span *ngIf="this.isButtonVisible == false"> {{ Headers.AID }} </span>
+                            <span *ngIf="this.isButtonVisible == true">
+                                <mat-form-field
+                                    style="padding-bottom: 0px !important;margin-bottom: -9px !important;margin-top: -7px !important;">
+                                    <input matInput class="form-field" [formControl]="AssetNoFilter"
+                                        placeholder="{{Headers.AID}}" (change)="SerchAssetid(column)">
+                                </mat-form-field>
+                            </span>
+                            <mat-icon *ngIf="this.isButtonVisible == false" class="maticon"
+                                (click)="Serchicon(column,isButtonVisible)"
+                                style="height: 17px;width: 24px;font-size:17px;color:#1d3478;margin-right: -7px;">search
+                            </mat-icon>
+                            <mat-panel-description *ngIf="this.isButtonVisible == true">
+                                <mat-icon [matMenuTriggerFor]="msgMenu" (click)="$event.stopPropagation()"
+                                    class="text-muted">
+                                    more_vert</mat-icon>
+                                <mat-menu #msgMenu="matMenu">
+                                    <button mat-menu-item (click)="opentablePopup('position')"
+                                        style="height: 40px !important;">
+                                        <mat-icon style="margin-right: 6px;"> <img
+                                                src="assets/images/assetrak/23_10_2020/Multiple.png" />
+                                        </mat-icon> Multiple Search
+                                    </button>
+                                    <button mat-menu-item (click)="ClearSerch(column,isButtonVisible)"
+                                        style="height: 40px !important;">
+                                        <mat-icon style="margin-right: 6px;"> <img
+                                                src="assets/images/assetrak/23_10_2020/Cross.png" />
+                                        </mat-icon> Clear Search
+                                    </button>
+                                </mat-menu>
+                            </mat-panel-description>
+                        </span> -->
+                        <span *ngIf="column === 'Location'">
+                          <span *ngIf="this.isButtonVisibleLocation == false"> {{ Headers.Location }} </span>
+                          <span *ngIf="this.isButtonVisibleLocation == true">
+                            <mat-form-field
+                              style="padding-bottom: 0px !important;margin-bottom: -9px !important;margin-top: -7px !important;">
+                              <input matInput class="form-field" [formControl]="AssetNoFilter" placeholder="{{ Headers.Location }}" autocomplete="off"
+                                (change)="SerchAssetid(column)">
+                            </mat-form-field>
+                          </span>
+                          <mat-icon *ngIf="this.isButtonVisibleLocation == false" class="maticon searchicon" (click)="Serchicon(column,isButtonVisibleLocation)"
+                            >search</mat-icon>
+                          <mat-panel-description *ngIf="this.isButtonVisibleLocation == true">
+                            <mat-icon [matMenuTriggerFor]="msgMenu" (click)="$event.stopPropagation()" class="text-muted">
+                              more_vert</mat-icon>
+                            <mat-menu #msgMenu="matMenu">
+                              <button mat-menu-item (click)="opentablePopup('position')" *ngIf="setflag" style="height: 40px !important;">
+                                <mat-icon style="margin-right: 6px;"> <img src="assets/images/assetrak/23_10_2020/Multiple.png" />
+                                </mat-icon> Multiple Search
+                              </button>
+                              <button mat-menu-item  (click)="ClearSerch(column,isButtonVisibleLocation)"
+                                style="height: 40px !important;">
+                                <mat-icon style="margin-right: 6px;"> <img src="assets/images/assetrak/23_10_2020/Cross.png" />
+                                </mat-icon> Clear Search
+                              </button>
+                            </mat-menu>
+                          </mat-panel-description>
+                        </span>
+                        <span *ngIf="column === 'CategoryName'">
+                          <span *ngIf="this.isButtonVisibleCategoryName == false"> {{ Headers.CategoryName }} </span>
+                          <span *ngIf="this.isButtonVisibleCategoryName == true">
+                            <mat-form-field
+                              style="padding-bottom: 0px !important;margin-bottom: -9px !important;margin-top: -7px !important;">
+                              <input matInput class="form-field" [formControl]="AssetNoFilter" placeholder="{{ Headers.CategoryName }}" autocomplete="off"
+                                (change)="SerchAssetid(column)">
+                            </mat-form-field>
+                          </span>
+                          <mat-icon *ngIf="this.isButtonVisibleCategoryName == false" class="maticon searchicon" (click)="Serchicon(column,isButtonVisibleCategoryName)"
+                            >search</mat-icon>
+                          <mat-panel-description *ngIf="this.isButtonVisibleCategoryName == true">
+                            <mat-icon [matMenuTriggerFor]="msgMenu" (click)="$event.stopPropagation()" class="text-muted">
+                              more_vert</mat-icon>
+                            <mat-menu #msgMenu="matMenu">
+                              <button mat-menu-item (click)="opentablePopup('position')" *ngIf="setflag" style="height: 40px !important;">
+                                <mat-icon style="margin-right: 6px;"> <img src="assets/images/assetrak/23_10_2020/Multiple.png" />
+                                </mat-icon> Multiple Search
+                              </button>
+                              <button mat-menu-item  (click)="ClearSerch(column,isButtonVisibleCategoryName)"
+                                style="height: 40px !important;">
+                                <mat-icon style="margin-right: 6px;"> <img src="assets/images/assetrak/23_10_2020/Cross.png" />
+                                </mat-icon> Clear Search
+                              </button>
+                            </mat-menu>
+                          </mat-panel-description>
+                        </span>
+
+                        <span *ngIf="column === 'typeOfAsset'">
+                          <span *ngIf="this.isButtonVisibletypeOfAsset == false"> {{ Headers.typeOfAsset }} </span>
+                          <span *ngIf="this.isButtonVisibletypeOfAsset == true">
+                            <mat-form-field
+                              style="padding-bottom: 0px !important;margin-bottom: -9px !important;margin-top: -7px !important;">
+                              <input matInput class="form-field" [formControl]="AssetNoFilter" placeholder="{{ Headers.typeOfAsset }}" autocomplete="off"
+                                (change)="SerchAssetid(column)">
+                            </mat-form-field>
+                          </span>
+                          <mat-icon *ngIf="this.isButtonVisibletypeOfAsset == false" class="maticon searchicon" (click)="Serchicon(column,isButtonVisibletypeOfAsset)"
+                            >search</mat-icon>
+                          <mat-panel-description *ngIf="this.isButtonVisibletypeOfAsset == true">
+                            <mat-icon [matMenuTriggerFor]="msgMenu" (click)="$event.stopPropagation()" class="text-muted">
+                              more_vert</mat-icon>
+                            <mat-menu #msgMenu="matMenu">
+                              <button mat-menu-item (click)="opentablePopup('position')" *ngIf="setflag" style="height: 40px !important;">
+                                <mat-icon style="margin-right: 6px;"> <img src="assets/images/assetrak/23_10_2020/Multiple.png" />
+                                </mat-icon> Multiple Search
+                              </button>
+                              <button mat-menu-item  (click)="ClearSerch(column,isButtonVisibletypeOfAsset)"
+                                style="height: 40px !important;">
+                                <mat-icon style="margin-right: 6px;"> <img src="assets/images/assetrak/23_10_2020/Cross.png" />
+                                </mat-icon> Clear Search
+                              </button>
+                            </mat-menu>
+                          </mat-panel-description>
+                        </span>
+
+                        <span *ngIf="column === 'subTypeOfAsset'">
+                          <span *ngIf="this.isButtonVisiblesubTypeOfAsset == false"> {{ Headers.subTypeOfAsset }} </span>
+                          <span *ngIf="this.isButtonVisiblesubTypeOfAsset == true">
+                            <mat-form-field
+                              style="padding-bottom: 0px !important;margin-bottom: -9px !important;margin-top: -7px !important;">
+                              <input matInput class="form-field" [formControl]="AssetNoFilter" placeholder="{{ Headers.subTypeOfAsset }}" autocomplete="off"
+                                (change)="SerchAssetid(column)">
+                            </mat-form-field>
+                          </span>
+                          <mat-icon *ngIf="this.isButtonVisiblesubTypeOfAsset == false" class="maticon searchicon" (click)="Serchicon(column,isButtonVisiblesubTypeOfAsset)"
+                            >search</mat-icon>
+                          <mat-panel-description *ngIf="this.isButtonVisiblesubTypeOfAsset == true">
+                            <mat-icon [matMenuTriggerFor]="msgMenu" (click)="$event.stopPropagation()" class="text-muted">
+                              more_vert</mat-icon>
+                            <mat-menu #msgMenu="matMenu">
+                              <button mat-menu-item (click)="opentablePopup('position')" *ngIf="setflag" style="height: 40px !important;">
+                                <mat-icon style="margin-right: 6px;"> <img src="assets/images/assetrak/23_10_2020/Multiple.png" />
+                                </mat-icon> Multiple Search
+                              </button>
+                              <button mat-menu-item  (click)="ClearSerch(column,isButtonVisiblesubTypeOfAsset)"
+                                style="height: 40px !important;">
+                                <mat-icon style="margin-right: 6px;"> <img src="assets/images/assetrak/23_10_2020/Cross.png" />
+                                </mat-icon> Clear Search
+                              </button>
+                            </mat-menu>
+                          </mat-panel-description>
+                        </span>
+                          <span *ngIf="column === 'Barcode'">
+                            <span *ngIf="this.isButtonVisibleBarCode == false"> {{ Headers.Barcode }} </span>
+                            <span *ngIf="this.isButtonVisibleBarCode == true">
+                              <mat-form-field
+                                style="padding-bottom: 0px !important;margin-bottom: -9px !important;margin-top: -7px !important;">
+                                <input matInput class="form-field" [formControl]="AssetNoFilter" placeholder="{{Headers.Barcode}}" autocomplete="off"
+                                  (change)="SerchAssetid(column)">
+                              </mat-form-field>
+                            </span>
+                            <mat-icon *ngIf="this.isButtonVisibleBarCode == false" class="maticon searchicon" (click)="Serchicon(column,isButtonVisibleBarCode)"
+                              >search</mat-icon>
+                            <mat-panel-description *ngIf="this.isButtonVisibleBarCode == true">
+                              <mat-icon [matMenuTriggerFor]="msgMenu" (click)="$event.stopPropagation()" class="text-muted">
+                                more_vert</mat-icon>
+                              <mat-menu #msgMenu="matMenu">
+                                <button mat-menu-item (click)="opentablePopup('position')" *ngIf="setflag" style="height: 40px !important;">
+                                  <mat-icon style="margin-right: 6px;"> <img src="assets/images/assetrak/23_10_2020/Multiple.png" />
+                                  </mat-icon> Multiple Search
+                                </button>
+                                <button mat-menu-item  (click)="ClearSerch(column,isButtonVisibleBarCode)"
+                                  style="height: 40px !important;">
+                                  <mat-icon style="margin-right: 6px;"> <img src="assets/images/assetrak/23_10_2020/Cross.png" />
+                                  </mat-icon> Clear Search
+                                </button>
+                              </mat-menu>
+                            </mat-panel-description>
+                          </span>
+                          <span *ngIf="column === 'AssetId'">
+                            <span *ngIf="this.isButtonVisible == false"> {{ Headers.AID }} </span>
+                            <span *ngIf="this.isButtonVisible == true">
+                              <mat-form-field
+                                style="padding-bottom: 0px !important;margin-bottom: -9px !important;margin-top: -7px !important;">
+                                <input matInput class="form-field" [formControl]="AssetNoFilter" placeholder="{{Headers.AID}}" autocomplete="off"
+                                  (change)="SerchAssetid(column)">
+                              </mat-form-field>
+                            </span>
+                            <mat-icon *ngIf="this.isButtonVisible == false" class="maticon searchicon" (click)="Serchicon(column,isButtonVisible)"
+                              >search</mat-icon>
+                            <mat-panel-description *ngIf="this.isButtonVisible == true">
+                              <mat-icon [matMenuTriggerFor]="msgMenu" (click)="$event.stopPropagation()" class="text-muted">
+                                more_vert</mat-icon>
+                              <mat-menu #msgMenu="matMenu">
+                                <button mat-menu-item (click)="opentablePopup('position')" *ngIf="setflag" style="height: 40px !important;">
+                                  <mat-icon style="margin-right: 6px;"> <img src="assets/images/assetrak/23_10_2020/Multiple.png" />
+                                  </mat-icon> Multiple Search
+                                </button>
+                                <button mat-menu-item (click)="ClearSerch(column,isButtonVisible)" style="height: 40px !important;">
+                                  <mat-icon style="margin-right: 6px;"> <img src="assets/images/assetrak/23_10_2020/Cross.png" />
+                                  </mat-icon> Clear Search
+                                </button>
+                              </mat-menu>
+                            </mat-panel-description>
+                          </span>
+                          <span *ngIf="column === 'ADL2'">
+                            <span *ngIf="this.isButtonVisibleADL2 == false"> {{ Headers.ADL2 }} </span>
+                            <span *ngIf="this.isButtonVisibleADL2 == true">
+                              <mat-form-field
+                                style="padding-bottom: 0px !important;margin-bottom: -9px !important;margin-top: -7px !important;">
+                                <input matInput class="form-field" [formControl]="AssetNoFilter" placeholder="{{Headers.ADL2}}" autocomplete="off"
+                                  (change)="SerchAssetid(column)">
+                              </mat-form-field>
+                            </span>
+                            <span>
+                              <mat-icon *ngIf="this.isButtonVisibleADL2 == false" class="maticon searchicon"
+                              (click)="Serchicon(column,isButtonVisibleADL2)"
+                              >search</mat-icon>
+                            </span>          
+                            <mat-panel-description *ngIf="this.isButtonVisibleADL2 == true">
+                              <mat-icon [matMenuTriggerFor]="msgMenu" (click)="$event.stopPropagation()" class="text-muted">
+                                more_vert</mat-icon>
+                              <mat-menu #msgMenu="matMenu">
+                                <button mat-menu-item (click)="opentablePopup('position')" *ngIf="setflag" style="height: 40px !important;">
+                                  <mat-icon style="margin-right: 6px;"> <img src="assets/images/assetrak/23_10_2020/Multiple.png" />
+                                  </mat-icon> Multiple Search
+                                </button>
+                                <button mat-menu-item (click)="ClearSerch(column,isButtonVisibleADL2)" style="height: 40px !important;">
+                                  <mat-icon style="margin-right: 6px;"> <img src="assets/images/assetrak/23_10_2020/Cross.png" />
+                                  </mat-icon> Clear Search
+                                </button>
+                              </mat-menu>
+                            </mat-panel-description>
+                          </span>
+                          <span *ngIf="column === 'ADL3'">
+                            <span *ngIf="this.isButtonVisibleADL3 == false"> {{ Headers.ADL3 }} </span>
+                            <span *ngIf="this.isButtonVisibleADL3 == true">
+                              <mat-form-field
+                                style="padding-bottom: 0px !important;margin-bottom: -9px !important;margin-top: -7px !important;">
+                                <input matInput class="form-field" [formControl]="AssetNoFilter" placeholder="{{Headers.ADL3}}" autocomplete="off"
+                                  (change)="SerchAssetid(column)">
+                              </mat-form-field>
+                            </span>
+                            <mat-icon *ngIf="this.isButtonVisibleADL3 == false" class="maticon searchicon"
+                              (click)="Serchicon(column,isButtonVisibleADL3)"
+                              >search</mat-icon>
+                            <mat-panel-description *ngIf="this.isButtonVisibleADL3 == true">
+                              <mat-icon [matMenuTriggerFor]="msgMenu" (click)="$event.stopPropagation()" class="text-muted">
+                                more_vert</mat-icon>
+                              <mat-menu #msgMenu="matMenu">
+                                <button mat-menu-item (click)="opentablePopup('position')" *ngIf="setflag" style="height: 40px !important;">
+                                  <mat-icon style="margin-right: 6px;"> <img src="assets/images/assetrak/23_10_2020/Multiple.png" />
+                                  </mat-icon> Multiple Search
+                                </button>
+                                <button mat-menu-item (click)="ClearSerch(column,isButtonVisibleADL3)" style="height: 40px !important;">
+                                  <mat-icon style="margin-right: 6px;"> <img src="assets/images/assetrak/23_10_2020/Cross.png" />
+                                  </mat-icon> Clear Search
+                                </button>
+                              </mat-menu>
+                            </mat-panel-description>
+                          </span>
+                          <span *ngIf="column === 'Suplier' ">
+                            <span *ngIf="this.isButtonVisibleSupplier == false"> {{ Headers.Suplier }} </span>
+                            <span *ngIf="this.isButtonVisibleSupplier == true">
+                              <mat-form-field
+                                style="padding-bottom: 0px !important;margin-bottom: -9px !important;margin-top: -7px !important;">
+                                <input matInput class="form-field" [formControl]="AssetNoFilter" placeholder="{{Headers.Suplier}}" autocomplete="off"
+                                  (change)="SerchAssetid(column)">
+                              </mat-form-field>
+                            </span>
+                            <mat-icon *ngIf="this.isButtonVisibleSupplier == false" class="maticon searchicon"
+                              (click)="Serchicon(column,isButtonVisibleSupplier)"
+                              >search</mat-icon>
+                            <mat-panel-description *ngIf="this.isButtonVisibleSupplier == true">
+                              <mat-icon [matMenuTriggerFor]="msgMenu" (click)="$event.stopPropagation()" class="text-muted">
+                                more_vert</mat-icon>
+                              <mat-menu #msgMenu="matMenu">
+                                <button mat-menu-item (click)="opentablePopup('position')" *ngIf="setflag" style="height: 40px !important;">
+                                  <mat-icon style="margin-right: 6px;"> <img src="assets/images/assetrak/23_10_2020/Multiple.png" />
+                                  </mat-icon> Multiple Search
+                                </button>
+                                <button mat-menu-item (click)="ClearSerch(column,isButtonVisibleSupplier)"
+                                  style="height: 40px !important;">
+                                  <mat-icon style="margin-right: 6px;"> <img src="assets/images/assetrak/23_10_2020/Cross.png" />
+                                  </mat-icon> Clear Search
+                                </button>
+                              </mat-menu>
+                            </mat-panel-description>
+                          </span>
+                          <span *ngIf="column === 'GRNNo' ">
+                            <span *ngIf="this.isButtonVisibleGRNNo == false"> {{ Headers.GRNNo }} </span>
+                            <span *ngIf="this.isButtonVisibleGRNNo == true">
+                              <mat-form-field
+                                style="padding-bottom: 0px !important;margin-bottom: -9px !important;margin-top: -7px !important;">
+                                <input matInput class="form-field" [formControl]="AssetNoFilter" placeholder="{{Headers.GRNNo}}" autocomplete="off"
+                                  (change)="SerchAssetid(column)">
+                              </mat-form-field>
+                            </span>
+                            <mat-icon *ngIf="this.isButtonVisibleGRNNo == false" class="maticon searchicon"
+                              (click)="Serchicon(column,isButtonVisibleGRNNo)"
+                              >search</mat-icon>
+                            <mat-panel-description *ngIf="this.isButtonVisibleGRNNo == true">
+                              <mat-icon [matMenuTriggerFor]="msgMenu" (click)="$event.stopPropagation()" class="text-muted">
+                                more_vert</mat-icon>
+                              <mat-menu #msgMenu="matMenu">
+                                <button mat-menu-item (click)="opentablePopup('position')" *ngIf="setflag" style="height: 40px !important;">
+                                  <mat-icon style="margin-right: 6px;"> <img src="assets/images/assetrak/23_10_2020/Multiple.png" />
+                                  </mat-icon> Multiple Search
+                                </button>
+                                <button mat-menu-item (click)="ClearSerch(column,isButtonVisibleGRNNo)" style="height: 40px !important;">
+                                  <mat-icon style="margin-right: 6px;"> <img src="assets/images/assetrak/23_10_2020/Cross.png" />
+                                  </mat-icon> Clear Search
+                                </button>
+                              </mat-menu>
+                            </mat-panel-description>
+                          </span>
+                          <span *ngIf="column === 'SerialNo' ">
+                            <span *ngIf="this.isButtonVisibleSerialNo == false"> {{ Headers.SerialNo }} </span>
+                            <span *ngIf="this.isButtonVisibleSerialNo == true">
+                              <mat-form-field
+                                style="padding-bottom: 0px !important;margin-bottom: -9px !important;margin-top: -7px !important;">
+                                <input matInput class="form-field" [formControl]="AssetNoFilter" placeholder="{{Headers.SerialNo}}" autocomplete="off"
+                                  (change)="SerchAssetid(column)">
+                              </mat-form-field>
+                            </span>
+                            <mat-icon *ngIf="this.isButtonVisibleSerialNo == false" class="maticon searchicon"
+                              (click)="Serchicon(column,isButtonVisibleSerialNo)"
+                              >search</mat-icon>
+                            <mat-panel-description *ngIf="this.isButtonVisibleSerialNo == true">
+                              <mat-icon [matMenuTriggerFor]="msgMenu" (click)="$event.stopPropagation()" class="text-muted">
+                                more_vert</mat-icon>
+                              <mat-menu #msgMenu="matMenu">
+                                <button mat-menu-item (click)="opentablePopup('position')" *ngIf="setflag" style="height: 40px !important;">
+                                  <mat-icon style="margin-right: 6px;"> <img src="assets/images/assetrak/23_10_2020/Multiple.png" />
+                                  </mat-icon> Multiple Search
+                                </button>
+                                <button mat-menu-item (click)="ClearSerch(column,isButtonVisibleSerialNo)"
+                                  style="height: 40px !important;">
+                                  <mat-icon style="margin-right: 6px;"> <img src="assets/images/assetrak/23_10_2020/Cross.png" />
+                                  </mat-icon> Clear Search
+                                </button>
+                              </mat-menu>
+                            </mat-panel-description>
+                          </span>
+                          <span *ngIf="column === 'ITSerialNo' ">
+                            <span *ngIf="this.isButtonVisibleITSerialNo == false"> {{ Headers.ITSerialNo }} </span>
+                            <span *ngIf="this.isButtonVisibleITSerialNo == true">
+                              <mat-form-field
+                                style="padding-bottom: 0px !important;margin-bottom: -9px !important;margin-top: -7px !important;">
+                                <input matInput class="form-field" [formControl]="AssetNoFilter" placeholder="{{Headers.ITSerialNo}}" autocomplete="off"
+                                  (change)="SerchAssetid(column)">
+                              </mat-form-field>
+                            </span>
+                            <mat-icon *ngIf="this.isButtonVisibleITSerialNo == false" class="maticon searchicon"
+                              (click)="Serchicon(column,this.isButtonVisibleITSerialNo)"
+                              >search</mat-icon>
+                            <mat-panel-description *ngIf="this.isButtonVisibleITSerialNo == true">
+                              <mat-icon [matMenuTriggerFor]="msgMenu" (click)="$event.stopPropagation()" class="text-muted">
+                                more_vert</mat-icon>
+                              <mat-menu #msgMenu="matMenu">
+                                <button mat-menu-item (click)="opentablePopup('position')" *ngIf="setflag" style="height: 40px !important;">
+                                  <mat-icon style="margin-right: 6px;"> <img src="assets/images/assetrak/23_10_2020/Multiple.png" />
+                                  </mat-icon> Multiple Search
+                                </button>
+                                <button mat-menu-item (click)="ClearSerch(column,isButtonVisibleITSerialNo)"
+                                  style="height: 40px !important;">
+                                  <mat-icon style="margin-right: 6px;"> <img src="assets/images/assetrak/23_10_2020/Cross.png" />
+                                  </mat-icon> Clear Search
+                                </button>
+                              </mat-menu>
+                            </mat-panel-description>
+                          </span>
+                          <span *ngIf="column === 'PONumber' ">
+                            <span *ngIf="this.isButtonVisiblePONumber == false"> {{ Headers.PONumber }} </span>
+                            <span *ngIf="this.isButtonVisiblePONumber == true">
+                              <mat-form-field
+                                style="padding-bottom: 0px !important;margin-bottom: -9px !important;margin-top: -7px !important;">
+                                <input matInput class="form-field" [formControl]="AssetNoFilter" placeholder="{{Headers.PONumber}}" autocomplete="off"
+                                  (change)="SerchAssetid(column)">
+                              </mat-form-field>
+                            </span>
+                            <mat-icon *ngIf="this.isButtonVisiblePONumber == false" class="maticon searchicon"
+                              (click)="Serchicon(column,isButtonVisiblePONumber)"
+                              >search</mat-icon>
+                            <mat-panel-description *ngIf="this.isButtonVisiblePONumber == true">
+                              <mat-icon [matMenuTriggerFor]="msgMenu" (click)="$event.stopPropagation()" class="text-muted">
+                                more_vert</mat-icon>
+                              <mat-menu #msgMenu="matMenu">
+                                <button mat-menu-item (click)="opentablePopup('position')" *ngIf="setflag" style="height: 40px !important;">
+                                  <mat-icon style="margin-right: 6px;"> <img src="assets/images/assetrak/23_10_2020/Multiple.png" />
+                                  </mat-icon> Multiple Search
+                                </button>
+                                <button mat-menu-item (click)="ClearSerch(column,isButtonVisiblePONumber)"
+                                  style="height: 40px !important;">
+                                  <mat-icon style="margin-right: 6px;"> <img src="assets/images/assetrak/23_10_2020/Cross.png" />
+                                  </mat-icon> Clear Search
+                                </button>
+                              </mat-menu>
+                            </mat-panel-description>
+                          </span>
+                          <span *ngIf="column === 'equipmentNo' ">
+                            <span *ngIf="this.isButtonVisibleEqipmentNumber == false"> {{ Headers.EquipmentNumber }} </span>
+                            <span *ngIf="this.isButtonVisibleEqipmentNumber == true">
+                              <mat-form-field
+                                style="padding-bottom: 0px !important;margin-bottom: -9px !important;margin-top: -7px !important;">
+                                <input matInput class="form-field" [formControl]="AssetNoFilter" placeholder="{{Headers.EquipmentNumber}}" autocomplete="off"
+                                  (change)="SerchAssetid(column)">
+                              </mat-form-field>
+                            </span>
+                            <mat-icon *ngIf="this.isButtonVisibleEqipmentNumber == false" class="maticon searchicon"
+                              (click)="Serchicon(column,isButtonVisibleEqipmentNumber)"
+                              >search</mat-icon>
+                            <mat-panel-description *ngIf="this.isButtonVisibleEqipmentNumber == true">
+                              <mat-icon [matMenuTriggerFor]="msgMenu" (click)="$event.stopPropagation()" class="text-muted">
+                                more_vert</mat-icon>
+                              <mat-menu #msgMenu="matMenu">
+                                <button mat-menu-item (click)="opentablePopup('position')" *ngIf="setflag" style="height: 40px !important;">
+                                  <mat-icon style="margin-right: 6px;"> <img src="assets/images/assetrak/23_10_2020/Multiple.png" />
+                                  </mat-icon> Multiple Search
+                                </button>
+                                <button mat-menu-item (click)="ClearSerch(column,isButtonVisibleEqipmentNumber)"
+                                  style="height: 40px !important;">
+                                  <mat-icon style="margin-right: 6px;"> <img src="assets/images/assetrak/23_10_2020/Cross.png" />
+                                  </mat-icon> Clear Search
+                                </button>
+                              </mat-menu>
+                            </mat-panel-description>
+                          </span>
+                          <span *ngIf="column === 'CPPNumber' ">
+                            <span *ngIf="this.isButtonVisibleCPPNumber == false"> {{ Headers.CPPNumber }} </span>
+                            <span *ngIf="this.isButtonVisibleCPPNumber == true">
+                              <mat-form-field
+                                style="padding-bottom: 0px !important;margin-bottom: -9px !important;margin-top: -7px !important;">
+                                <input matInput class="form-field" [formControl]="AssetNoFilter" placeholder="{{Headers.CPPNumber}}" autocomplete="off"
+                                  (change)="SerchAssetid(column)">
+                              </mat-form-field>
+                            </span>
+                            <mat-icon *ngIf="this.isButtonVisibleCPPNumber == false" class="maticon searchicon"
+                              (click)="Serchicon(column,isButtonVisibleCPPNumber)"
+                              >search</mat-icon>
+                            <mat-panel-description *ngIf="this.isButtonVisibleCPPNumber == true">
+                              <mat-icon [matMenuTriggerFor]="msgMenu" (click)="$event.stopPropagation()" class="text-muted">
+                                more_vert</mat-icon>
+                              <mat-menu #msgMenu="matMenu">
+                                <button mat-menu-item (click)="opentablePopup('position')" *ngIf="setflag" style="height: 40px !important;">
+                                  <mat-icon style="margin-right: 6px;"> <img src="assets/images/assetrak/23_10_2020/Multiple.png" />
+                                  </mat-icon> Multiple Search
+                                </button>
+                                <button mat-menu-item (click)="ClearSerch(column,isButtonVisibleCPPNumber)"
+                                  style="height: 40px !important;">
+                                  <mat-icon style="margin-right: 6px;"> <img src="assets/images/assetrak/23_10_2020/Cross.png" />
+                                  </mat-icon> Clear Search
+                                </button>
+                              </mat-menu>
+                            </mat-panel-description>
+                          </span>
+                        <span *ngIf="column != 'Select' && column != 'AssetId' && column != 'ADL2' && column != 'ADL3' && column != 'Barcode' && column != 'Suplier' && column != 'GRNNo' && column != 'SerialNo' && column != 'ITSerialNo' && column != 'PONumber'&& column != 'equipmentNo' && column != 'CPPNumber' && column != 'CategoryName' && column != 'subTypeOfAsset' && column != 'typeOfAsset' && column != 'Location'">
+                            {{Headers[column]}}
+                        </span>
+                    </th>
+                    <td mat-cell *matCellDef="let element">
+                        <span *ngIf="column === 'Select'">
+                            <input type="radio" [value]="element" [formControl]="selectedData" (click)="onchange()">
+                        </span>
+                        <span *ngIf="column === 'AssetId'">
+                            <a style="color:#008bd0 !important;cursor: pointer;">{{element.AssetId}}</a>
+                        </span>
+                        <span
+                            *ngIf="column === 'AcquisitionDate' || column === 'RevertDate' || column === 'allocatedDate' ">
+                            {{element[column] | date:'dd-MMM-yyyy'}}
+                        </span>
+                        <span *ngIf="column === 'WDV'" style="float: right;margin-right: 10%;">
+                            {{element.WDV | number : '1.2-2'}}
+                        </span>
+                        <span
+                            *ngIf="column != 'AssetId' && column != 'Select' && column != 'AcquisitionDate'&& column != 'AcquisitionCost' && column != 'WDV'  && column != 'RevertDate' && column != 'allocatedDate'">
+                            {{element[column]}}
+                        </span>
+                    </td>
+                </ng-container>
+                <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+                <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+            </table>
+            <div style="text-align: center;" *ngIf="dataSource.data.length === 0">{{message.NoDataAvailable}}</div>
+        </div>
+        <div style="margin-top: 8px;">
+        <mat-paginator class="expedientes-paginator" [showFirstLastButtons]="true"
+            [length]="paginationParams.totalCount" [pageSize]="paginationParams.pageSize"
+            [pageSizeOptions]="[50, 100, 200,500]" (page)="handlePage($event)">
+        </mat-paginator>
+        </div>
+        <div>
+            <button (click)="Submit()" [disabled]="disablenextbtn" class="success" mat-raised-button style="left: 91%;"> <mat-icon>check</mat-icon> Map </button>
+        </div>
+    </div>
+
+</div>

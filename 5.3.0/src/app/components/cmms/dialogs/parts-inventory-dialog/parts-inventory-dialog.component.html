@@ -1,0 +1,90 @@
+<div class="md-dialog-container" cdkDrag cdkDragRootElement=".cdk-overlay-pane">
+    <mat-toolbar  cdkDragHandle class="mat-toolbar" style="background-color:rgb(12, 48, 87);color:white">
+      <span>{{data.task==='add'?'Add':'View/Edit'}} part</span>
+      <span class="example-spacer"></span>
+      <button type="button" mat-icon-button class="example-icon" aria-label="Example icon-button with close icon"
+        (click)="onclosetab()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-toolbar>
+    <div mat-dialog-content class="p-1 m-0">
+  
+      <form [formGroup]="dialogSBUForm" (ngSubmit)="onSubmit()">
+        <div fxLayout="row wrap" fxLayout.lt-sm="column">
+  
+  
+          <div fxFlex="100" fxFlex.gt-xs="100" class="pr-1">
+            <mat-form-field class="formfield full-width" color="primary">
+              <mat-select disableOptionCentering [(ngModel)]="partVal" [ngModelOptions]="{standalone: true}"
+                placeholder="Parts" [multiple]="false" #singleSelect>
+                <mat-option>
+                  <ngx-mat-select-search [placeholderLabel]="'Search'" [formControl]="partTypeFilterCtrl">
+                  </ngx-mat-select-search>
+                </mat-option>
+                <!-- <mat-option value="" [disabled]="!!cityMultiCtrl"> {{Headers.All}} </mat-option>
+                <div class="select-all">
+                  <mat-checkbox [checked]="cityMultiCtrl.length === ListOfSBU.length ? true : false"
+                    [indeterminate]="cityMultiCtrl.length < ListOfSBU.length ? true : false"
+                    (change)="toggleSelectAllCity($event)">Select All</mat-checkbox>
+                </div> -->
+                <mat-option *ngFor="let type of filteredPartTypes | async" [value]="type.PartID">
+                  {{type.PartName}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+            </div>
+        
+            <div fxFlex="100" fxFlex.gt-xs="100" class="pr-1">
+              <mat-form-field class="formfield full-width" color="primary">
+                <mat-select disableOptionCentering [(ngModel)]="locVal"  [ngModelOptions]="{standalone: true}" [ngModelOptions]="{standalone: true}"
+                  placeholder="Locations" [multiple]="false" #singleSelect>
+                  <mat-option>
+                    <ngx-mat-select-search [placeholderLabel]="'Search'" [formControl]="plantMultiFilterCtrl">
+                    </ngx-mat-select-search>
+                  </mat-option>
+                  <!-- <mat-option value="" [disabled]="!!cityMultiCtrl"> {{Headers.All}} </mat-option>
+                  <div class="select-all">
+                    <mat-checkbox [checked]="cityMultiCtrl.length === ListOfSBU.length ? true : false"
+                      [indeterminate]="cityMultiCtrl.length < ListOfSBU.length ? true : false"
+                      (change)="toggleSelectAllCity($event)">Select All</mat-checkbox>
+                  </div> -->
+                  <mat-option *ngFor="let type of filteredPlantsMulti | async" [value]="type.LocationId">
+                    {{type.LocationName}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+              </div>
+              <div fxFlex="100" class="pr-1" >
+                <mat-form-field class="full-width">
+                  <input matInput name="sbuName" [(ngModel)]="qty"  [ngModelOptions]="{standalone: true}" placeholder="Available Quantity"
+                    autocomplete="off"  required maxlength="50">
+                  <!-- <mat-error *ngIf="submitted || f1.sbuName.errors || f1.sbuName.dirty || f1.sbuName.touched || f1.sbuName.hasError('whitespace')">
+                    <span *ngIf="f1.sbuName.errors?.required || f1.sbuName.hasError('whitespace')">Issue Type is required </span>
+                  </mat-error> -->
+                </mat-form-field>
+              </div>
+  
+              <div fxFlex="100" class="pr-1" >
+                <mat-form-field class="full-width">
+                  <input matInput name="sbuName" [(ngModel)]="cost"  [ngModelOptions]="{standalone: true}" placeholder="Cost"
+                    autocomplete="off" required maxlength="50">
+                  <!-- <mat-error *ngIf="submitted || f1.sbuName.errors || f1.sbuName.dirty || f1.sbuName.touched || f1.sbuName.hasError('whitespace')">
+                    <span *ngIf="f1.sbuName.errors?.required || f1.sbuName.hasError('whitespace')">Issue Type is required </span>
+                  </mat-error> -->
+                </mat-form-field>
+              </div>
+  
+             
+          <div fxFlex="100" class="mt-1">
+            <!-- <button type="button" mat-raised-button class="success" style="float:left !important;margin-right: 5px;" *ngIf="disableAllFields&&data.task=='edit'" (click)="enableFields()"
+            ><mat-icon>edit</mat-icon>Edit this Issue</button>
+            <button type="button" mat-raised-button class="danger" style="float:left !important;" *ngIf="data.task=='edit'" (click)="onDelete()"
+            ><mat-icon>delete</mat-icon>Delete this Issue</button> -->
+            <button *ngIf="data.task=='edit' || data.task=='add'" mat-raised-button class="success" style="float:right !important;" 
+            ><mat-icon>check</mat-icon>{{data.task==='add'?'Create':'Save'}} Part</button>
+  
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>

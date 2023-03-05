@@ -1,0 +1,102 @@
+<div class="md-dialog-container" cdkDrag cdkDragRootElement=".cdk-overlay-pane">
+    <mat-toolbar cdkDragHandle class="mat-toolbar" style="background-color:rgb(12, 48, 87) !important;color:white">
+        <span style="position: relative;left: 40%;">Create License</span>
+        <span class="example-spacer"></span>
+        <button mat-icon-button class="example-icon" aria-label="Example icon-button with close icon"
+            (click)="onclosetab()">
+            <mat-icon>close</mat-icon>
+        </button>
+    </mat-toolbar><br><br>
+    <mat-dialog-content>
+        <div class="md-dialog-content">
+            <div class="md-label">
+                <form [formGroup]="dialogForm">
+                    <div fxLayout="row wrap" fxLayout.lt-sm="column">
+                        
+                        <div fxFlex="25"  class="pr-1 ">
+                            <mat-form-field class="full-width" appearance="outline">
+                                <mat-label class="label" style="font-size: 15px !important;">License Type</mat-label>
+                                <mat-select [formControl]="dialogForm.controls['Type']" (selectionChange)="ChangeType($event.value)">
+                                    <mat-option *ngFor="let field of LicenseTypeField" [value]="field.value" >{{field.viewValue}}</mat-option>
+                                                    
+                                </mat-select>
+                                <mat-error
+                                    *ngIf="submitted && f2.Type.errors || f2.Type.dirty || f2.Type.touched">
+                                    <span *ngIf="f2.Type.errors?.required">License Type is a required </span>
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div fxFlex="25"  class="pr-1 ">
+                            <mat-form-field class="full-width" appearance="outline">
+                                <mat-label class="label" style="font-size: 15px !important;">Licensed Product</mat-label>
+                                <mat-select [(ngModel)]="yearSelected" [formControl]="dialogForm.controls['Product']">
+                                    <mat-option *ngFor="let field of LicenseProductField" [value]="field.value">{{field.viewValue}}</mat-option>
+                                </mat-select>
+                                <mat-error
+                                    *ngIf="submitted && f2.Product.errors || f2.Product.dirty || f2.Product.touched">
+                                    <span *ngIf="f2.Product.errors?.required">Licensed Product is a required </span>
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div fxFlex="25"  class="pr-1 ">
+                            <mat-form-field class="full-width" appearance="outline">
+                                <mat-label class="label" style="font-size: 15px !important;">Module</mat-label>
+                                <mat-select [(ngModel)]="facultySelected" [formControl]="dialogForm.controls['Module']" multiple >
+                                    <mat-option *ngFor="let field of Modulefield"  [value]="field.value">{{field.viewValue}}</mat-option>
+                                </mat-select>
+                                <mat-error
+                                    *ngIf="submitted && f2.Module.errors || f2.Module.dirty || f2.Module.touched">
+                                    <span *ngIf="f2.Module.errors?.required">Module is a required </span>
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                        <div fxFlex="25"  class="pr-1 ">
+                            <mat-form-field class="full-width" appearance="outline">
+                                <mat-label class="label" style="font-size: 15px !important;">From Date</mat-label>
+                                <input matInput [matDatepicker]="picker1" type="name" (click)="picker1.open();" [formControl]="dialogForm.controls['From_Date']">
+                                <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                                <mat-error
+                                    *ngIf="submitted && f2.From_Date.errors || f2.From_Date.dirty || f2.From_Date.touched">
+                                    <span *ngIf="f2.From_Date.errors?.required">From Date is a required </span>
+                                </mat-error>
+                            </mat-form-field>
+                            <mat-datepicker #picker1></mat-datepicker>
+                        </div>
+                        <div fxFlex="25"  class="pr-1 " >
+                            <mat-form-field class="full-width" appearance="outline" >
+                                <mat-label class="label" style="font-size: 15px !important;">To Date</mat-label>
+                                <input [matDatepicker]="picker2" matInput (click)="picker2.open();" [formControl]="dialogForm.controls['To_Date']" [disabled]="todatedisable">
+                                <mat-datepicker-toggle matSuffix [for]="picker2"  ></mat-datepicker-toggle>
+                                <mat-error
+                                    *ngIf="submitted && f2.To_Date.errors || f2.To_Date.dirty || f2.To_Date.touched">
+                                    <span *ngIf="f2.To_Date.errors?.required">To Date is a required </span>
+                                </mat-error>
+                            </mat-form-field>
+                            <mat-datepicker #picker2></mat-datepicker>
+                        </div>
+
+                        <div fxFlex="25"  class="pr-1 ">
+                            <mat-form-field class="full-width" appearance="outline">
+                                <mat-label class="label" style="font-size: 15px !important;">Utilization Lavel</mat-label>
+                                <mat-select [formControl]="dialogForm.controls['License_Level']">
+                                    <mat-option *ngFor="let field of UtilizationField" [value]="field.value">{{field.viewValue}}</mat-option>
+                                </mat-select>
+                                <mat-error *ngIf="submitted && f2.License_Level.errors || f2.License_Level.dirty || f2.License_Level.touched">
+                                    <span *ngIf="f2.License_Level.errors?.required">Utilization Lavel is a required </span>
+                                </mat-error>
+                            </mat-form-field>
+                        </div>
+                    </div>
+                    <div fxLayout="row wrap" fxLayout.lt-sm="column">
+                        <div fxFlex="100" fxFlex.gt-xs="100" class="pr-1" style="text-align: right;">
+                            <button mat-raised-button class="pr-1 success" [disabled]="submitbtn" (click)="Submit()">
+                              <mat-icon>check</mat-icon>Submit
+                            </button>
+                        </div>
+                    </div>
+                </form>
+               
+            </div>
+        </div>
+    </mat-dialog-content>
+</div>

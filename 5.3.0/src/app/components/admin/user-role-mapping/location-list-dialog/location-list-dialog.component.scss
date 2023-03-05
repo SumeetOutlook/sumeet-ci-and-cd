@@ -1,0 +1,84 @@
+.example-spacer {
+  flex: 1 1 auto;
+}
+
+
+.md-dialog-container{
+  margin: -24px;
+  overflow: hidden;
+}
+.example-icon{
+  background-color: none;
+}
+.example-section {
+margin: 12px 0;
+}
+
+.example-margin {
+margin: 0 32px;
+}
+
+
+.md-dialog-content{
+  max-height: 68vh;
+  height:auto;
+  overflow-y:auto;
+}
+
+
+.mat-dialog-content{
+  margin: -25px 0px 0px 0px;
+  padding:12px 12px;
+  overflow:hidden;
+}  
+
+
+.md-label{
+  max-height:60vh;
+  min-height:30vh;
+  overflow: auto;
+  padding-bottom: 20px;
+}
+
+.full{
+  margin-top: 20px;
+}
+
+:host::ng-deep .mat-dialog-container {
+
+  padding:0px !important;
+  
+  }
+
+  mat-nav-list.list-horizontal {
+    padding: 0;
+    .mat-list-item {
+      display: inline-block;
+      height: auto;
+      width: auto;
+    }
+  }
+
+  :host::ng-deep .mat-list-item-content{
+
+    width: 150px !important;
+  }
+
+  :host::ng-deep .mat-list-base .mat-list-item .mat-list-item-content
+  {
+
+    padding: 0 0 !important;
+    padding-left: 10px !important;
+   
+  }
+
+  // .mat-raised-button.mat-primary[disabled]{
+
+  //   background-color:lightgray !important;
+  // } 
+ 
+  // .mat-raised-button.mat-primary{
+
+  //   background-color:#e67e4a !important;
+  //   color: white !important;
+  // }

@@ -1,0 +1,94 @@
+
+<div fxLayout='row wrap' fxLayoutAlign='space-between' fxLayout.lt-sm="column" style="min-height: fit-content;">
+    <!--<h3><strong style=" color:#008bd0 !important;"> view-field </strong> </h3>-->
+    <p style="color:#008bd0;font-size:medium;" >Create Custom View</p>
+    </div>
+    <mat-card-content>
+    <span></span>
+    <div fxLayout="row wrap" class="pr-5 pl-5" fxLayout.lt-sm="column">
+        <mat-accordion class="example-headers-align" *ngFor="let data of StandardTypeData1;let k=index"
+            style="width: 100%;">
+            <mat-expansion-panel [expanded]="panelOpenState[k] && step == k" (opened)="setStep(k,data)"
+                (closed)="changeState(k)" hideToggle>
+                <mat-expansion-panel-header class="prevent-click" style="height: 50px;">
+                  
+                    <mat-panel-title>
+                        <div fxLayout="row " fxLayout.lt-sm="row" fxFlex="100" fxFlex.gt-xs="100" >
+                            <div fxFlex="100" fxFlex.gt-xs="40" class="pr-1" style="padding-left:5px !important;">
+
+                                <mat-icon [style.fontSize]="'30px'" style="color: #1d3478 !important;padding-right: 10px;"
+                                   class="authorize-click icon" *ngIf="!panelOpenState[k]">add</mat-icon>
+                               
+                                   <mat-icon [style.fontSize]="'30px'" style="color: #1d3478 !important;padding-right: 10px;"
+                                   class="authorize-click icon" *ngIf="panelOpenState[k]">remove</mat-icon>
+                                   <div fxFlex="100"  class="pr-1 givemargin">
+                                    <span >{{data.CategoryName}} ({{data.Custom3}})</span>
+                                   </div>
+
+                            </div>
+                              <div fxFlex="100" fxFlex.gt-xs="20" class="pr-1 authorize-click" style="margin-left:50%;">
+                                <!--<a  *ngIf="!panelOpenState[k]" style="cursor: pointer !important;color:rgb(73, 73, 197) !important;font-size: 13px !important;" (click)="createduplicate(data.Name)" >create duplicate</a>-->
+                            </div>
+                        </div>
+                    </mat-panel-title>
+                    
+                </mat-expansion-panel-header>
+                
+                <!--<mat-expansion-panel  *ngFor="let data of StandardTypeData1;let m=index" [expanded]="panelOpenState[m]" (opened)="setStep(m)"
+                (closed)="changeState(m)" hideToggle>-->
+                <div class="example-headers-align" style="height:100% !important;" >
+       
+                  <mat-panel-title>
+                      <div  fxLayout="column"  fxFlex="100" fxFlex.gt-xs="100"  fxLayout.lt-sm="column">
+                          <div fxFlex="100" fxFlex.gt-xs="40" class="pr-1" >
+
+                              <!--<mat-icon [style.fontSize]="'30px'" style="color: #1d3478 !important;padding-right: 10px;"
+                              class="authorize-click icon" *ngIf="!panelOpenState[m]">add</mat-icon>
+                          
+                              <mat-icon [style.fontSize]="'30px'" style="color: #1d3478 !important;padding-right: 10px;"
+                              class="authorize-click icon" *ngIf="panelOpenState[m]">remove</mat-icon>-->
+                                 <div fxFlex="100"  fxFlex.gt-xs="20" class="pr-1 " style="padding-top:4px !important;margin-left: 52px !important;">
+                                  <!-- <mat-checkbox class="authorize-click givemargin" [checked]="data.Custom1" 
+                                  (change)="SelectCustomeView(data)"></mat-checkbox> -->
+                                  <span >{{data.CategoryName}}(Standard)</span>
+                                  </div>
+                           <div fxFlex="100"  fxFlex.gt-xs="4" class="pr-1 "  style="padding-top:4px !important;" >
+                              <a   style="cursor: pointer !important;color:#008bd0 !important;font-size: 15px !important;"  (click)="VieweditGridpop(data)" >View</a>
+                           </div>
+                           <div fxFlex="100"  fxFlex.gt-xs="4" class="pr-1 "  style="padding-top:4px !important;" >
+                              <span style="padding-left:70px !important;">
+                                  <mat-icon [style.fontSize]="'22px'" matTooltip="Create Duplicate" (click)="createduplicate(data)"
+                                    style="color: #5367a0 !important;cursor:pointer;width:1px;"
+                                    class="matbtn"
+                                    class="authorize-click icon"
+                                     style="color: rgb(37, 35, 35);">content_copy</mat-icon>
+                                </span>
+                              </div>
+                            </div>
+                       
+                          <div fxFlex="100"  fxLayout="column" fxLayout.lt-sm="column"  fxFlex.gt-xs="100"   *ngFor="let c of StandardTypeData;let j=index;"  >
+                              <div fxFlex="100" xFlex.gt-xs="40"  class="pr-1"  >
+                                
+                                  <div fxFlex="100"  fxFlex.gt-xs="20" class="pr-1 " style="padding-top:4px !important;margin-left: 52px !important;" >
+                                        <span>{{c.CategoryName}}</span>
+                                   </div>
+                               
+                                  <div fxFlex="100"  fxFlex.gt-xs="40" class="pr-1 "  style="padding-top:4px !important;" >
+                                      <a   style="padding-top:3px !important;cursor: pointer !important;color:#008bd0 !important;font-size: 15px !important;"    (click)="editGridpop1(c)" >Edit</a>
+                                   </div>
+                                            
+                                </div>
+                            </div>
+                        
+                      </div>
+                  </mat-panel-title>
+                </div>
+            <!--</mat-expansion-panel>-->
+           
+            </mat-expansion-panel>
+            
+        </mat-accordion>
+        
+    </div>
+    </mat-card-content>
+    

@@ -1,0 +1,256 @@
+<h3><strong style=" color:#008bd0 !important;"> {{menuheader['Print tags']}}</strong> </h3>
+
+
+<div fxLayout='row wrap' fxLayoutAlign="space-between" fxLayout.lt-sm="column" style="min-height: fit-content;">
+  <div fxFlex="100" fxFlex.gt-xs="12" class="pr-1">
+    <mat-form-field class="formfield full-width" color="primary">
+      <mat-select disableOptionCentering [(value)]="SelectedSBUItems" [(ngModel)]="cityMultiCtrl" [ngModelOptions]="{standalone: true}" placeholder="{{Headers[HeaderLayerText]}}"
+        (selectionChange)="SelectSBUCheckbox($event.value)" #multiSelect [multiple]="true">
+        <mat-option>
+          <ngx-mat-select-search [placeholderLabel]="'Search'" [formControl]="cityMultiFilterCtrl">
+          </ngx-mat-select-search>
+        </mat-option>
+        <!-- <mat-option [value]="0" (click)="onchangeSBU('')"> All</mat-option> -->
+        <mat-option value="" [disabled]="!!cityMultiCtrl"> {{Headers.All}} </mat-option>
+        <div class="select-all">
+          <mat-checkbox [checked]="cityMultiCtrl.length === ListOfSBU.length ? true : false" [indeterminate]="cityMultiCtrl.length < ListOfSBU.length ? true : false"
+                          (change)="toggleSelectAllCity($event)">Select All</mat-checkbox>
+        </div>
+        <mat-option [disabled]="!cityMultiCtrl" *ngFor="let city of filteredCityMulti | async" [value]="city[Layertext]" (click)="onchangeSBU(city[Layertext])">
+          {{city[Layertext]}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div fxFlex="100" fxFlex.gt-xs="12" class="pr-1">
+    <mat-form-field class="formfield full-width" color="primary" *ngIf="Global">
+      <mat-label> {{ Headers.Location }}<span class="required-asterisk">*</span></mat-label>
+      <mat-select disableOptionCentering [(value)]="selectedvalue" [(ngModel)]="plantMultiCtrl1" [ngModelOptions]="{standalone: true}"
+      (selectionChange)="Selectedchangeplant($event.value)" [multiple]="true" #multiSelect (infiniteScroll)="getFilterPlantType()" [complete]="offset === ListOfLoc.length" [formControl]="ReportForm.controls['plantMultiFilterCtrl']" msInfiniteScroll>         
+         <mat-option>
+          <ngx-mat-select-search [placeholderLabel]="'Search'"  [formControl]="plantMultiFilterCtrl">
+          </ngx-mat-select-search>
+        </mat-option>
+        <mat-option [value]="0"> All</mat-option>
+        <mat-option *ngFor="let bank of filteredPlantsMulti | async" [value]="bank.LocationId">
+          {{bank.LocationName}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+    <mat-form-field class="formfield full-width" color="primary" *ngIf="Global1">
+      <mat-label> {{ Headers.Location }}<span class="required-asterisk">*</span></mat-label>
+      <mat-select disableOptionCentering [(ngModel)]="plantMultiCtrl" [ngModelOptions]="{standalone: true}"
+        (selectionChange)="Selectedchangeplant($event.value)" [multiple]="true" #multiSelect (infiniteScroll)="getFilterPlantType()" [complete]="offset === ListOfLoc.length" [formControl]="ReportForm.controls['plantMultiFilterCtrl']" msInfiniteScroll>     
+        <mat-option>
+          <ngx-mat-select-search [placeholderLabel]="'Search'"  [formControl]="plantMultiFilterCtrl">
+          </ngx-mat-select-search>
+        </mat-option>
+        <mat-option *ngFor="let bank of filteredPlantsMulti | async" [value]="bank.LocationId">
+          {{bank.LocationName}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field> 
+  </div> 
+  <div fxFlex="100" fxFlex.gt-xs="12" class="pr-1">
+    <mat-form-field class="formfield full-width" color="primary" *ngIf="Global">
+      <mat-label> {{ Headers.AssetClass }}<span class="required-asterisk">*</span></mat-label>
+      <mat-select disableOptionCentering  [(ngModel)]="Selectedvalueforglobal" [ngModelOptions]="{standalone: true}"
+        [disabled]="true" style="font-size: 12px !important;">
+        <mat-option value="Global">{{Headers.Global}}</mat-option>  
+      </mat-select>
+    </mat-form-field>  
+    <mat-form-field class="formfield full-width" color="primary" *ngIf="Global1">
+      <mat-label> {{ Headers.AssetClass }}<span class="required-asterisk">*</span></mat-label>
+      <mat-select disableOptionCentering  [(ngModel)]="CategoryCtrl" [multiple]="false"
+        (selectionChange)="changeCategory($event.value)" #singleSelect  style="font-size: 12px !important;">
+  
+        <mat-option *ngFor="let Category of filteredCategory | async" [value]="Category">
+          {{Category.BlockName}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div> 
+  <div fxFlex="100" fxFlex.gt-xs="12" class="pr-1">
+
+    <mat-form-field class="formfield full-width" color="primary">
+      <mat-label> {{ Headers.LabelMaterial }}<span class="required-asterisk">*</span></mat-label>
+      <mat-select disableOptionCentering [(ngModel)]="inventoryMulti" [ngModelOptions]="{standalone: true}" 
+        (selectionChange)="SelectedMaterial($event.value)" #singleSelect >
+        <mat-option value=""> All</mat-option>
+        <mat-option *ngFor="let inventory of inventorynote| async" [value]="inventory">
+          {{inventory.Material}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>  
+
+  <div fxFlex="100" fxFlex.gt-xs="52"> 
+    <button  mat-raised-button class="submitbtn" (click)="Showprintlabel()"> <mat-icon class="matbtn" >shortcut</mat-icon>Submit </button>
+
+    <!-- <mat-icon class="example-icon" (click)="Showprintlabel()" [style.fontSize]="'24px'"
+    style="height: 30px;width: 35px;margin-left: -10px !important;"><img style="height: 38px;width:40px;"
+      src="assets/images/assetrak/23_10_2020/GO 5.png" /></mat-icon> -->
+
+      <!-- <span style="margin-left: 32px !important;"></span>
+    <button  class="btn1" style="margin-left: 8px !important;"> <a (click)="printlabel()">PrintNewLabel</a> </button>
+   <span class="example-spacer"></span> -->
+
+   <span style="margin-left: 32px !important;"></span>
+      <a style="color:#0645ad !important;cursor: pointer;text-decoration: underline;font-weight: bold;" *ngIf="(!!plantMultiCtrl && !!CategoryCtrl && !!Global1) || !!Global" (click)="printlabel()">Print New Label</a>
+   <span class="example-spacer"></span>
+
+  <!--<mat-form-field class="margin_bottom" style="float: right;">
+    <button mat-icon-button matSuffix class="example-icon"
+      style="background-color:white;margin-top: 0px;width:30px;height: 30px;margin-right: 6px;"
+      aria-label="Example icon-button with close icon">
+      <mat-icon style="color:white; font-size: 25px;color:#0C3057;cursor:pointer">search</mat-icon>
+    </button>
+    <input matInput (keyup)="applyFilter($event)" placeholder="Search">
+  </mat-form-field>-->
+  </div>
+</div>
+  
+<div  class="example-container mat-elevation-z8" *ngIf="displayTable">        
+  <table mat-table [dataSource]="datasource" matSort>
+
+    <!-- <ng-container matColumnDef="select">
+      <th mat-sort-header="select" mat-header-cell *matHeaderCellDef>
+      </th>
+      <td mat-cell *matCellDef="let row let i=index">
+        <mat-label></mat-label> -->
+
+        <!-- <mat-radio-button (click)="$event.stopPropagation()" (change)="$event ? isSelected(row) : null"
+          [checked]="getselectedIds.indexOf(row.id) > -1"> -->
+        <!-- <mat-radio-button></mat-radio-button>
+      </td>
+    </ng-container> -->
+
+    <ng-container matColumnDef="Plant">
+      <th mat-sort-header="Plant" mat-header-cell *matHeaderCellDef>
+        <span *ngIf="this.isButtonVisible == false">{{displayedHeaders[0]}} </span>
+        <span *ngIf="this.isButtonVisible == true">
+        <mat-form-field style="padding-bottom: 0px !important;margin-bottom: -9px !important;margin-top: -7px !important;">
+          <input matInput class="form-field" (keyup)="applyFilter($event)" placeholder="Search" autocomplete="off">
+      </mat-form-field>
+      </span>
+         <mat-icon *ngIf="this.isButtonVisible == false" class="maticon searchicon"
+         (click)="this.isButtonVisible= !this.isButtonVisible"
+          style="height: 17px;width: 24px;font-size:17px;color:#1d3478;margin-right: -7px;">search</mat-icon>
+      <mat-panel-description *ngIf="this.isButtonVisible == true">
+      <mat-icon [matMenuTriggerFor]="msgMenu" (click)="$event.stopPropagation()"
+          class="text-muted">
+          more_vert</mat-icon>
+      <mat-menu #msgMenu="matMenu">
+          <button mat-menu-item  
+              style="height: 40px !important;" *ngIf="setflag">
+              <mat-icon style="margin-right: 6px;"> <img
+                      src="assets/images/assetrak/23_10_2020/Multiple.png" />
+              </mat-icon> Multiple Search
+          </button>
+          <button mat-menu-item (click)="ClearSerch(column,isButtonVisible)"
+              style="height: 40px !important;">
+              <mat-icon style="margin-right: 6px;"> <img
+                      src="assets/images/assetrak/23_10_2020/Cross.png" />
+              </mat-icon> Clear Search
+          </button>
+      </mat-menu>
+  </mat-panel-description>
+      </th>
+
+
+      <td mat-cell *matCellDef="let row;let i=index">{{row.location}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="Asset Category">
+      <th mat-sort-header="Asset Category" mat-header-cell *matHeaderCellDef>{{displayedHeaders[1]}}</th>
+      <td mat-cell *matCellDef="let row;let i=index">{{row.BlockName}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="No of labels">
+      <th mat-sort-header="No of labels" mat-header-cell *matHeaderCellDef>{{displayedHeaders[2]}}</th>
+      <td mat-cell *matCellDef="let row;let i=index">
+        <span  style="float:left ;padding-left: 10px;padding-right: 10px;margin-left:20%;">{{row.nolabels}}
+        </span>
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="Prefix">
+      <th mat-sort-header="Prefix" mat-header-cell *matHeaderCellDef>{{displayedHeaders[3]}}</th>
+      <td mat-cell *matCellDef="let row;let i=index">{{row.prefix}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="Start Number">
+      <th mat-sort-header="Start Number" mat-header-cell *matHeaderCellDef>{{displayedHeaders[4]}}</th>
+      <td mat-cell *matCellDef="let row;let i=index">
+        <span  style="float:left ;padding-left: 10px;padding-right: 10px;margin-left:20%;">{{row.StratBarcode}}
+        </span>
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="End Number">
+      <th mat-sort-header="End Number" mat-header-cell *matHeaderCellDef>{{displayedHeaders[5]}}</th>
+      <td mat-cell *matCellDef="let row;let i=index">
+        <span  style="float:left ;padding-left: 10px;padding-right: 10px;margin-left:20%;">{{row.EndBarcode}}
+        </span>
+        </td>
+    </ng-container>
+
+    <ng-container matColumnDef="Label Size">
+      <th mat-sort-header="Label Size" mat-header-cell *matHeaderCellDef>{{displayedHeaders[6]}}</th>
+      <td mat-cell *matCellDef="let row;let i=index">{{row.labelsize}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="Label Material">
+      <th mat-sort-header="Label Material" mat-header-cell *matHeaderCellDef>{{displayedHeaders[7]}}</th>
+      <td mat-cell *matCellDef="let row;let i=index">{{row.labelmaterial}}</td>
+
+    </ng-container>
+
+    <ng-container matColumnDef="Used Count" >
+      <th mat-sort-header="Used Count" mat-header-cell *matHeaderCellDef >{{displayedHeaders[8]}}</th>
+      <td mat-cell  *matCellDef="let row;let i=index" value="UsedCount" >
+        <span  style="float:left ;padding-left: 10px;padding-right: 10px;margin-left:30%;">
+          <a style="color:#008bd0 !important;cursor: pointer ;"  (click)="openInventorydetaildata(row)">{{row.Used}}</a>
+        </span>
+      </td>
+        </ng-container>
+        <ng-container matColumnDef="Remark">
+          <th mat-sort-header="Label Material" mat-header-cell *matHeaderCellDef>{{displayedHeaders[9]}}</th>
+          <td mat-cell *matCellDef="let row;let i=index">{{row.remark}}</td>
+       </ng-container>
+
+    <ng-container matColumnDef="print File">
+      <th mat-sort-header="print File" mat-header-cell *matHeaderCellDef>{{displayedHeaders[10]}}</th>
+      <td mat-cell *matCellDef="let row;let i=index"><a style="color:#008bd0 !important;cursor: pointer;"
+          (click)="Download(row)"> Download file </a>
+        <!-- <span *ngIf="row.Count == row.Used" >Not Available</span>
+        <span *ngIf="row.Enabled == true && row.Count != row.Used" style="color:green !important" > Active</span>
+        <span *ngIf="row.Enabled == false && row.Count != row.Used" style="color:red !important"> Inactive</span> -->
+      </td>
+    </ng-container>
+    
+    
+  
+
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns;sticky:true"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+  <div style="text-align: center;" *ngIf="!datasource">{{message.NoDataAvailable}}</div>
+</div>
+<div [hidden]="!displayTable">
+  <mat-paginator #paginator="matPaginator" class="expedientes-paginator" [showFirstLastButtons]="true"
+  [pageSize]="50" [pageSizeOptions]="[50, 100, 200,500]"></mat-paginator>
+</div>
+
+ 
+
+<!-- <mat-card class="example-card" style="padding-top: 0px !important;">
+  <mat-card-content>
+    <form>
+
+      <div class="mr-05 pb-1">
+       
+      </div>
+    </form>
+  </mat-card-content>
+</mat-card> -->

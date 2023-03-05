@@ -1,0 +1,223 @@
+<h3><strong style=" color:#008bd0 !important;"> {{menuheader['Define Series']}}</strong> </h3>
+
+  <div fxLayout='row wrap' fxLayoutAlign='space-between' fxLayout.lt-sm="column" style="min-height: fit-content;">
+    <div fxFlex="100" fxFlex.gt-xs="12" class="pr-1">
+<mat-form-field class="formfield full-width" style="margin-top: 6px !important;margin-bottom: -6px !important;">
+    <mat-select   disableOptionCentering  [(ngModel)]="CompanyMultiCtrl" [ngModelOptions]="{standalone: true}" placeholder="{{header.CompanyName}}" (selectionChange)="changeCompany($event.value)" style="font-size: 12px !important;"  >
+           <mat-option>
+            <ngx-mat-select-search [placeholderLabel]="'Search'" [showToggleAllCheckbox]="true"
+              (toggleAll)="toggleSelectAllCompany($event)" [formControl]="CompanyMultiFilterCtrl">
+            </ngx-mat-select-search>
+          </mat-option>
+          <mat-option [value]="0"> All</mat-option>
+          <mat-option  *ngFor="let company of  filteredCompanyMulti | async" [value]="company.CompanyId">
+              {{company.CompanyName}}           
+          </mat-option>        
+    </mat-select>
+    </mat-form-field>
+    </div>
+  <!-- <mat-form-field class="ml-4" style="margin-top: 6px !important;margin-bottom: -6px !important;">
+    <mat-select disableOptionCentering placeholder="Asset Category"   style="font-size: 12px !important;" [disabled]="disableSelect" (selectionChange)="changeCategory($event.value)" disabled [(value)]="selected1" [multiple]="true" #multiSelect>
+         <mat-option *ngFor="let asset of AssetClass" disabled  [value]="asset" > 
+           {{asset.name}}
+        </mat-option> -->
+        <!-- <mat-option *ngFor="let category of CategoryList" [value]="category.CategoryId"  disabled>{{category.CategoryName}}</mat-option>
+   </mat-select>
+  </mat-form-field>  -->
+  <div fxFlex="100" fxFlex.gt-xs="12" class="pr-1">
+  <mat-form-field class="formfield full-width" style="margin-top: 6px !important;margin-bottom: -6px !important;" *ngIf="Global" >
+    <mat-label> {{header.AssetClass}}<span style="color:red !important;">*</span></mat-label>
+    <mat-select disableOptionCentering placeholder="{{header.AssetClass}}" [(ngModel)]="Selectedvalueforglobal" [ngModelOptions]="{standalone: true}" [disabled]="true"  style="font-size: 12px !important;">
+      <mat-option value="Global">{{header.Global}}</mat-option>
+      <!-- <mat-option>
+        <ngx-mat-select-search [placeholderLabel]="'Search'" [formControl]="CategoryFilter" [showToggleAllCheckbox]="true"></ngx-mat-select-search>
+      </mat-option> -->
+      <!-- <mat-option *ngFor="let Category of filteredCategory | async" [value]="Category.AssetCategoryId">
+        {{Category.AssetCategoryName}}</mat-option> -->
+    </mat-select>
+   </mat-form-field>
+   <mat-form-field class="formfield full-width" style="margin-top: 6px !important;margin-bottom: -6px !important;" *ngIf="Global1">
+    <mat-label> {{header.AssetClass}}<span style="color:red !important;">*</span></mat-label>
+    <mat-select disableOptionCentering placeholder="{{header.AssetClass}}"  [formControl]="CategoryCtrl" [multiple]="false" (selectionChange)="changeCategory($event.value)" #multiSelect style="font-size: 12px !important;">
+      <mat-option>
+        <ngx-mat-select-search [placeholderLabel]="'Search'" [formControl]="CategoryFilter" [showToggleAllCheckbox]="false"></ngx-mat-select-search>
+      </mat-option>
+      <mat-option *ngFor="let Class of filteredCategory | async" [value]="Class.Id">
+        {{Class.BlockName}}</mat-option>
+    </mat-select>
+   </mat-form-field>
+   </div>
+   
+   <div fxFlex="100" fxFlex.gt-xs="12" class="pr-1">
+  <mat-form-field class="formfield full-width" style="margin-top: 6px !important;margin-bottom: -6px !important;">
+    <mat-select disableOptionCentering placeholder="Status"    style="font-size: 12px !important;" [(ngModel)]="SelectedStatus" [ngModelOptions]="{standalone: true}" (selectionChange)="changeStatus($event.value)"   (onchange)="GetSeriesDefinitionWithFilter()" [multiple]="false" #multiSelect>
+        <!-- <mat-option  *ngFor="let status of SelectStatus" [value]="status" >  </mat-option> -->
+        <mat-option value="All">{{header.All}}</mat-option>
+        <mat-option value="Active">{{header.Active}}</mat-option>
+        <mat-option value="Inactive">{{header.Inactive}}</mat-option>
+        <mat-option value="NotAvailable">{{header.NotAvailable}}</mat-option>
+       
+   </mat-select>
+  </mat-form-field>
+  </div>
+  <div fxFlex="100" fxFlex.gt-xs="64">
+
+  <!-- <mat-icon class="example-icon"  (click)="Showseries()" [style.fontSize]="'24px'" style="height: 30px;width: 35px;margin-left: -10px;margin-bottom: -11px !important;"><img style="height: 38px;width:40px;" src="assets/images/assetrak/23_10_2020/GO 5.png" /></mat-icon>
+   -->
+   <button mat-raised-button class="submitbtn" (click)="Showseries()">
+    <mat-icon class="matbtn">shortcut</mat-icon>Submit
+  </button>
+  <span style="margin-left: 32px !important;"></span>
+  <button mat-raised-button matTooltip="{{header.CreateNewSeries}}" class="minibtn" style="margin-left: 8px !important;" *ngIf="ShowPopup && Global && PermissionIdList.indexOf(159) > -1" 
+  (click)="openAddseries()"> <mat-icon style="color: white;">add</mat-icon> </button>
+  <button mat-raised-button matTooltip="{{header.CreateNewSeries}}" class="minibtn" style="margin-left: 8px !important;" *ngIf="IsShow && Global1 && PermissionIdList.indexOf(159) > -1" 
+  (click)="openAddseries()"> <mat-icon style="color: white;">add</mat-icon> </button>
+  
+  <!-- <button mat-raised-button matTooltip="Activate" class="minibtn" style="margin-left: 8px !important;"  *ngIf="displaybtn" [disabled]="!Showcheckbtn" 
+  (click)="checkbox()"> <mat-icon style="color: white;">done</mat-icon> </button> -->
+  <!-- <button mat-raised-button title="Export" class="minibtn" style="margin-left: 8px !important;" *ngIf="ShowExportbtn" 
+  (click)="Exportdata()"> <mat-icon style="color: white;">download</mat-icon> </button> -->
+
+  <!-- <mat-icon *ngIf="ShowPopup && Global" (click)="openAddseries()"  [style.fontSize]="'34px'" class="mr-8"
+  style="color: #1d3478 !important;cursor: pointer !important;margin-left: 20px !important; margin-bottom: 7px !important;" matTooltip="Create New Series">add</mat-icon>
+
+  
+
+  <mat-icon *ngIf="Showcheckbtn"  (click)="checkbox()"   [style.fontSize]="'33px'"  style="color: #1d3478 !important;cursor:pointer;padding-right: 5px;margin-bottom: 7px !important;" matTooltip="Activate">checkbox</mat-icon>
+  <mat-icon *ngIf="ShowExportbtn" (click)="Exportdata()" class="example-icon"  matTooltip="Export" [style.fontSize]="'30px'" style="margin-top: 18px;cursor: pointer;width:31px !important;height: 26px !important;margin-bottom: 22px !important;margin-left:3px !important"><img style="height: 31px !important;" src="assets/images/assetrak/Latest/ExportNew.png"/></mat-icon>  -->
+
+  <span class="example-spacer"></span>
+  <mat-panel-description style="float: right;">
+    <mat-icon [matMenuTriggerFor]="msgMenu" (click)="$event.stopPropagation()" class="text-muted">
+      more_vert</mat-icon>
+    <mat-menu #msgMenu="matMenu">     
+      <button mat-menu-item (click)="Exportdata()" style="height: 40px !important;">
+        <mat-icon style="margin-right: 6px;color: #0c3057;"> download
+        </mat-icon> Export
+      </button>    
+    </mat-menu>
+  </mat-panel-description>
+  <!-- <mat-form-field   class="margin_bottom" style="float: right;margin-bottom: -8px !important;">
+    <button  mat-icon-button matSuffix class="example-icon" style="background-color:white;margin-top: 0px;width:30px;height: 30px;margin-right: 6px;"  aria-label="Example icon-button with close icon">
+    <mat-icon style="color:white; font-size: 25px;color:#0C3057;cursor:pointer">search</mat-icon>
+    </button>
+    <input matInput (keyup)="applyFilter($event)" placeholder="Search" >
+  </mat-form-field> -->
+  </div>
+  </div>
+
+
+
+
+<div fxLayout="row wrap" class="example-container mat-elevation-z8" *ngIf="displayTable">
+  <!-- <h4><strong style=" color:#008bd0 !important; margin-left: 10px;">Available CPU Class</strong></h4> -->
+  <table mat-table [dataSource]="datasource" matSort>
+    <ng-container matColumnDef="select">
+      <th mat-sort-header="select" mat-header-cell *matHeaderCellDef>
+      </th>
+      <td mat-cell *matCellDef="let row let i=index">
+        <mat-label *ngIf="row.Printed!=row.count"></mat-label>
+      
+        <!-- <mat-radio-button (click)="$event.stopPropagation()" [disabled]="row.Enabled  == true" (change)="$event ? isSelected(row) : null"
+          [checked]="getselectedIds.indexOf(row.id) > -1">         
+        </mat-radio-button> -->
+        <div *ngIf="this.CompanyId ==row.Companyid">
+        <mat-slide-toggle  [checked]="row.Enabled == true && row.Count != row.Used" [ngClass]="{'disabled-btn': row.Enabled}" matTooltip="Inactive" (click)="checkbox(row)"></mat-slide-toggle>
+        </div>
+      </td>
+    </ng-container>
+
+    <ng-container matColumnDef="Company">
+      <th mat-sort-header="Company" mat-header-cell *matHeaderCellDef>
+        <span *ngIf="this.isButtonVisible == false"> {{displayedHeaders[1]}} </span>
+        <span *ngIf="this.isButtonVisible == true">
+            <mat-form-field style="padding-bottom: 0px !important;margin-bottom: -9px !important;margin-top: -7px !important;">
+                <input matInput class="form-field" (keyup)="applyFilter($event)" placeholder="Search" autocomplete="off">
+            </mat-form-field>
+        </span>
+        <mat-icon *ngIf="this.isButtonVisible == false" class="maticon"
+            (click)="this.isButtonVisible = true"
+            style="height: 17px;width: 24px;font-size:17px;color:#1d3478;margin-right: -7px;">search
+        </mat-icon>
+        <mat-panel-description *ngIf="this.isButtonVisible == true">
+            <mat-icon [matMenuTriggerFor]="msgMenu" (click)="$event.stopPropagation()"
+                class="text-muted">
+                more_vert</mat-icon>
+            <mat-menu #msgMenu="matMenu">
+                <button mat-menu-item 
+                    style="height: 40px !important;" *ngIf="setflag">
+                    <mat-icon style="margin-right: 6px;"> <img
+                            src="assets/images/assetrak/23_10_2020/Multiple.png" />
+                    </mat-icon> Multiple Search
+                </button>
+                <button mat-menu-item (click)="ClearSerch(column,isButtonVisible)"
+                    style="height: 40px !important;">
+                    <mat-icon style="margin-right: 6px;"> <img
+                            src="assets/images/assetrak/23_10_2020/Cross.png" />
+                    </mat-icon> Clear Search
+                </button>
+            </mat-menu>
+        </mat-panel-description>
+      </th>
+      <td mat-cell *matCellDef="let row;let i=index">{{row.CompanyName}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="Asset Class">
+      <th mat-sort-header="Asset Class" mat-header-cell *matHeaderCellDef>{{displayedHeaders[2]}}</th>
+      <td mat-cell *matCellDef="let row;let i=index">{{row.BlockName}}</td>
+    </ng-container>
+    
+    <ng-container matColumnDef="Prefix">
+      <th mat-sort-header="Prefix" mat-header-cell *matHeaderCellDef>{{displayedHeaders[3]}}</th>
+      <td mat-cell *matCellDef="let row;let i=index">{{row.prefix}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="Start Number">
+      <th mat-sort-header="Start Number" mat-header-cell *matHeaderCellDef>{{displayedHeaders[4]}}</th>
+      <td mat-cell *matCellDef="let row;let i=index">{{row.StratBarcode}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="End Number">
+      <th mat-sort-header="End Number" mat-header-cell *matHeaderCellDef>{{displayedHeaders[5]}}</th>
+      <td mat-cell *matCellDef="let row;let i=index">{{row.EndBarcode}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="Record">
+      <th mat-sort-header="Record" mat-header-cell *matHeaderCellDef>{{displayedHeaders[6]}}</th>
+      <td mat-cell *matCellDef="let row;let i=index">{{row.Count | number}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="Print Count">
+      <th mat-sort-header="Print Count" mat-header-cell *matHeaderCellDef>{{displayedHeaders[7]}}</th>
+      <td mat-cell *matCellDef="let row;let i=index"><a style="color:#008bd0 !important;cursor: pointer;" (click)="openInventorydetail('printed',row)">{{row.Printed | number }}</a></td>
+      <!-- <td mat-cell *matCellDef="let row;let i=index"  (click)="openInventorydetail($event)">{{row.Printed}}</td> -->
+    </ng-container>
+
+    <ng-container matColumnDef="Used Count">
+      <th mat-sort-header="Used Count" mat-header-cell *matHeaderCellDef>{{displayedHeaders[8]}}</th>
+      <td mat-cell *matCellDef="let row;let i=index" value="UsedCount"><a style="color:#008bd0 !important;cursor: pointer;"  (click)="openInventorydetaildata(row)">{{row.Used | number}}</a></td>
+    </ng-container>
+
+    <ng-container matColumnDef="Status">
+      <th mat-sort-header="Status" mat-header-cell *matHeaderCellDef>{{displayedHeaders[9]}}</th>
+      <td mat-cell *matCellDef="let row;let i=index">
+        <span *ngIf="row.Count == row.Used" >Not Available</span>
+        <span *ngIf="row.Enabled == true && row.Count != row.Used" style="color:green !important" > Active</span>
+        <span *ngIf="row.Enabled == false && row.Count != row.Used" style="color:red !important"> Inactive</span>
+      </td>
+    </ng-container>
+   
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns;sticky:true"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+  
+
+</div>
+<div style="text-align: center;" *ngIf="datasource.data.length === 0 && displayTable">{{message.NoDataAvailable}}</div>
+<div [hidden]="!displayTable" style="margin-top: 8px;"> 
+  <mat-paginator #paginator="matPaginator"  class="expedientes-paginator" [showFirstLastButtons]="true" [pageSize]="50"
+  [pageSizeOptions]="[50, 100, 200,500]"></mat-paginator>
+</div>
+
+ 

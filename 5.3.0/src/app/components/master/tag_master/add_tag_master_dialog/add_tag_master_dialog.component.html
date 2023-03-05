@@ -1,0 +1,171 @@
+<div class="md-dialog-container" cdkDrag cdkDragRootElement=".cdk-overlay-pane">
+    <mat-toolbar  cdkDragHandle class="mat-toolbar" style="background-color:rgb(12, 48, 87) !important;color:white">
+        <span style="position: relative;left: 40%;">{{ header.CreateTagDetails }}</span>
+        <span class="example-spacer"></span>
+        <button mat-icon-button class="example-icon" aria-label="Example icon-button with close icon"
+            (click)="onclosetab()">
+            <mat-icon>close</mat-icon>
+        </button>
+    </mat-toolbar><br><br>
+    <mat-dialog-content>
+        <div class="md-dialog-content">
+            <mat-tab-group mat-stretch-tabs animationDuration="200ms" [selectedIndex]="selectedIndex"
+                (selectedTabChange)="tabChanged($event)">
+                <mat-tab label="{{header.LabelMaster}}">
+                    <div class="md-label">
+                        <form style="margin-top: 20px;" [formGroup]="TagMasterInfo">
+                            <div fxLayout="row wrap" fxLayout.lt-sm="column">
+
+                                <div fxFlex="45" class="ml-12">
+                                    <mat-form-field class="full-width">
+                                        <mat-select [formControl]="TagMasterInfo.controls['TagMaster']"
+                                            placeholder="Style" required>
+                                            <mat-option *ngFor="let data of TagMasterData" [value]="data">
+                                                {{data.name}}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+
+                                <div fxFlex="45" class="ml-12">
+                                    <mat-form-field class="full-width">
+                                        <mat-select [formControl]="TagMasterInfo.controls['LabelSize']"
+                                            (selectionChange)="changelabelsize($event)" placeholder="Label Size"
+                                            #singleSelect required>
+                                            <mat-option>
+                                                <ngx-mat-select-search [placeholderLabel]="'Search LabelSize'"  noEntriesFoundLabel="{{header.NoRecordFound}}"
+                                                    [formControl]="TagMasterInfo.controls['LabelSizeFilter']"
+                                                    ></ngx-mat-select-search>
+                                            </mat-option>
+                                            <mat-option *ngFor="let data1 of filteredLabelSize | async" [value]="data1">
+                                                {{data1.name}}
+                                            </mat-option>
+                                        </mat-select>
+                                    </mat-form-field>
+                                </div>
+
+                                <div fxFlex="45" class="ml-12">
+                                    <mat-form-field class="full-width">
+                                        <input placeholder="Label Header" matInput name="LabelHeader"
+                                            [formControl]="TagMasterInfo.controls['LabelHeader']" autocomplete="off"
+                                            [maxlength]="len">
+                                    </mat-form-field>
+                                </div>
+
+                                <div fxFlex="45" class="ml-12">
+                                    <mat-form-field class="full-width">
+                                        <input placeholder="Label Footer" matInput name="LabelFooter"
+                                            [formControl]="TagMasterInfo.controls['LabelFooter']" autocomplete="off"
+                                            [maxlength]="len">
+                                    </mat-form-field>
+                                </div>
+                            </div>
+                        </form>
+                        <button style="float:right;" class="btn success" mat-raised-button (click)="nextStep(1)"
+                            [disabled]="TagMasterInfo.invalid">Next</button>
+
+                    </div>
+
+                </mat-tab>
+
+                <mat-tab label="{{header.LabelContents}}" [disabled]="TagMasterInfo.invalid">
+                    <div class="md-label">
+                        <form style="margin-top: 20px;" [formControl]="LicenceContentInfo">
+                            <div fxFlex="100" fxLayout.lt-sm="column">
+                                <div fxFlex="100" style="padding-left: 30px;">
+                                    <div style="padding-top: 10px !important;" *ngFor="let m of checkboxlist">
+                                        <mat-checkbox class="ml-1" [checked]="exists(m.id)" [(ngMode)]="m.checked"
+                                            (change)="labelchecked(m.id,m.checked,m)"
+                                            [disabled]="lvlchecked.length >= lvlcnt  && !m.checked"><label
+                                                style="font-weight: 500;">{{m.name}}</label></mat-checkbox>
+                                    </div>
+                                    <!-- id="1" [checked]="exists(id)"disabled="lvlchecked.length >= lvlcnt  && !checked"[formControl]="LicenceContentInfo.controls['assetno']" [ngModel]="checked" (click)="labelchecked(id,checked,name)" required="!lvlchecked.length" -->
+                                    <!-- <div style="padding-top: 8px !important;" "this.lvlchecked.indexOf(m.id) > -1">
+                                        <mat-checkbox  class="ml-1 pt-1" name="assetclass"  [ngModel]="checked" (click)="labelchecked($event)" [disabled]="lvlchecked.length >= lvlcnt  && !checked"   [formControl]="LicenceContentInfo.controls['assetclass']" ><label style="font-weight: 500;">Asset Class</label> </mat-checkbox>
+                                    </div>
+    
+                                    <div style="padding-top: 8px !important;">
+                                        <mat-checkbox  class="ml-1 pt-1" name="assetclassshortname"    [ngModel]="checked" (click)="labelchecked($event)" [disabled]="lvlchecked.length >= lvlcnt  && !checked"  [formControl]="LicenceContentInfo.controls['assetclassshortname']" ><label style="font-weight: 500;">Asset Class (Short Name)</label></mat-checkbox>
+                                    </div>
+    
+                                    <div style="padding-top: 8px !important;">
+                                        <mat-checkbox  class="ml-1 pt-1" name="assetname"   [ngModel]="checked" (click)="labelchecked($event)" [disabled]="lvlchecked.length >= lvlcnt  && !checked"  [formControl]="LicenceContentInfo.controls['assetname']" ><label style="font-weight: 500;">Asset Name</label></mat-checkbox>
+                                    </div> -->
+    
+                                    <div class="col-md-12" style="margin-top: 10px;">
+                                        <strong style="font-size:small"><span class="text-danger" style=" color: red;
+                                            margin: 2px;">Note : </span>{{checkedCheckboxCount}}</strong>
+                                    </div>
+                                </div>
+    
+                                <div fxFlex="50">
+    
+                                    <div
+                                        style="width: 335px;height:10px; background:white;margin-left:9%;margin-bottom:4%;text-align: center !important;">
+                                        <mat-icon style="margin-left: -3%;float: left;">arrow_back</mat-icon>
+                                        <div fxFlex></div>
+                                        <p style="font-weight: 500;">{{widthImg}}</p>
+                                        <!-- {{TagMasterInfo.controls['LabelSize'].value.name}} -->
+                                        <div fxFlex></div>
+                                        <mat-icon style="float:right;margin-right:3%;">arrow_forward</mat-icon>
+                                    </div>
+    
+                                    <div
+                                        style="width: 25px; height: 200px !important; background:white;position:fixed;">
+                                        <mat-icon class="glyphicon glyphicon-arrow-up" style="vertical-align:top;">
+                                            arrow_upward</mat-icon>
+                                        <p
+                                            style="transform: rotate(-90deg) !important;margin-top:290% !important;font-weight: 500;">
+                                            {{heightImg}}</p>
+                                        <!-- {{TagMasterInfo.controls['LabelSize'].value.name}} -->
+                                        <mat-icon
+                                            style="top:25%;display: inline-block;vertical-align: bottom;margin-top: 214% !important;">
+                                            arrow_downward</mat-icon>
+                                    </div>
+    
+                                    <div
+                                        style="border:2px solid black;border-radius:3px;width: 335px !important; height: 200px;display:inline-block;margin-left:7%; background-size: 100%;text-align:center">
+                                        <div style="width: 335px !important;">
+                                            <strong
+                                                style="color: black;">{{TagMasterInfo.controls['LabelHeader'].value}}</strong>
+                                        </div>
+    
+                                        <!-- <div style="list-style-type:none;float: left; margin-top: 10%;margin-left: -25px;text-align: left;" *ngFor="let m of labelshow" >
+                                        {{m}}
+                                    </div> -->
+                                        <ul style="float: left;">
+                                            <Li *ngFor="let m of labelshow" style="text-align: left;"> {{m}}</Li>
+                                        </ul>
+                                        <div *ngIf=showQRcodeimage><img mat-card-image
+                                                src="../../../../../assets/images/assetrak/TagMaster/QRCode.png"
+                                                alt="background image"
+                                                style="float: right;border-radius: 3px;background-size: 100%;width: 100px;height: 100px;margin-right: 4%;  margin-top: 13%;margin-bottom: 4%;">
+                                        </div>
+                                        <div *ngIf=showBarcodeimage>
+                                            <img mat-card-image
+                                                src="../../../../../assets/images/assetrak/TagMaster/barcode.png"
+                                                alt="background image"
+                                                style="float: right;border-radius: 3px;background-size: 100%;width: 100px;height: 100px;margin-right: 4%;  margin-top: 13%;margin-bottom: 4%;">
+                                        </div>
+                                        <div style="width: 335px !important;" class="absolute">
+                                            <strong
+                                                style="color: black;">{{TagMasterInfo.controls['LabelFooter'].value}}</strong>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>                           
+
+                        </form>
+
+                        <div style="margin-top: 22px !important;margin-bottom: 20px !important;">
+                            <button class="btn" style="min-width: 62px !important;height: 35px !important;"
+                                mat-raised-button color="warn" type="button" (click)="previousStep(0)">Previous</button>
+                            <button style="float:right;" class="btn success" mat-raised-button
+                                [disabled]="Tagmastersave" (click)="save()"> <mat-icon>check</mat-icon> Save</button>
+                        </div>
+                    </div>
+                </mat-tab>
+            </mat-tab-group>
+        </div>
+    </mat-dialog-content>
+</div>

@@ -1,0 +1,49 @@
+<div class="md-dialog-container">
+  <div fxLayout="row wrap" class="example-container mat-elevation-z8">
+    <mat-toolbar class="mat-toolbar" style="background-color:rgb(12, 48, 87);color:white">
+      <span style="position: relative;left: 20%;">{{data.value==='approve'?'Approve Asset Creation':'Request For Information'}} </span>
+      <span class="example-spacer"></span>
+      <button mat-icon-button class="example-icon" aria-label="Example icon-button with close icon"
+        (click)="onclosetab()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-toolbar>
+  </div>
+  <div *ngIf="data.value==='reject'" style="padding: 20px !important;">
+    <form [formGroup]="dialogRejectForm">
+      <div fxLayout="row wrap" fxLayout.lt-sm="column">
+        <mat-label style="font-weight: 500 !important;font-size: 18px !important;">{{message.ReviewRejectLabel}}
+        </mat-label>
+        <div fxFlex="100" style="padding-top: 22px !important;padding-right: 0px !important;">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label class="label">{{header.Comment}} <span style="color: red;">*</span></mat-label>
+            <textarea [formControl]="dialogRejectForm.controls['Rejectctrl']" style="padding-top:1px !important;" matInput autocomplete="off"
+              maxlength="200">
+              <mat-error *ngIf="Rejectctrl.hasError('whitespace')">
+                <span *ngIf="Rejectctrl.hasError('whitespace')"></span>
+              </mat-error>
+             </textarea>
+          </mat-form-field>
+        </div>
+
+      </div>      
+      <div style="text-align: right;">                
+        <button class="btn" (click)="onclosetab()" mat-raised-button color="warn"><mat-icon>close</mat-icon> Cancel</button>
+        <button class="btn" (click)="ContinueRejectbtn()" style="margin-left: 5px;" [disabled]="dialogRejectForm.invalid" mat-raised-button class="success"> <mat-icon>check</mat-icon>Submit </button>
+      </div>  
+
+    </form>
+  </div>
+
+  <div *ngIf="data.value==='approve'" style="padding: 20px !important;">    
+      <div fxLayout="row wrap" fxLayout.lt-sm="column">
+        <mat-label style="font-weight: 500 !important;font-size: 18px !important;">{{message.ReviewAcceptLabel}}
+        </mat-label>
+      </div>
+      <div style="text-align: right;">                
+        <button class="btn" (click)="onclosetab()" mat-raised-button color="warn"><mat-icon>close</mat-icon> No</button>
+        <button class="btn" (click)="ContinueApprovebtn()" style="margin-left: 5px;" mat-raised-button class="success"> <mat-icon>check</mat-icon> Yes </button>
+      </div>    
+  </div>
+
+</div>

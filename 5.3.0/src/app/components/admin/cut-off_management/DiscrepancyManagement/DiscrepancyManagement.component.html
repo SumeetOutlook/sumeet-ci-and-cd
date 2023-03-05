@@ -1,0 +1,211 @@
+
+<h3><strong style=" color:#008bd0 !important; margin-left: 10px;">{{menuheader['Descrepancy Management']}}</strong> </h3>
+<mat-toolbar>
+  <!-- <mat-icon (click)="openDialogAdd('insert')" [style.fontSize]="'34px'" class="mr-8"
+  style="color: #1d3478 !important;cursor: pointer !important;" matTooltip="Create User">add</mat-icon>
+
+  <mat-icon class="example-icon FixBtnClass"  matTooltip="Export" [style.fontSize]="'30px'" style="margin-top: 18px;margin-left: 8px;cursor: pointer;width:31px !important;height: 26px !important;"><img style="height: 31px !important;" src="assets/images/assetrak/Latest/ExportNew.png" /></mat-icon>  -->
+
+  <!-- <mat-form-field class="ml-4" style="margin-top: 6px !important;margin-bottom: -6px !important;">
+    <mat-select   disableOptionCentering placeholder="{{header.FinancialYear}}" (selectionChange)="selected($event.value)" style="font-size: 12px !important;">
+      <mat-option *ngFor="let asset of CurrentList" [value]="asset">{{asset}}</mat-option>
+    </mat-select>
+   </mat-form-field> -->
+
+   <mat-form-field class="ml-4" style="margin-top: 6px !important;margin-bottom: -6px !important;">
+    <mat-select disableOptionCentering placeholder="Financial Year" (selectionChange)="getData($event.value)" [formControl]="FinancialCtrl" #singleSelect
+      style="font-size: 12px !important;">
+      <mat-option>
+        <ngx-mat-select-search [placeholderLabel]="'Search'" noEntriesFoundLabel="{{header.NoRecordFound}}" [formControl]="FinancialFilterCtrl">
+        </ngx-mat-select-search>
+      </mat-option>
+      <mat-option *ngFor="let data of filteredFinancialList | async" [value]="data">
+        {{data.FiscalYear}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+  
+  <mat-icon *ngIf="ShowGobutton" class="example-icon" (click)="ShowDecrepancydata()" [style.fontSize]="'24px'"
+    style="height: 30px;width: 35px;margin-left: -10px !important;"><img style="height: 38px;width:40px;"
+      src="assets/images/assetrak/23_10_2020/GO 5.png" /></mat-icon>
+      <!-- <div>
+      <input type="file" class="uploadSelectClass" (change)="fileChange($event)"  style="padding-top: 7px" placeholder="Upload file" accept=".xlx,.xlsx">
+     </div> -->
+  
+      <!-- <button class="btn" mat-raised-button color="primary">
+        <mat-icon (click)="uploadData()" class="maticon" style="padding-top: 4px !important;padding-right: 4px !important;">file_upload</mat-icon>Upload
+      </button> -->
+     <!-- <mat-icon  (click)="uploadData()" [style.fontSize]="'33px'"  style="color: #1d3478 !important;cursor:pointer" matTooltip="Upload ">file_upload</mat-icon> 
+  <span class="example-spacer"></span> -->
+  <span class="example-spacer"></span>
+  <mat-form-field style="margin-bottom: -7px !important;">
+    <button  mat-icon-button matSuffix class="example-icon" style="background-color:white;margin-top: 0px;width:30px;height: 30px;" aria-label="Example icon-button with close icon">
+    <mat-icon style="color:white; font-size: 25px;color:#0C3057;cursor:pointer">search</mat-icon>
+    </button>
+    <!-- (keyup)="applyFilterNew($event.target.value)" -->
+    <input matInput  placeholder="Search" >
+  </mat-form-field>
+</mat-toolbar>
+
+<mat-card class="example-card pb-0" >
+  <mat-card-content>
+    <form [formGroup]="AssetInfo">
+
+      <div class="mr-05 pb-1">
+
+        <div fxLayout="row wrap" class="example-container mat-elevation-z8">
+
+          <table mat-table [dataSource]="dataSource" matSort>
+
+            <ng-container matColumnDef="Custome1">
+              <th mat-header-cell *matHeaderCellDef >{{displayedHeaders[0]}}</th>
+              <td mat-cell *matCellDef="let element" >{{element.Custome1}}</td>
+            </ng-container>
+
+            <!-- <ng-container matColumnDef="FileName">
+              <th mat-header-cell *matHeaderCellDef  >{{displayedHeaders[1]}}</th>
+              <td mat-cell *matCellDef="let element;let i=index" >{{element.FileName}}            
+              </td>
+            </ng-container> -->
+           
+            <ng-container matColumnDef="FileUpdate">
+              <th mat-header-cell *matHeaderCellDef  ></th>
+              <!-- <td mat-cell *matCellDef="let element"  ><button mat-raised-button color="primary" [disabled]="element.isViewFlag ? true : false" (click)="openRundescripancy(element) , application/vnd.openxmlformats-officedocument.spreadsheetml.sheet, application/vnd.ms-excel">Run Discripancy</button> </td> -->
+              <td mat-cell *matCellDef="let element" >
+                <input type="file"  *ngIf="element.isUploadFlag" class="uploadSelectClass" accept=".csv,.xls,.xlsx" (change)="fileChange($event)"  placeholder="Upload file" >
+              <button mat-raised-button color="primary" *ngIf="element.isUploadFlag" (click)="uploadData(element)">Upload</button> 
+            </td>
+            </ng-container>
+          
+            <ng-container matColumnDef="Viewdescripancyreport">
+              <th mat-header-cell *matHeaderCellDef></th>
+              <td mat-cell *matCellDef="let element;let i=index" ><button mat-raised-button color="primary" [disabled]="element.isViewFlag ? false :true" (click)="openViewdescripancy(element)">View Discrepancy</button>
+                <!-- <span *ngIf="!this.periodEndDatePicker[i]">{{element.PeriodEndDate}}</span>
+              <ng-container *ngIf="this.periodEndDatePicker[i]">isViewFlag
+                <mat-form-field style="width: 180px;margin-top: -2px !important;margin-bottom: -8px !important;">
+                  <input matInput [matDatepicker]="picker1" (click)="picker1.open();" (dateChange)="PeriodEndDateValidation()" [max]="today" name="PeriodEndDate" 
+                      [formControl]="AssetInfo.controls['PeriodEndDate']" autocomplete="off">
+                    <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+                    <mat-datepicker #picker1 ></mat-datepicker>
+                </mat-form-field>
+              </ng-container>
+
+              <span *ngIf="!this.periodEndDateIcon[i]"><mat-icon style="margin-right: 16px;margin-left: 16px;cursor: pointer;font-size: 22px !important;"  matTooltip="Edit" (click)="showDate(element.PeriodName,'PeriodEndDate')"  color="primary"> edit</mat-icon></span>
+              <span *ngIf="this.periodEndDateIcon[i]"><mat-icon style="margin-right: 16px;margin-left: 16px;cursor: pointer;font-weight: 600 !important;" matTooltip="Save" (click)="hideDate(element.PeriodName,'PeriodEndDate')" color="primary"> check</mat-icon></span> -->
+            </td>
+            </ng-container>
+
+            <!-- <ng-container matColumnDef="FreezeStartDate">
+              <th mat-header-cell *matHeaderCellDef>{{displayedHeaders[4]}}</th>
+              <td mat-cell  *matCellDef="let element,let i=index" >{{element.FreezeStartDate}} -->
+                <!-- <span *ngIf="!this.FreezeStartDatePicker[i]">{{element.FreezeStartDate}}</span>
+
+              <ng-container *ngIf="this.FreezeStartDatePicker[i]">
+                <mat-form-field  style="width: 180px;margin-top: -2px !important;margin-bottom: -8px !important;">
+                  <input matInput [matDatepicker]="picker2" (click)="picker2.open();" (dateChange)="FreezeStartDateValidation()" [max]="today" name="FreezeStartDate" 
+                      [formControl]="AssetInfo.controls['FreezeStartDate']" autocomplete="off">
+                    <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                    <mat-datepicker #picker2 ></mat-datepicker>
+                </mat-form-field>
+              </ng-container>
+
+              <span  *ngIf="!this.FreezeStartDateIcon[i]"><mat-icon style="margin-right: 16px;margin-left: 16px;cursor: pointer;font-size: 22px !important;"  matTooltip="Edit" (click)="showDate(element.PeriodName,'FreezeStartDate')" color="primary"> edit</mat-icon></span>
+              <span  *ngIf="this.FreezeStartDateIcon[i]"><mat-icon style="margin-right: 16px;margin-left: 16px;cursor: pointer;font-weight: 600 !important;"  matTooltip="Save" (click)="hideDate(element.PeriodName,'FreezeStartDate')" color="primary"> check</mat-icon></span> -->
+            <!-- </td>
+            </ng-container>
+
+            <ng-container matColumnDef="FreezeEndDate">
+              <th mat-header-cell *matHeaderCellDef >{{displayedHeaders[5]}}</th>
+              <td mat-cell *matCellDef="let element,let i=index" >{{element.FreezeEndDate}} -->
+                <!-- <span *ngIf="!FreezeEndDatePicker[i]">{{element.FreezeEndDate}}</span>
+              <ng-container *ngIf="FreezeEndDatePicker[i]">
+                <mat-form-field  style="width: 180px;margin-top: -2px !important;margin-bottom: -8px !important;">
+                  <input matInput [matDatepicker]="picker3" (click)="picker3.open();" (dateChange)="FreezeEndDateValidation()" [max]="today" name="FreezeEndDate" 
+                      [formControl]="AssetInfo.controls['FreezeEndDate']" autocomplete="off">
+                    <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+                    <mat-datepicker #picker3 ></mat-datepicker>
+                </mat-form-field>
+                </ng-container>
+
+                  <span *ngIf="!FreezeEndDateIcon[i]"><mat-icon style="margin-right: 16px;margin-left: 16px;cursor: pointer;font-size: 22px !important;"  matTooltip="Edit" (click)="showDate(element.PeriodName,'FreezeEndDate')" color="primary"> edit</mat-icon></span>
+                  <span *ngIf="FreezeEndDateIcon[i]"><mat-icon style="margin-right: 16px;cursor: pointer;font-weight: 600 !important;"  matTooltip="Save" (click)="hideDate(element.PeriodName,'FreezeEndDate')" color="primary"> check</mat-icon></span>
+            -->
+              <!-- </td>
+            </ng-container> -->
+
+            
+            
+            <tr mat-header-row *matHeaderRowDef="displayedColumns;sticky:true"></tr>
+            <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+          </table>
+          <div style="text-align: center;" *ngIf="!dataSource">{{message.NoDataAvailable}}</div>
+        </div>
+         <mat-paginator  #paginator class="expedientes-paginator" [pageSizeOptions]="[50, 100, 200]" [showFirstLastButtons]="true" [pageSize]="50"></mat-paginator>
+
+      </div>
+    </form>
+
+  </mat-card-content>
+</mat-card>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<!-- 
+
+
+<div class="ml-05 mr-05 mt-05 pb-1">
+  <div class="table-responsive mat-elevation-z2">
+    <table mat-table #table  [dataSource]="datasource"  matSort>
+
+      <ng-container matColumnDef="email">
+        <th *matHeaderCellDef mat-sort-header [ngClass]="'w-50'"> Email </th>
+        <td mat-cell *matCellDef="let element;">{{element.email}}</td>     
+       </ng-container>
+
+       <ng-container matColumnDef="first_name">
+        <th *matHeaderCellDef mat-sort-header [ngClass]="'w-80'"> First Name </th>
+        <td mat-cell *matCellDef="let element;">{{element.first_name}}</td>     
+       </ng-container>
+
+       <ng-container matColumnDef="last_name">
+        <th *matHeaderCellDef mat-sort-header [ngClass]="'w-80'"> Last Name </th>
+        <td mat-cell *matCellDef="let element;">{{element.last_name}}</td>     
+       </ng-container>
+
+       <ng-container matColumnDef="status">
+        <th *matHeaderCellDef mat-sort-header [ngClass]="'w-80'"> Status </th>
+        <td mat-cell *matCellDef="let element;">{{element.status}}</td>     
+       </ng-container>
+
+       <ng-container matColumnDef="edit">
+        <th *matHeaderCellDef mat-sort-header [ngClass]="'w-80'"> Action </th>
+        <td mat-cell *matCellDef="let element;let i=index">         
+          <!-- <mat-icon (click)="editUser(element,i)" [style.fontSize]="'30px'"  style="color: #1d3478 !important;">edit</mat-icon>
+          <!-- <mat-icon (click)="deleteUser(element)" [style.fontSize]="'30px'"  style="color: #1d3478 !important;margin-left: 20px !important;">delete</mat-icon> -->
+        <!-- </td>      
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns;sticky:true;"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+
+        </table>
+     
+    
+
+  </div>
+
+</div> -->

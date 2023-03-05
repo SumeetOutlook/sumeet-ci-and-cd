@@ -1,0 +1,94 @@
+<div class="md-dialog-container" cdkDrag cdkDragRootElement=".cdk-overlay-pane">
+    <mat-toolbar  cdkDragHandle class="mat-toolbar" style="background-color:rgb(12, 48, 87);color:white">
+      <span> Create Ticket</span>
+      <span class="example-spacer"></span>
+      <button mat-icon-button class="example-icon" aria-label="Example icon-button with close icon"
+        (click)="onclosetab()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-toolbar>
+    <div mat-dialog-content class="p-1 m-0">
+  
+      <form [formGroup]="dialogMapForm" (ngSubmit)="onSubmit()">
+        <div fxLayout="row wrap" fxLayout.lt-sm="column">
+
+
+          <div fxFlex="100" class="pr-1">
+            <mat-form-field class="full-width">
+              <input matInput name="category" [formControl]="dialogMapForm.controls['category']" placeholder="Issue Type"
+                autocomplete="off" required maxlength="50">
+              <mat-error *ngIf="submitted || f1.category.errors || f1.category.dirty || f1.category.touched || f1.category.hasError('whitespace')">
+                <span *ngIf="f1.category.errors?.required || f1.category.hasError('whitespace')">Issue Type is required </span>
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <div fxFlex="100" class="pr-1">
+            <mat-form-field class="full-width">
+              <input matInput name="type" [formControl]="dialogMapForm.controls['type']" placeholder="Issue Description"
+                autocomplete="off" required maxlength="50">
+              <mat-error *ngIf="submitted || f1.type.errors || f1.type.dirty || f1.type.touched || f1.type.hasError('whitespace')">
+                <span *ngIf="f1.type.errors?.required || f1.type.hasError('whitespace')">Issue Description is required </span>
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <div fxFlex="100" class="pr-1">
+            <mat-form-field class="full-width">
+              <input matInput name="subType" [formControl]="dialogMapForm.controls['subType']" placeholder="Problem Criticality"
+                autocomplete="off" required maxlength="50">
+              <mat-error *ngIf="submitted || f1.subType.errors || f1.subType.dirty || f1.subType.touched || f1.subType.hasError('whitespace')">
+                <span *ngIf="f1.subType.errors?.required || f1.subType.hasError('whitespace')">Problem Criticality is required </span>
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <div fxFlex="100" class="pr-1">
+            <mat-form-field class="full-width">
+              <input matInput name="subType" [formControl]="dialogMapForm.controls['subType']" placeholder="Inititated By"
+                autocomplete="off" required maxlength="50">
+              <mat-error *ngIf="submitted || f1.subType.errors || f1.subType.dirty || f1.subType.touched || f1.subType.hasError('whitespace')">
+                <span *ngIf="f1.subType.errors?.required || f1.subType.hasError('whitespace')">Inititated By is required </span>
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+          <div fxFlex="100" class="pr-1">
+            <mat-form-field class="full-width">
+              <input matInput name="subType" [formControl]="dialogMapForm.controls['subType']" placeholder="Requested By"
+                autocomplete="off" required maxlength="50">
+              <mat-error *ngIf="submitted || f1.subType.errors || f1.subType.dirty || f1.subType.touched || f1.subType.hasError('whitespace')">
+                <span *ngIf="f1.subType.errors?.required || f1.subType.hasError('whitespace')">Requested By is required </span>
+              </mat-error>
+            </mat-form-field>
+          </div>
+
+            
+          <div fxFlex="100" class="pr-1">
+            <!-- <mat-form-field class="full-width"> -->
+              <!-- <input type="file" name="subType" [formControl]="dialogMapForm.controls['subType']" placeholder="File upload"
+                autocomplete="off" required maxlength="50">
+              <mat-error *ngIf="submitted || f1.subType.errors || f1.subType.dirty || f1.subType.touched || f1.subType.hasError('whitespace')">
+                <span *ngIf="f1.subType.errors?.required || f1.subType.hasError('whitespace')">File is required </span>
+              </mat-error> -->
+            <!-- </mat-form-field> -->
+            <div fxFlex="60" class="mt-12 responsive">
+                <!-- <input type="file" (change)="fileChange($event)" ng2FileSelect class="uploadSelectClass" accept=".xlx,.xlsx" /> -->
+                <input  type="file" class="uploadSelectClass" style="padding-top: 7px"
+                  placeholder="Upload file" accept=".xlx,.xlsx">
+              </div>
+             
+          </div>
+        
+  
+          <div fxFlex="100" class="mt-1">
+            <button mat-raised-button class="success" style="float:right !important;"
+              [disabled]="dialogMapForm.invalid"><mat-icon>check</mat-icon>Create WorkOrder</button>
+  
+            
+  
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>

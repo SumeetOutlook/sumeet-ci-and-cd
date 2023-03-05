@@ -1,0 +1,270 @@
+<!-- <div class="md-dialog-container">
+
+<mat-toolbar class="mat-toolbar"  style="background-color:#0C3057 !important;color:white">
+  <span>Available Fields</span>
+  <span class="example-spacer"></span>
+  <button mat-icon-button class="example-icon" aria-label="Example icon-button with close icon" (click)="onclosetab()">
+    <mat-icon>close</mat-icon>
+  </button>
+</mat-toolbar><br><br>
+<mat-dialog-content>
+    
+      <div fxLayout="row wrap" >
+        <mat-form-field>
+          <mat-label>Select</mat-label>
+              <mat-select placeholder="Fields" disableOptionCentering  [(ngModel)]="optionValue">
+                <mat-option value="prefer">Prefer</mat-option>
+              </mat-select>
+        </mat-form-field>
+            
+     
+    </div>
+  
+</mat-dialog-content>
+<div *ngIf="optionValue=='prefer'" style="max-height:150px;overflow: hidden auto;border:1px solid lightgrey">
+  <section class="example-section">
+    <mat-checkbox >Asset No </mat-checkbox>
+    <mat-checkbox >Sub No </mat-checkbox>
+    <mat-checkbox class="example-margin"color="primary">Capitalization Date </mat-checkbox>
+    <mat-checkbox >Asset Class</mat-checkbox>
+    <mat-checkbox >Asset Type </mat-checkbox>
+    <mat-checkbox >Asset SubType </mat-checkbox>
+    <mat-checkbox >UOM</mat-checkbox>
+    <mat-checkbox  style="margin-left:59px">Asset Name </mat-checkbox>
+    <mat-checkbox class="example-margin"color="primary" style="margin-left:0px">Asset Description </mat-checkbox>
+    <mat-checkbox  style="margin-left:40px">Qty </mat-checkbox>
+    <mat-checkbox  style="margin-left:84px">Cost </mat-checkbox>
+    <mat-checkbox  style="margin-left:70px">Wdv </mat-checkbox>
+    <mat-checkbox >Equipment No </mat-checkbox>
+    <mat-checkbox  style="margin-left:0px">Asset Condition </mat-checkbox>
+    <mat-checkbox  style="margin-left:-20px">Asset Criticality </mat-checkbox>
+  </section>
+  </div>
+</div> -->
+<div class="md-dialog-container">
+  <div class="event-dialog-wrapper">
+    <!-- <mat-toolbar matDialogTitle class="mat-primary m-0" style="background-color:#0C3057 !important;color:white">
+      <div fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+        <span class="title dialog-title">
+          Customized Grid Display
+        </span>
+        <button mat-icon-button (click)="dialogRef.close()" aria-label="Close dialog">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+    </mat-toolbar> -->
+
+    <div mat-dialog-content class="p-1 m-0">
+
+      <!-- <form name="eventForm" class="event-form" fxFlex> -->
+        <!--<div fxLayout="row wrap" fxLayout.lt-sm="column">
+
+          <div fxFlex="40" class="ml-12" *ngIf="Relationship">
+            <mat-form-field class="full-width">
+              <mat-label>Select</mat-label>
+              <mat-select placeholder="Fields" disableOptionCentering (selectionChange)="getFields($event)" [(value)]="selectedValue">
+                <mat-option [value]="'prefar'">Prefer</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div fxFlex="40" class="ml-12" *ngIf="ManageGroup">
+            <mat-form-field class="full-width">
+              <mat-label>Select</mat-label>
+              <mat-select placeholder="Fields" disableOptionCentering (selectionChange)="getFields($event)" [(value)]="selectedValue">
+                <mat-option [value]="'prefar'">Prefer</mat-option>
+
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div fxFlex="40" class="ml-12" *ngIf="ApproveTaggingInformation">
+            <mat-form-field class="full-width">
+              <mat-label>Select</mat-label>
+              <mat-select placeholder="Fields" disableOptionCentering (selectionChange)="getFields($event)" [(value)]="selectedValue">
+                <mat-option [value]="'prefar'">Prefer</mat-option>
+                <mat-option [value]="'labeldetails'">Label Details</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div fxFlex="40" class="ml-12" *ngIf="AdditionalAssets">
+            <mat-form-field class="full-width">
+              <mat-label>Select</mat-label>
+              <mat-select placeholder="Fields" disableOptionCentering (selectionChange)="getFields($event)" [(value)]="selectedValue">
+                <mat-option [value]="'prefar'">Prefer</mat-option>
+                <mat-option [value]="'preprintadditionalasset'">Preprint Additional Asset</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+
+          <div fxFlex="40" class="ml-12" *ngIf="InventoryStatus">
+            <mat-form-field class="full-width">
+              <mat-label>Select</mat-label>
+              <mat-select placeholder="Fields" disableOptionCentering (selectionChange)="getFields($event)" [(value)]="selectedValue">
+                <mat-option [value]="'prefar'">Prefar</mat-option>
+                <mat-option [value]="'AssetDocument'">Asset Document</mat-option>
+                <mat-option [value]="'capitalizenoncapitalizecommonfields'">Capitalize Non-Capitalize</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+         
+
+
+          <div fxFlex="40" class="ml-12" *ngIf="MissingAssets">
+            <mat-form-field class="full-width">
+              <mat-label>Select</mat-label>
+              <mat-select placeholder="Fields" disableOptionCentering (selectionChange)="getFields($event)" [(value)]="selectedValue">
+                <mat-option [value]="'Prefar'">Prefar</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div fxFlex="40" class="ml-12" *ngIf="AdditionalAssetsReconc">
+            <mat-form-field class="full-width">
+              <mat-label>Select</mat-label>
+              <mat-select placeholder="Fields" disableOptionCentering (selectionChange)="getFields($event)" [(value)]="selectedValue">
+                <mat-option [value]="'prefar'">Prefar</mat-option>
+                <mat-option [value]="'Taggigprojectmaster'">Taggig Project Master</mat-option>
+                <mat-option [value]="'AdditionalAssets'">Additional Assets</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div fxFlex="40" class="ml-12" *ngIf="ViewModifiedAssets">
+            <mat-form-field class="full-width">
+              <mat-label>Select</mat-label>
+              <mat-select placeholder="Fields" disableOptionCentering (selectionChange)="getFields($event)" [(value)]="selectedValue">
+                <mat-option [value]="'prefar'">Prefar</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div fxFlex="40" class="ml-12" *ngIf="Assignment">
+            <mat-form-field class="full-width">
+              <mat-label>Select</mat-label>
+              <mat-select placeholder="Fields" disableOptionCentering (selectionChange)="getFields($event)" [(value)]="selectedValue">
+                <mat-option [value]="'prefar'">Prefer</mat-option>
+                <mat-option [value]="'capitalizenoncapitalizecommonfields'">Capitalize Non-Capitalize</mat-option>
+                <mat-option [value]="'AssetAllocationDetails'">Asset Allocation Details</mat-option>
+                <mat-option [value]="'employeemaster'">Employee Master</mat-option>
+                <mat-option [value]="'usermaster'">User Master</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+          
+          <div fxFlex="40" class="ml-12" *ngIf="InitiateTransfer">
+            <mat-form-field class="full-width">
+              <mat-label>Select</mat-label>
+              <mat-select placeholder="Fields" disableOptionCentering (selectionChange)="getFields($event)" [(value)]="selectedValue">
+                <mat-option [value]="'prefar'">Prefar</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div fxFlex="40" class="ml-12" *ngIf="TransferApproval">
+            <mat-form-field class="full-width">
+              <mat-label>Select</mat-label>
+              <mat-select placeholder="Fields" disableOptionCentering (selectionChange)="getFields($event)" [(value)]="selectedValue">
+                <mat-option [value]="'prefar'">Prefar</mat-option>
+                <mat-option [value]="'assetdocument'">Asset Document</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div fxFlex="40" class="ml-12" *ngIf="InitiateRetirement">
+            <mat-form-field class="full-width">
+              <mat-label>Select</mat-label>
+              <mat-select placeholder="Fields" disableOptionCentering (selectionChange)="getFields($event)" [(value)]="selectedValue">
+                <mat-option [value]="'prefar'">Prefar</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div fxFlex="40" class="ml-12" *ngIf="RetirementApproval">
+            <mat-form-field class="full-width">
+              <mat-label>Select</mat-label>
+              <mat-select placeholder="Fields" disableOptionCentering (selectionChange)="getFields($event)" [(value)]="selectedValue">
+                <mat-option [value]="'prefar'">Prefar</mat-option>
+                <mat-option [value]="'RetireAssetDetails'">Retire AssetDetails</mat-option>
+                <mat-option [value]="'AssetDocument'">Asset Document</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>-->
+          
+          
+          <!-- <div fxLayout="row" fxLayout.lt-sm="column"  fxFlex="100">
+           
+            <mat-card class="default" style="padding-bottom: 10px;width: 100% !important;padding-bottom: 10px !important;">
+              <mat-card-title style="margin-bottom: 8px !important;margin-top: 6px !important;color: black !important;font-size: 14px !important;font-weight: 700;padding-left: 10px;">
+              </mat-card-title>
+              <mat-card-content class="p-0" fxLayout="column">
+                <div class="activity-data">
+                  <mat-nav-list class="list-horizontal">
+                    <mat-list-item *ngFor="let n of List;let i=index">
+                      <mat-checkbox [checked]="selectedfilters[i]"  (click)="$event.stopPropagation()" (change)="SelectAllFields(n.value)">{{n.value}}</mat-checkbox>
+                    </mat-list-item>
+                     
+                  </mat-nav-list>
+                </div>
+              </mat-card-content>
+              </mat-card>
+          </div> -->
+
+        <!--  <div fxLayout="row" fxLayout.lt-sm="column"  fxFlex="100" formGroupName="color" *ngIf="selectedValue =='labeldetails'">
+           
+            <mat-card class="default" style="padding-bottom: 10px;width: 100% !important;padding-bottom: 10px !important;">
+              <mat-card-title style="margin-bottom: 8px !important;margin-top: 6px !important;color: black !important;font-size: 14px !important;font-weight: 700;padding-left: 10px;">
+              </mat-card-title>
+              <mat-card-content class="p-0" fxLayout="column">
+                <div class="activity-data">
+                  <mat-nav-list class="list-horizontal">
+                    <mat-list-item *ngFor="let n of List">
+                      <mat-checkbox >{{n.value}}</mat-checkbox>
+                    </mat-list-item>
+                     
+                  </mat-nav-list>
+                </div>
+              </mat-card-content>
+              </mat-card>
+          </div>
+          <div fxLayout="row" fxLayout.lt-sm="column"  fxFlex="100" formGroupName="color" *ngIf="selectedValue =='preprintadditionalasset'">
+           
+            <mat-card class="default" style="padding-bottom: 10px;width: 100% !important;padding-bottom: 10px !important;">
+              <mat-card-title style="margin-bottom: 8px !important;margin-top: 6px !important;color: black !important;font-size: 14px !important;font-weight: 700;padding-left: 10px;">
+              </mat-card-title>
+              <mat-card-content class="p-0" fxLayout="column">
+                <div class="activity-data">
+                  <mat-nav-list class="list-horizontal">
+                    <mat-list-item *ngFor="let n of List">
+                      <mat-checkbox >{{n.value}}</mat-checkbox>
+                    </mat-list-item>
+                     
+                  </mat-nav-list>
+                </div>
+              </mat-card-content>
+              </mat-card>
+          </div>
+
+         
+
+
+          
+
+        </div>-->
+    <!-- </form> -->
+  </div>
+
+  <!-- <div mat-dialog-actions class="m-0 p-1" fxLayout="row" style="text-align: right !important;" fxLayoutAlign="space-between center">
+
+    <button mat-raised-button color="primary">Save</button>
+
+  </div> -->
+  <!-- <div style="text-align: right !important; height: 50px !important;" >
+
+    <button mat-raised-button color="primary" style="float:right;margin-right: 25px !important;">Save</button>
+
+  </div> -->
+</div>
+</div>

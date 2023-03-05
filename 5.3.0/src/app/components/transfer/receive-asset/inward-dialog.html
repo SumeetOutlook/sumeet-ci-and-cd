@@ -1,0 +1,38 @@
+<h2 mat-dialog-title>Update Asset Details To Receive</h2>
+<hr>
+
+<mat-dialog-content>
+    <mat-form-field appearance="fill">
+        <mat-label>Select cost center</mat-label>
+        <mat-select [(ngModel)]="costId">
+            <mat-option *ngFor="let element of costCenter" value="element.Id">{{element.CostCenterCode}}</mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+        <mat-label>Room</mat-label>
+        <input matInput [(ngModel)]="room">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+        <mat-label>Sub-Location</mat-label>
+        <mat-select [(ngModel)]="subLocation">
+            <mat-option *ngFor="let element of subLocations">{{element}}</mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+        <mat-label>User Email</mat-label>
+        <input matInput placeholder="xyz@email.com" [(ngModel)] = "userMail">
+    </mat-form-field>
+
+    <mat-form-field appearance="fill">
+        <mat-label>Custodian Email</mat-label>
+        <input matInput placeholder="xyz@email.com" [(ngModel)]="custodian">
+    </mat-form-field>
+</mat-dialog-content>
+
+<mat-dialog-actions align="end">
+    <button mat-button [mat-dialog-close]="true">No Thanks</button>
+    <button mat-button color="primary" [mat-dialog-close]="true" cdkFocusInitial (click)="submit()">Submit</button>
+</mat-dialog-actions>

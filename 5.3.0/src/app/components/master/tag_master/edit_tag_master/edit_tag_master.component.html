@@ -1,0 +1,102 @@
+<div class="md-dialog-container">
+  <div class="event-dialog-wrapper">
+    <mat-toolbar matDialogTitle class="mat-primary m-0" style="background-color:#0C3057 !important;color:white">
+      <div fxFlex fxLayout="row" fxLayoutAlign="space-between center">
+        <span style="position: relative;left: 40%;" class="title dialog-title">
+          {{header.EditTagMaster}}
+        </span>
+        <button mat-icon-button (click)="dialogRef.close()" aria-label="Close dialog">
+          <mat-icon>close</mat-icon>
+        </button>
+      </div>
+    </mat-toolbar>
+
+    <div mat-dialog-content class="p-1 m-0">
+
+      <form [formGroup]="updateTagMasterInfo" class="event-form" fxFlex>
+        <div fxLayout="row wrap" fxLayout.lt-sm="column">
+          <div fxFlex="100">
+            <div fxFlex="48">
+              <mat-form-field class="full-width">
+                <mat-label>Style</mat-label>
+                <input matInput type="text" name='TagMaster' [formControl]="updateTagMasterInfo.controls['TagMaster']"
+                  autocomplete="off" readonly>
+
+              </mat-form-field>
+            </div>
+
+            <div fxFlex="48" style="margin-left: 15px !important;">
+              <mat-form-field class="full-width">
+                <mat-label>Label Size</mat-label>
+
+                <input matInput type="text" name='LabelSize' [formControl]="updateTagMasterInfo.controls['LabelSize']"
+                  [ngModel]="data.LabelSize" autocomplete="off" readonly>
+
+              </mat-form-field>
+            </div>
+          </div>
+          <div fxFlex="100">
+            <div fxFlex="48">
+              <mat-form-field class="full-width">
+
+                <input matInput placeholder="Label Header" type="text" name='LabelHeader'
+                  [formControl]="updateTagMasterInfo.controls['LabelHeader']" [ngModel]="data.Header"
+                  autocomplete="off">
+
+              </mat-form-field>
+            </div>
+
+            <div fxFlex="48" style="margin-left: 15px !important;">
+              <mat-form-field class="full-width">
+
+                <input matInput placeholder="Label Footer" type="text" name='LabelFooter'
+                  [formControl]="updateTagMasterInfo.controls['LabelFooter']" [ngModel]="data.Footer"
+                  autocomplete="off">
+
+              </mat-form-field>
+            </div>
+          </div>
+
+          <div fxFlex="45" class="ml-12 pt-2">
+            <mat-checkbox [(ngModel)]="PrintAssetId" [checked]="exists(1)"
+              (change)="labelchecked(1,PrintAssetId,'PrintAssetId')"
+              [disabled]="lvlchecked.length >= lvlcnt && !PrintAssetId" [ngModelOptions]="{standalone: true}"
+              name="assetno"> Orcle Asset No </mat-checkbox>
+          </div>
+          <!-- [checked]="data.PrintAssetId"  [(ngModel)]="data.PrintAssetId" [formControl]="updateTagMasterInfo.controls['assetno']"  -->
+          <div fxFlex="45" class="ml-12 pt-2">
+            <mat-checkbox [(ngModel)]="PrintBlockOfAsset" [checked]="exists(2)"
+              (change)="labelchecked(2,PrintBlockOfAsset,'PrintBlockOfAsset')"
+              [disabled]="lvlchecked.length >= lvlcnt && !PrintBlockOfAsset" [ngModelOptions]="{standalone: true}"
+              name="assetclass"> Asset Class</mat-checkbox>
+          </div>
+
+          <div fxFlex="45" class="ml-12 pt-1">
+            <mat-checkbox [(ngModel)]="PrintAssetDescription1" [checked]="exists(3)"
+              (change)="labelchecked(3,PrintAssetDescription1,'PrintAssetDescription1')"
+              [disabled]="lvlchecked.length >= lvlcnt && !PrintAssetDescription1" [ngModelOptions]="{standalone: true}"
+              name="assetclassshortname"> Asset Class(Short Name)</mat-checkbox>
+          </div>
+
+          <div fxFlex="45" class=" ml-12 pt-1">
+            <mat-checkbox [(ngModel)]="PrintAssetDescription2" [checked]="exists(4)"
+              (change)="labelchecked(4,PrintAssetDescription2,'PrintAssetDescription2')"
+              [disabled]="lvlchecked.length >= lvlcnt && !PrintAssetDescription2" [ngModelOptions]="{standalone: true}"
+              name="assetname"> Asset Name</mat-checkbox>
+          </div>
+
+
+
+        </div>
+      </form>
+    </div>
+
+    <div style="text-align: right !important; height: 50px !important;">
+      <!-- <button mat-raised-button color="warn" style="float:right;margin-right: 25px !important;"
+        (click)="cancel()">Cancel</button> -->
+      <button mat-raised-button class="success" style="float:right;margin-right: 10px !important;"
+        (click)="save()"><mat-icon>check</mat-icon> Save</button>
+
+    </div>
+  </div>
+</div>

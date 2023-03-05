@@ -1,0 +1,303 @@
+<h3><strong style=" color:#008bd0 !important;">Non verifiable asset</strong></h3>
+
+<span class="example-spacer"></span>
+<div fxLayout="row wrap" fxLayout.lt-sm="column">
+    <mat-form-field class="formfield field" color="primary">
+        <mat-select disableOptionCentering [formControl]="regionMultiCtrl" placeholder="{{header.RegionName}}"
+            [multiple]="true" #multiSelect>
+            <mat-option>
+                <ngx-mat-select-search [placeholderLabel]="'Search'" [showToggleAllCheckbox]="true"
+                    (toggleAll)="toggleSelectAllRegion($event)" [formControl]="regionMultiFilterCtrl">
+                </ngx-mat-select-search>
+            </mat-option>
+            <mat-option *ngFor="let region of filteredRegionMulti | async" [value]="region">
+                {{region.name}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="formfield field" color="primary">
+        <mat-select disableOptionCentering [formControl]="companyMultiCtrl" placeholder="{{header.CompanyName}}"
+            [multiple]="true" #multiSelect>
+            <mat-option>
+                <ngx-mat-select-search [placeholderLabel]="'Search'" [showToggleAllCheckbox]="true"
+                    (toggleAll)="toggleSelectAllCompany($event)" [formControl]="companyMultiFilterCtrl">
+                </ngx-mat-select-search>
+            </mat-option>
+            <mat-option *ngFor="let company of filteredCompanyMulti | async" [value]="company">
+                {{company.name}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="formfield field" color="primary">
+        <mat-select disableOptionCentering [formControl]="sbuMultiCtrl" placeholder="{{header.SBU}}" [multiple]="true"
+            #multiSelect>
+            <mat-option>
+                <ngx-mat-select-search [placeholderLabel]="'Search'" [showToggleAllCheckbox]="true"
+                    (toggleAll)="toggleSelectAllSBU($event)" [formControl]="sbuMultiFilterCtrl">
+                </ngx-mat-select-search>
+            </mat-option>
+            <mat-option *ngFor="let sbu of filteredSBUMulti | async" [value]="sbu">
+                {{sbu.name}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="formfield field" color="primary">
+        <mat-select disableOptionCentering [formControl]="plantMultiCtrl" placeholder="{{header.Location}}"
+            [multiple]="true" #multiSelect>
+            <mat-option>
+                <ngx-mat-select-search [placeholderLabel]="'Search'" [showToggleAllCheckbox]="true"
+                    (toggleAll)="toggleSelectAll($event)" [formControl]="plantMultiFilterCtrl">
+                </ngx-mat-select-search>
+            </mat-option>
+            <mat-option *ngFor="let bank of filteredPlantsMulti | async" [value]="bank">
+                {{bank.name}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="formfield field" color="primary">
+        <mat-select disableOptionCentering [formControl]="assetcategoryMultiCtrl" id="assetcategoryMultiCtrl"
+            placeholder="{{header.AssetCategory}}" [multiple]="true" #multiSelect>
+            <mat-option>
+                <ngx-mat-select-search [placeholderLabel]="'Search'" [showToggleAllCheckbox]="true"
+                    (toggleAll)="toggleSelectAllAssetCategory($event)" [formControl]="assetcategoryMultiFilterCtrl">
+                </ngx-mat-select-search>
+            </mat-option>
+            <mat-option *ngFor="let assetcategory of filteredAssetCategoryMulti| async" [value]="assetcategory">
+                {{assetcategory.name}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="formfield field" color="primary">
+        <mat-select disableOptionCentering [formControl]="assetclassMultiCtrl" id="assetclassMultiCtrl"
+            placeholder="{{header.AssetClass}}" [multiple]="true" #multiSelect>
+            <mat-option>
+                <ngx-mat-select-search [placeholderLabel]="'Search'" [showToggleAllCheckbox]="true"
+                    (toggleAll)="toggleSelectAllAssetClass($event)" [formControl]="assetclassMultiFilterCtrl">
+                </ngx-mat-select-search>
+            </mat-option>
+            <mat-option *ngFor="let assetclass of filteredAssetClassMulti| async" [value]="assetclass">
+                {{assetclass.BlockName}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="formfield field" color="primary">
+        <mat-select disableOptionCentering [formControl]="typeMultiCtrl" id="typeMultiCtrl"
+            placeholder="{{header.Type}}" [multiple]="true" #multiSelect>
+            <mat-option>
+                <ngx-mat-select-search [placeholderLabel]="'Search'" [showToggleAllCheckbox]="true"
+                    (toggleAll)="toggleSelectAllType($event)" [formControl]="typeMultiFilterCtrl">
+                </ngx-mat-select-search>
+            </mat-option>
+            <mat-option *ngFor="let type of filteredTypeMulti| async" [value]="type">
+                {{type.name}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="formfield field" color="primary">
+        <mat-select disableOptionCentering [formControl]="subtypeMultiCtrl" id="subtypeMultiCtrl" placeholder="SubType"
+            [multiple]="true" #multiSelect>
+            <mat-option>
+                <ngx-mat-select-search [placeholderLabel]="'Search'" [showToggleAllCheckbox]="true"
+                    (toggleAll)="toggleSelectAllSubType($event)" [formControl]="subtypeFilterCtrl">
+                </ngx-mat-select-search>
+            </mat-option>
+            <mat-option *ngFor="let subtype of filteredSubTypeMulti| async" [value]="subtype">
+                {{subtype.name}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="formfield field" color="primary">
+        <mat-select disableOptionCentering [formControl]="currencyMultiCtrl" placeholder="Currency" [multiple]="true"
+            #multiSelect>
+            <mat-option>
+                <ngx-mat-select-search [placeholderLabel]="'Search'" [formControl]="currencyFilterCtrl">
+                </ngx-mat-select-search>
+            </mat-option>
+            <mat-option *ngFor="let currency of filteredCurrencyMulti | async" [value]="currency">
+                {{currency.BaseCurrency}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="formfield field" color="primary">
+        <mat-select disableOptionCentering [formControl]="reportfilterMultiCtrl" placeholder="Report Filter"
+            #multiSelect>
+            <mat-option>
+                <ngx-mat-select-search [placeholderLabel]="'Search'" [formControl]="reportfilterMultiFilterCtrl">
+                </ngx-mat-select-search>
+            </mat-option>
+            <mat-option *ngFor="let reportfilter of filteredReportFilterMulti | async" [value]="reportfilter">
+                {{reportfilter.name}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+
+
+<mat-icon class="example-icon" (click)="showAssets()" [style.fontSize]="'24px'"
+        style="height: 30px;width: 35px;margin-left: -10px;margin-right: 15px;margin-top: 13px;cursor: pointer;"><img
+            style="height: 38px;width:40px;" src="assets/images/assetrak/23_10_2020/GO 5.png" /></mat-icon>
+    <span class="example-spacer"></span>
+    <mat-icon class="example-icon FixBtnClass" *ngIf="show" matTooltip="Export" [style.fontSize]="'24px'"
+        style="margin-left: -5px;margin-bottom: -2px;cursor: pointer;margin-top: 18px;"><img
+            src="assets/images/assetrak/Latest/ExportNew.png" /></mat-icon>
+    <mat-icon class="example-icon FixBtnClass" *ngIf="show" (click)="openEditGridDisplay()"
+        matTooltip="Edit Grid Display" [style.fontSize]="'24px'"
+        style="margin-left: -5px;margin-bottom: -2px;cursor: pointer;margin-top: 18px;"><img
+            src="assets/images/assetrak/Latest/GridDisplayNew.png" /></mat-icon></div>
+<div class=" example-container mat-elevation-z8" *ngIf="show">
+    <table mat-table #table [dataSource]="dataSource" matSort>
+
+        <ng-container matColumnDef="InventoryNo">
+            <th mat-sort-header="InventoryNo" mat-header-cell *matHeaderCellDef>{{displayedHeaders[0]}}</th>
+            <td mat-cell *matCellDef="let element">{{element.InventoryNo}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="AssetNo">
+            <th mat-sort-header="AssetNo" mat-header-cell *matHeaderCellDef>
+                <span *ngIf="this.isButtonVisible == false">{{displayedHeaders[1]}}</span>
+                <span *ngIf="this.isButtonVisible == true">
+                    <mat-form-field
+                        style="padding-bottom: 0px !important;margin-bottom: -9px !important;margin-top: -7px !important;">
+                        <input matInput class="form-field" [formControl]="TransferAssetNoFilter" placeholder="AssetNo">
+                    </mat-form-field>
+                </span>
+
+                <mat-icon *ngIf="this.isButtonVisible == false" class="maticon"
+                    (click)="this.isButtonVisible= !this.isButtonVisible"
+                    style="height: 17px;width: 24px;font-size:17px;color:#1d3478;margin-right: -7px;">search</mat-icon>
+                <!-- <mat-icon *ngIf="this.isButtonVisible == true" class="maticon" (click)="this.isButtonVisible= !this.isButtonVisible" >more_vert</mat-icon>  -->
+
+
+                <mat-panel-description *ngIf="this.isButtonVisible == true">
+                    <mat-icon [matMenuTriggerFor]="msgMenu" (click)="$event.stopPropagation()" class="text-muted">
+                        more_vert</mat-icon>
+                    <mat-menu #msgMenu="matMenu">
+                        <!-- <button mat-menu-item (click)="opentablePopup('position')"><mat-icon>add_box</mat-icon> Multiple</button> -->
+                        <button mat-menu-item (click)="opentablePopup('AssetNo')" style="height: 40px !important;">
+                            <mat-icon style="margin-right: 6px;"> <img
+                                    src="assets/images/assetrak/23_10_2020/Multiple.png" /></mat-icon> Multiple Search
+                        </button>
+
+                        <!-- <button mat-menu-item (click)="this.isButtonVisible= !this.isButtonVisible"><mat-icon>close</mat-icon> Close</button> -->
+                        <button mat-menu-item (click)="this.isButtonVisible= !this.isButtonVisible"
+                            style="height: 40px !important;">
+                            <mat-icon style="margin-right: 6px;"> <img
+                                    src="assets/images/assetrak/23_10_2020/Cross.png" /></mat-icon> Clear Search
+                        </button>
+                        <!-- <button mat-menu-item (click)="this.isButtonVisible= !this.isButtonVisible"><mat-icon> <img src="assets/images/assetrak/Cross1.png" /></mat-icon> Close</button> -->
+
+                    </mat-menu>
+                </mat-panel-description>
+            </th>
+            <td mat-cell *matCellDef="let element">{{element.AssetNo}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="SubNo">
+            <th mat-sort-header="SubNo" mat-header-cell *matHeaderCellDef>{{displayedHeaders[2]}}</th>
+            <td mat-cell *matCellDef="let element">{{element.SubNo}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="AssetClass">
+            <th mat-sort-header="AssetClass" mat-header-cell *matHeaderCellDef>{{displayedHeaders[3]}}</th>
+            <td mat-cell *matCellDef="let element">{{element.AssetClass}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="AssetClassShortName">
+            <th mat-sort-header="AssetClassShortName" mat-header-cell *matHeaderCellDef>{{displayedHeaders[4]}}</th>
+            <td mat-cell *matCellDef="let element">{{element.AssetClassShortName}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="AssetName">
+            <th mat-sort-header="AssetName" mat-header-cell *matHeaderCellDef>{{displayedHeaders[5]}}</th>
+            <td mat-cell *matCellDef="let element">{{element.AssetName}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="AssetDescription">
+            <th mat-sort-header="AssetDescription" mat-header-cell *matHeaderCellDef>{{displayedHeaders[6]}}</th>
+            <td mat-cell *matCellDef="let element">{{element.AssetDescription}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="Cost">
+            <th mat-sort-header="Cost" mat-header-cell *matHeaderCellDef>{{displayedHeaders[7]}}</th>
+            <td mat-cell *matCellDef="let element">{{element.Cost}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="WDV">
+            <th mat-sort-header="WDV" mat-header-cell *matHeaderCellDef>{{displayedHeaders[8]}}</th>
+            <td mat-cell *matCellDef="let element">{{element.WDV}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="EquipmentNumber">
+            <th mat-sort-header="EquipmentNumber" mat-header-cell *matHeaderCellDef>{{displayedHeaders[9]}}</th>
+            <td mat-cell *matCellDef="let element">{{element.EquipmentNumber}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="AssetCondition">
+            <th mat-sort-header="AssetCondition" mat-header-cell *matHeaderCellDef>{{displayedHeaders[10]}}</th>
+            <td mat-cell *matCellDef="let element">{{element.AssetCondition}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="AssetCriticality">
+            <th mat-sort-header="AssetCriticality" mat-header-cell *matHeaderCellDef>{{displayedHeaders[11]}}</th>
+            <td mat-cell *matCellDef="let element">{{element.AssetCriticality}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="ApprovedBy">
+            <th mat-sort-header="ApprovedBy" mat-header-cell *matHeaderCellDef>{{displayedHeaders[12]}}</th>
+            <td mat-cell *matCellDef="let element">{{element.ApprovedBy}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="ApprovedOn">
+            <th mat-sort-header="ApprovedOn" mat-header-cell *matHeaderCellDef>{{displayedHeaders[13]}}</th>
+            <td mat-cell *matCellDef="let element">{{element.ApprovedOn}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="InventoryOn">
+            <th mat-sort-header="InventoryOn" mat-header-cell *matHeaderCellDef>{{displayedHeaders[14]}}</th>
+            <td mat-cell *matCellDef="let element">{{element.InventoryOn}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="InventoryBy">
+            <th mat-sort-header="InventoryBy" mat-header-cell *matHeaderCellDef>{{displayedHeaders[15]}}</th>
+            <td mat-cell *matCellDef="let element">{{element.InventoryBy}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="InventoryComment">
+            <th mat-sort-header="InventoryComment" mat-header-cell *matHeaderCellDef>{{displayedHeaders[16]}}</th>
+            <td mat-cell *matCellDef="let element">{{element.InventoryComment}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="InventoryMode">
+            <th mat-sort-header="InventoryMode" mat-header-cell *matHeaderCellDef>{{displayedHeaders[17]}}</th>
+            <td mat-cell *matCellDef="let element">{{element.InventoryMode}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="InventoryNote">
+            <th mat-sort-header="InventoryNote" mat-header-cell *matHeaderCellDef>{{displayedHeaders[18]}}</th>
+            <td mat-cell *matCellDef="let element">{{element.InventoryNote}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="Verifiedat">
+            <th mat-sort-header="Verifiedat" mat-header-cell *matHeaderCellDef>{{displayedHeaders[19]}}</th>
+            <td mat-cell *matCellDef="let element">{{element.Verifiedat}}</td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns;sticky: true "></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selection.toggle(row)"></tr>
+    </table>
+
+</div>
+<div style="margin-top: 8px;">
+<mat-paginator *ngIf="show" #paginator class="expedientes-paginator" [showFirstLastButtons]="true" [pageSize]="50"
+    [pageSizeOptions]="[50, 100, 200,500]">
+
+</mat-paginator>
+</div>

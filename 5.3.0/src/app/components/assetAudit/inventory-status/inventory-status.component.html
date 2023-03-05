@@ -1,0 +1,276 @@
+<h3><strong style=" color:#008bd0 !important;">{{header.InventoryStatus}}</strong>
+    <span *ngIf="arrlength > 0" style="margin-left: 245px !important;font: italic;"><i>{{arrlength}} assets selected
+        </i></span><span *ngIf="arrlength > 0"><a
+            style="color:#008bd0 !important;margin-left: 5px !important;cursor: pointer;"
+            (click)="viewSelected()"><u>View</u></a></span><span *ngIf="arrlength > 0"><a
+            style="color:red !important;margin-left: 5px !important;cursor: pointer;"
+            (click)="clearSelected()">Clear</a></span>
+    <span *ngIf="appliedfilters.length > 0" style="margin-left: 200px !important;font: italic;"><span>Other filters
+            applied<i *ngFor="let fil of appliedfilters;let i=index" style="font-weight: 700;"> {{fil}}<i
+                    *ngIf="i!=appliedfilters.length-1">/</i> </i></span></span><span
+        *ngIf="appliedfilters.length > 0"><a style="color:red !important;margin-left: 15px !important;cursor: pointer;"
+            (click)="clearfilter()">Clear</a></span>
+</h3>
+
+
+
+<span class="example-spacer"></span>
+
+<div fxLayout="row wrap" fxLayout.lt-sm="column">
+    <mat-form-field class="formfield" color="primary">
+        <mat-select disableOptionCentering [formControl]="projectMultiCtrl" (selectionChange)="selected($event.value)"
+            placeholder="{{header.Project}}" #multiSelect>
+            <mat-option>
+                <ngx-mat-select-search [placeholderLabel]="'Search'" [formControl]="projectMultiFilterCtrl">
+                </ngx-mat-select-search>
+            </mat-option>
+            <mat-option *ngFor="let project of filteredProjectMulti | async" [value]="project">
+                {{project.name}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="formfield" color="primary"
+        *ngIf="selectedProject=='Physical Verification' || selectedProject=='Self Certification'">
+        <mat-select disableOptionCentering [formControl]="locationtypeMultiCtrl" id="locationtypeMultiCtrl"
+            (selectionChange)="selected1($event.value)" placeholder="{{header.LocationType}}" #multiSelect required>
+            <mat-option>
+                <ngx-mat-select-search [placeholderLabel]="'Search'" [formControl]="locationtypeMultiFilterCtrl">
+                </ngx-mat-select-search>
+            </mat-option>
+            <mat-option *ngFor="let locationtype of filteredLocationTypeMulti| async" [value]="locationtype">
+                {{locationtype.name}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="formfield" color="primary"
+        *ngIf="selectedProject=='Physical Verification' || selectedProject=='Self Certification'">
+        <mat-select disableOptionCentering [formControl]="cityMultiCtrl" placeholder="{{header.City}}" [multiple]="true"
+            #multiSelect>
+            <mat-option>
+                <ngx-mat-select-search [placeholderLabel]="'Search'" [showToggleAllCheckbox]="true"
+                    (toggleAll)="toggleSelectAllCity($event)" [formControl]="cityMultiFilterCtrl">
+                </ngx-mat-select-search>
+            </mat-option>
+            <mat-option *ngFor="let city of filteredCityMulti | async" [value]="city">
+                {{city.City}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="formfield" color="primary"
+        *ngIf="selectedProject=='Physical Verification' || selectedProject=='Self Certification'">
+        <mat-select disableOptionCentering [formControl]="plantMultiCtrl" placeholder="{{header.Location}}"
+            [multiple]="true" #multiSelect>
+            <mat-option>
+                <ngx-mat-select-search [placeholderLabel]="'Search'" [showToggleAllCheckbox]="true"
+                    (toggleAll)="toggleSelectAll($event)" [formControl]="plantMultiFilterCtrl">
+                </ngx-mat-select-search>
+            </mat-option>
+            <mat-option *ngFor="let bank of filteredPlantsMulti | async" [value]="bank">
+                {{bank.name}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <mat-form-field class="formfield" color="primary"
+        *ngIf="selectedProject=='Physical Verification' || selectedProject=='Self Certification'">
+        <mat-select disableOptionCentering [formControl]="inventoryprojectidMultiCtrl" id="inventoryprojectidMultiCtrl"
+            placeholder="{{header.ProjectName}}" [multiple]="true" #multiSelect required>
+            <mat-option>
+                <ngx-mat-select-search [placeholderLabel]="'Search'" [showToggleAllCheckbox]="true"
+                    (toggleAll)="toggleSelectAllInventoryProjectId($event)"
+                    [formControl]="inventoryprojectidFilterCtrl">
+                </ngx-mat-select-search>
+            </mat-option>
+            <mat-option *ngFor="let inventoryprojectid of filteredinventoryprojectidMulti| async"
+                [value]="inventoryprojectid">
+                {{inventoryprojectid.name}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+
+    <mat-icon class="example-icon" (click)="displayInventoryData()" [style.fontSize]="'24px'"
+        style="height: 30px;width: 35px;margin-left: -10px;margin-right: 15px;cursor: pointer;;margin-top: 13px;"><img
+            style="height: 38px;width:40px;" src="assets/images/assetrak/23_10_2020/GO 5.png" /></mat-icon>
+
+    <span class="example-spacer"></span>
+
+    <mat-icon class="example-icon FixBtnClass"
+        *ngIf="(selectedProject=='Physical Verification' || selectedProject=='Self Certification') && locationtypeMultiCtrl.value && inventoryprojectidMultiCtrl.value"
+        (click)="openFilter_PopUp()" matTooltip="Filter" [style.fontSize]="'24px'"
+        style="margin-bottom: -2px;cursor: pointer;;margin-top: 18px;"><img
+            src="assets/images/assetrak/Latest/FilterNew.png" /></mat-icon>
+    <mat-icon (click)="export()" class="example-icon FixBtnClass"
+        *ngIf="(selectedProject=='Physical Verification' || selectedProject=='Self Certification') && locationtypeMultiCtrl.value && inventoryprojectidMultiCtrl.value"
+        matTooltip="Export" [style.fontSize]="'24px'"
+        style="margin-left: -5px;margin-bottom: -2px;cursor: pointer;;margin-top: 18px;"><img
+            src="assets/images/assetrak/Latest/ExportNew.png" /></mat-icon>
+    <mat-icon class="example-icon FixBtnClass"
+        *ngIf="(selectedProject=='Physical Verification' || selectedProject=='Self Certification') && locationtypeMultiCtrl.value && inventoryprojectidMultiCtrl.value"
+        (click)="openEditGridDisplay()" matTooltip="Edit Grid Display" [style.fontSize]="'24px'"
+        style="margin-left: -5px;margin-bottom: -2px;cursor: pointer;;margin-top: 18px;"><img
+            src="assets/images/assetrak/Latest/GridDisplayNew.png" /></mat-icon>
+
+</div>
+
+<div fxLayout="row wrap" fxLayout.lt-sm="column" style="margin-top: -13px;">
+    <mat-form-field class="formfield" color="primary"
+        *ngIf="selectedProject=='Physical Verification' || selectedProject=='Self Certification'">
+        <mat-select disableOptionCentering [formControl]="inventorynoteMultiCtrl" id="inventorynoteMultiCtrl"
+            placeholder="{{header.Type}}" [multiple]="true" #multiSelect>
+            <mat-option>
+                <ngx-mat-select-search [placeholderLabel]="'Search'" [showToggleAllCheckbox]="true"
+                    (toggleAll)="toggleSelectAllInventoryNote($event)" [formControl]="inventorynoteMultiFilterCtrl">
+                </ngx-mat-select-search>
+            </mat-option>
+            <mat-option *ngFor="let inventorynote of filteredInventoryNoteMulti| async" [value]="inventorynote">
+                {{inventorynote.name}}
+            </mat-option>
+        </mat-select>
+    </mat-form-field>
+</div>
+
+
+<div class=" example-container mat-elevation-z8"
+    *ngIf="(selectedProject=='Physical Verification' || selectedProject=='Self Certification') && locationtypeMultiCtrl.value && inventoryprojectidMultiCtrl.value">
+    <table mat-table #table [dataSource]="dataSource" matSort>
+
+        <ng-container matColumnDef="InventoryNo">
+            <th mat-sort-header="InventoryNo" mat-header-cell *matHeaderCellDef>{{displayedHeaders[0]}}</th>
+            <td mat-cell *matCellDef="let element">{{element.InventoryNo}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="AssetNo">
+            <th mat-sort-header="AssetNo" mat-header-cell *matHeaderCellDef>
+                <span *ngIf="this.isButtonVisible == false">{{displayedHeaders[1]}}</span>
+                <span *ngIf="this.isButtonVisible == true">
+                    <mat-form-field
+                        style="padding-bottom: 0px !important;margin-bottom: -9px !important;margin-top: -7px !important;">
+                        <input matInput class="form-field" [formControl]="AssetNoFilter" placeholder="AssetNo">
+                    </mat-form-field>
+                </span>
+
+                <mat-icon *ngIf="this.isButtonVisible == false" class="maticon"
+                    (click)="this.isButtonVisible= !this.isButtonVisible"
+                    style="height: 17px;width: 24px;font-size:17px;color:#1d3478;margin-right: -7px;">search</mat-icon>
+
+                <mat-panel-description *ngIf="this.isButtonVisible == true">
+                    <mat-icon [matMenuTriggerFor]="msgMenu" (click)="$event.stopPropagation()" class="text-muted">
+                        more_vert</mat-icon>
+                    <mat-menu #msgMenu="matMenu">
+                        <button mat-menu-item (click)="opentablePopup('AssetNo',dataSource)"
+                            style="height: 40px !important;">
+                            <mat-icon style="margin-right: 6px;"> <img
+                                    src="assets/images/assetrak/23_10_2020/Multiple.png" /></mat-icon> Multiple Search
+                        </button>
+
+                        <button mat-menu-item (click)="this.isButtonVisible= !this.isButtonVisible"
+                            style="height: 40px !important;">
+                            <mat-icon style="margin-right: 6px;"> <img
+                                    src="assets/images/assetrak/23_10_2020/Cross.png" /></mat-icon> Clear Search
+                        </button>
+
+                    </mat-menu>
+                </mat-panel-description>
+            </th>
+            <td mat-cell *matCellDef="let element"><a style="color:#008bd0 !important;cursor: pointer;"
+                    (click)="openPopUp(element)">{{element.AssetNo}}</a></td>
+        </ng-container>
+
+        <ng-container matColumnDef="SubNo">
+            <th mat-sort-header="SubNo" mat-header-cell *matHeaderCellDef>{{displayedHeaders[2]}}</th>
+            <td mat-cell *matCellDef="let element">{{element.SubNo}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="AssetType">
+            <th mat-sort-header="AssetType" mat-header-cell *matHeaderCellDef>{{displayedHeaders[3]}}</th>
+            <td mat-cell *matCellDef="let element">{{element.AssetType}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="AssetSubType">
+            <th mat-sort-header="AssetSubType" mat-header-cell *matHeaderCellDef>{{displayedHeaders[4]}}</th>
+            <td mat-cell *matCellDef="let element">{{element.AssetSubType}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="CapitalizationDate">
+            <th mat-sort-header="CapitalizationDate" mat-header-cell *matHeaderCellDef>{{displayedHeaders[5]}}</th>
+            <td mat-cell *matCellDef="let element">{{element.CapitalizationDate}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="Qty">
+            <th mat-sort-header="Qty" mat-header-cell *matHeaderCellDef>{{displayedHeaders[6]}}</th>
+            <td mat-cell *matCellDef="let element">{{element.Qty}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="UOM">
+            <th mat-sort-header="UOM" mat-header-cell *matHeaderCellDef>{{displayedHeaders[7]}}</th>
+            <td mat-cell *matCellDef="let element">{{element.UOM}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="Cost">
+            <th mat-sort-header="Cost" mat-header-cell *matHeaderCellDef>{{displayedHeaders[8]}}</th>
+            <td mat-cell *matCellDef="let element">{{element.Cost}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="WDV">
+            <th mat-sort-header="WDV" mat-header-cell *matHeaderCellDef>{{displayedHeaders[9]}}</th>
+            <td mat-cell *matCellDef="let element">{{element.WDV}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="AssetClass">
+            <th mat-sort-header="AssetClass" mat-header-cell *matHeaderCellDef>{{displayedHeaders[10]}}</th>
+            <td mat-cell *matCellDef="let element">{{element.AssetClass}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="AssetName">
+            <th mat-sort-header="AssetName" mat-header-cell *matHeaderCellDef>{{displayedHeaders[11]}}</th>
+            <td mat-cell *matCellDef="let element">{{element.AssetName}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="AssetDescription">
+            <th mat-sort-header="AssetDescription" mat-header-cell *matHeaderCellDef>{{displayedHeaders[12]}}</th>
+            <td mat-cell *matCellDef="let element">{{element.AssetDescription}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="InventoryComment">
+            <th mat-sort-header="InventoryComment" mat-header-cell *matHeaderCellDef>{{displayedHeaders[13]}}</th>
+            <td mat-cell *matCellDef="let element">{{element.InventoryComment}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="Photo">
+            <th mat-sort-header="Photo" mat-header-cell *matHeaderCellDef>{{displayedHeaders[14]}}</th>
+            <td mat-cell *matCellDef="let element"></td>
+        </ng-container>
+
+        <ng-container matColumnDef="InventoryNote">
+            <th mat-sort-header="InventoryNote" mat-header-cell *matHeaderCellDef>{{displayedHeaders[15]}}</th>
+            <td mat-cell *matCellDef="let element">{{element.InventoryNote}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="EquipmentNumber">
+            <th mat-sort-header="EquipmentNumber" mat-header-cell *matHeaderCellDef>{{displayedHeaders[16]}}</th>
+            <td mat-cell *matCellDef="let element">{{element.EquipmentNumber}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="AssetCondition">
+            <th mat-sort-header="AssetCondition" mat-header-cell *matHeaderCellDef>{{displayedHeaders[17]}}</th>
+            <td mat-cell *matCellDef="let element">{{element.AssetCondition}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="AssetCriticality">
+            <th mat-sort-header="AssetCriticality" mat-header-cell *matHeaderCellDef>{{displayedHeaders[18]}}</th>
+            <td mat-cell *matCellDef="let element">{{element.AssetCriticality}}</td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns;sticky: true "></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="selection.toggle(row)"></tr>
+    </table>
+
+</div>
+<mat-paginator
+    *ngIf="(selectedProject=='Physical Verification' || selectedProject=='Self Certification') && locationtypeMultiCtrl.value && inventoryprojectidMultiCtrl.value"
+    #paginator class="expedientes-paginator" [showFirstLastButtons]="true" [pageSize]="50"
+    [pageSizeOptions]="[50, 100, 200,500]">
+</mat-paginator>

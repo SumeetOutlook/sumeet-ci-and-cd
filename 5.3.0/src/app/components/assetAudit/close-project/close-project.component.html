@@ -1,0 +1,71 @@
+<h3><strong style=" color:#008bd0 !important;">Close Project</strong> </h3>
+
+<form [formGroup]="ReportForm">
+  <span class="example-spacer"></span>
+   <span class="example-spacer"></span>
+   <!--<mat-toolbar>-->
+    <mat-form-field class="formfield" color="primary" >
+      <mat-label class="label asterisk_input">{{Headers.Project}}</mat-label>
+    <mat-select disableOptionCentering [formControl]="ReportForm.controls['selectedbyctrl']" placeholder="{{Headers.Project}}">
+        <mat-option *ngFor="let data of selectedby | async" [value]="data.value" (click)="onChangeSelectedby(data.value)"> {{data.name}} </mat-option>
+    </mat-select>
+    </mat-form-field>
+    
+    <!--</mat-toolbar>-->
+    <!--<span class="example-spacer"></span>-->
+    <!--<mat-toolbar>-->
+  <button mat-raised-button  matTooltip="Close Project" class="minibtn" *ngIf="PermissionIdList.indexOf(95) > -1 && displaybtn" [disabled]="!selectedData.value" style="margin-left: 32px !important;"  (click)="CloseProjectConfirmation()">
+      <mat-icon style="color:white !important;" >close</mat-icon>
+    </button>
+    <button mat-raised-button  matTooltip="Delete Project"  class="minibtn" *ngIf="PermissionIdList.indexOf(96) > -1 && displaybtn" [disabled]="!selectedData.value" style="margin-left: 15px !important;"  (click)="DeleteProjectConfirmation()">
+      <mat-icon style="color:white !important;">delete</mat-icon>
+    </button>  
+    
+  
+<div class="example-container mat-elevation-z8">
+  <table mat-table #table [dataSource]="dataSource" matSort>
+    <ng-container [matColumnDef]="column" *ngFor="let column of displayedColumns; index as i">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>
+        <span *ngIf="column === 'Select'">
+         
+        </span>
+        <span *ngIf="column != 'Select'">
+          {{Headers[column]}}
+        </span>
+      </th>
+      <td mat-cell *matCellDef="let element">
+        <span *ngIf="column === 'Select'">        
+          <input type="radio" id="other" name="grnNo" [value]="element.ProjectName" [formControl]="selectedData">
+        </span>
+        <span *ngIf="column === 'ProjectName'">
+          <a style="color:#008bd0 !important;cursor: pointer;" (click)="OpenProjectDetails(element)">{{element.ProjectName}}</a>
+        </span>
+        <span *ngIf="column === 'MainTableCount'">
+          {{element[column]}}
+        </span>
+        <span *ngIf="column === 'MainTableCost'">
+          {{element[column] | number : '1.2-2'}}
+        </span>
+        <span *ngIf="column === 'MainTableWDV'">
+          {{element[column] | number : '1.2-2'}}
+        </span>
+        <span *ngIf="column === 'ProjectCompleteDate'">
+          {{element[column]  | date:'dd-MMM-yyyy'}}
+        </span>
+        <span *ngIf="column != 'Select' && column != 'MainTableCount' && column != 'MainTableCost' && column != 'MainTableWDV' && column != 'ProjectCompleteDate' && column != 'ProjectName'">
+          {{element[column]}}
+        </span>
+      </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>    
+  </table>
+  <div style="text-align: center;" *ngIf="!dataSource">{{message.NoDataAvailable}}</div>
+</div>
+<mat-paginator #PaginatorForRegion="matPaginator" class="expedientes-paginator" [showFirstLastButtons]="true" 
+[pageSize]="50" [pageSizeOptions]="[50, 100, 200,500]" >
+
+</mat-paginator>
+
+
+</form>

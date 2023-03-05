@@ -1,0 +1,38 @@
+
+<div fxLayout='row wrap' fxLayoutAlign='space-between' fxLayout.lt-sm="column" style="min-height: fit-content;">
+<!--<h3><strong style=" color:#008bd0 !important;"> view-field </strong> </h3>-->
+<p style="color:#008bd0;font-size:medium;" >Standard View</p>
+</div>
+<mat-card-content>
+
+
+<span></span>
+<div fxLayout="row wrap" class="pr-5 pl-5" fxLayout.lt-sm="column">
+    <mat-accordion class="example-headers-align"   *ngFor="let data of StandardTypeData;let k=index"
+        style="width: 100%;" hideToggle>
+        <mat-expansion-panel >
+            <mat-expansion-panel-header  style="height: 50px;">
+              
+                <mat-panel-title>
+                    <div fxLayout="row " fxLayout.lt-sm="row" fxFlex="100" fxFlex.gt-xs="100" >
+                    <div fxFlex="100" fxFlex.gt-xs="40" class="pr-1 " >
+                    <!--<mat-icon [style.fontSize]="'30px'" style="color: #1d3478 !important;padding-right: 8px;"
+                            class="authorize-click icon" *ngIf="!panelOpenState[k]">add</mat-icon>-->
+                            <!--<mat-checkbox class="authorize-click givemargin" [checked]="data.isActive" ></mat-checkbox>-->
+                            <div fxFlex="100"  class="pr-1 givemargin prevent-click">
+                                <span >{{data.CategoryName}}</span>
+            
+                            </div>
+                            </div>
+                   
+                <div fxFlex="100" fxFlex.gt-xs="20" class="pr-1" style="margin-left:50%;">
+                    <button  mat-raised-button class="authorize-click success" (click)="editGridpop(data)" >Map</button>
+                </div>
+                    </div>
+                </mat-panel-title> 
+               
+            </mat-expansion-panel-header>
+        </mat-expansion-panel>
+    </mat-accordion>
+</div>
+</mat-card-content>

@@ -1,0 +1,25 @@
+<strong style=" color:#008bd0 !important;"> Revert</strong>
+
+<mat-toolbar>
+
+  <mat-form-field appearance="fill">
+    <mat-label>City</mat-label>
+    <mat-select [(ngModel)]="cityMultiCtrl">
+      <mat-option *ngFor="let type of filteredCityMulti | async" [value]="type.City">
+        {{type.City}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <mat-form-field appearance="fill">
+    <mat-label>Plant</mat-label>
+    <mat-select [(ngModel)]="plantMultiCtrl" [formControl]="toppings" multiple>
+      <mat-option *ngFor="let type of filteredPlantsMulti | async" [value]="type.LocationId">
+        {{type.LocationName}}
+      </mat-option>
+    </mat-select>
+  </mat-form-field>
+
+  <button  mat-mini-fab class="btn" (click)="showAssets()">Go</button>
+  <button  mat-mini-fab color="primary" class="btn" matTooltip="Revert asset" (click)="revertAssets()"><span class="material-icons">reply</span></button>
+</mat-toolbar>

@@ -1,0 +1,155 @@
+<div class="md-dialog-container" *ngIf="tabEnabled">
+    <mat-toolbar class="mat-toolbar" style="background-color:rgb(12, 48, 87);color:white">
+        <span style="position: relative;left: 40%;">Approval Details</span>
+        <span class="example-spacer"></span>
+        <button mat-icon-button class="example-icon" aria-label="Example icon-button with close icon"
+            (click)="dialogRef.close(false)">
+            <mat-icon>close</mat-icon>
+        </button>
+    </mat-toolbar><br><br>
+    <mat-dialog-content>
+        <div fxLayout="row wrap" fxLayout.lt-sm="column" *ngIf="ApprovalLevelAvailable.indexOf('FinanceApprove') > -1">
+            <mat-accordion style="width: 100%;">
+                <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title [class]="!bindData.FinancialLevelTransferApproverDateTime  ? 'window' : 'window1'">
+                          <b>  {{ Headers.FinAprAction }}</b>
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div fxLayout="row wrap" fxLayout.lt-sm="column">
+                        <div fxFlex="100" fxFlex.gt-xs="100" class="pr-1">
+                            Approval Name : {{bindData.FinancialLevelTransferApproverName}} 
+                            <br>
+                            Date of Approval : {{bindData.FinancialLevelTransferApproverDateTime | date:'dd-MMM-yyyy'}} 
+                            <br>
+                            Comment : {{bindData.FinancialLevelTransferApproverComment}} 
+                        </div>
+                    </div>
+                   
+                </mat-expansion-panel>
+            </mat-accordion>
+        </div>
+        <div fxLayout="row wrap" fxLayout.lt-sm="column" *ngIf="ApprovalLevelAvailable.indexOf('SBO') > -1">
+            <mat-accordion style="width: 100%;">
+                <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title [class]="!bindData.SourceBOTime  ? 'window' : 'window1'">
+                           <b>{{ Headers.SBOAction }}</b> 
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div fxLayout="row wrap" fxLayout.lt-sm="column">
+                        <div fxFlex="100" fxFlex.gt-xs="100" class="pr-1">
+                            Approval Name : {{bindData.SourceBlockOwnerName}}
+                            <br>
+                            Date of Approval : {{bindData.SourceBOTime | date:'dd-MMM-yyyy'}}
+                            <br>
+                            Comment : {{bindData.SourceBlockOwnerComment}}
+                        </div>
+                    </div>
+                   
+                </mat-expansion-panel>
+            </mat-accordion>
+        </div>
+        <div fxLayout="row wrap" fxLayout.lt-sm="column" *ngIf="ApprovalLevelAvailable.indexOf('DBO') > -1">
+            <mat-accordion style="width: 100%;">
+                <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title [class]="!bindData.DestinationBOTime  ? 'window' : 'window1'">
+                          <b>  {{ Headers.DBOAction }}</b>
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div fxLayout="row wrap" fxLayout.lt-sm="column">
+                        <div fxFlex="100" fxFlex.gt-xs="100" class="pr-1">
+                            Approval Name : {{bindData.DestinationBlockOwnerName}}
+                            <br>
+                            Date of Approval : {{bindData.DestinationBOTime | date:'dd-MMM-yyyy'}}
+                            <br>
+                            Comment : {{bindData.DestinationBlockOwnerComment}}
+                        </div>
+                    </div>
+                   
+                </mat-expansion-panel>
+            </mat-accordion>
+        </div>
+        <div fxLayout="row wrap" fxLayout.lt-sm="column" *ngIf="ApprovalLevelAvailable.indexOf('A1') > -1">
+            <mat-accordion style="width: 100%;">
+                <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title [class]="!bindData.Approver1Time  ? 'window' : 'window1'">
+                           <b> {{ Headers.A1 }}</b>
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div fxLayout="row wrap" fxLayout.lt-sm="column">
+                        <div fxFlex="100" fxFlex.gt-xs="100" class="pr-1">
+                            Approval Name : {{bindData.Approver1Name}}
+                            <br>
+                            Date of Approval : {{bindData.Approver1Time | date:'dd-MMM-yyyy'}}
+                            <br>
+                            Comment : {{bindData.Approver1Comment}}
+                        </div>
+                    </div>
+                   
+                </mat-expansion-panel>
+            </mat-accordion>
+        </div>
+        <div fxLayout="row wrap" fxLayout.lt-sm="column" *ngIf="ApprovalLevelAvailable.indexOf('A2') > -1">
+            <mat-accordion style="width: 100%;">
+                <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title [class]="!bindData.Approver2Time  ? 'window' : 'window1'">
+                           <b> {{ Headers.A2 }}</b>
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div fxLayout="row wrap" fxLayout.lt-sm="column">
+                        <div fxFlex="100" fxFlex.gt-xs="100" class="pr-1">
+                            Approval Name : {{bindData.Approver2Name}}
+                            <br>
+                            Date of Approval : {{bindData.Approver2Time | date:'dd-MMM-yyyy'}}
+                            <br>
+                            Comment : {{bindData.Approver2Comment}}
+                        </div>
+                    </div>
+                   
+                </mat-expansion-panel>
+            </mat-accordion>
+        </div>
+        <div fxLayout="row wrap" fxLayout.lt-sm="column" *ngIf="ApprovalLevelAvailable.indexOf('A3') > -1">
+            <mat-accordion style="width: 100%;">
+                <mat-expansion-panel (opened)="panelOpenState = true" (closed)="panelOpenState = false">
+                    <mat-expansion-panel-header>
+                        <mat-panel-title [class]="!bindData.Approver3Time  ? 'window' : 'window1'">
+                           <b> {{ Headers.A3 }}</b>
+                        </mat-panel-title>
+                    </mat-expansion-panel-header>
+                    <div fxLayout="row wrap" fxLayout.lt-sm="column">
+                        <div fxFlex="100" fxFlex.gt-xs="100" class="pr-1">
+                            Approval Name : {{bindData.Approver3Name}}
+                            <br>
+                            Date of Approval : {{bindData.Approver3Time | date:'dd-MMM-yyyy'}}
+                            <br>
+                            Comment : {{bindData.Approver3Comment}}
+                        </div>
+                    </div>
+                   
+                </mat-expansion-panel>
+            </mat-accordion>
+        </div>
+        <!-- <form [formGroup]="dialogForm">
+            <div fxLayout="row wrap">
+                <div fxFlex="100" fxFlex.gt-xs="25" class="pr-1">
+                    <mat-form-field class="full-width" appearance="outline">
+                        <mat-label class="label" style="font-size: 15px !important;">Transfer Comment</mat-label>
+                        <input matInput formControlName="commentCtrl" class="bg-transparente">
+                    </mat-form-field>
+                </div>
+            </div>
+        </form>
+        <div fxLayout="row wrap">
+            <div fxFlex="100" class="pr-1 full">
+                <span fxFlex></span>
+                <button mat-raised-button color="primary" [disabled]="dialogForm.invalid"
+                    (click)="Submit()">Submit</button>
+            </div>
+        </div> -->
+    </mat-dialog-content>
+</div>

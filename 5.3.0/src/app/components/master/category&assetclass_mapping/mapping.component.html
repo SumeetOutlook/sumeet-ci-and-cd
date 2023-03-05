@@ -1,0 +1,93 @@
+<div fxLayout="row wrap">
+  <div fxFlex="50">
+    <h3><strong style=" color:#008bd0 !important;"> {{menuheader['Category and Asset Class Mapping']}}</strong> </h3>
+  </div>
+  <div fxFlex="50" fxLayoutAlign="end end">
+    <!-- <mat-form-field class="margin_bottom"
+      style="padding-right: 11px;padding-bottom: 5px;margin-top: -5px !important;width: 204px !important;">
+      <button mat-icon-button matSuffix class="example-icon"
+        style="background-color:white;margin-top: 0px;width:30px;height: 30px;"
+        aria-label="Example icon-button with close icon">
+        <mat-icon style="color:white; font-size: 25px;color:#0C3057;cursor:pointer">search</mat-icon>
+      </button>
+      <input matInput (keyup)="applyFilter($event)" placeholder="Search">
+    </mat-form-field> -->
+  </div>
+</div>
+<span class="example-spacer"></span>
+<span class="example-spacer"></span>
+<div class="example-container mat-elevation-z8" style="padding-top: 10px;">
+  <table mat-table [dataSource]="dataSource" matSort>
+    <ng-container matColumnDef="assetclass">
+      <th mat-header-cell *matHeaderCellDef>
+        <span *ngIf="this.isButtonVisible == false"> {{Headers.AssetClass}}</span>
+        <span *ngIf="this.isButtonVisible == true">
+            <mat-form-field style="padding-bottom: 0px !important;margin-bottom: -9px !important;margin-top: -7px !important;">
+                <input matInput class="form-field" (keyup)="applyFilter($event)" placeholder="Search" autocomplete="off">
+            </mat-form-field>
+        </span>
+        <mat-icon *ngIf="this.isButtonVisible == false" class="maticon"
+            (click)="this.isButtonVisible = true"
+            style="height: 17px;width: 24px;font-size:17px;color:#1d3478;margin-right: -7px;">search
+        </mat-icon>
+        <mat-panel-description *ngIf="this.isButtonVisible == true">
+            <mat-icon [matMenuTriggerFor]="msgMenu" (click)="$event.stopPropagation()"
+                class="text-muted">
+                more_vert</mat-icon>
+            <mat-menu #msgMenu="matMenu">
+                <button mat-menu-item 
+                    style="height: 40px !important;" *ngIf="setflag">
+                    <mat-icon style="margin-right: 6px;"> <img
+                            src="assets/images/assetrak/23_10_2020/Multiple.png" />
+                    </mat-icon> Multiple Search
+                </button>
+                <button mat-menu-item (click)="ClearSerch(column,isButtonVisible)"
+                    style="height: 40px !important;">
+                    <mat-icon style="margin-right: 6px;"> <img
+                            src="assets/images/assetrak/23_10_2020/Cross.png" />
+                    </mat-icon> Clear Search
+                </button>
+            </mat-menu>
+        </mat-panel-description>
+      </th>
+      <td mat-cell *matCellDef="let element">{{element.BlockName}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="assetcount">
+      <th mat-header-cell *matHeaderCellDef>{{Headers.AssetListCount}}</th>
+      <td mat-cell *matCellDef="let element">{{element.prefarcount}}</td>
+    </ng-container>
+
+
+    <ng-container matColumnDef="category">
+      <th mat-header-cell *matHeaderCellDef>Map Category</th>
+      <td mat-cell *matCellDef="let element">
+
+        <mat-form-field>
+          <mat-select disableOptionCentering [(ngModel)]="element.AssetCategoryId" #singleSelect [disabled]="element.prefarcount || !element.prefarcount === 0">
+           <mat-option>
+              <ngx-mat-select-search [placeholderLabel]="'Search'" [formControl]="furmappingFilterCtrl" noEntriesFoundLabel="{{Headers.NoRecordFound}}">
+              </ngx-mat-select-search>
+            </mat-option>
+            <!--<mat-option value = "" (click)="OnUpdateCategoryData('',element)">-Select-</mat-option>-->
+            <mat-option *ngFor="let furniturecategory of FurnitureCategory | async"
+              [value]="furniturecategory.AssetCategoryId" (click)="OnUpdateCategoryData(furniturecategory,element)">
+              {{furniturecategory.AssetCategoryName}}
+            </mat-option>
+          </mat-select>
+        </mat-form-field>
+
+      </td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns;sticky:true"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+  <mat-paginator #paginator="matPaginator" class="expedientes-paginator" [showFirstLastButtons]="true"
+    [pageSize]="50" [pageSizeOptions]="[50, 100, 200,500]"></mat-paginator> 
+  <div fxLayout="row wrap" style="justify-content: flex-end;float: right;" class="mt-8">
+    <button mat-raised-button class="success" [disabled]="!dataSource || disablebtn" (click)="Submit()"
+      style="margin-right: 10px;height: 39px;font-size: 15px;"> <mat-icon>check</mat-icon> Save Mapping</button>
+  </div>
+ 
+</div>

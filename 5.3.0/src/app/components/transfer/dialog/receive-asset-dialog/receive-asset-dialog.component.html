@@ -1,0 +1,92 @@
+<div class="md-dialog-container" cdkDrag cdkDragRootElement=".cdk-overlay-pane">
+  <mat-toolbar  cdkDragHandle class="mat-toolbar" style="background-color:rgb(12, 48, 87);color:white">
+    <span style="position: relative;left: 40%;">{{ Headers.UpdateAssetDetails }}</span>
+    <span class="example-spacer"></span>
+    <button mat-icon-button class="example-icon" aria-label="Example icon-button with close icon"
+      (click)="dialogRef.close(false)">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-toolbar><br><br>
+  <mat-dialog-content>
+
+    <form [formGroup]="dialogForm" class="mt-8">
+      <div fxLayout="row wrap">
+        <div fxFlex="100" fxFlex.gt-xs="25" class="pr-1">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label class="label" style="font-size: 15px !important;">{{ Headers.CostCenter }}</mat-label>
+            <mat-select formControlName="costCenterCtrl" class="bg-transparente">
+              <mat-option *ngFor="let type of ListOfCostCenter" [value]="type"> {{type.Description}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div fxFlex="100" fxFlex.gt-xs="25" class="pr-1">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label class="label" style="font-size: 15px !important;">{{ Headers.Room }}</mat-label>
+            <input matInput name="value" formControlName="RoomCtrl" class="bg-transparente">
+          </mat-form-field>
+        </div>
+        <div fxFlex="100" fxFlex.gt-xs="25" class="pr-1">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label class="label" style="font-size: 15px !important;">{{ Headers.StorageLocation }}</mat-label>
+            <mat-select formControlName="rackCtrl" class="bg-transparente">
+              <mat-option *ngFor="let type of ListOfRack" [value]="type"> {{type.RackName}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div fxFlex="100" fxFlex.gt-xs="25" class="pr-1">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label class="label" style="font-size: 15px !important;">{{ Headers.UserEmail }}</mat-label>
+            <mat-select formControlName="userEmailCtrl" class="bg-transparente">
+              <mat-option *ngFor="let type of EmailList" [value]="type" (click)="getUserData()"> {{type}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div fxFlex="100" fxFlex.gt-xs="25" class="pr-1">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label class="label" style="font-size: 15px !important;">{{ Headers.CustodianEmail }}</mat-label>
+            <mat-select formControlName="custodianEmailCtrl" class="bg-transparente">
+              <mat-option *ngFor="let type of EmailList" [value]="type" (click)="getCustodianData()"> {{type}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <!-- <div fxFlex="100" fxFlex.gt-xs="25" class="pr-1">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label class="label" style="font-size: 15px !important;" >{{ Headers.TransferType }}</mat-label>              
+            <mat-select formControlName="transferTypeCtrl" class="bg-transparente">
+              <mat-option *ngFor="let type of transfertypeList" [value]="type.Id"> {{type.DisplayName}}
+              </mat-option>
+            </mat-select>            
+          </mat-form-field>
+        </div> 
+        <div fxFlex="100" fxFlex.gt-xs="25" class="pr-1">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label class="label" style="font-size: 15px !important;" >{{ Headers.ProposedTransferDate }}</mat-label>
+            <input matInput   formControlName="proposedTransferDateCtrl" [matDatepicker]="picker1" class="bg-transparente">              
+            <mat-datepicker-toggle matSuffix [for]="picker1"></mat-datepicker-toggle>
+          </mat-form-field>
+          <mat-datepicker #picker1></mat-datepicker>
+        </div> 
+        <div fxFlex="100" fxFlex.gt-xs="25" class="pr-1">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label class="label" style="font-size: 15px !important;" >{{ Headers.TransferComment }}</mat-label>
+            <textarea matInput   formControlName="commentCtrl" maxlength="200"  class="bg-transparente"></textarea>        
+          </mat-form-field>
+        </div>   -->
+
+      </div>
+    </form>
+    <div fxLayout="row wrap">
+      <div fxFlex="100" class="pr-1 full">
+        <span fxFlex></span>
+        <button mat-raised-button class="success" [disabled]="dialogForm.invalid" (click)="Submit()">
+          <mat-icon>check</mat-icon>Submit
+        </button>
+      </div>
+    </div>
+
+  </mat-dialog-content>
+</div>

@@ -1,0 +1,291 @@
+<div class="md-dialog-container">
+<mat-toolbar class="mat-toolbar"  style="background-color:rgb(12, 48, 87);color:white">
+  <span style="position: relative;left: 40%;">Update Asset Register</span>
+  <span class="example-spacer"></span>
+  <button mat-icon-button class="example-icon" aria-label="Example icon-button with close icon" (click)="onclosetab()">
+    <mat-icon>close</mat-icon>
+  </button>
+</mat-toolbar><br><br>
+<mat-dialog-content style="margin-bottom: 20px;"  cdkDrag cdkDragRootElement=".cdk-overlay-pane" cdkDragHandle>
+<div class="md-dialog-content"  cdkDrag cdkDragRootElement=".cdk-overlay-pane" cdkDragHandle>
+    <form [formGroup]="AssetInfo">
+      <div fxLayout="row wrap" fxLayout.lt-sm="column">
+
+        <div fxFlex="50"  class="pr-1 full">
+          <mat-form-field class="full-width">
+            <mat-label class="label">Update By</mat-label>
+            <mat-select  [formControl]="AssetInfo.controls['UpdateBy']" placeholder="Select Update By" #singleSelect>
+              <!-- <mat-option>
+                <ngx-mat-select-search [placeholderLabel]="'Select Update By'" [formControl]="AssetInfo.controls['UpdateByFilter']" noEntriesFoundLabel="No Result Found"></ngx-mat-select-search>
+              </mat-option>
+              <mat-option *ngFor="let data of filteredUpdateBy | async" [value]="data">
+                {{data.name}}
+              </mat-option> -->
+              <mat-option>Inventory No</mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+    
+        <div fxFlex="50"  class="pr-1 full">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label class="label">Depn. Run Date</mat-label>
+            <input
+            matInput
+            [matDatepicker]="picker3"
+            name="InsuranceStart"
+            [formControl]="AssetInfo.controls['DepnRunDate']">
+            <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+            <mat-datepicker #picker3></mat-datepicker>
+          </mat-form-field>
+        </div>
+        <div fxFlex="50" style="border: 1px solid lightgrey;margin-right: 10px;" class="pr-1">
+        
+          <input type="file"  (change)="fileChange($event)"  style="padding-top: 7px" placeholder="Upload file" accept=".xlx,.xlsx">
+        </div>
+        <div fxFlex="20"  class="pr-1">
+         
+          <button class="btn" (click)="uploadData()" mat-raised-button color="primary"><mat-icon style="color: white;">file_upload</mat-icon>Upload</button>
+        </div>
+        <!--<div fxFlex="33"  class="pr-1">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label class="label">Asset Name</mat-label>
+            <input
+            matInput
+            name="AssetName"
+            [formControl]="AssetInfo.controls['AssetName']" readonly>
+          </mat-form-field>
+        </div>
+        <div fxFlex="33"  class="pr-1">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label class="label">Asset Description</mat-label>
+            <input
+            matInput
+            name="AssetDescription"
+            [formControl]="AssetInfo.controls['AssetDescription']" readonly>
+          </mat-form-field>
+        </div>
+    
+        <div fxFlex="33"  class="pr-1">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label class="label">Asset Class Owner</mat-label>
+            <input
+            matInput
+            name="AssetClassOwner"
+            [formControl]="AssetInfo.controls['AssetClassOwner']" readonly>
+          </mat-form-field>
+        </div>
+    
+       <div fxFlex="33"  class="pr-1">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label class="label">Allocation Type</mat-label> 
+            <input
+            matInput
+            name="AllocationType"
+            [formControl]="AssetInfo.controls['AllocationType']" readonly>
+          </mat-form-field>
+        </div>
+    
+        <div fxFlex="33"  class="pr-1">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label class="label">User Type</mat-label>
+            <input
+            matInput
+            name="UserType"
+            [formControl]="AssetInfo.controls['UserType']" readonly>
+          </mat-form-field>
+        </div>
+        <div fxFlex="33"  class="pr-1">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label class="label">User</mat-label>
+            <input
+            matInput
+            name="User"
+            [formControl]="AssetInfo.controls['User']" readonly>
+          </mat-form-field>
+        </div>
+        <div fxFlex="33"  class="pr-1">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label class="label">Custodian</mat-label>
+            <input
+            matInput
+            name="Custodian"
+            [formControl]="AssetInfo.controls['Custodian']" readonly>
+          </mat-form-field>
+        </div>
+        <div fxFlex="33"  class="pr-1">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label class="label">Revert Date</mat-label>
+            <input
+            matInput
+            name="RevertDate"
+            [formControl]="AssetInfo.controls['RevertDate']" readonly>
+          </mat-form-field>
+        </div>
+    
+        <div fxFlex="33"  class="pr-1">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label class="label">Capitalization Date</mat-label>
+            <input
+            matInput
+            name="CapitalizationDate"
+            [formControl]="AssetInfo.controls['CapitalizationDate']" readonly>
+          </mat-form-field>
+        </div>
+    
+       <div fxFlex="33"  class="pr-1">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label class="label">Qty</mat-label> 
+            <input
+            matInput
+            name="Qty"
+            [formControl]="AssetInfo.controls['Qty']" readonly>
+          </mat-form-field>
+        </div>
+    
+        <div fxFlex="33"  class="pr-1">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label class="label">Plant</mat-label>
+            <input
+            matInput
+            name="Plant"
+            [formControl]="AssetInfo.controls['Plant']" readonly>
+          </mat-form-field>
+        </div>
+        <div fxFlex="33"  class="pr-1">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label class="label">UOM</mat-label>
+            <input
+            matInput
+            name="UOM"
+            [formControl]="AssetInfo.controls['UOM']" readonly>
+          </mat-form-field>
+        </div>
+        <div fxFlex="33"  class="pr-1">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label class="label">Vendor Name</mat-label>
+            <input
+            matInput
+            name="VendorName"
+            [formControl]="AssetInfo.controls['VendorName']" readonly>
+          </mat-form-field>
+        </div>
+        <div fxFlex="33"  class="pr-1">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label class="label">PO No</mat-label>
+            <input
+            matInput
+            name="PONo"
+            [formControl]="AssetInfo.controls['PONo']" readonly>
+          </mat-form-field>
+        </div>
+    
+        <div fxFlex="33"  class="pr-1">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label class="label">Invoice No</mat-label>
+            <input
+            matInput
+            name="InvoiceNo"
+            [formControl]="AssetInfo.controls['InvoiceNo']" readonly>
+          </mat-form-field>
+        </div>
+    
+       <div fxFlex="33"  class="pr-1">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label class="label">Assetrak Stage</mat-label> 
+            <input
+            matInput
+            name="AssetrakStage"
+            [formControl]="AssetInfo.controls['AssetrakStage']" readonly>
+          </mat-form-field>
+        </div>
+    
+        <div fxFlex="33"  class="pr-1">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label class="label">Geo-City</mat-label>
+            <input
+            matInput
+            name="GeoCity"
+            [formControl]="AssetInfo.controls['GeoCity']" readonly>
+          </mat-form-field>
+        </div>
+        <div fxFlex="33"  class="pr-1">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label class="label">Geo-Location</mat-label>
+            <input
+            matInput
+            name="GeoLocation"
+            [formControl]="AssetInfo.controls['GeoLocation']" readonly>
+          </mat-form-field>
+        </div>
+        <div fxFlex="33"  class="pr-1">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label class="label">Gps Date</mat-label>
+            <input
+            matInput
+            name="GpsDate"
+            [formControl]="AssetInfo.controls['GpsDate']" readonly>
+          </mat-form-field>
+        </div>
+        <div fxFlex="33"  class="pr-1">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label class="label">Useful Life</mat-label>
+            <input
+            matInput
+            name="UsefulLife"
+            [formControl]="AssetInfo.controls['UsefulLife']" readonly>
+          </mat-form-field>
+        </div>
+    
+        <div fxFlex="33"  class="pr-1">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label class="label">Asset Expiry Date</mat-label>
+            <input
+            matInput
+            name="AssetExpiryDate"
+            [formControl]="AssetInfo.controls['AssetExpiryDate']" readonly>
+          </mat-form-field>
+        </div>
+    
+       <div fxFlex="33"  class="pr-1">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label class="label">Asset Condition</mat-label> 
+            <input
+            matInput
+            name="AssetCondition"
+            [formControl]="AssetInfo.controls['AssetCondition']" readonly>
+          </mat-form-field>
+        </div>
+    
+        <div fxFlex="33"  class="pr-1">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label class="label">Asset Cricality</mat-label>
+            <input
+            matInput
+            name="AssetCricality"
+            [formControl]="AssetInfo.controls['AssetCricality']" readonly>
+          </mat-form-field>
+        </div>
+        <div fxFlex="33"  class="pr-1">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label class="label">GRN No</mat-label>
+            <input
+            matInput
+            name="GRNNo"
+            [formControl]="AssetInfo.controls['GRNNo']" readonly>
+          </mat-form-field>
+        </div>
+        <div fxFlex="33"  class="pr-1">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label class="label">Equipment Number</mat-label>
+            <input
+            matInput
+            name="EquipmentNumber"
+            [formControl]="AssetInfo.controls['EquipmentNumber']" readonly>
+          </mat-form-field>
+        </div>-->
+        </div>
+        </form>
+  </div>
+</mat-dialog-content>
+</div>
+

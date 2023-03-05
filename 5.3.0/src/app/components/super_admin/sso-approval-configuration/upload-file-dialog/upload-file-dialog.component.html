@@ -1,0 +1,35 @@
+<div class="md-dialog-container" cdkDrag cdkDragRootElement=".cdk-overlay-pane">
+    <mat-toolbar cdkDragHandle class="mat-toolbar" style="background-color:rgb(12, 48, 87);color:white">
+      <span style="position: relative;left: 38%;" >Upload File</span>
+      <span class="example-spacer"></span>
+
+      <button mat-icon-button class="example-icon" aria-label="Example icon-button with close icon" (click)="onclosetab()" >
+        <mat-icon >close</mat-icon>
+      </button>
+    </mat-toolbar><br><br>
+
+    <mat-dialog-content style="margin-bottom: 20px;">
+      <div class="md-dialog-content">
+        
+        <form>
+          
+          <div fxLayout="row wrap" class="ml-16" fxLayout.lt-sm="column">
+            <div  fxFlex="60" class="mt-12 responsive">
+           
+              <input type="file" class="uploadSelectClass" (change)="fileChange($event)" style="padding-top: 7px"  
+                placeholder="Upload file" accept=".png">
+            </div>
+
+
+            <div fxFlex="20" class="mt-12 ml-16 responsive">
+            
+                <button class="btn success" (click)="uploadData()"  mat-raised-button>
+                  <mat-icon style="color: white;">file_upload</mat-icon>Upload  
+                </button> 
+            </div> 
+          </div>
+
+        </form>
+      </div>
+        </mat-dialog-content>
+  </div>

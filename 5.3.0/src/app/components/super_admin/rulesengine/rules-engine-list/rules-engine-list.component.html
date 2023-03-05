@@ -1,0 +1,71 @@
+
+<!-- <ng-snotify></ng-snotify> -->
+<mat-card
+  class="p-0"
+  
+>
+<div fxLayout="row wrap">
+   <div
+     fxFlex="50"
+     fxFlex.gt-sm="20"
+     fxFlex.sm="50"
+   >
+     <div class="text-center pt-1 pb-1 border-right-light">
+       <mat-icon class="text-blue" (click)="addRules()" >add</mat-icon>
+       <h4 class="m-0 " (click)="addRules()" >Add New Rule</h4>
+     </div>
+   </div>
+</div>
+  
+</mat-card>
+<div class="ml-05 mr-05 mt-05 pb-1">
+  <div class="mat-elevation-z8">
+      <mat-table [dataSource]="dataSource" matSort>
+          <ng-container matColumnDef="Name">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Name</mat-header-cell>
+            <mat-cell *matCellDef="let row" data-label="Name"> {{row.Name}} </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="Rule">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Rule</mat-header-cell>
+            <mat-cell *matCellDef="let row" data-label="Rule"> {{(row.Rule1.length > 50) ? ((row.Rule1).slice(0, 50) + '...') : row.Rule1}}</mat-cell>
+          </ng-container>
+
+          <!-- <ng-container matColumnDef=" Approval">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Approval</mat-header-cell>
+            <mat-cell *matCellDef="let row" data-label="Audit Approval"> {{ row.action_id.indexOf(1) > -1  ? 'true' : 'false'}}</mat-cell>
+          </ng-container> -->
+<!-- 
+          <ng-container matColumnDef="Board Approval">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Board Approval</mat-header-cell>
+            <mat-cell *matCellDef="let row" data-label="Board Approval"> {{ row.action_id.indexOf(2) > -1 ? 'true' : 'false'}} </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="Shareholder Approval">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>Shareholder Approval</mat-header-cell>
+            <mat-cell *matCellDef="let row" data-label="Shareholder Approval"> {{ row.action_id.indexOf(3) > -1 ? 'true' : 'false'}} </mat-cell>
+          </ng-container> -->
+          <ng-container matColumnDef="CreatedBy">
+            <mat-header-cell *matHeaderCellDef mat-sort-header><span>CreatedBy </span> </mat-header-cell>
+            <mat-cell *matCellDef="let row" data-label="Created_by"> {{row.Created_by }} </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="CreatedOn">
+            <mat-header-cell *matHeaderCellDef mat-sort-header>CreatedOn</mat-header-cell>
+            <mat-cell *matCellDef="let row" data-label="Creation_dt"> {{row.Creation_dt | date: 'dd-MMM-yyyy'  }} </mat-cell>
+          </ng-container>
+          <ng-container matColumnDef="edit">
+            <mat-header-cell *matHeaderCellDef mat-sort-header> Actions </mat-header-cell>
+            <mat-cell *matCellDef="let row" data-label="edit"> 
+              <button mat-icon-button mat-sm-button color="#10174c" class="mr-1" (click)="editRecord(row)"><mat-icon>edit</mat-icon></button>
+              <button mat-icon-button mat-sm-button color="warn" (click)="deleteRecord('delete',row.id)"><mat-icon>delete</mat-icon></button>
+            </mat-cell>
+          </ng-container>
+      
+      
+      
+          <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: displayedColumns;">
+          </mat-row>
+      </mat-table>
+      <mat-paginator #paginator class="expedientes-paginator" [showFirstLastButtons]="true" [pageSize]="50"
+      [pageSizeOptions]="[50, 100, 200,500]"> </mat-paginator>
+  </div>
+</div>

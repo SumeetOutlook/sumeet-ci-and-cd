@@ -1,0 +1,153 @@
+<mat-toolbar class="topbar" style="background: #0C3057 !important;">
+
+  <!-- background: #121d33 !important;" -->
+  <!-- Sidenav toggle button -->
+  <!-- <button
+    *ngIf="layoutConf.sidebarStyle !== 'compact'"
+    mat-icon-button
+    id="sidenavToggle"
+    (click)="toggleSidenav()"
+    matTooltip="Toggle Hide/Open"
+  >
+    <mat-icon>menu</mat-icon>
+  </button> -->
+
+  <div class="branding" style="width: auto;padding: 0 16px;height: 48px !important;background: #0C3057 !important;">
+    <!-- <img src="assets/images/egret.png" alt="" class="app-logo"> -->
+    <img  src="assets/images/assetrak/Assetrak-logo.png" alt=""  class="app-logo" style="height:24px !important;margin-right:0px">
+   <!-- <img  src="assets/images/assetrak/AssetCuesLogo-BB.png" alt=""  class="app-logo" style="height:30px;margin-right:0px">  -->
+
+    
+    <!-- <span class="app-logo-text">EGRET</span> -->
+    
+    <!-- <span style="margin: auto"></span> -->
+    <!-- <div 
+    class="sidebar-compact-switch"
+    
+    (click)="toggleCollapse()" 
+   ><span></span></div> -->
+
+    <button    
+        mat-icon-button 
+        id="sidenavToggle"
+        (click)="toggleSidenav()"
+        matTooltip="Toggle Hide/Open" >
+        <mat-icon style="color:white">menu</mat-icon>
+      </button>        
+      <button mat-icon-button matTooltip="Home" routerLink="/h/a"  style="margin-left:-8px !important;">
+        <mat-icon style="color:white">home</mat-icon>
+      </button>           
+</div>
+
+  <!-- Search form -->
+  <!-- <div fxFlex fxHide.lt-sm="true" class="search-bar">
+    <form class="top-search-form">
+      <mat-icon role="img">search</mat-icon>
+      <input autofocus="true" placeholder="Search" type="text" />
+    </form>
+  </div> -->
+  <span fxFlex></span>
+  <span style="color: white !important;font-size: 16px !important;">{{LevelNameValue}}</span>
+  <span fxFlex></span>
+
+  
+  <!-- Language Switcher -->
+  <!-- <button mat-button [matMenuTriggerFor]="menu">
+    <span class="flag-icon {{currentLang.flag}} mr-05"></span>
+    <span>{{currentLang.name}}</span>
+  </button> -->
+<!-- <mat-menu #menu="matMenu">
+  <button mat-menu-item *ngFor="let lang of availableLangs" (click)="setLang(lang)">
+        <span class="flag-icon mr-05 {{lang.flag}}"></span>
+        <span>{{lang.name}}</span>
+  </button>
+</mat-menu> -->
+
+
+  <!-- <egret-search-input-over placeholder="Country (e.g. US)" resultPage="/search">
+  </egret-search-input-over> -->
+  <!-- Open "views/search-view/result-page.component" to understand how to subscribe to input field value -->
+
+  <!-- Notification toggle button -->
+  <!-- <button
+    mat-icon-button
+    matTooltip="Notifications"
+    (click)="toggleNotific()"
+    [style.overflow]="'visible'"
+    class="topbar-button-right"
+  >
+    <mat-icon>notifications</mat-icon>
+    <span class="notification-number mat-bg-warn">3</span>
+  </button> -->
+  <!-- Top left user menu -->
+  <!-- <button mat-icon-button >
+    <mat-icon style="color:white">help</mat-icon>
+  </button>        -->
+  <!-- <button mat-icon-button >
+    <mat-icon matTooltip="Help" style="color:white;margin-right: -9px;line-height: 23px !important;">help_outline</mat-icon>
+  </button>  -->
+  
+  <button
+    mat-icon-button style="margin-bottom: 5px !important;"
+    [matMenuTriggerFor]="accountMenu"
+    class="topbar-button-right img-button"
+  >
+    <!-- <img src="assets/images/logo.jpg" alt="" /> -->
+    <!-- <img style="width: 42px;height: 41px;" src="assets/images/assetrak/USER.png" alt="" /> -->
+    <img style="width: 42px;height: 41px;" src="assets/images/assetrak/USER1.png" alt="" />
+    
+  </button>
+
+ 
+  <mat-menu #accountMenu="matMenu">
+ 
+    <!-- <button style="height: 110px; width: 250px;" aria-haspopup="true" mat-icon-button="" class="mat-menu-trigger topbar-button-right img-button mat-icon-button mat-button-base"
+      ng-reflect-menu="[object Object]"> -->
+      <!-- <button  aria-haspopup="true" mat-icon-button="" class="mat-menu-trigger topbar-button-right img-button mat-icon-button mat-button-base"
+      ng-reflect-menu="[object Object]">
+     <span class="mat-button-wrapper imgClass"><img src="assets/images/sq-face-220.jpg" alt=""> </span>
+     <span style="padding-left:20px;">Komal Patil</span>
+      <div matripple="" class="mat-ripple mat-button-ripple mat-button-ripple-round" ng-reflect-disabled="false"
+        ng-reflect-centered="true" ng-reflect-trigger="[object HTMLButtonElement]">
+      </div>
+      <div class="mat-button-focus-overlay"></div>
+    </button> -->
+    <mat-list _ngcontent-orn-c466="" style="height: 60px; width: 250px;" class="mat-list mat-list-base compact-list mb-16">
+      <mat-list-item _ngcontent-orn-c466="" class="mat-list-item mat-focus-indicator mat-list-item-avatar mat-list-item-with-avatar ng-star-inserted">
+        <div class="mat-list-item-content" style="flex-direction: row; box-sizing: border-box; display: flex;width: 100%;">
+          <div mat-ripple="" class="mat-ripple mat-list-item-ripple">
+
+          </div>
+          <div class="mat-list-text">
+
+          </div>
+          
+            <div _ngcontent-orn-c466="" fxflex="100" style="flex: 1 1 100%; box-sizing: border-box; max-width: 100%;">{{Name}}</div>
+            <span _ngcontent-orn-c466="" fxflex="" style="flex: 1 1 0%; box-sizing: border-box;"></span>
+      
+      </div>
+    </mat-list-item>
+  
+   </mat-list>
+    
+    <mat-divider></mat-divider>
+    
+    <!-- <button mat-menu-item>
+      <mat-icon>settings</mat-icon>
+      <span>Go To Admin Panel</span>
+    </button> -->
+    <!-- <button mat-menu-item (click)="jwtAuth.GotoNotification()">
+      <mat-icon>exit_to_app</mat-icon>
+      <span>Go To Notification</span>
+    </button> -->
+    <button mat-menu-item routerLink="/sessions/selectGRC">
+      <mat-icon>change_circle</mat-icon>
+      <span>Change {{Headers.CompanyName}}</span>
+    </button>
+    <button mat-menu-item (click)="jwtAuth.signout()" >
+      <mat-icon>exit_to_app</mat-icon>
+      <span>LogOut</span>
+    </button>
+  </mat-menu>
+</mat-toolbar>
+

@@ -1,0 +1,43 @@
+<div class="md-dialog-container" id="applicationTypePopup" cdkDrag cdkDragRootElement=".cdk-overlay-pane">
+  <mat-toolbar  cdkDragHandle class="mat-toolbar"  style="background-color:rgb(12, 48, 87);color:white">
+    <span style="position: relative;left: 40%;">{{data.value==='insert'?'Add':'Edit'}} {{headers.ApplicationType}}</span>
+    <span class="example-spacer"></span>
+    <button mat-icon-button class="example-icon" aria-label="Example icon-button with close icon" (click)="onclosetab()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-toolbar><br><br>
+  <mat-dialog-content >
+    <div class="md-dialog-content">
+<form [formGroup]="dialogForm">
+<div fxLayout="row wrap" fxLayout.lt-sm="column">
+ <div fxFlex="50"  class="pr-1">
+    <mat-form-field class="full-width">
+      <input matInput placeholder="{{headers.ApplicationType}} Code" id="applicationTypeCode" [formControl]="dialogForm.controls['ApplicationTypeCode']" autocomplete="off" maxlength="40">
+    </mat-form-field>
+  </div>
+  <div fxFlex="50"  class="pr-1">
+     <mat-form-field class="full-width">
+      <mat-label class="label asterisk_input">{{headers.ApplicationType}} Name</mat-label>
+      <input matInput id="applicationName" [formControl]="dialogForm.controls['ApplicationTypeName']" autocomplete="off" maxlength="50">
+      <mat-error *ngIf="submitted || f.ApplicationTypeName.errors || f.ApplicationTypeName.dirty || f.ApplicationTypeName.touched || f.ApplicationTypeName.hasError('whitespace')">
+        <span *ngIf="f.ApplicationTypeName.errors?.required || f.ApplicationTypeName.hasError('whitespace')">{{headers.ApplicationType}} Name is required </span>
+      </mat-error>
+    </mat-form-field>
+   </div>
+  <div fxFlex="100" class="mt-1" style="padding-bottom: 20px;">
+    <button  class="btn" mat-raised-button class="success" style="float: right;" id="createAppTypeBtn" *ngIf="data.value =='insert'"  (click)="onSubmit()" [disabled]="dialogForm.invalid"><mat-icon>check</mat-icon>Add {{headers.ApplicationType}}</button>
+
+  <button mat-raised-button class="success" style="float:right !important;" *ngIf="data.value !='insert'" [disabled]="dialogForm.invalid"  (click)="onSubmit()">
+    <mat-icon>check</mat-icon> Save</button>
+  
+    <!--<span fxFlex></span>
+    <button style="margin-left: 2%" class="btn" mat-raised-button color="warn" id="cancel" type="button" (click)="onclosetab()">Cancel</button>-->
+  </div>
+</div>
+</form>
+</div>
+</mat-dialog-content>
+</div>
+
+
+

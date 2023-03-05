@@ -1,0 +1,131 @@
+
+.black{
+    background-color: #3f4e62 !important;
+    }
+    
+    .matCardContent{
+    height: 185px !important;
+    
+    }
+    
+    .mat-list mat-list-item .mat-list-item-content
+    {
+    
+        font-size:14px !important;
+    }
+    .mat-list-base .mat-list-item
+    {
+    
+        height: 40px !important;
+    }
+    
+    .forlabel{
+    
+        font-size: 16px !important;
+        font-weight: 600;
+    }
+    
+    .signup4-form {
+        padding: 35px;
+        padding-bottom: 12px !important;
+        padding-top: 10px !important;
+    }
+    .mat-list-item::selection
+    {
+    
+     background-color: lightgray;
+    }
+    
+    :host ::ng-deep .mat-tab-group.mat-primary .mat-ink-bar
+    {
+    
+      background-color: #e67e4a !important;
+    }
+    :host ::ng-deep .mat-tab-label .mat-tab-label-content {
+        display: inline-flex;
+        justify-content: center;
+        align-items: center;
+        white-space: nowrap;
+        font-size: 16px !important;
+        font-weight: 600;
+        /* color: black !important; */
+        color: #008bd0 !important;
+    }
+    
+    :host ::ng-deep .cdk-focused .cdk-mouse-focused
+    {
+    
+        color: black !important;
+    }
+    
+    :host ::ng-deep  .mat-ink-bar {
+        height: 3px !important;
+      }
+    
+      .tableStyle{
+    
+        width:100% !important;
+      }
+    
+      .mat-row, .mat-header-row {
+       
+        white-space: nowrap;
+        height: 35px !important;
+       
+      }
+    
+      :host ::ng-deep td.mat-cell
+      {
+    
+        border-bottom-color:white !important;
+      }
+    
+      td.mat-cell:first-of-type
+      {
+    
+        padding-left: 50px !important;
+      }
+    
+      .example-container {
+        display: flex;
+        flex-direction: column;
+        flex-basis: 300px;
+        box-shadow:0 0 black;
+        max-height: 280px !important;
+      
+        background-color: rgba(255, 255, 255, 0.959);
+        overflow: auto !important;   
+        width:100%;
+        margin-top: 11px !important;
+        font-weight: 500;
+      }
+    
+      :host ::ng-deep .mat-row.hovered {
+        background: #eee !important;
+    }
+    
+    :host ::ng-deep .mat-row.highlighted {
+      /* background: #999 !important; */
+      /* background: lightslategrey; */
+    
+      background-color: rgba(0, 0, 1, 0.2) !important;
+      font-weight: bold;
+    }
+    
+    .upload-wrapper {
+      width: 250px;
+      height: 280px;
+    cursor:pointer;
+    }
+    
+    :host ::ng-deep .mat-tab-label {
+     
+      /* opacity: .6; */
+      opacity: 1 !important;
+      min-width: 159px !important;
+      
+    }
+    .success {
+      background-color: green;
+      color: white;
+    }

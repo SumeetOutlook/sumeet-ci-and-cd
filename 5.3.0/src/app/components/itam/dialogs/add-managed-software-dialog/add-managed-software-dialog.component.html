@@ -1,0 +1,31 @@
+<div class="md-dialog-container" cdkDrag cdkDragRootElement=".cdk-overlay-pane">
+    <mat-toolbar  cdkDragHandle class="mat-toolbar" style="background-color:rgb(12, 48, 87);color:white">
+      <span style="position: relative;">Add Managed Software</span>
+      <span class="example-spacer"></span>
+      <button mat-icon-button class="example-icon" aria-label="Example icon-button with close icon"
+        (click)="dialogRef.close(false)">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-toolbar><br><br>
+    <mat-dialog-content>     
+      <form [formGroup]="dialogForm" class="mt-8">
+        <div fxLayout="row wrap">
+          <div fxFlex="100" fxFlex.gt-xs="100" class="pr-1">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label" style="font-size: 15px !important;">UnManaged Software List</mat-label>
+              <mat-select formControlName="unmanagedSoftwareCtrl" class="bg-transparente">
+                <mat-option *ngFor="let type of unmanagedSoftwareList" [value]="type.SoftwareId" >
+                  {{type.SoftwareName}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>  
+          <div fxFlex="100" fxFlex.gt-xs="100" class="pr-1">
+            <button mat-raised-button class="success" [disabled]="dialogForm.invalid" (click)="Submit()">
+              <mat-icon>check</mat-icon>Save
+            </button>
+          </div>          
+        </div>
+      </form>      
+    </mat-dialog-content>
+  </div>

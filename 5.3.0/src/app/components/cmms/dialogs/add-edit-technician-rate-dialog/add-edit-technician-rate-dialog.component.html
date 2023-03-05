@@ -1,0 +1,148 @@
+<div class="md-dialog-container" cdkDrag cdkDragRootElement=".cdk-overlay-pane">
+    <mat-toolbar  cdkDragHandle class="mat-toolbar" style="background-color:rgb(12, 48, 87);color:white">
+      <span>{{data.value==='insert'?'Edit':'Add'}} Technician</span>
+      <span class="example-spacer"></span>
+      <button mat-icon-button class="example-icon" aria-label="Example icon-button with close icon"
+        (click)="onclosetab()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-toolbar>
+    <div mat-dialog-content class="p-1 m-0">
+  
+      <form [formGroup]="dialogSBUForm" (ngSubmit)="onSubmit()">
+        <div fxLayout="row wrap" fxLayout.lt-sm="column">
+  
+          <div fxFlex="100" [fxFlex.gt-xs]="typeVal == 'By User'?'50':'100'" class="pr-1">
+            <mat-form-field class="formfield full-width" color="primary">
+              <mat-select disableOptionCentering [(ngModel)]="typeVal" [ngModelOptions]="{standalone: true}"
+                placeholder="Type" [multiple]="false" #singleSelect>
+                <mat-option>
+                  <ngx-mat-select-search [placeholderLabel]="'Search'">
+                  </ngx-mat-select-search>
+                </mat-option>
+                <!-- <mat-option value="" [disabled]="!!cityMultiCtrl"> {{Headers.All}} </mat-option>
+                <div class="select-all">
+                  <mat-checkbox [checked]="cityMultiCtrl.length === ListOfSBU.length ? true : false"
+                    [indeterminate]="cityMultiCtrl.length < ListOfSBU.length ? true : false"
+                    (change)="toggleSelectAllCity($event)"Select All</mat-checkbox>
+                </div> -->
+                <mat-option *ngFor="let type of types" [value]="type">
+                  {{type}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+          <div fxFlex="100" fxFlex.gt-xs="50" class="pr-1" *ngIf="typeVal === 'By User'">
+            <mat-form-field class="formfield full-width" color="primary">
+              <mat-select disableOptionCentering [(ngModel)]="userVal" [ngModelOptions]="{standalone: true}"
+                placeholder="User Name" [multiple]="false" #singleSelect>
+                <mat-option>
+                  <ngx-mat-select-search [placeholderLabel]="'Search'">
+                  </ngx-mat-select-search>
+                </mat-option>
+                <!-- <mat-option value="" [disabled]="!!cityMultiCtrl"> {{Headers.All}} </mat-option>
+                <div class="select-all">
+                  <mat-checkbox [checked]="cityMultiCtrl.length === ListOfSBU.length ? true : false"
+                    [indeterminate]="cityMultiCtrl.length < ListOfSBU.length ? true : false"
+                    (change)="toggleSelectAllCity($event)">Select All</mat-checkbox>
+                </div> -->
+                <mat-option *ngFor="let user of UserData" [value]="user">
+                  {{user.UserName}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+              <!-- <div fxFlex="100" class="pr-1">
+                <mat-form-field class="full-width">
+                  <input matInput name="sbuName" [formControl]="dialogSBUForm.controls['sbuName']" placeholder="Value"
+                    autocomplete="off" required maxlength="50">
+                  <mat-error *ngIf="submitted || f1.sbuName.errors || f1.sbuName.dirty || f1.sbuName.touched || f1.sbuName.hasError('whitespace')">
+                    <span *ngIf="f1.sbuName.errors?.required || f1.sbuName.hasError('whitespace')">Value is required </span>
+                  </mat-error>
+                </mat-form-field>
+              </div> -->
+
+              <!-- <div fxFlex="50" class="pr-1">
+                <mat-form-field class="full-width">
+                  <input matInput name="sbuName" [formControl]="dialogSBUForm.controls['sbuName']" placeholder="Start time"
+                    autocomplete="off" required maxlength="50">
+                  <mat-error *ngIf="submitted || f1.sbuName.errors || f1.sbuName.dirty || f1.sbuName.touched || f1.sbuName.hasError('whitespace')">
+                    <span *ngIf="f1.sbuName.errors?.required || f1.sbuName.hasError('whitespace')">Start Time is required </span>
+                  </mat-error>
+                </mat-form-field>
+              </div> -->
+
+              <div fxFlex="50"  class="pr-1">
+        
+                <mat-form-field class="full-width" >
+                  <mat-label class="label">Start Date</mat-label>
+                  <input matInput [matDatepicker]="picker2" (click)="picker2.open();"   name="freezeStartDate" 
+                  [formControl]="dialogSBUForm.controls['sbuName']" autocomplete="off">
+                  <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                  <mat-datepicker #picker2 ></mat-datepicker>
+                </mat-form-field>
+              
+            
+              </div>
+
+              <!-- <div fxFlex="50" class="pr-1">
+                <mat-form-field class="full-width">
+                  <input matInput name="sbuName" [formControl]="dialogSBUForm.controls['sbuName']" placeholder="End Time"
+                    autocomplete="off" required maxlength="50">
+                  <mat-error *ngIf="submitted || f1.sbuName.errors || f1.sbuName.dirty || f1.sbuName.touched || f1.sbuName.hasError('whitespace')">
+                    <span *ngIf="f1.sbuName.errors?.required || f1.sbuName.hasError('whitespace')">Part Name is required </span>
+                  </mat-error>
+                </mat-form-field>
+              </div> -->
+
+              <!-- <div fxFlex="50" class="pr-1">
+                <mat-form-field class="full-width">
+                  <input matInput name="sbuName" [formControl]="dialogSBUForm.controls['sbuName']" placeholder="End Date"
+                    autocomplete="off" required maxlength="50">
+                  <mat-error *ngIf="submitted || f1.sbuName.errors || f1.sbuName.dirty || f1.sbuName.touched || f1.sbuName.hasError('whitespace')">
+                    <span *ngIf="f1.sbuName.errors?.required || f1.sbuName.hasError('whitespace')">Part Name is required </span>
+                  </mat-error>
+                </mat-form-field>
+              </div> -->
+
+              <div fxFlex="50" class="pr-1">
+                <mat-form-field class="full-width">
+                  <input matInput name="sbuName" [formControl]="dialogSBUForm.controls['sbuName']" placeholder="Rate"
+                    autocomplete="off" required maxlength="50">
+                  <mat-error *ngIf="submitted || f1.sbuName.errors || f1.sbuName.dirty || f1.sbuName.touched || f1.sbuName.hasError('whitespace')">
+                    <span *ngIf="f1.sbuName.errors?.required || f1.sbuName.hasError('whitespace')">Part Name is required </span>
+                  </mat-error>
+                </mat-form-field>
+              </div>
+
+              <div fxFlex="100" class="pr-1">
+                <mat-form-field class="full-width">
+                  <input matInput name="sbuName" [formControl]="dialogSBUForm.controls['sbuName']" placeholder="Unit"
+                    autocomplete="off" required maxlength="50">
+                  <mat-error *ngIf="submitted || f1.sbuName.errors || f1.sbuName.dirty || f1.sbuName.touched || f1.sbuName.hasError('whitespace')">
+                    <span *ngIf="f1.sbuName.errors?.required || f1.sbuName.hasError('whitespace')">Part Name is required </span>
+                  </mat-error>
+                </mat-form-field>
+              </div>
+
+          <!-- <div fxFlex="100" class="pr-1">
+            <mat-form-field class="full-width">
+              <input matInput name="sbuName" [formControl]="dialogSBUForm.controls['sbuName']" placeholder="Specs"
+                autocomplete="off" required maxlength="50">
+              <mat-error *ngIf="submitted || f1.sbuName.errors || f1.sbuName.dirty || f1.sbuName.touched || f1.sbuName.hasError('whitespace')">
+                <span *ngIf="f1.sbuName.errors?.required || f1.sbuName.hasError('whitespace')">Specs is required </span>
+              </mat-error>
+            </mat-form-field>
+          </div> -->
+
+          <div fxFlex="100" class="mt-1">
+            <button mat-raised-button class="success" style="float:right !important;" 
+              [disabled]="dialogSBUForm.invalid"><mat-icon>check</mat-icon>Add Technician</button>
+  
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>

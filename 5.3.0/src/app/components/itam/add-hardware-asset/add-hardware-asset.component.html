@@ -1,0 +1,620 @@
+<h3><strong style=" color:#008bd0 !important;">{{menuheader['Add Hardware Asset']}}</strong> </h3>
+
+<mat-tab-group animationDuration="200ms" (selectedTabChange)="tabChanged($event)">
+  <mat-tab label="{{header.Manual}}" style="color: black !important;">
+    <form [formGroup]="AssetInfo" class="mt-16">
+      <div fxLayout="row wrap" fxLayout.lt-sm="column" class="formscroll mt-12" style="margin-bottom: -8px !important;">
+        <!-- <div fxFlex="15" class="pr-1 full">
+              <mat-form-field class="full-width" appearance="outline">
+                <mat-label class="label" style="font-size: 15px !important;">{{header.InventoryNumber}} <span *ngIf="UploadNameBy != 'GRNNo'" style="color: red;">*</span> </mat-label>
+                <input matInput name="InventoryNo" maxlength="30" [formControl]="AssetInfo.controls['InventoryNo']"
+                  class="bg-transparente" autocomplete="off">
+              </mat-form-field>
+            </div> -->
+            <div fxFlex="25" class="pr-1" *ngIf="displayedColumns1.indexOf('InventoryNo') > -1">
+              <mat-form-field class="full-width" appearance="outline">
+                <mat-label class="label">{{header.InventoryNo}} <span *ngIf="mandatoryFields.indexOf('InventoryNo') > -1" style="color: red;">*</span> </mat-label>
+                <input matInput maxlength="45"  [formControl]="AssetInfo.controls['InventoryNo']" autocomplete="off">
+                  <mat-error *ngIf="submitted || f1.InventoryNo.errors || f1.InventoryNo.dirty || f1.InventoryNo.touched">
+                    <span *ngIf="f1.InventoryNo.errors?.required">{{header.InventoryNo}} is required</span>
+                  </mat-error>
+              </mat-form-field>
+            </div>
+            <div fxFlex="25" class="pr-1" *ngIf="displayedColumns1.indexOf('AssetId') > -1">
+              <mat-form-field class="full-width" appearance="outline">
+                <mat-label class="label">{{header.AssetId}} <span *ngIf="mandatoryFields.indexOf('AssetId') > -1" style="color: red;">*</span> </mat-label>
+                <input matInput maxlength="45"  [formControl]="AssetInfo.controls['AssetId']" autocomplete="off">
+                  <mat-error *ngIf="submitted || f1.AssetId.errors || f1.AssetId.dirty || f1.AssetId.touched">
+                    <span *ngIf="f1.AssetId.errors?.required">{{header.AssetId}} is required</span>
+                  </mat-error>
+              </mat-form-field>
+            </div>
+            <div fxFlex="25" class="pr-1" *ngIf="displayedColumns1.indexOf('SubAssetId') > -1">
+              <mat-form-field class="full-width" appearance="outline">
+                <mat-label class="label">{{header.SubAssetId}} <span *ngIf="mandatoryFields.indexOf('SubAssetId') > -1" style="color: red;">*</span> </mat-label>
+                <input matInput maxlength="45"  [formControl]="AssetInfo.controls['SubAssetId']" autocomplete="off">
+                  <mat-error *ngIf="submitted || f1.SubAssetId.errors || f1.SubAssetId.dirty || f1.SubAssetId.touched">
+                    <span *ngIf="f1.SubAssetId.errors?.required">{{header.SubAssetId}} is required</span>
+                  </mat-error>
+              </mat-form-field>
+            </div>
+        <div fxFlex="25" class="pr-1" *ngIf="displayedColumns1.indexOf('Unit') > -1">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label class="label">{{header.UOM}} <span *ngIf="mandatoryFields.indexOf('Unit') > -1" style="color: red;">*</span> </mat-label>
+            <mat-select disableOptionCentering Unit="Unit" [formControl]="AssetInfo.controls['Unit']">
+              <mat-option>
+                <ngx-mat-select-search [placeholderLabel]="'Search'" noEntriesFoundLabel="{{header.NoRecordFound}}" [formControl]="AssetInfo.controls['uomFilter']">
+                </ngx-mat-select-search>
+              </mat-option>
+              <mat-option [value]=""> {{header.Select}} </mat-option>
+              <mat-option *ngFor="let uom of filteredUOM | async" [value]="uom">
+                {{uom.Unit_Name}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>
+        <div fxFlex="25" class="pr-1" *ngIf="displayedColumns1.indexOf('Quantity') > -1">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label class="label">{{header.Quantity}} <span *ngIf="mandatoryFields.indexOf('Quantity') > -1" style="color: red;">*</span> </mat-label>
+            <input matInput name="Quantity" maxlength="17" [formControl]="AssetInfo.controls['Quantity']"
+              [pattern]="decimalNumericPattern" maxlength="17" autocomplete="off">
+            <mat-error *ngIf="submitted || f1.Quantity.errors || f1.Quantity.dirty || f1.Quantity.touched">
+              <span *ngIf="f1.Quantity.errors?.required">{{header.Quantity}} is required</span>
+            <span *ngIf="f1.Quantity.errors?.pattern">{{header.Quantity}} should be with 13 digits with max 3 decimals</span>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div fxFlex="25" class="pr-1" *ngIf="displayedColumns1.indexOf('AcquisitionDate') > -1">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label class="label">{{header.AcquisitionDate}} <span *ngIf="mandatoryFields.indexOf('AcquisitionDate') > -1" style="color: red;">*</span></mat-label>
+            <input (dateChange)="calculateExpiaryDateWithUsefullife(AssetInfo.controls['AcquisitionDate'],AssetInfo.controls['UsefulLife'])" matInput [matDatepicker]="picker3" [formControl]="AssetInfo.controls['AcquisitionDate']"
+            [max]="today"     (dateChange)="acqnAndexpiaryDateValidation()" autocomplete="off">
+            <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+            <mat-error
+              *ngIf="submitted || f1.AcquisitionDate.errors || f1.AcquisitionDate.dirty || f1.AcquisitionDate.touched">
+              <span *ngIf="f1.AcquisitionDate.errors?.required">{{header.AcquisitionDate}} is required</span>
+            </mat-error>
+          </mat-form-field>
+          <mat-datepicker #picker3></mat-datepicker>
+        </div>     
+        <div fxFlex="25" class="pr-1" *ngIf="displayedColumns1.indexOf('GRNNo') > -1">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label class="label">{{header.GRNNo}} <span *ngIf="UploadNameBy == 'GRNNo' && mandatoryFields.indexOf('GRNNo') > -1" style="color: red;">*</span>
+            </mat-label>
+            <input matInput maxlength="30"  (change)="CheckGRNWithVendor()" [formControl]="AssetInfo.controls['GRNNo']" autocomplete="off">
+              <mat-error *ngIf="submitted || f1.GRNNo.errors || f1.GRNNo.dirty || f1.GRNNo.touched">
+                <span *ngIf="f1.GRNNo.errors?.required">{{header.GRNNo}} is required</span>
+              </mat-error>
+          </mat-form-field>
+        </div>
+        <div fxFlex="25" class="pr-1" *ngIf="displayedColumns1.indexOf('PONumber') > -1">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label class="label">{{header.PONumber}} <span *ngIf="mandatoryFields.indexOf('PONumber') > -1" style="color: red;">*</span> </mat-label>
+            <input matInput maxlength="45"  [formControl]="AssetInfo.controls['PONumber']" autocomplete="off">
+              <mat-error *ngIf="submitted || f1.PONumber.errors || f1.PONumber.dirty || f1.PONumber.touched">
+                <span *ngIf="f1.PONumber.errors?.required">{{header.PONumber}} is required</span>
+              </mat-error>
+          </mat-form-field>
+        </div>
+        <div fxFlex="25" class="pr-1" *ngIf="displayedColumns1.indexOf('SerialNo') > -1">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label class="label">{{header.SerialNo}} <span *ngIf="mandatoryFields.indexOf('SerialNo') > -1" style="color: red;">*</span> </mat-label>
+            <input matInput maxlength="30"  [formControl]="AssetInfo.controls['SerialNo']" autocomplete="off">
+            <mat-error *ngIf="submitted || f1.SerialNo.errors || f1.SerialNo.dirty || f1.SerialNo.touched">
+              <span *ngIf="f1.SerialNo.errors?.required">{{header.SerialNo}} is required</span>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        
+        <div fxFlex="25" class="pr-1" *ngIf="displayedColumns1.indexOf('ITSerialNo') > -1">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label class="label">{{header.ITSerialNo}} <span *ngIf="mandatoryFields.indexOf('ITSerialNo') > -1" style="color: red;">*</span> </mat-label>
+            <input matInput maxlength="50" [formControl]="AssetInfo.controls['ITSerialNo']" autocomplete="off">
+            <mat-error *ngIf="submitted || f1.ITSerialNo.errors || f1.ITSerialNo.dirty || f1.ITSerialNo.touched">
+              <span *ngIf="f1.ITSerialNo.errors?.required">{{header.ITSerialNo}} is required</span>
+            </mat-error>
+          </mat-form-field>
+        </div>
+        <div fxFlex="25" class="pr-1" *ngIf="displayedColumns1.indexOf('equipmentNo') > -1">
+            <mat-form-field class="full-width" appearance="outline">
+              <mat-label class="label">{{header.EquipmentNumber}} <span *ngIf="mandatoryFields.indexOf('equipmentNo') > -1" style="color: red;">*</span> </mat-label>
+              <input matInput maxlength="20" [formControl]="AssetInfo.controls['equipmentNo']" autocomplete="off">
+              <mat-error *ngIf="submitted || f1.equipmentNo.errors || f1.equipmentNo.dirty || f1.equipmentNo.touched">
+                <span *ngIf="f1.equipmentNo.errors?.required">{{header.equipmentNo}} is required</span>
+              </mat-error>
+            </mat-form-field>
+        </div>
+
+        <div fxFlex="25" class="pr-1" *ngIf="displayedColumns1.indexOf('Location') > -1">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label class="label">{{header.Location}} <span *ngIf="mandatoryFields.indexOf('Location') > -1" style="color: red;">*</span> </mat-label>
+            <mat-select disableOptionCentering AssetLocation="Location" [formControl]="AssetInfo.controls['Location']">
+              <mat-option>
+                <ngx-mat-select-search [placeholderLabel]="'Search'" [formControl]="AssetInfo.controls['plantFilter']" noEntriesFoundLabel="{{header.NoRecordFound}}">
+                </ngx-mat-select-search>
+              </mat-option>
+              <mat-option [value]="" (click)="bindSubLocation('') "> {{header.Select}}  </mat-option>
+              <mat-option *ngFor="let plant of filteredPlant | async" (click)="bindSubLocation(plant)" [value]="plant">
+                {{plant.LocationName}}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="submitted || f1.Location.errors || f1.Location.dirty || f1.Location.touched">
+              <span *ngIf="f1.Location.errors?.required">{{header.Location}} is required</span>
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+    </form>
+
+    <!-- <button class="btn success" mat-raised-button [disabled]="this.AssetInfo.invalid"
+      (click)="nextStep(1);"><mat-icon>skip_next</mat-icon> Next</button>
+    <button mat-raised-button  class="btn warn" (click)="onBack()">Exit</button> -->
+    <mat-tab-group animationDuration="200ms"  (selectedTabChange)="tabChanged($event)">
+      <mat-tab label="Installation Details" style="color: black !important;">
+        <form [formGroup]="AssetInfo" class="mt-16">
+          <div fxLayout="row wrap" fxLayout.lt-sm="column" class="formscroll mt-12" style="margin-bottom: -8px !important;">
+            <!-- <div fxFlex="15" class="pr-1 full">
+                  <mat-form-field class="full-width" appearance="outline">
+                    <mat-label class="label" style="font-size: 15px !important;">{{header.InventoryNumber}} <span *ngIf="UploadNameBy != 'GRNNo'" style="color: red;">*</span> </mat-label>
+                    <input matInput name="InventoryNo" maxlength="30" [formControl]="AssetInfo.controls['InventoryNo']"
+                      class="bg-transparente" autocomplete="off">
+                  </mat-form-field>
+                </div> -->
+                <div fxFlex="25" class="pr-1" *ngIf="displayedColumns1.indexOf('InventoryNo') > -1">
+                  <mat-form-field class="full-width" appearance="outline">
+                    <mat-label class="label">{{header.InventoryNo}} <span *ngIf="mandatoryFields.indexOf('InventoryNo') > -1" style="color: red;">*</span> </mat-label>
+                    <input matInput maxlength="45"  [formControl]="AssetInfo.controls['InventoryNo']" autocomplete="off">
+                      <mat-error *ngIf="submitted || f1.InventoryNo.errors || f1.InventoryNo.dirty || f1.InventoryNo.touched">
+                        <span *ngIf="f1.InventoryNo.errors?.required">{{header.InventoryNo}} is required</span>
+                      </mat-error>
+                  </mat-form-field>
+                </div>
+                <div fxFlex="25" class="pr-1" *ngIf="displayedColumns1.indexOf('AssetId') > -1">
+                  <mat-form-field class="full-width" appearance="outline">
+                    <mat-label class="label">{{header.AssetId}} <span *ngIf="mandatoryFields.indexOf('AssetId') > -1" style="color: red;">*</span> </mat-label>
+                    <input matInput maxlength="45"  [formControl]="AssetInfo.controls['AssetId']" autocomplete="off">
+                      <mat-error *ngIf="submitted || f1.AssetId.errors || f1.AssetId.dirty || f1.AssetId.touched">
+                        <span *ngIf="f1.AssetId.errors?.required">{{header.AssetId}} is required</span>
+                      </mat-error>
+                  </mat-form-field>
+                </div>
+                <div fxFlex="25" class="pr-1" *ngIf="displayedColumns1.indexOf('SubAssetId') > -1">
+                  <mat-form-field class="full-width" appearance="outline">
+                    <mat-label class="label">{{header.SubAssetId}} <span *ngIf="mandatoryFields.indexOf('SubAssetId') > -1" style="color: red;">*</span> </mat-label>
+                    <input matInput maxlength="45"  [formControl]="AssetInfo.controls['SubAssetId']" autocomplete="off">
+                      <mat-error *ngIf="submitted || f1.SubAssetId.errors || f1.SubAssetId.dirty || f1.SubAssetId.touched">
+                        <span *ngIf="f1.SubAssetId.errors?.required">{{header.SubAssetId}} is required</span>
+                      </mat-error>
+                  </mat-form-field>
+                </div>
+            <div fxFlex="25" class="pr-1" *ngIf="displayedColumns1.indexOf('Unit') > -1">
+              <mat-form-field class="full-width" appearance="outline">
+                <mat-label class="label">{{header.UOM}} <span *ngIf="mandatoryFields.indexOf('Unit') > -1" style="color: red;">*</span> </mat-label>
+                <mat-select disableOptionCentering Unit="Unit" [formControl]="AssetInfo.controls['Unit']">
+                  <mat-option>
+                    <ngx-mat-select-search [placeholderLabel]="'Search'" noEntriesFoundLabel="{{header.NoRecordFound}}" [formControl]="AssetInfo.controls['uomFilter']">
+                    </ngx-mat-select-search>
+                  </mat-option>
+                  <mat-option [value]=""> {{header.Select}} </mat-option>
+                  <mat-option *ngFor="let uom of filteredUOM | async" [value]="uom">
+                    {{uom.Unit_Name}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div fxFlex="25" class="pr-1" *ngIf="displayedColumns1.indexOf('Quantity') > -1">
+              <mat-form-field class="full-width" appearance="outline">
+                <mat-label class="label">{{header.Quantity}} <span *ngIf="mandatoryFields.indexOf('Quantity') > -1" style="color: red;">*</span> </mat-label>
+                <input matInput name="Quantity" maxlength="17" [formControl]="AssetInfo.controls['Quantity']"
+                  [pattern]="decimalNumericPattern" maxlength="17" autocomplete="off">
+                <mat-error *ngIf="submitted || f1.Quantity.errors || f1.Quantity.dirty || f1.Quantity.touched">
+                  <span *ngIf="f1.Quantity.errors?.required">{{header.Quantity}} is required</span>
+                <span *ngIf="f1.Quantity.errors?.pattern">{{header.Quantity}} should be with 13 digits with max 3 decimals</span>
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div fxFlex="25" class="pr-1" *ngIf="displayedColumns1.indexOf('AcquisitionDate') > -1">
+              <mat-form-field class="full-width" appearance="outline">
+                <mat-label class="label">{{header.AcquisitionDate}} <span *ngIf="mandatoryFields.indexOf('AcquisitionDate') > -1" style="color: red;">*</span></mat-label>
+                <input (dateChange)="calculateExpiaryDateWithUsefullife(AssetInfo.controls['AcquisitionDate'],AssetInfo.controls['UsefulLife'])" matInput [matDatepicker]="picker3" [formControl]="AssetInfo.controls['AcquisitionDate']"
+                [max]="today"     (dateChange)="acqnAndexpiaryDateValidation()" autocomplete="off">
+                <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+                <mat-error
+                  *ngIf="submitted || f1.AcquisitionDate.errors || f1.AcquisitionDate.dirty || f1.AcquisitionDate.touched">
+                  <span *ngIf="f1.AcquisitionDate.errors?.required">{{header.AcquisitionDate}} is required</span>
+                </mat-error>
+              </mat-form-field>
+              <mat-datepicker #picker3></mat-datepicker>
+            </div>     
+            <div fxFlex="25" class="pr-1" *ngIf="displayedColumns1.indexOf('GRNNo') > -1">
+              <mat-form-field class="full-width" appearance="outline">
+                <mat-label class="label">{{header.GRNNo}} <span *ngIf="UploadNameBy == 'GRNNo' && mandatoryFields.indexOf('GRNNo') > -1" style="color: red;">*</span>
+                </mat-label>
+                <input matInput maxlength="30"  (change)="CheckGRNWithVendor()" [formControl]="AssetInfo.controls['GRNNo']" autocomplete="off">
+                  <mat-error *ngIf="submitted || f1.GRNNo.errors || f1.GRNNo.dirty || f1.GRNNo.touched">
+                    <span *ngIf="f1.GRNNo.errors?.required">{{header.GRNNo}} is required</span>
+                  </mat-error>
+              </mat-form-field>
+            </div>
+            <div fxFlex="25" class="pr-1" *ngIf="displayedColumns1.indexOf('PONumber') > -1">
+              <mat-form-field class="full-width" appearance="outline">
+                <mat-label class="label">{{header.PONumber}} <span *ngIf="mandatoryFields.indexOf('PONumber') > -1" style="color: red;">*</span> </mat-label>
+                <input matInput maxlength="45"  [formControl]="AssetInfo.controls['PONumber']" autocomplete="off">
+                  <mat-error *ngIf="submitted || f1.PONumber.errors || f1.PONumber.dirty || f1.PONumber.touched">
+                    <span *ngIf="f1.PONumber.errors?.required">{{header.PONumber}} is required</span>
+                  </mat-error>
+              </mat-form-field>
+            </div>
+            <div fxFlex="25" class="pr-1" *ngIf="displayedColumns1.indexOf('SerialNo') > -1">
+              <mat-form-field class="full-width" appearance="outline">
+                <mat-label class="label">{{header.SerialNo}} <span *ngIf="mandatoryFields.indexOf('SerialNo') > -1" style="color: red;">*</span> </mat-label>
+                <input matInput maxlength="30"  [formControl]="AssetInfo.controls['SerialNo']" autocomplete="off">
+                <mat-error *ngIf="submitted || f1.SerialNo.errors || f1.SerialNo.dirty || f1.SerialNo.touched">
+                  <span *ngIf="f1.SerialNo.errors?.required">{{header.SerialNo}} is required</span>
+                </mat-error>
+              </mat-form-field>
+            </div>
+            
+            <div fxFlex="25" class="pr-1" *ngIf="displayedColumns1.indexOf('ITSerialNo') > -1">
+              <mat-form-field class="full-width" appearance="outline">
+                <mat-label class="label">{{header.ITSerialNo}} <span *ngIf="mandatoryFields.indexOf('ITSerialNo') > -1" style="color: red;">*</span> </mat-label>
+                <input matInput maxlength="50" [formControl]="AssetInfo.controls['ITSerialNo']" autocomplete="off">
+                <mat-error *ngIf="submitted || f1.ITSerialNo.errors || f1.ITSerialNo.dirty || f1.ITSerialNo.touched">
+                  <span *ngIf="f1.ITSerialNo.errors?.required">{{header.ITSerialNo}} is required</span>
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div fxFlex="25" class="pr-1" *ngIf="displayedColumns1.indexOf('equipmentNo') > -1">
+                <mat-form-field class="full-width" appearance="outline">
+                  <mat-label class="label">{{header.EquipmentNumber}} <span *ngIf="mandatoryFields.indexOf('equipmentNo') > -1" style="color: red;">*</span> </mat-label>
+                  <input matInput maxlength="20" [formControl]="AssetInfo.controls['equipmentNo']" autocomplete="off">
+                  <mat-error *ngIf="submitted || f1.equipmentNo.errors || f1.equipmentNo.dirty || f1.equipmentNo.touched">
+                    <span *ngIf="f1.equipmentNo.errors?.required">{{header.equipmentNo}} is required</span>
+                  </mat-error>
+                </mat-form-field>
+            </div>
+    
+         
+          </div>
+        </form>
+    
+        <!-- <button class="btn success" mat-raised-button [disabled]="this.AssetInfo.invalid"
+          (click)="nextStep(1);"><mat-icon>skip_next</mat-icon> Next</button>
+        <button mat-raised-button  class="btn warn" (click)="onBack()">Exit</button> -->
+      </mat-tab>
+      <mat-tab label="User Information" style="color: black !important;">
+        <form [formGroup]="AssetInfo" class="mt-16">
+          <div fxLayout="row wrap" fxLayout.lt-sm="column" class="formscroll mt-12" style="margin-bottom: -8px !important;">
+            <!-- <div fxFlex="15" class="pr-1 full">
+                  <mat-form-field class="full-width" appearance="outline">
+                    <mat-label class="label" style="font-size: 15px !important;">{{header.InventoryNumber}} <span *ngIf="UploadNameBy != 'GRNNo'" style="color: red;">*</span> </mat-label>
+                    <input matInput name="InventoryNo" maxlength="30" [formControl]="AssetInfo.controls['InventoryNo']"
+                      class="bg-transparente" autocomplete="off">
+                  </mat-form-field>
+                </div> -->
+                <div fxFlex="25" class="pr-1" *ngIf="displayedColumns1.indexOf('InventoryNo') > -1">
+                  <mat-form-field class="full-width" appearance="outline">
+                    <mat-label class="label">{{header.InventoryNo}} <span *ngIf="mandatoryFields.indexOf('InventoryNo') > -1" style="color: red;">*</span> </mat-label>
+                    <input matInput maxlength="45"  [formControl]="AssetInfo.controls['InventoryNo']" autocomplete="off">
+                      <mat-error *ngIf="submitted || f1.InventoryNo.errors || f1.InventoryNo.dirty || f1.InventoryNo.touched">
+                        <span *ngIf="f1.InventoryNo.errors?.required">{{header.InventoryNo}} is required</span>
+                      </mat-error>
+                  </mat-form-field>
+                </div>
+                <div fxFlex="25" class="pr-1" *ngIf="displayedColumns1.indexOf('AssetId') > -1">
+                  <mat-form-field class="full-width" appearance="outline">
+                    <mat-label class="label">{{header.AssetId}} <span *ngIf="mandatoryFields.indexOf('AssetId') > -1" style="color: red;">*</span> </mat-label>
+                    <input matInput maxlength="45"  [formControl]="AssetInfo.controls['AssetId']" autocomplete="off">
+                      <mat-error *ngIf="submitted || f1.AssetId.errors || f1.AssetId.dirty || f1.AssetId.touched">
+                        <span *ngIf="f1.AssetId.errors?.required">{{header.AssetId}} is required</span>
+                      </mat-error>
+                  </mat-form-field>
+                </div>
+                <div fxFlex="25" class="pr-1" *ngIf="displayedColumns1.indexOf('SubAssetId') > -1">
+                  <mat-form-field class="full-width" appearance="outline">
+                    <mat-label class="label">{{header.SubAssetId}} <span *ngIf="mandatoryFields.indexOf('SubAssetId') > -1" style="color: red;">*</span> </mat-label>
+                    <input matInput maxlength="45"  [formControl]="AssetInfo.controls['SubAssetId']" autocomplete="off">
+                      <mat-error *ngIf="submitted || f1.SubAssetId.errors || f1.SubAssetId.dirty || f1.SubAssetId.touched">
+                        <span *ngIf="f1.SubAssetId.errors?.required">{{header.SubAssetId}} is required</span>
+                      </mat-error>
+                  </mat-form-field>
+                </div>
+            <div fxFlex="25" class="pr-1" *ngIf="displayedColumns1.indexOf('Unit') > -1">
+              <mat-form-field class="full-width" appearance="outline">
+                <mat-label class="label">{{header.UOM}} <span *ngIf="mandatoryFields.indexOf('Unit') > -1" style="color: red;">*</span> </mat-label>
+                <mat-select disableOptionCentering Unit="Unit" [formControl]="AssetInfo.controls['Unit']">
+                  <mat-option>
+                    <ngx-mat-select-search [placeholderLabel]="'Search'" noEntriesFoundLabel="{{header.NoRecordFound}}" [formControl]="AssetInfo.controls['uomFilter']">
+                    </ngx-mat-select-search>
+                  </mat-option>
+                  <mat-option [value]=""> {{header.Select}} </mat-option>
+                  <mat-option *ngFor="let uom of filteredUOM | async" [value]="uom">
+                    {{uom.Unit_Name}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div fxFlex="25" class="pr-1" *ngIf="displayedColumns1.indexOf('Quantity') > -1">
+              <mat-form-field class="full-width" appearance="outline">
+                <mat-label class="label">{{header.Quantity}} <span *ngIf="mandatoryFields.indexOf('Quantity') > -1" style="color: red;">*</span> </mat-label>
+                <input matInput name="Quantity" maxlength="17" [formControl]="AssetInfo.controls['Quantity']"
+                  [pattern]="decimalNumericPattern" maxlength="17" autocomplete="off">
+                <mat-error *ngIf="submitted || f1.Quantity.errors || f1.Quantity.dirty || f1.Quantity.touched">
+                  <span *ngIf="f1.Quantity.errors?.required">{{header.Quantity}} is required</span>
+                <span *ngIf="f1.Quantity.errors?.pattern">{{header.Quantity}} should be with 13 digits with max 3 decimals</span>
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div fxFlex="25" class="pr-1" *ngIf="displayedColumns1.indexOf('AcquisitionDate') > -1">
+              <mat-form-field class="full-width" appearance="outline">
+                <mat-label class="label">{{header.AcquisitionDate}} <span *ngIf="mandatoryFields.indexOf('AcquisitionDate') > -1" style="color: red;">*</span></mat-label>
+                <input (dateChange)="calculateExpiaryDateWithUsefullife(AssetInfo.controls['AcquisitionDate'],AssetInfo.controls['UsefulLife'])" matInput [matDatepicker]="picker3" [formControl]="AssetInfo.controls['AcquisitionDate']"
+                [max]="today"     (dateChange)="acqnAndexpiaryDateValidation()" autocomplete="off">
+                <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+                <mat-error
+                  *ngIf="submitted || f1.AcquisitionDate.errors || f1.AcquisitionDate.dirty || f1.AcquisitionDate.touched">
+                  <span *ngIf="f1.AcquisitionDate.errors?.required">{{header.AcquisitionDate}} is required</span>
+                </mat-error>
+              </mat-form-field>
+              <mat-datepicker #picker3></mat-datepicker>
+            </div>     
+            <div fxFlex="25" class="pr-1" *ngIf="displayedColumns1.indexOf('GRNNo') > -1">
+              <mat-form-field class="full-width" appearance="outline">
+                <mat-label class="label">{{header.GRNNo}} <span *ngIf="UploadNameBy == 'GRNNo' && mandatoryFields.indexOf('GRNNo') > -1" style="color: red;">*</span>
+                </mat-label>
+                <input matInput maxlength="30"  (change)="CheckGRNWithVendor()" [formControl]="AssetInfo.controls['GRNNo']" autocomplete="off">
+                  <mat-error *ngIf="submitted || f1.GRNNo.errors || f1.GRNNo.dirty || f1.GRNNo.touched">
+                    <span *ngIf="f1.GRNNo.errors?.required">{{header.GRNNo}} is required</span>
+                  </mat-error>
+              </mat-form-field>
+            </div>
+            <div fxFlex="25" class="pr-1" *ngIf="displayedColumns1.indexOf('PONumber') > -1">
+              <mat-form-field class="full-width" appearance="outline">
+                <mat-label class="label">{{header.PONumber}} <span *ngIf="mandatoryFields.indexOf('PONumber') > -1" style="color: red;">*</span> </mat-label>
+                <input matInput maxlength="45"  [formControl]="AssetInfo.controls['PONumber']" autocomplete="off">
+                  <mat-error *ngIf="submitted || f1.PONumber.errors || f1.PONumber.dirty || f1.PONumber.touched">
+                    <span *ngIf="f1.PONumber.errors?.required">{{header.PONumber}} is required</span>
+                  </mat-error>
+              </mat-form-field>
+            </div>
+            <div fxFlex="25" class="pr-1" *ngIf="displayedColumns1.indexOf('SerialNo') > -1">
+              <mat-form-field class="full-width" appearance="outline">
+                <mat-label class="label">{{header.SerialNo}} <span *ngIf="mandatoryFields.indexOf('SerialNo') > -1" style="color: red;">*</span> </mat-label>
+                <input matInput maxlength="30"  [formControl]="AssetInfo.controls['SerialNo']" autocomplete="off">
+                <mat-error *ngIf="submitted || f1.SerialNo.errors || f1.SerialNo.dirty || f1.SerialNo.touched">
+                  <span *ngIf="f1.SerialNo.errors?.required">{{header.SerialNo}} is required</span>
+                </mat-error>
+              </mat-form-field>
+            </div>
+            
+            <div fxFlex="25" class="pr-1" *ngIf="displayedColumns1.indexOf('ITSerialNo') > -1">
+              <mat-form-field class="full-width" appearance="outline">
+                <mat-label class="label">{{header.ITSerialNo}} <span *ngIf="mandatoryFields.indexOf('ITSerialNo') > -1" style="color: red;">*</span> </mat-label>
+                <input matInput maxlength="50" [formControl]="AssetInfo.controls['ITSerialNo']" autocomplete="off">
+                <mat-error *ngIf="submitted || f1.ITSerialNo.errors || f1.ITSerialNo.dirty || f1.ITSerialNo.touched">
+                  <span *ngIf="f1.ITSerialNo.errors?.required">{{header.ITSerialNo}} is required</span>
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div fxFlex="25" class="pr-1" *ngIf="displayedColumns1.indexOf('equipmentNo') > -1">
+                <mat-form-field class="full-width" appearance="outline">
+                  <mat-label class="label">{{header.EquipmentNumber}} <span *ngIf="mandatoryFields.indexOf('equipmentNo') > -1" style="color: red;">*</span> </mat-label>
+                  <input matInput maxlength="20" [formControl]="AssetInfo.controls['equipmentNo']" autocomplete="off">
+                  <mat-error *ngIf="submitted || f1.equipmentNo.errors || f1.equipmentNo.dirty || f1.equipmentNo.touched">
+                    <span *ngIf="f1.equipmentNo.errors?.required">{{header.equipmentNo}} is required</span>
+                  </mat-error>
+                </mat-form-field>
+            </div>
+    
+         
+          </div>
+        </form>
+    
+        <!-- <button class="btn success" mat-raised-button [disabled]="this.AssetInfo.invalid"
+          (click)="nextStep(1);"><mat-icon>skip_next</mat-icon> Next</button>
+        <button mat-raised-button  class="btn warn" (click)="onBack()">Exit</button> -->
+      </mat-tab>
+      <mat-tab label="Insurance/Warranty" style="color: black !important;">
+        <form [formGroup]="AssetInfo" class="mt-16">
+          <div fxLayout="row wrap" fxLayout.lt-sm="column" class="formscroll mt-12" style="margin-bottom: -8px !important;">
+            <!-- <div fxFlex="15" class="pr-1 full">
+                  <mat-form-field class="full-width" appearance="outline">
+                    <mat-label class="label" style="font-size: 15px !important;">{{header.InventoryNumber}} <span *ngIf="UploadNameBy != 'GRNNo'" style="color: red;">*</span> </mat-label>
+                    <input matInput name="InventoryNo" maxlength="30" [formControl]="AssetInfo.controls['InventoryNo']"
+                      class="bg-transparente" autocomplete="off">
+                  </mat-form-field>
+                </div> -->
+                <div fxFlex="25" class="pr-1" *ngIf="displayedColumns1.indexOf('InventoryNo') > -1">
+                  <mat-form-field class="full-width" appearance="outline">
+                    <mat-label class="label">{{header.InventoryNo}} <span *ngIf="mandatoryFields.indexOf('InventoryNo') > -1" style="color: red;">*</span> </mat-label>
+                    <input matInput maxlength="45"  [formControl]="AssetInfo.controls['InventoryNo']" autocomplete="off">
+                      <mat-error *ngIf="submitted || f1.InventoryNo.errors || f1.InventoryNo.dirty || f1.InventoryNo.touched">
+                        <span *ngIf="f1.InventoryNo.errors?.required">{{header.InventoryNo}} is required</span>
+                      </mat-error>
+                  </mat-form-field>
+                </div>
+                <div fxFlex="25" class="pr-1" *ngIf="displayedColumns1.indexOf('AssetId') > -1">
+                  <mat-form-field class="full-width" appearance="outline">
+                    <mat-label class="label">{{header.AssetId}} <span *ngIf="mandatoryFields.indexOf('AssetId') > -1" style="color: red;">*</span> </mat-label>
+                    <input matInput maxlength="45"  [formControl]="AssetInfo.controls['AssetId']" autocomplete="off">
+                      <mat-error *ngIf="submitted || f1.AssetId.errors || f1.AssetId.dirty || f1.AssetId.touched">
+                        <span *ngIf="f1.AssetId.errors?.required">{{header.AssetId}} is required</span>
+                      </mat-error>
+                  </mat-form-field>
+                </div>
+                <div fxFlex="25" class="pr-1" *ngIf="displayedColumns1.indexOf('SubAssetId') > -1">
+                  <mat-form-field class="full-width" appearance="outline">
+                    <mat-label class="label">{{header.SubAssetId}} <span *ngIf="mandatoryFields.indexOf('SubAssetId') > -1" style="color: red;">*</span> </mat-label>
+                    <input matInput maxlength="45"  [formControl]="AssetInfo.controls['SubAssetId']" autocomplete="off">
+                      <mat-error *ngIf="submitted || f1.SubAssetId.errors || f1.SubAssetId.dirty || f1.SubAssetId.touched">
+                        <span *ngIf="f1.SubAssetId.errors?.required">{{header.SubAssetId}} is required</span>
+                      </mat-error>
+                  </mat-form-field>
+                </div>
+            <div fxFlex="25" class="pr-1" *ngIf="displayedColumns1.indexOf('Unit') > -1">
+              <mat-form-field class="full-width" appearance="outline">
+                <mat-label class="label">{{header.UOM}} <span *ngIf="mandatoryFields.indexOf('Unit') > -1" style="color: red;">*</span> </mat-label>
+                <mat-select disableOptionCentering Unit="Unit" [formControl]="AssetInfo.controls['Unit']">
+                  <mat-option>
+                    <ngx-mat-select-search [placeholderLabel]="'Search'" noEntriesFoundLabel="{{header.NoRecordFound}}" [formControl]="AssetInfo.controls['uomFilter']">
+                    </ngx-mat-select-search>
+                  </mat-option>
+                  <mat-option [value]=""> {{header.Select}} </mat-option>
+                  <mat-option *ngFor="let uom of filteredUOM | async" [value]="uom">
+                    {{uom.Unit_Name}}
+                  </mat-option>
+                </mat-select>
+              </mat-form-field>
+            </div>
+            <div fxFlex="25" class="pr-1" *ngIf="displayedColumns1.indexOf('Quantity') > -1">
+              <mat-form-field class="full-width" appearance="outline">
+                <mat-label class="label">{{header.Quantity}} <span *ngIf="mandatoryFields.indexOf('Quantity') > -1" style="color: red;">*</span> </mat-label>
+                <input matInput name="Quantity" maxlength="17" [formControl]="AssetInfo.controls['Quantity']"
+                  [pattern]="decimalNumericPattern" maxlength="17" autocomplete="off">
+                <mat-error *ngIf="submitted || f1.Quantity.errors || f1.Quantity.dirty || f1.Quantity.touched">
+                  <span *ngIf="f1.Quantity.errors?.required">{{header.Quantity}} is required</span>
+                <span *ngIf="f1.Quantity.errors?.pattern">{{header.Quantity}} should be with 13 digits with max 3 decimals</span>
+                </mat-error>
+              </mat-form-field>
+            </div>
+            <div fxFlex="25" class="pr-1" *ngIf="displayedColumns1.indexOf('AcquisitionDate') > -1">
+              <mat-form-field class="full-width" appearance="outline">
+                <mat-label class="label">{{header.AcquisitionDate}} <span *ngIf="mandatoryFields.indexOf('AcquisitionDate') > -1" style="color: red;">*</span></mat-label>
+                <input (dateChange)="calculateExpiaryDateWithUsefullife(AssetInfo.controls['AcquisitionDate'],AssetInfo.controls['UsefulLife'])" matInput [matDatepicker]="picker3" [formControl]="AssetInfo.controls['AcquisitionDate']"
+                [max]="today"     (dateChange)="acqnAndexpiaryDateValidation()" autocomplete="off">
+                <mat-datepicker-toggle matSuffix [for]="picker3"></mat-datepicker-toggle>
+                <mat-error
+                  *ngIf="submitted || f1.AcquisitionDate.errors || f1.AcquisitionDate.dirty || f1.AcquisitionDate.touched">
+                  <span *ngIf="f1.AcquisitionDate.errors?.required">{{header.AcquisitionDate}} is required</span>
+                </mat-error>
+              </mat-form-field>
+              <mat-datepicker #picker3></mat-datepicker>
+            </div>     
+            <div fxFlex="25" class="pr-1" *ngIf="displayedColumns1.indexOf('GRNNo') > -1">
+              <mat-form-field class="full-width" appearance="outline">
+                <mat-label class="label">{{header.GRNNo}} <span *ngIf="UploadNameBy == 'GRNNo' && mandatoryFields.indexOf('GRNNo') > -1" style="color: red;">*</span>
+                </mat-label>
+                <input matInput maxlength="30"  (change)="CheckGRNWithVendor()" [formControl]="AssetInfo.controls['GRNNo']" autocomplete="off">
+                  <mat-error *ngIf="submitted || f1.GRNNo.errors || f1.GRNNo.dirty || f1.GRNNo.touched">
+                    <span *ngIf="f1.GRNNo.errors?.required">{{header.GRNNo}} is required</span>
+                  </mat-error>
+              </mat-form-field>
+            </div>
+            <div fxFlex="25" class="pr-1" *ngIf="displayedColumns1.indexOf('PONumber') > -1">
+              <mat-form-field class="full-width" appearance="outline">
+                <mat-label class="label">{{header.PONumber}} <span *ngIf="mandatoryFields.indexOf('PONumber') > -1" style="color: red;">*</span> </mat-label>
+                <input matInput maxlength="45"  [formControl]="AssetInfo.controls['PONumber']" autocomplete="off">
+                  <mat-error *ngIf="submitted || f1.PONumber.errors || f1.PONumber.dirty || f1.PONumber.touched">
+                    <span *ngIf="f1.PONumber.errors?.required">{{header.PONumber}} is required</span>
+                  </mat-error>
+              </mat-form-field>
+            </div>
+ </div>
+        </form>
+    
+        <!-- <button class="btn success" mat-raised-button [disabled]="this.AssetInfo.invalid"
+          (click)="nextStep(1);"><mat-icon>skip_next</mat-icon> Next</button>
+        <button mat-raised-button  class="btn warn" (click)="onBack()">Exit</button> -->
+      </mat-tab>
+      <mat-tab label="Software Information">
+        <div class="md-label">
+          <form [formGroup]="Maintenance" class="mt-16">
+            <div fxLayout="row wrap" fxLayout.lt-sm="column" class="formscroll">
+              <div fxFlex="14.2" class="pr-1 full" *ngIf="displayedColumns1.indexOf('InsuranceFrom') > -1">
+                <mat-form-field class="full-width" appearance="outline">
+                  <mat-label class="label">{{header.InsuranceFrom}} <span *ngIf="mandatoryFields.indexOf('InsuranceFrom') > -1" style="color: red;">*</span> </mat-label>
+                  <input matInput [matDatepicker]="picker2"  (dateChange)="changeInsuranceStart($event)"
+                    [max]="maxDateFormat" [formControl]="Maintenance.controls['InsuranceFrom']" autocomplete="off">
+                  <mat-datepicker-toggle matSuffix [for]="picker2"></mat-datepicker-toggle>
+                  <mat-datepicker #picker2></mat-datepicker>
+                </mat-form-field>
+              </div>
+    
+              <div fxFlex="14.2" class="pr-1 full" *ngIf="displayedColumns1.indexOf('InsuranceTo') > -1">
+                <mat-form-field class="full-width" appearance="outline">
+                  <mat-label class="label">{{header.InsuranceTo}} <span *ngIf="mandatoryFields.indexOf('InsuranceTo') > -1" style="color: red;">*</span> </mat-label>
+                  <input matInput [matDatepicker]="picker4"  (dateChange)="changeInsuranceEnd($event)"
+                    [formControl]="Maintenance.controls['InsuranceTo']" [min]="InsuranceFromForWarrenty" autocomplete="off">
+                  <mat-datepicker-toggle matSuffix [for]="picker4"></mat-datepicker-toggle>
+                  <mat-datepicker #picker4></mat-datepicker>
+                </mat-form-field>
+              </div>
+    
+              <div fxFlex="14.2" class="pr-1 full" *ngIf="displayedColumns1.indexOf('InsuranceVendor') > -1">
+                <mat-form-field class="full-width" appearance="outline">
+                  <mat-label class="label">{{header.InsuranceVendor}} <span *ngIf="mandatoryFields.indexOf('InsuranceVendor') > -1" style="color: red;">*</span> </mat-label>
+                  <input matInput name="InsuranceVendor" maxlength="30" [formControl]="Maintenance.controls['InsuranceVendor']" autocomplete="off">
+                  <mat-error *ngIf="submitted || f3.InsuranceVendor.errors || f3.InsuranceVendor.dirty || f3.InsuranceVendor.touched">
+                    <span *ngIf="f3.InsuranceVendor.errors?.required">{{header.InsuranceVendor}} is required</span>
+                  </mat-error>
+                </mat-form-field>
+              </div>
+             
+              <div fxFlex="14.2" class="pr-1" *ngIf="displayedColumns1.indexOf('AMCStartDate') > -1">
+                <mat-form-field class="full-width" appearance="outline">
+                  <mat-label class="label">{{header.AMCStartDate}} <span *ngIf="mandatoryFields.indexOf('AMCStartDate') > -1" style="color: red;">*</span> </mat-label>
+                  <input matInput [matDatepicker]="picker5"  [max]="maxDateFormat"
+                    [formControl]="Maintenance.controls['AMCStartDate']" autocomplete="off" (dateChange)="changeAMCStartDate()">
+                  <mat-datepicker-toggle matSuffix [for]="picker5"></mat-datepicker-toggle>
+                  <mat-datepicker #picker5></mat-datepicker>
+                </mat-form-field>
+              </div>
+              <div fxFlex="14.2" class="pr-1" *ngIf="displayedColumns1.indexOf('AMCExpiryDate') > -1">
+                <mat-form-field class="full-width" appearance="outline">
+                  <mat-label class="label">{{header.AMCEndDate}} <span *ngIf="mandatoryFields.indexOf('AMCExpiryDate') > -1" style="color: red;">*</span> </mat-label>
+                  <input matInput [matDatepicker]="picker6" [min]="amcEndDate"
+                    [formControl]="Maintenance.controls['AMCExpiryDate']" autocomplete="off">
+                  <mat-datepicker-toggle matSuffix [for]="picker6"></mat-datepicker-toggle>
+                  <mat-datepicker #picker6></mat-datepicker>
+                </mat-form-field>
+              </div>
+              <div fxFlex="14.2" class="pr-1" *ngIf="displayedColumns1.indexOf('AMCVendor') > -1">
+                <mat-form-field class="full-width" appearance="outline">
+                  <mat-label class="label">{{header.AMCVendor}} <span *ngIf="mandatoryFields.indexOf('AMCVendor') > -1" style="color: red;">*</span> </mat-label>
+                  <input matInput  [formControl]="Maintenance.controls['AMCVendor']" maxlength="30" autocomplete="off">
+                  <mat-error *ngIf="submitted || f3.AMCVendor.errors || f3.AMCVendor.dirty || f3.AMCVendor.touched">
+                    <span *ngIf="f3.AMCVendor.errors?.required">{{header.AMCVendor}} is required</span>
+                  </mat-error>
+                </mat-form-field>
+              </div>
+            
+    
+              <div fxFlex="14.2" class="pr-1" *ngIf="displayedColumns1.indexOf('InstallationDate') > -1">
+                <mat-form-field class="full-width" appearance="outline">
+                  <mat-label class="label">{{header.InstallationDate}} <span *ngIf="mandatoryFields.indexOf('InstallationDate') > -1" style="color: red;">*</span> </mat-label>
+                  <input matInput [matDatepicker]="picker7" [max]="maxDateFormat" 
+                    (dateChange)="changeWarrantyStartDate()" [formControl]="Maintenance.controls['InstallationDate']"
+                    autocomplete="off">
+                  <mat-datepicker-toggle matSuffix [for]="picker7"></mat-datepicker-toggle>
+                  <mat-datepicker #picker7></mat-datepicker>
+                </mat-form-field>
+              </div>
+            </div>
+          </form>
+          <!-- <button *ngIf="ClientCustmizationExits" mat-raised-button class="warn" type="button" (click)="previousStep(0)"
+            style="margin-top: 15px !important;"><mat-icon>skip_previous</mat-icon>Previous</button>
+          <button *ngIf="ClientCustmizationExits" class="btn success" mat-raised-button
+            [disabled]="Maintenance.invalid" (click)="nextStep(2)" style="margin-top: 15px !important;"><mat-icon>skip_next</mat-icon>Next</button>
+    
+          <button *ngIf="!ClientCustmizationExits" mat-raised-button class="warn" type="button" (click)="previousStep(0)"
+            style="margin-top: 15px !important;"><mat-icon>skip_previous</mat-icon>Previous</button>
+          <button *ngIf="!ClientCustmizationExits" class="btn success" mat-raised-button [disabled]="Maintenance.invalid"
+            (click)="nextStep(2)" style="margin-top: 15px !important;"><mat-icon>skip_next</mat-icon>Next</button> -->
+        </div>
+      </mat-tab>   
+    </mat-tab-group>
+    <div>
+      <button class="btn success" style="cursor: pointer;" mat-raised-button> 
+         <!--<mat-icon>skip_next</mat-icon>--> Create</button>
+   
+    </div>
+  </mat-tab>
+  <mat-tab label="{{header.UploadHardwareAsset}}">
+ <h1 style="text-align: center;">
+   Under Construction <br>
+   Please Wait!
+ </h1>
+  </mat-tab>
+ 
+
+</mat-tab-group>

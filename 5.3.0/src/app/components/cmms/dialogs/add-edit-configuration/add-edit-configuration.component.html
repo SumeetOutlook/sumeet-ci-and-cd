@@ -1,0 +1,131 @@
+<div class="md-dialog-container" cdkDrag cdkDragRootElement=".cdk-overlay-pane">
+    <mat-toolbar  cdkDragHandle class="mat-toolbar" style="background-color:rgb(12, 48, 87);color:white">
+      <span>{{data.task==='add'?'Create':'View/Edit'}} exception</span>
+      <span class="example-spacer"></span>
+      <button type="button" mat-icon-button class="example-icon" aria-label="Example icon-button with close icon"
+        (click)="onclosetab()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-toolbar>
+    <div mat-dialog-content class="p-1 m-0">
+  
+      <form [formGroup]="dialogSBUForm" (ngSubmit)="onSubmit()">
+        <div fxLayout="row wrap" fxLayout.lt-sm="column">
+
+            <div fxFlex="100" class="pr-1">
+                <mat-form-field class="full-width" color="primary">
+                  <mat-select disableOptionCentering   [formControl]="dialogSBUForm.controls['exceptionType']" 
+                    placeholder="Exception Type" [multiple]="false" #singleSelect>
+                    <mat-option>
+                      <ngx-mat-select-search [placeholderLabel]="'Search'" >
+                      </ngx-mat-select-search>
+                    </mat-option>
+                    <mat-option  *ngFor="let type of exceptionTypes" [value]="type">
+                      {{type}}
+                    </mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </div>
+
+          <div fxFlex="100" class="pr-1">
+            <mat-form-field class="full-width" color="primary">
+              <mat-select disableOptionCentering   [formControl]="dialogSBUForm.controls['orderType']"
+                placeholder="Order Types" [multiple]="false" #singleSelect>
+                <mat-option>
+                  <ngx-mat-select-search [placeholderLabel]="'Search'" >
+                  </ngx-mat-select-search>
+                </mat-option>
+                <mat-option  *ngFor="let type of orderTyes" [value]="type">
+                  {{type}}
+                </mat-option>
+              </mat-select>
+            </mat-form-field>
+          </div>
+
+              <div fxFlex="50" class="pr-1" >
+                <mat-form-field class="full-width">
+                    <mat-select disableOptionCentering   [formControl]="dialogSBUForm.controls['issueType']"
+                    placeholder="Issue Types" [multiple]="true" #multiSelect>
+                    <mat-option>
+                      <ngx-mat-select-search [placeholderLabel]="'Search'" >
+                      </ngx-mat-select-search>
+                    </mat-option>
+                    <mat-option  *ngFor="let type of issueTypes" [value]="type">
+                      {{type}}
+                    </mat-option>
+                  </mat-select>
+                  <!-- <mat-error *ngIf="submitted || f1.sbuName.errors || f1.sbuName.dirty || f1.sbuName.touched || f1.sbuName.hasError('whitespace')">
+                    <span *ngIf="f1.sbuName.errors?.required || f1.sbuName.hasError('whitespace')">Issue Type is required </span>
+                  </mat-error> -->
+                </mat-form-field>
+              </div>
+
+              <div fxFlex="50" class="pr-1" *ngIf="dialogSBUForm.controls['orderType'].value=='Equipment' || dialogSBUForm.controls['orderType'].value=='Vehicle'">
+                <mat-checkbox [formControl]="dialogSBUForm.controls['dTime']" class="example-margin">Is {{dialogSBUForm.controls['orderType'].value}} downtime appicable</mat-checkbox>
+              </div>
+
+              <div fxFlex="100" class="pr-1" *ngIf="dialogSBUForm.controls['orderType'].value=='Equipment' || dialogSBUForm.controls['orderType'].value=='Vehicle'">
+                <mat-form-field class="full-width">
+                  <mat-select disableOptionCentering [formControl]="dialogSBUForm.controls['category']" placeholder="Category"
+                  [multiple]="true" #multiSelect >
+                  <mat-option *ngIf="filteredCategoryMulti">
+                    <ngx-mat-select-search [placeholderLabel]="'Search'" noEntriesFoundLabel="No Matching Data Found" [showToggleAllCheckbox]="true"
+                    (toggleAll)="toggleSelectAllCategory($event)" [toggleAllCheckboxChecked]="allCategorySelected" [formControl]="dialogSBUForm.controls['categoryMultiFilterCtrl']"> </ngx-mat-select-search>
+                  </mat-option>
+                  <mat-option (click)="getCategoryId()" *ngFor="let data of filteredCategoryMulti | async" value="{{data.AssetCategoryId}}"
+                  > {{data.AssetCategoryName}} </mat-option>
+                </mat-select> 
+                <!-- <mat-error *ngIf="submitted || f1.category.errors || f1.category.dirty || f1.category.touched">
+                  <span *ngIf="f1.category.errors?.required ">Category is required </span>
+                </mat-error> -->
+                </mat-form-field>
+              </div>
+    
+              <div fxFlex="100" class="pr-1" *ngIf="dialogSBUForm.controls['orderType'].value=='Equipment' || dialogSBUForm.controls['orderType'].value=='Vehicle'">
+                <mat-form-field class="full-width">
+                  <mat-select disableOptionCentering [formControl]="dialogSBUForm.controls['type']" placeholder="Type"
+                  [multiple]="true" #multiSelect >
+                  <mat-option *ngIf="filteredTypeMulti">
+                  <ngx-mat-select-search [placeholderLabel]="'Search'" noEntriesFoundLabel="No Matching Data Found" [showToggleAllCheckbox]="true"
+                  (toggleAll)="toggleSelectAllTypes($event)" [formControl]="dialogSBUForm.controls['typeMultiFilterCtrl']"> </ngx-mat-select-search>
+                </mat-option>
+                  <mat-option *ngFor="let data of filteredTypeMulti | async" value="{{data.AssetCategoryId}}" (click)="getAllSubTypeData(data.TAId)"
+                    > {{data.AssetCategoryName}} </mat-option>
+       
+                </mat-select> 
+                <!-- <mat-error *ngIf="submitted || f1.type.errors || f1.type.dirty || f1.type.touched">
+                  <span *ngIf="f1.type.errors?.required ">Type is required </span>
+                </mat-error> -->
+                </mat-form-field>
+              </div>
+    
+              <div fxFlex="100" class="pr-1" *ngIf="dialogSBUForm.controls['orderType'].value=='Equipment' || dialogSBUForm.controls['orderType'].value=='Vehicle'">
+                <mat-form-field class="full-width">
+                  <mat-select disableOptionCentering [formControl]="dialogSBUForm.controls['subtype']" placeholder="Sub Type"
+                  [multiple]="true" #multiSelect >
+                  <mat-option *ngIf="filteredSubTypeMulti">
+                  <ngx-mat-select-search [placeholderLabel]="'Search'" noEntriesFoundLabel="No Matching Data Found" [showToggleAllCheckbox]="true"
+                    (toggleAll)="toggleSelectAllSubTypes($event)" [formControl]="dialogSBUForm.controls['subtypeMultiFilterCtrl']"> </ngx-mat-select-search>
+                  </mat-option>
+                  <mat-option *ngFor="let data of filteredSubTypeMulti | async" value="{{data.AssetCategoryId}}"
+                    > {{data.AssetCategoryName}} </mat-option>
+                </mat-select> 
+                <!-- <mat-error *ngIf="submitted || f1.subtype.errors || f1.subtype.dirty || f1.subtype.touched">
+                  <span *ngIf="f1.subtype.errors?.required ">Category is required </span>
+                </mat-error> -->
+                </mat-form-field>
+              </div>
+
+          <div fxFlex="100" class="mt-1">
+            <!-- <button type="button" mat-raised-button class="success" style="float:left !important;margin-right: 5px;" *ngIf="disableAllFields&&data.task=='edit'" (click)="enableFields()"
+            ><mat-icon>edit</mat-icon>Edit this Issue</button>
+            <button type="button" mat-raised-button class="danger" style="float:left !important;" *ngIf="data.task=='edit'" (click)="onDelete()"
+            ><mat-icon>delete</mat-icon>Delete this Issue</button> -->
+            <button *ngIf="data.task=='edit' || data.task=='add'" mat-raised-button class="success" style="float:right !important;" 
+              ><mat-icon>check</mat-icon>{{data.task==='add'?'Create':'Save'}} Issue</button>
+  
+          </div>
+        </div>
+      </form>
+    </div>
+  </div>

@@ -1,0 +1,219 @@
+<div class="md-dialog-container" cdkDrag cdkDragRootElement=".cdk-overlay-pane">
+  <mat-toolbar  cdkDragHandle class="mat-toolbar" style="background-color:rgb(12, 48, 87);color:white">
+    <span style="position: relative;left: 40%;">{{ Headers.PhysicalDisposal }}</span>
+    <span class="example-spacer"></span>
+    <button mat-icon-button class="example-icon" aria-label="Example icon-button with close icon"
+      (click)="dialogRef.close(false)">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-toolbar><br><br>
+  <mat-dialog-content>
+    <div class="example-container mat-elevation-z8 mt-8">
+      <table mat-table #table [dataSource]="dataSource" matSort>
+        <ng-container matColumnDef="select">
+          <th mat-header-cell *matHeaderCellDef>
+            <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="selection.hasValue() && isAllSelected()"
+              [indeterminate]="selection.hasValue() && !isAllSelected()">
+            </mat-checkbox>
+          </th>
+          <td mat-cell *matCellDef="let row let i=index">
+            <mat-checkbox (click)="$event.stopPropagation()" (change)="$event ? selection.toggle(row) : null"
+              [checked]="selection.isSelected(row)">
+            </mat-checkbox>
+          </td>
+        </ng-container>
+        <ng-container matColumnDef="Icon">
+          <th mat-sort-header mat-header-cell *matHeaderCellDef [ngClass]="'w-100'"> </th>
+          <td mat-cell *matCellDef="let element" [ngClass]="'w-100'" >
+            <mat-icon *ngIf="element.TaggingStatus === 9" matTooltip="Retired Asset" [style.fontSize]="'19px'" style="color: #e67e4a !important;font-weight: bold;cursor: pointer;">delete</mat-icon>
+            <mat-icon *ngIf="(element.MergeId != null && element.MergeId != 0)&&  (element.MergeId === element.PreFarId) && element.TaggingStatus!=9" matTooltip="Parent Asset" [style.fontSize]="'19px'" style="color: #e67e4a !important;font-weight: bold;cursor: pointer;" >person</mat-icon>
+            <mat-icon *ngIf="(element.MergeId != null && element.MergeId != 0 )&& ( element.MergeId != element.PreFarId) && element.TaggingStatus!=9" matTooltip="Child Asset" [style.fontSize]="'19px'" style="color: #e67e4a !important;font-weight: bold;cursor: pointer;">groups</mat-icon>
+            <mat-icon *ngIf="(element.MergeId2 != null && element.MergeId2 != 0 ) &&  (element.MergeId === null || element.MergeId === 0 ) && ( element.MergeId2 === element.PreFarId) && element.TaggingStatus!=9" matTooltip="Parent Asset" [style.fontSize]="'19px'" style="color: #e67e4a !important;font-weight: bold;cursor: pointer;" >person</mat-icon>
+            <mat-icon *ngIf="(element.MergeId2 != null && element.MergeId2 != 0 )  &&  (element.MergeId === null || element.MergeId === 0 ) && ( element.MergeId2 != element.PreFarId) && element.TaggingStatus!=9" matTooltip="Child Asset" [style.fontSize]="'19px'" style="color: #e67e4a !important;font-weight: bold;cursor: pointer;" >groups</mat-icon>
+            <mat-icon *ngIf="element.IsQtySplit === true && (element.MergeId == null || element.MergeId == 0) && (element.MergeId2 == null || element.MergeId2 == 0)" matTooltip="Quantity Split Asset" [style.fontSize]="'19px'" style="color: #e67e4a !important;font-weight: bold;cursor: pointer;">format_list_numbered_rtl</mat-icon>
+           
+            </td>
+        </ng-container>
+
+        <ng-container matColumnDef="Inventory No.">
+          <th mat-sort-header mat-header-cell *matHeaderCellDef [ngClass]="'w-100'">{{Headers.InventoryNumber}}</th>
+          <td mat-cell *matCellDef="let element" [ngClass]="'w-100'">{{element.Barcode}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="Asset No.">
+          <th mat-sort-header mat-header-cell *matHeaderCellDef [ngClass]="'w-100'">{{Headers.AID}} </th>
+          <td mat-cell *matCellDef="let element" [ngClass]="'w-100'">{{element.AssetId}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="Sub No.">
+          <th mat-sort-header mat-header-cell *matHeaderCellDef [ngClass]="'w-100'">{{Headers.SAID}} </th>
+          <td mat-cell *matCellDef="let element" [ngClass]="'w-100'">{{element.SubAssetId}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="Asset Class">
+          <th mat-sort-header mat-header-cell *matHeaderCellDef [ngClass]="'w-150'">{{Headers.AssetClass}}</th>
+          <td mat-cell *matCellDef="let element" [ngClass]="'w-150'">{{element.BlockOfAsset}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="Asset Name">
+          <th mat-sort-header mat-header-cell *matHeaderCellDef [ngClass]="'w-150'">{{Headers.ADL2}} </th>
+          <td mat-cell *matCellDef="let element" [ngClass]="'w-150'">{{element.ADL2}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="Asset Description">
+          <th mat-sort-header mat-header-cell *matHeaderCellDef [ngClass]="'w-150'">{{Headers.ADL3}} </th>
+          <td mat-cell *matCellDef="let element" [ngClass]="'w-150'">{{element.ADL3}}</td>
+        </ng-container>
+        <ng-container matColumnDef="Serial No">
+          <th mat-sort-header mat-header-cell *matHeaderCellDef [ngClass]="'w-150'">{{Headers.SerialNo}} </th>
+          <td mat-cell *matCellDef="let element" [ngClass]="'w-150'">{{element.SerialNo}}</td>
+        </ng-container>
+        <ng-container matColumnDef="IT Serial No">
+          <th mat-sort-header mat-header-cell *matHeaderCellDef [ngClass]="'w-150'">{{Headers.ITSerialNo}} </th>
+          <td mat-cell *matCellDef="let element" [ngClass]="'w-150'">{{element.ITSerialNo}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="Plant">
+          <th mat-sort-header mat-header-cell *matHeaderCellDef [ngClass]="'w-150'">{{Headers.Location}} </th>
+          <td mat-cell *matCellDef="let element" [ngClass]="'w-150'">{{element.Location}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="Cost">
+          <th mat-sort-header mat-header-cell *matHeaderCellDef [ngClass]="'w-150'">{{Headers.ActualCost }} </th>
+          <td mat-cell *matCellDef="let element" [ngClass]="'w-150'">{{element.AcquisitionCost | number}}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="WDV">
+          <th mat-sort-header mat-header-cell *matHeaderCellDef [ngClass]="'w-100'">{{Headers.WDV}}</th>
+          <td mat-cell *matCellDef="let element" [ngClass]="'w-100'">{{element.WDV | number}}</td>
+        </ng-container>
+        <ng-container matColumnDef="Inventory Indicator">
+          <th mat-sort-header mat-header-cell *matHeaderCellDef [ngClass]="'w-100'">{{Headers.InventoryIndicator}} </th>
+          <td mat-cell *matCellDef="let element" [ngClass]="'w-100'">{{element.Taggable}}</td>
+        </ng-container>
+
+
+        <tr mat-header-row *matHeaderRowDef="displayedColumns;sticky: true "></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+      </table>
+    </div>
+    <form [formGroup]="dialogForm" class="mt-8">
+      <div fxLayout="row wrap">
+        <div fxFlex="100" fxFlex.gt-xs="25" class="pr-1" [ngClass]="{disabledDiv: !!isDisabled}">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label class="label asterisk_input" style="font-size: 15px !important;">{{ Headers.RetireType }}
+            </mat-label>
+            <input matInput formControlName="DiscardTypeCtrl" class="bg-transparente" [readonly]="isDisabled">
+          </mat-form-field>
+        </div>
+        <div fxFlex="100" fxFlex.gt-xs="25" class="pr-1" [ngClass]="{disabledDiv: !!proposedAmnt}">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label class="label asterisk_input" style="font-size: 15px !important;">{{ Headers.ProposedSellingAmount
+              }}</mat-label>
+            <input matInput type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"[maxlength]="16" formControlName="ProposedSellingAmountCtrl" class="bg-transparente" [readonly]="proposedAmnt">
+          </mat-form-field>
+        </div>
+           <!--<div fxFlex="100" fxFlex.gt-xs="25" class="pr-1">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label class="label" style="font-size: 15px !important;">{{ Headers.PhysicalRemovalMode }}</mat-label>
+            <mat-select formControlName="physicalRemovalModeCtrl" class="bg-transparente">
+              <mat-option [value]="" (click)="SelectPhysicalRemovalMode('')"> {{Headers.Select}} </mat-option>
+              <mat-option *ngFor="let type of physicalRemovalModeList" [value]="type.value"
+                (click)="SelectPhysicalRemovalMode(type.value)"> {{type.viewValue}}
+              </mat-option>
+            </mat-select>
+          </mat-form-field>
+        </div>-->
+        <div fxFlex="100" fxFlex.gt-xs="25" class="pr-1" *ngIf="saleMode">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label class="label " style="font-size: 15px !important;">{{ Headers.Amount }}</mat-label>
+            <input matInput type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"[maxlength]="16" formControlName="amountCtrl" (keypress)="decimalFilter($event)" class="bg-transparente">
+          </mat-form-field>
+        </div>
+        <div fxFlex="100" fxFlex.gt-xs="25" class="pr-1" *ngIf="saleMode">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label class="label" style="font-size: 15px !important;">{{ Headers.CustomerName }}
+            </mat-label>
+            <input matInput formControlName="CustomerNameCtrl" class="bg-transparente">
+          </mat-form-field>
+        </div>
+
+        <div fxFlex="100" fxFlex.gt-xs="25" class="pr-1" *ngIf="scrapMode">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label class="label asterisk_input" style="font-size: 15px !important;">{{ Headers.scrapping }}
+            </mat-label>
+            <input matInput formControlName="scrappingCtrl" class="bg-transparente">
+          </mat-form-field>
+        </div>
+        <div fxFlex="100" fxFlex.gt-xs="25" class="pr-1" *ngIf="donationMode">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label class="label asterisk_input" style="font-size: 15px !important;">{{ Headers.donation }}
+            </mat-label>
+            <input matInput formControlName="donationCtrl" class="bg-transparente">
+          </mat-form-field>
+        </div>
+        <div fxFlex="100" fxFlex.gt-xs="25" class="pr-1" *ngIf="EwasteMode">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label class="label asterisk_input" style="font-size: 15px !important;">{{ Headers.Vendor }}</mat-label>
+            <input matInput formControlName="vendorCtrl" class="bg-transparente">
+          </mat-form-field>
+        </div>
+        <div fxFlex="100" fxFlex.gt-xs="25" class="pr-1" *ngIf="EwasteMode">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label class="label" style="font-size: 15px !important;">{{ Headers.Amount }}</mat-label>
+            <input matInput type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"[maxlength]="16" formControlName="ewasteAmountCtrl" (keypress)="decimalFilter($event)" class="bg-transparente">
+          </mat-form-field>
+        </div>
+
+
+        <div fxFlex="100" fxFlex.gt-xs="25" class="pr-1" *ngIf="saleToempMode">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label class="label asterisk_input" style="font-size: 15px !important;">{{ Headers.EmployeeName }}
+            </mat-label>
+            <input matInput formControlName="EmployeeNameCtrl" class="bg-transparente">
+          </mat-form-field>
+        </div>
+        <div fxFlex="100" fxFlex.gt-xs="25" class="pr-1" *ngIf="saleToempMode">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label class="label asterisk_input" style="font-size: 15px !important;">{{ Headers.Amount }}</mat-label>
+            <input matInput type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"[maxlength]="16" formControlName="saleToempAmountCtrl" (keypress)="decimalFilter($event)" class="bg-transparente">
+          </mat-form-field>
+        </div>
+
+        <div fxFlex="100" fxFlex.gt-xs="25" class="pr-1" *ngIf="VendorMode">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label class="label asterisk_input" style="font-size: 15px !important;">{{ Headers.CustomerName }}
+            </mat-label>
+            <input matInput formControlName="VendorNameCtrl" class="bg-transparente">
+          </mat-form-field>
+        </div>
+        <div fxFlex="100" fxFlex.gt-xs="25" class="pr-1" *ngIf="VendorMode">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label class="label asterisk_input" style="font-size: 15px !important;">{{ Headers.Amount }}</mat-label>
+            <input matInput type="text" oninput="this.value = this.value.replace(/[^0-9.]/g, '').replace(/(\..*)\./g, '$1');"[maxlength]="16" formControlName="VendorAmountCtrl" (keypress)="decimalFilter($event)" class="bg-transparente">
+          </mat-form-field>
+        </div>
+        <div fxFlex="100" fxFlex.gt-xs="25" class="pr-1">
+          <mat-label class="label" style="font-size: 11px !important;">Upload Document</mat-label>
+          <input type="file" (change)="fileChange($event)" placeholder="Upload file" class="uploadSelectClass" accept=".xlsx,.pdf,.jpg,.jpeg" multiple/>
+        </div>
+        <div fxFlex="100" fxFlex.gt-xs="50" class="pr-1" *ngIf="displayFileName">
+          <mat-form-field class="full-width" appearance="outline">
+            <mat-label class="label" style="font-size: 15px !important;">FileName</mat-label>
+            <textarea matInput maxlength="200" [disabled]="isDisabled" class="bg-transparente"> {{displayFileName}}</textarea>
+          </mat-form-field>
+        </div>
+      </div>
+      
+    </form>
+    <div fxLayout="row wrap">
+      <div fxFlex="100" class="pr-1 full">
+        <span fxFlex></span>
+        <button mat-raised-button class="success" [disabled]="dialogForm.invalid || this.selection.selected.length == 0 " (click)="Submit()">
+          <mat-icon>check</mat-icon>Submit
+        </button>
+      </div>
+    </div>
+
+  </mat-dialog-content>
+</div>

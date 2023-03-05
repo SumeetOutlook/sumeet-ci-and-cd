@@ -1,0 +1,656 @@
+<h3><strong style=" color:#008bd0 !important;"> Message Notification</strong> </h3>
+
+<mat-card class="p-0" [@animate]="{value:'*',params:{y:'50px',delay:'300ms'}}">
+  <mat-card-content class="p-0">
+  <mat-accordion class="example-headers-align">
+    <mat-expansion-panel [expanded]="step === 0" (opened)="setStep(0)"  (closed)="changeState(0)" id="panel-1" hideToggle>
+      <mat-expansion-panel-header class=" prevent-click" style="height: 50px;">
+        <mat-panel-title>
+          Create Master
+        </mat-panel-title>
+        <mat-icon class="authorize-click icon" *ngIf="!panelOpenState[0]">add</mat-icon>
+        <mat-icon class="authorize-click icon" *ngIf="panelOpenState[0]">remove</mat-icon>
+      </mat-expansion-panel-header>
+  
+      <mat-table [dataSource]="CreateMaster" matSort>
+        <ng-container matColumnDef="Event Name">
+            <mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="'w-150'"> Event Name </mat-header-cell>
+            <mat-cell *matCellDef="let row" [ngClass]="'w-150'">{{row.Event_Name}}</mat-cell>
+        </ng-container>
+
+        <ng-container matColumnDef="Type(Mobile/Email)">
+          <mat-header-cell  *matHeaderCellDef mat-sort-header  [ngClass]="'w-150'"> Type(Mobile/Email) </mat-header-cell>
+          <mat-cell *matCellDef="let row"  [ngClass]="'w-150'">
+            <mat-form-field style="margin-top: -5px;width:130px">
+              <mat-select [(ngModel)]="row.Type" (selectionChange)="onselect($event)">
+                <mat-option value="Email">Email</mat-option>
+                <mat-option value="Mobile">Mobile</mat-option>
+                <mat-option value="Both">Both</mat-option>
+              </mat-select>
+            </mat-form-field>
+          </mat-cell>
+        </ng-container>
+      
+          <ng-container matColumnDef="Subject">
+            <mat-header-cell  *matHeaderCellDef mat-sort-header  [ngClass]="'w-180'"> Subject </mat-header-cell>
+            <mat-cell *matCellDef="let row"  [ngClass]="'w-180'">
+            <mat-form-field style="width:'170px';margin-top: -5px;">
+              <textarea matInput style="overflow:auto hidden;" cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeminRows="1"  cdkAutosizemaxRows="3" [(ngModel)]="row.Subject"></textarea>
+            </mat-form-field>
+          </mat-cell>
+          </ng-container>
+      
+          <ng-container matColumnDef="Content">
+            <mat-header-cell  *matHeaderCellDef mat-sort-header  [ngClass]="'w-280'"> Content </mat-header-cell>
+            <mat-cell *matCellDef="let row"  [ngClass]="'w-280'">
+            <mat-form-field style="width: '260px';margin-top: -5px;">
+              <textarea matInput style="overflow:auto hidden;" cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeminRows="1"  cdkAutosizemaxRows="3" [(ngModel)]="row.Content"></textarea>
+            </mat-form-field>
+          </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="Event Based">
+            <mat-header-cell  *matHeaderCellDef mat-sort-header  [ngClass]="'w-150'"> Event Based </mat-header-cell>
+            <mat-cell *matCellDef="let row"  [ngClass]="'w-150'">
+            <mat-form-field style="width:130px;margin-top: -5px;">
+              <mat-select [(ngModel)]="row.EventBased" (selectionChange)="onselect($event)">
+                <mat-option value="Yes">Yes</mat-option>
+                <mat-option value="NO">NO</mat-option>
+             </mat-select>
+            </mat-form-field>
+          </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="Prior/Post">
+            <mat-header-cell  *matHeaderCellDef mat-sort-header  [ngClass]="'w-150'"> Prior/Post </mat-header-cell>
+            <mat-cell *matCellDef="let row"  [ngClass]="'w-150'">
+            <mat-form-field [hidden]="row.EventBased=='Yes'" style="width:130px;margin-top: -5px;">
+              <mat-select [(ngModel)]="row.Prior" [disabled]="row.EventBased==!'NO'">
+                <mat-option value="Prior">Prior</mat-option>
+                <mat-option value="Post">Post</mat-option>
+             </mat-select>
+            </mat-form-field>
+            <div *ngIf="row.EventBased=='Yes'">NA </div>
+          </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="Frequency">
+            <mat-header-cell  *matHeaderCellDef mat-sort-header  [ngClass]="'w-150'"> Frequency </mat-header-cell>
+            <mat-cell *matCellDef="let row"  [ngClass]="'w-150'">
+            <mat-form-field [hidden]="row.EventBased=='Yes'" style="width:130px;margin-top: -5px;">
+              <mat-select [(ngModel)]="row.Frequency" [disabled]="row.EventBased==!'NO'">
+                <mat-option value="Daily">Daily</mat-option>
+                <mat-option value="Alternate">Alternate Days</mat-option>
+                <mat-option value="Weekly">Weekly</mat-option>
+                <mat-option value="Fortnightly">Fortnightly</mat-option>
+                <mat-option value="Monthly">Monthly</mat-option>
+             </mat-select>
+            </mat-form-field>
+            <div *ngIf="row.EventBased=='Yes'">NA </div>
+          </mat-cell>
+          </ng-container>
+
+          <ng-container matColumnDef="Days">
+            <mat-header-cell  *matHeaderCellDef mat-sort-header  [ngClass]="'w-150'"> Days </mat-header-cell>
+            <mat-cell *matCellDef="let row"  [ngClass]="'w-150'">
+            <mat-form-field [hidden]="row.EventBased=='Yes'" style="width:130px;margin-top: -5px;">
+              <mat-select [(ngModel)]="row.Days" [disabled]="row.EventBased==!'NO'">
+                <mat-option value="1">1</mat-option>
+                <mat-option value="7">7</mat-option>
+                <mat-option value="15">15</mat-option>
+             </mat-select>
+            </mat-form-field>
+            <div *ngIf="row.EventBased=='Yes'">NA </div>
+          </mat-cell>
+          </ng-container>
+          <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+          <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+         </mat-table>
+      <mat-action-row class="action">
+        <button mat-button color="primary" (click)="nextStep()">Next</button>
+      </mat-action-row>
+    </mat-expansion-panel>
+      <mat-expansion-panel [expanded]="step === 1" (opened)="setStep(1)" (closed)="changeState(1)" id="panel-2" hideToggle>
+        <mat-expansion-panel-header class="prevent-click" style="height: 50px;">
+          <mat-panel-title>
+            Asset Relationship
+          </mat-panel-title>
+          <mat-icon class="authorize-click icon" *ngIf="!panelOpenState[1]">add</mat-icon>
+        <mat-icon class="authorize-click icon" *ngIf="panelOpenState[1]">remove</mat-icon>
+        </mat-expansion-panel-header>
+       
+        <mat-table [dataSource]="AssetRelationship" matSort>
+          <ng-container matColumnDef="Event Name">
+              <mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="'w-150'"> Event Name </mat-header-cell>
+              <mat-cell *matCellDef="let row" [ngClass]="'w-150'">{{row.Event_Name}}</mat-cell>
+          </ng-container>
+  
+          <ng-container matColumnDef="Type(Mobile/Email)">
+            <mat-header-cell  *matHeaderCellDef mat-sort-header  [ngClass]="'w-150'"> Type(Mobile/Email) </mat-header-cell>
+            <mat-cell *matCellDef="let row"  [ngClass]="'w-150'">
+              <mat-form-field style="margin-top: -5px;width:130px">
+                <mat-select [(ngModel)]="row.Type" (selectionChange)="onselect($event)">
+                  <mat-option value="Email">Email</mat-option>
+                  <mat-option value="Mobile">Mobile</mat-option>
+                  <mat-option value="Both">Both</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </mat-cell>
+          </ng-container>
+        
+            <ng-container matColumnDef="Subject">
+              <mat-header-cell  *matHeaderCellDef mat-sort-header  [ngClass]="'w-180'"> Subject </mat-header-cell>
+              <mat-cell *matCellDef="let row"  [ngClass]="'w-180'">
+              <mat-form-field style="width:'170px';margin-top: -5px;">
+                <textarea matInput style="overflow:auto hidden;" cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeminRows="1"  cdkAutosizemaxRows="3" [(ngModel)]="row.Subject"></textarea>
+              </mat-form-field>
+            </mat-cell>
+            </ng-container>
+        
+            <ng-container matColumnDef="Content">
+              <mat-header-cell  *matHeaderCellDef mat-sort-header  [ngClass]="'w-280'"> Content </mat-header-cell>
+              <mat-cell *matCellDef="let row"  [ngClass]="'w-280'">
+              <mat-form-field style="width: '260px';margin-top: -5px;">
+                <textarea matInput style="overflow:auto hidden;" cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeminRows="1"  cdkAutosizemaxRows="3" [(ngModel)]="row.Content"></textarea>
+              </mat-form-field>
+            </mat-cell>
+            </ng-container>
+  
+            <ng-container matColumnDef="Event Based">
+              <mat-header-cell  *matHeaderCellDef mat-sort-header  [ngClass]="'w-150'"> Event Based </mat-header-cell>
+              <mat-cell *matCellDef="let row"  [ngClass]="'w-150'">
+              <mat-form-field style="width:130px;margin-top: -5px;">
+                <mat-select [(ngModel)]="row.EventBased" (selectionChange)="onselect($event)">
+                  <mat-option value="Yes">Yes</mat-option>
+                  <mat-option value="NO">NO</mat-option>
+               </mat-select>
+              </mat-form-field>
+            </mat-cell>
+            </ng-container>
+  
+            <ng-container matColumnDef="Prior/Post">
+              <mat-header-cell  *matHeaderCellDef mat-sort-header  [ngClass]="'w-150'"> Prior/Post </mat-header-cell>
+              <mat-cell *matCellDef="let row"  [ngClass]="'w-150'">
+              <mat-form-field [hidden]="row.EventBased=='Yes'" style="width:130px;margin-top: -5px;">
+                <mat-select [(ngModel)]="row.Prior" [disabled]="row.EventBased==!'NO'">
+                  <mat-option value="Prior">Prior</mat-option>
+                  <mat-option value="Post">Post</mat-option>
+               </mat-select>
+              </mat-form-field>
+              <div *ngIf="row.EventBased=='Yes'">NA </div>
+            </mat-cell>
+            </ng-container>
+  
+            <ng-container matColumnDef="Frequency">
+              <mat-header-cell  *matHeaderCellDef mat-sort-header  [ngClass]="'w-150'"> Frequency </mat-header-cell>
+              <mat-cell *matCellDef="let row"  [ngClass]="'w-150'">
+              <mat-form-field [hidden]="row.EventBased=='Yes'" style="width:130px;margin-top: -5px;">
+                <mat-select [(ngModel)]="row.Frequency" [disabled]="row.EventBased==!'NO'">
+                  <mat-option value="Daily">Daily</mat-option>
+                  <mat-option value="Alternate">Alternate Days</mat-option>
+                  <mat-option value="Weekly">Weekly</mat-option>
+                  <mat-option value="Fortnightly">Fortnightly</mat-option>
+                  <mat-option value="Monthly">Monthly</mat-option>
+               </mat-select>
+              </mat-form-field>
+              <div *ngIf="row.EventBased=='Yes'">NA </div>
+            </mat-cell>
+            </ng-container>
+  
+            <ng-container matColumnDef="Days">
+              <mat-header-cell  *matHeaderCellDef mat-sort-header  [ngClass]="'w-150'"> Days </mat-header-cell>
+              <mat-cell *matCellDef="let row"  [ngClass]="'w-150'">
+              <mat-form-field [hidden]="row.EventBased=='Yes'" style="width:130px;margin-top: -5px;">
+                <mat-select [(ngModel)]="row.Days" [disabled]="row.EventBased==!'NO'">
+                  <mat-option value="1">1</mat-option>
+                  <mat-option value="7">7</mat-option>
+                  <mat-option value="15">15</mat-option>
+               </mat-select>
+              </mat-form-field>
+              <div *ngIf="row.EventBased=='Yes'">NA </div>
+            </mat-cell>
+            </ng-container>
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+           </mat-table>
+      <mat-action-row class="action">        
+        <button mat-button color="warn" (click)="prevStep()">Previous</button>
+        <button mat-button color="primary" (click)="nextStep()">Next</button>
+      </mat-action-row>
+      </mat-expansion-panel>
+      <mat-expansion-panel [expanded]="step === 2" (opened)="setStep(2)" (closed)="changeState(2)" id="panel-3" hideToggle>
+        <mat-expansion-panel-header class="prevent-click" style="height: 50px;">
+          <mat-panel-title>
+            Asset Audit
+          </mat-panel-title>
+          <mat-icon class="authorize-click icon" *ngIf="!panelOpenState[2]">add</mat-icon>
+        <mat-icon class="authorize-click icon" *ngIf="panelOpenState[2]">remove</mat-icon>
+        </mat-expansion-panel-header>
+    
+        <mat-table [dataSource]="AssetAudit" matSort>
+          <ng-container matColumnDef="Event Name">
+              <mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="'w-150'"> Event Name </mat-header-cell>
+              <mat-cell *matCellDef="let row" [ngClass]="'w-150'">{{row.Event_Name}}</mat-cell>
+          </ng-container>
+  
+          <ng-container matColumnDef="Type(Mobile/Email)">
+            <mat-header-cell  *matHeaderCellDef mat-sort-header  [ngClass]="'w-150'"> Type(Mobile/Email) </mat-header-cell>
+            <mat-cell *matCellDef="let row"  [ngClass]="'w-150'">
+              <mat-form-field style="margin-top: -5px;width:130px">
+                <mat-select [(ngModel)]="row.Type" (selectionChange)="onselect($event)">
+                  <mat-option value="Email">Email</mat-option>
+                  <mat-option value="Mobile">Mobile</mat-option>
+                  <mat-option value="Both">Both</mat-option>
+                </mat-select>
+              </mat-form-field>
+            </mat-cell>
+          </ng-container>
+        
+            <ng-container matColumnDef="Subject">
+              <mat-header-cell  *matHeaderCellDef mat-sort-header  [ngClass]="'w-180'"> Subject </mat-header-cell>
+              <mat-cell *matCellDef="let row"  [ngClass]="'w-180'">
+              <mat-form-field style="width:'170px';margin-top: -5px;">
+                <textarea matInput style="overflow:auto hidden;" cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeminRows="1"  cdkAutosizemaxRows="3" [(ngModel)]="row.Subject"></textarea>
+              </mat-form-field>
+            </mat-cell>
+            </ng-container>
+        
+            <ng-container matColumnDef="Content">
+              <mat-header-cell  *matHeaderCellDef mat-sort-header  [ngClass]="'w-280'"> Content </mat-header-cell>
+              <mat-cell *matCellDef="let row"  [ngClass]="'w-280'">
+              <mat-form-field style="width: '260px';margin-top: -5px;">
+                <textarea matInput style="overflow:auto hidden;" cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeminRows="1"  cdkAutosizemaxRows="3" [(ngModel)]="row.Content"></textarea>
+              </mat-form-field>
+            </mat-cell>
+            </ng-container>
+  
+            <ng-container matColumnDef="Event Based">
+              <mat-header-cell  *matHeaderCellDef mat-sort-header  [ngClass]="'w-150'"> Event Based </mat-header-cell>
+              <mat-cell *matCellDef="let row"  [ngClass]="'w-150'">
+              <mat-form-field style="width:130px;margin-top: -5px;">
+                <mat-select [(ngModel)]="row.EventBased" (selectionChange)="onselect($event)">
+                  <mat-option value="Yes">Yes</mat-option>
+                  <mat-option value="NO">NO</mat-option>
+               </mat-select>
+              </mat-form-field>
+            </mat-cell>
+            </ng-container>
+  
+            <ng-container matColumnDef="Prior/Post">
+              <mat-header-cell  *matHeaderCellDef mat-sort-header  [ngClass]="'w-150'"> Prior/Post </mat-header-cell>
+              <mat-cell *matCellDef="let row"  [ngClass]="'w-150'">
+              <mat-form-field [hidden]="row.EventBased=='Yes'" style="width:130px;margin-top: -5px;">
+                <mat-select [(ngModel)]="row.Prior" [disabled]="row.EventBased==!'NO'">
+                  <mat-option value="Prior">Prior</mat-option>
+                  <mat-option value="Post">Post</mat-option>
+               </mat-select>
+              </mat-form-field>
+              <div *ngIf="row.EventBased=='Yes'">NA </div>
+            </mat-cell>
+            </ng-container>
+  
+            <ng-container matColumnDef="Frequency">
+              <mat-header-cell  *matHeaderCellDef mat-sort-header  [ngClass]="'w-150'"> Frequency </mat-header-cell>
+              <mat-cell *matCellDef="let row"  [ngClass]="'w-150'">
+              <mat-form-field [hidden]="row.EventBased=='Yes'" style="width:130px;margin-top: -5px;">
+                <mat-select [(ngModel)]="row.Frequency" [disabled]="row.EventBased==!'NO'">
+                  <mat-option value="Daily">Daily</mat-option>
+                  <mat-option value="Alternate">Alternate Days</mat-option>
+                  <mat-option value="Weekly">Weekly</mat-option>
+                  <mat-option value="Fortnightly">Fortnightly</mat-option>
+                  <mat-option value="Monthly">Monthly</mat-option>
+               </mat-select>
+              </mat-form-field>
+              <div *ngIf="row.EventBased=='Yes'">NA </div>
+            </mat-cell>
+            </ng-container>
+  
+            <ng-container matColumnDef="Days">
+              <mat-header-cell  *matHeaderCellDef mat-sort-header  [ngClass]="'w-150'"> Days </mat-header-cell>
+              <mat-cell *matCellDef="let row"  [ngClass]="'w-150'">
+              <mat-form-field [hidden]="row.EventBased=='Yes'" style="width:130px;margin-top: -5px;">
+                <mat-select [(ngModel)]="row.Days" [disabled]="row.EventBased==!'NO'">
+                  <mat-option value="1">1</mat-option>
+                  <mat-option value="7">7</mat-option>
+                  <mat-option value="15">15</mat-option>
+               </mat-select>
+              </mat-form-field>
+              <div *ngIf="row.EventBased=='Yes'">NA </div>
+            </mat-cell>
+            </ng-container>
+            <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+            <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+           </mat-table>
+        <mat-action-row class="action">
+          <button mat-button color="warn" (click)="prevStep()">Previous</button>
+          <button mat-button color="primary" (click)="nextStep()">Next</button>
+        </mat-action-row>
+      </mat-expansion-panel>
+        <mat-expansion-panel [expanded]="step === 3" (opened)="setStep(3)" (closed)="changeState(3)" id="panel-4" hideToggle>
+          <mat-expansion-panel-header class="prevent-click">
+            <mat-panel-title>
+              Assignment
+            </mat-panel-title>
+            <mat-icon class="authorize-click icon" *ngIf="!panelOpenState[3]">add</mat-icon>
+            <mat-icon class="authorize-click icon" *ngIf="panelOpenState[3]">remove</mat-icon>
+          </mat-expansion-panel-header>
+         
+          <mat-table [dataSource]="Assignment" matSort>
+            <ng-container matColumnDef="Event Name">
+                <mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="'w-150'"> Event Name </mat-header-cell>
+                <mat-cell *matCellDef="let row" [ngClass]="'w-150'">{{row.Event_Name}}</mat-cell>
+            </ng-container>
+    
+            <ng-container matColumnDef="Type(Mobile/Email)">
+              <mat-header-cell  *matHeaderCellDef mat-sort-header  [ngClass]="'w-150'"> Type(Mobile/Email) </mat-header-cell>
+              <mat-cell *matCellDef="let row"  [ngClass]="'w-150'">
+                <mat-form-field style="margin-top: -5px;width:130px">
+                  <mat-select [(ngModel)]="row.Type" (selectionChange)="onselect($event)">
+                    <mat-option value="Email">Email</mat-option>
+                    <mat-option value="Mobile">Mobile</mat-option>
+                    <mat-option value="Both">Both</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </mat-cell>
+            </ng-container>
+          
+              <ng-container matColumnDef="Subject">
+                <mat-header-cell  *matHeaderCellDef mat-sort-header  [ngClass]="'w-180'"> Subject </mat-header-cell>
+                <mat-cell *matCellDef="let row"  [ngClass]="'w-180'">
+                <mat-form-field style="width:'170px';margin-top: -5px;">
+                  <textarea matInput style="overflow:auto hidden;" cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeminRows="1"  cdkAutosizemaxRows="3" [(ngModel)]="row.Subject"></textarea>
+                </mat-form-field>
+              </mat-cell>
+              </ng-container>
+          
+              <ng-container matColumnDef="Content">
+                <mat-header-cell  *matHeaderCellDef mat-sort-header  [ngClass]="'w-280'"> Content </mat-header-cell>
+                <mat-cell *matCellDef="let row"  [ngClass]="'w-280'">
+                <mat-form-field style="width: '260px';margin-top: -5px;">
+                  <textarea matInput style="overflow:auto hidden;" cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeminRows="1"  cdkAutosizemaxRows="3" [(ngModel)]="row.Content"></textarea>
+                </mat-form-field>
+              </mat-cell>
+              </ng-container>
+    
+              <ng-container matColumnDef="Event Based">
+                <mat-header-cell  *matHeaderCellDef mat-sort-header  [ngClass]="'w-150'"> Event Based </mat-header-cell>
+                <mat-cell *matCellDef="let row"  [ngClass]="'w-150'">
+                <mat-form-field style="width:130px;margin-top: -5px;">
+                  <mat-select [(ngModel)]="row.EventBased" (selectionChange)="onselect($event)">
+                    <mat-option value="Yes">Yes</mat-option>
+                    <mat-option value="NO">NO</mat-option>
+                 </mat-select>
+                </mat-form-field>
+              </mat-cell>
+              </ng-container>
+    
+              <ng-container matColumnDef="Prior/Post">
+                <mat-header-cell  *matHeaderCellDef mat-sort-header  [ngClass]="'w-150'"> Prior/Post </mat-header-cell>
+                <mat-cell *matCellDef="let row"  [ngClass]="'w-150'">
+                <mat-form-field [hidden]="row.EventBased=='Yes'" style="width:130px;margin-top: -5px;">
+                  <mat-select [(ngModel)]="row.Prior" [disabled]="row.EventBased==!'NO'">
+                    <mat-option value="Prior">Prior</mat-option>
+                    <mat-option value="Post">Post</mat-option>
+                 </mat-select>
+                </mat-form-field>
+                <div *ngIf="row.EventBased=='Yes'">NA </div>
+              </mat-cell>
+              </ng-container>
+    
+              <ng-container matColumnDef="Frequency">
+                <mat-header-cell  *matHeaderCellDef mat-sort-header  [ngClass]="'w-150'"> Frequency </mat-header-cell>
+                <mat-cell *matCellDef="let row"  [ngClass]="'w-150'">
+                <mat-form-field [hidden]="row.EventBased=='Yes'" style="width:130px;margin-top: -5px;">
+                  <mat-select [(ngModel)]="row.Frequency" [disabled]="row.EventBased==!'NO'">
+                    <mat-option value="Daily">Daily</mat-option>
+                    <mat-option value="Alternate">Alternate Days</mat-option>
+                    <mat-option value="Weekly">Weekly</mat-option>
+                    <mat-option value="Fortnightly">Fortnightly</mat-option>
+                    <mat-option value="Monthly">Monthly</mat-option>
+                 </mat-select>
+                </mat-form-field>
+                <div *ngIf="row.EventBased=='Yes'">NA </div>
+              </mat-cell>
+              </ng-container>
+    
+              <ng-container matColumnDef="Days">
+                <mat-header-cell  *matHeaderCellDef mat-sort-header  [ngClass]="'w-150'"> Days </mat-header-cell>
+                <mat-cell *matCellDef="let row"  [ngClass]="'w-150'">
+                <mat-form-field [hidden]="row.EventBased=='Yes'" style="width:130px;margin-top: -5px;">
+                  <mat-select [(ngModel)]="row.Days" [disabled]="row.EventBased==!'NO'">
+                    <mat-option value="1">1</mat-option>
+                    <mat-option value="7">7</mat-option>
+                    <mat-option value="15">15</mat-option>
+                 </mat-select>
+                </mat-form-field>
+                <div *ngIf="row.EventBased=='Yes'">NA </div>
+              </mat-cell>
+              </ng-container>
+              <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+              <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+             </mat-table>
+        <mat-action-row class="action">        
+          <button mat-button color="warn" (click)="prevStep()">Previous</button>
+          <button mat-button color="primary" (click)="nextStep()">Next</button>
+        </mat-action-row>
+        </mat-expansion-panel>
+        <mat-expansion-panel [expanded]="step === 4" (opened)="setStep(4)" (closed)="changeState(4)" id="panel-5" hideToggle>
+          <mat-expansion-panel-header class="prevent-click" style="height: 50px;">
+            <mat-panel-title>
+              Transportaion
+            </mat-panel-title>
+            <mat-icon class="authorize-click icon" *ngIf="!panelOpenState[4]">add</mat-icon>
+        <mat-icon class="authorize-click icon" *ngIf="panelOpenState[4]">remove</mat-icon>
+          </mat-expansion-panel-header>
+      
+          <mat-table [dataSource]="CreateMaster" matSort>
+            <ng-container matColumnDef="Event Name">
+                <mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="'w-150'"> Event Name </mat-header-cell>
+                <mat-cell *matCellDef="let row" [ngClass]="'w-150'">{{row.Event_Name}}</mat-cell>
+            </ng-container>
+    
+            <ng-container matColumnDef="Type(Mobile/Email)">
+              <mat-header-cell  *matHeaderCellDef mat-sort-header  [ngClass]="'w-150'"> Type(Mobile/Email) </mat-header-cell>
+              <mat-cell *matCellDef="let row"  [ngClass]="'w-150'">
+                <mat-form-field style="margin-top: -5px;width:130px">
+                  <mat-select [(ngModel)]="row.Type" (selectionChange)="onselect($event)">
+                    <mat-option value="Email">Email</mat-option>
+                    <mat-option value="Mobile">Mobile</mat-option>
+                    <mat-option value="Both">Both</mat-option>
+                  </mat-select>
+                </mat-form-field>
+              </mat-cell>
+            </ng-container>
+          
+              <ng-container matColumnDef="Subject">
+                <mat-header-cell  *matHeaderCellDef mat-sort-header  [ngClass]="'w-180'"> Subject </mat-header-cell>
+                <mat-cell *matCellDef="let row"  [ngClass]="'w-180'">
+                <mat-form-field style="width:'170px';margin-top: -5px;">
+                  <textarea matInput style="overflow:auto hidden;" cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeminRows="1"  cdkAutosizemaxRows="3" [(ngModel)]="row.Subject"></textarea>
+                </mat-form-field>
+              </mat-cell>
+              </ng-container>
+          
+              <ng-container matColumnDef="Content">
+                <mat-header-cell  *matHeaderCellDef mat-sort-header  [ngClass]="'w-280'"> Content </mat-header-cell>
+                <mat-cell *matCellDef="let row"  [ngClass]="'w-280'">
+                <mat-form-field style="width: '260px';margin-top: -5px;">
+                  <textarea matInput style="overflow:auto hidden;" cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeminRows="1"  cdkAutosizemaxRows="3" [(ngModel)]="row.Content"></textarea>
+                </mat-form-field>
+              </mat-cell>
+              </ng-container>
+    
+              <ng-container matColumnDef="Event Based">
+                <mat-header-cell  *matHeaderCellDef mat-sort-header  [ngClass]="'w-150'"> Event Based </mat-header-cell>
+                <mat-cell *matCellDef="let row"  [ngClass]="'w-150'">
+                <mat-form-field style="width:130px;margin-top: -5px;">
+                  <mat-select [(ngModel)]="row.EventBased" (selectionChange)="onselect($event)">
+                    <mat-option value="Yes">Yes</mat-option>
+                    <mat-option value="NO">NO</mat-option>
+                 </mat-select>
+                </mat-form-field>
+              </mat-cell>
+              </ng-container>
+    
+              <ng-container matColumnDef="Prior/Post">
+                <mat-header-cell  *matHeaderCellDef mat-sort-header  [ngClass]="'w-150'"> Prior/Post </mat-header-cell>
+                <mat-cell *matCellDef="let row"  [ngClass]="'w-150'">
+                <mat-form-field [hidden]="row.EventBased=='Yes'" style="width:130px;margin-top: -5px;">
+                  <mat-select [(ngModel)]="row.Prior" [disabled]="row.EventBased==!'NO'">
+                    <mat-option value="Prior">Prior</mat-option>
+                    <mat-option value="Post">Post</mat-option>
+                 </mat-select>
+                </mat-form-field>
+                <div *ngIf="row.EventBased=='Yes'">NA </div>
+              </mat-cell>
+              </ng-container>
+    
+              <ng-container matColumnDef="Frequency">
+                <mat-header-cell  *matHeaderCellDef mat-sort-header  [ngClass]="'w-150'"> Frequency </mat-header-cell>
+                <mat-cell *matCellDef="let row"  [ngClass]="'w-150'">
+                <mat-form-field [hidden]="row.EventBased=='Yes'" style="width:130px;margin-top: -5px;">
+                  <mat-select [(ngModel)]="row.Frequency" [disabled]="row.EventBased==!'NO'">
+                    <mat-option value="Daily">Daily</mat-option>
+                    <mat-option value="Alternate">Alternate Days</mat-option>
+                    <mat-option value="Weekly">Weekly</mat-option>
+                    <mat-option value="Fortnightly">Fortnightly</mat-option>
+                    <mat-option value="Monthly">Monthly</mat-option>
+                 </mat-select>
+                </mat-form-field>
+                <div *ngIf="row.EventBased=='Yes'">NA </div>
+              </mat-cell>
+              </ng-container>
+    
+              <ng-container matColumnDef="Days">
+                <mat-header-cell  *matHeaderCellDef mat-sort-header  [ngClass]="'w-150'"> Days </mat-header-cell>
+                <mat-cell *matCellDef="let row"  [ngClass]="'w-150'">
+                <mat-form-field [hidden]="row.EventBased=='Yes'" style="width:130px;margin-top: -5px;">
+                  <mat-select [(ngModel)]="row.Days" [disabled]="row.EventBased==!'NO'">
+                    <mat-option value="1">1</mat-option>
+                    <mat-option value="7">7</mat-option>
+                    <mat-option value="15">15</mat-option>
+                 </mat-select>
+                </mat-form-field>
+                <div *ngIf="row.EventBased=='Yes'">NA </div>
+              </mat-cell>
+              </ng-container>
+              <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+              <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+             </mat-table>
+          <mat-action-row class="action">
+            <button mat-button color="warn" (click)="prevStep()">Previous</button>
+            <button mat-button color="primary" (click)="nextStep()">Next</button>
+          </mat-action-row>
+        </mat-expansion-panel>
+          <mat-expansion-panel [expanded]="step === 5" (opened)="setStep(5)" (closed)="changeState(5)" id="panel-6" hideToggle>
+            <mat-expansion-panel-header class="prevent-click" style="height: 50px;">
+              <mat-panel-title>
+                Retirement
+              </mat-panel-title>
+              <mat-icon class="authorize-click icon" *ngIf="!panelOpenState[5]">add</mat-icon>
+        <mat-icon class="authorize-click icon" *ngIf="panelOpenState[5]">remove</mat-icon>
+            </mat-expansion-panel-header>
+           
+            <mat-table [dataSource]="AssetRelationship" matSort>
+              <ng-container matColumnDef="Event Name">
+                  <mat-header-cell *matHeaderCellDef mat-sort-header [ngClass]="'w-150'"> Event Name </mat-header-cell>
+                  <mat-cell *matCellDef="let row" [ngClass]="'w-150'">{{row.Event_Name}}</mat-cell>
+              </ng-container>
+      
+              <ng-container matColumnDef="Type(Mobile/Email)">
+                <mat-header-cell  *matHeaderCellDef mat-sort-header  [ngClass]="'w-150'"> Type(Mobile/Email) </mat-header-cell>
+                <mat-cell *matCellDef="let row"  [ngClass]="'w-150'">
+                  <mat-form-field style="margin-top: -5px;width:130px">
+                    <mat-select [(ngModel)]="row.Type" (selectionChange)="onselect($event)">
+                      <mat-option value="Email">Email</mat-option>
+                      <mat-option value="Mobile">Mobile</mat-option>
+                      <mat-option value="Both">Both</mat-option>
+                    </mat-select>
+                  </mat-form-field>
+                </mat-cell>
+              </ng-container>
+            
+                <ng-container matColumnDef="Subject">
+                  <mat-header-cell  *matHeaderCellDef mat-sort-header  [ngClass]="'w-180'"> Subject </mat-header-cell>
+                  <mat-cell *matCellDef="let row"  [ngClass]="'w-180'">
+                  <mat-form-field style="width:'170px';margin-top: -5px;">
+                    <textarea matInput style="overflow:auto hidden;" cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeminRows="1"  cdkAutosizemaxRows="3" [(ngModel)]="row.Subject"></textarea>
+                  </mat-form-field>
+                </mat-cell>
+                </ng-container>
+            
+                <ng-container matColumnDef="Content">
+                  <mat-header-cell  *matHeaderCellDef mat-sort-header  [ngClass]="'w-280'"> Content </mat-header-cell>
+                  <mat-cell *matCellDef="let row"  [ngClass]="'w-280'">
+                  <mat-form-field style="width: '260px';margin-top: -5px;">
+                    <textarea matInput style="overflow:auto hidden;" cdkTextareaAutosize #autosize="cdkTextareaAutosize" cdkAutosizeminRows="1"  cdkAutosizemaxRows="3" [(ngModel)]="row.Content"></textarea>
+                  </mat-form-field>
+                </mat-cell>
+                </ng-container>
+      
+                <ng-container matColumnDef="Event Based">
+                  <mat-header-cell  *matHeaderCellDef mat-sort-header  [ngClass]="'w-150'"> Event Based </mat-header-cell>
+                  <mat-cell *matCellDef="let row"  [ngClass]="'w-150'">
+                  <mat-form-field style="width:130px;margin-top: -5px;">
+                    <mat-select [(ngModel)]="row.EventBased" (selectionChange)="onselect($event)">
+                      <mat-option value="Yes">Yes</mat-option>
+                      <mat-option value="NO">NO</mat-option>
+                   </mat-select>
+                  </mat-form-field>
+                </mat-cell>
+                </ng-container>
+      
+                <ng-container matColumnDef="Prior/Post">
+                  <mat-header-cell  *matHeaderCellDef mat-sort-header  [ngClass]="'w-150'"> Prior/Post </mat-header-cell>
+                  <mat-cell *matCellDef="let row"  [ngClass]="'w-150'">
+                  <mat-form-field [hidden]="row.EventBased=='Yes'" style="width:130px;margin-top: -5px;">
+                    <mat-select [(ngModel)]="row.Prior" [disabled]="row.EventBased==!'NO'">
+                      <mat-option value="Prior">Prior</mat-option>
+                      <mat-option value="Post">Post</mat-option>
+                   </mat-select>
+                  </mat-form-field>
+                  <div *ngIf="row.EventBased=='Yes'">NA </div>
+                </mat-cell>
+                </ng-container>
+      
+                <ng-container matColumnDef="Frequency">
+                  <mat-header-cell  *matHeaderCellDef mat-sort-header  [ngClass]="'w-150'"> Frequency </mat-header-cell>
+                  <mat-cell *matCellDef="let row"  [ngClass]="'w-150'">
+                  <mat-form-field [hidden]="row.EventBased=='Yes'" style="width:130px;margin-top: -5px;">
+                    <mat-select [(ngModel)]="row.Frequency" [disabled]="row.EventBased==!'NO'">
+                      <mat-option value="Daily">Daily</mat-option>
+                      <mat-option value="Alternate">Alternate Days</mat-option>
+                      <mat-option value="Weekly">Weekly</mat-option>
+                      <mat-option value="Fortnightly">Fortnightly</mat-option>
+                      <mat-option value="Monthly">Monthly</mat-option>
+                   </mat-select>
+                  </mat-form-field>
+                  <div *ngIf="row.EventBased=='Yes'">NA </div>
+                </mat-cell>
+                </ng-container>
+      
+                <ng-container matColumnDef="Days">
+                  <mat-header-cell  *matHeaderCellDef mat-sort-header  [ngClass]="'w-150'"> Days </mat-header-cell>
+                  <mat-cell *matCellDef="let row"  [ngClass]="'w-150'">
+                  <mat-form-field [hidden]="row.EventBased=='Yes'" style="width:130px;margin-top: -5px;">
+                    <mat-select [(ngModel)]="row.Days" [disabled]="row.EventBased==!'NO'">
+                      <mat-option value="1">1</mat-option>
+                      <mat-option value="7">7</mat-option>
+                      <mat-option value="15">15</mat-option>
+                   </mat-select>
+                  </mat-form-field>
+                  <div *ngIf="row.EventBased=='Yes'">NA </div>
+                </mat-cell>
+                </ng-container>
+                <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+                <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+               </mat-table>
+          <mat-action-row class="action">        
+           <button mat-button color="warn" (click)="prevStep()">Previous</button>
+           <button mat-button color="primary" (click)="nextStep()">End</button>
+          </mat-action-row>
+          </mat-expansion-panel>
+    </mat-accordion>
+</mat-card-content>
+</mat-card>
+    

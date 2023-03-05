@@ -1,0 +1,53 @@
+<!-- <div mat-dialog aria-label="Group/Split"  class="md-dialog-container">
+  <form>
+    <mat-toolbar class="mat-toolbar" style="background-color:rgb(12, 48, 87);color:white">
+      <span>Asset No</span>
+      <span class="example-spacer"></span>
+      <button mat-icon-button class="example-icon" aria-label="Example icon-button with close icon"
+        (click)="onclosetab()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-toolbar>
+    <mat-dialog-content style="margin-left: -65px !important;margin-top: 9px;"  cdkDrag cdkDragRootElement=".cdk-overlay-pane" cdkDragHandle>
+      <div class="md-dialog-content">
+        <div fxFlex="80" class="pr-1 full">
+          <mat-form-field class="example-full-width">
+            
+              <mat-chip-list #chipList aria-label="Fruit selection">
+                <mat-chip *ngFor="let user of selectedUsers; let i=index" [selectable]="selectable"
+                         [removable]="removable" (removed)="remove(user)">
+                  <span>{{user}}</span>
+                  <mat-icon matChipRemove *ngIf="removable">cancel</mat-icon>
+                </mat-chip>   
+                  <input type="text" placeholder="Search" aria-label="Number" (ngModelChange)="onChangeFilterData($event)" matInput [formControl]="asset_no" [matAutocomplete]="auto" [matChipInputFor]="chipList"
+                  [matChipInputAddOnBlur]="addOnBlur" (matChipInputTokenEnd)="add($event)">
+                  <button *ngIf="asset_no.value != null" (click)="clear()" mat-icon-button matSuffix class="example-icon" style="background-color:white;margin-top: 0px;width:30px;height: 30px;" aria-label="Example icon-button with close icon">
+                    <mat-icon style="font-size: 25px;color:#0C3057;cursor:pointer">close</mat-icon>
+                  </button>
+              </mat-chip-list>
+
+            <mat-autocomplete #auto="matAutocomplete" (optionSelected)="selected($event)" >
+              <mat-option *ngFor="let asset of filteredassetno | async;let i=index" style="height: 32px !important;" >
+                
+                  <mat-checkbox [checked]="selectedUsers.indexOf(asset)>-1" (change)="toggleSelection(asset,i)"
+                    (click)="$event.stopPropagation()">
+                    {{asset}}
+                  </mat-checkbox>
+               
+              </mat-option>
+            </mat-autocomplete>
+          </mat-form-field>
+        </div>
+
+      </div>
+    </mat-dialog-content>
+  
+
+
+    <mat-dialog-actions layout="row">
+      <button class="btn" mat-raised-button color="primary" style="margin: 0px 2% 40px 80%;"
+        (click)="save()">Submit</button>
+    </mat-dialog-actions>
+  </form>
+
+</div> -->

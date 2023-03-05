@@ -1,0 +1,91 @@
+<!--<ng-snotify></ng-snotify>-->
+<mat-card class="p-0">
+  <div fxLayout="row wrap">
+
+    <!-- <div fxFlex="50" fxFlex.gt-sm="20" fxFlex.sm="50">
+      <mat-form-field style="margin-left: 1100px;">
+        <mat-label>Filter</mat-label>
+        <input matInput (keyup)="applyFilter($event)" placeholder="Search">
+      </mat-form-field>
+    </div> -->
+
+    <div fxFlex="50" fxFlex.gt-sm="20" fxFlex.sm="50">
+      <div class="text-center pt-1 pb-1 border-right-light">
+        <mat-icon class="text-blue" (click)="openDialog('insert')" style="color: #1d3478 !important;margin-right: 10px !important;cursor: pointer;">add</mat-icon>
+        <h4 class="m-0" (click)="openDialog('insert')">Add New</h4>
+      </div>
+    </div>
+    <div fxFlex="50" fxFlex.gt-sm="20" fxFlex.sm="50">
+      <div class="text-center pt-1 pb-1 border-right-light">
+        <mat-icon class="text-green" (click)="exportAsXLSX()" style="color: #1d3478 !important;margin-right: 10px !important;cursor: pointer;">insert_drive_file</mat-icon>
+        <h4 class="m-0 " (click)="exportAsXLSX()">Export</h4>
+      </div>
+    </div>
+    <div fxFlex="50" fxFlex.gt-sm="20" fxFlex.sm="50">
+      <div class="text-center pt-1 pb-1 border-right-light">
+        <mat-icon class="text-blue" (click)="openDialog('upload')" style="color: #1d3478 !important;margin-right: 10px !important;cursor: pointer;">file_upload</mat-icon>
+        <h4 class="m-0 " (click)="openDialog('upload')">Upload Files</h4>
+      </div>
+    </div>
+
+    <!-- <div fxFlex="60" fxFlex.gt-sm="20" fxFlex.sm="60">
+      <div class="text-start pt-1 pb-1 border-right-light">        
+        <mat-icon class="text-black" (click)="openDialog('insert')">add</mat-icon>
+      </div>
+    </div>
+    <div fxFlex="50" fxFlex.gt-sm="20" fxFlex.sm="50">
+      <div class="text-center pt-1 pb-1 border-right-light">
+        <mat-icon class="text-green" (click)="exportAsXLSX()">insert_drive_file
+        </mat-icon>
+      </div>
+    </div>
+    <div fxFlex="50" fxFlex.gt-sm="20" fxFlex.sm="50">
+      <div class="text-center pt-1 pb-1 border-right-light">
+        <mat-icon class="text-blue"  (click)="openDialog('upload')">file_upload
+        </mat-icon>
+      </div>
+    </div> -->
+    <div fxFlex="50" fxFlex.gt-sm="20" fxFlex.sm="50">
+      <!-- <div class="text-center pt-1 pb-1">
+        <mat-icon class="text-red">favorite</mat-icon>
+        <h4 class="m-0 ">4070</h4>
+        <small class="m-0 ">Likes</small>
+      </div> -->
+    </div>
+  </div>
+</mat-card>
+<div class="ml-05 mr-05 mt-05 pb-1">
+  <div class="table-responsive mat-elevation-z2">
+    <!-- New Table structure with the  -->
+    <!--<table mat-table class="w-100" style="width:100% ;" #table [dataSource]="dataSource" matSort #sort="matSort">
+      <ng-container matColumnDef="{{column}}" *ngFor="let column of displayedColumns; index as i">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> {{ displayedHeaders[i] }} </th>
+        <td mat-cell *matCellDef="let element">
+          <span *ngIf="i === 0 || i === 1">{{element[column]}}</span>
+          <span *ngIf="i === 2 || i === 3">{{element[column] | date:'dd-MM-yyyy'}}</span>
+          <span *ngIf="i==5" [ngClass]="{'hide-col':'show'}">
+            <button mat-icon-button mat-sm-button color="warn" (click)="deleteRecord('delete',element.id)">
+              <mat-icon>delete</mat-icon>
+            </button>
+          </span>
+          <span *ngIf="i === 4">
+            <button mat-icon-button mat-sm-button color="#10174c" class="mr-1"
+              (click)="openDialog('edit',element.name,element.id)">
+              <mat-icon>edit</mat-icon>
+            </button>
+
+          </span>
+        </td>
+      </ng-container>
+
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+    </table>
+    <mat-paginator #paginator="matPaginator" [pageSizeOptions]="[ 10, 20, 50, 100]" [pageSize]="20"
+    showFirstLastButtons></mat-paginator>-->
+    <table mat-table class="w-100" style="width:100% ;" #table [dataSource]="dataSource" matSort #sort="matSort">
+       
+    </table>
+
+  </div>
+</div>

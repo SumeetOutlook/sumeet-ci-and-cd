@@ -1,0 +1,44 @@
+<div class="md-dialog-container" *ngIf="displayModule">
+  <mat-toolbar class="mat-toolbar" style="background-color:rgb(12, 48, 87) !important;color:white">
+    <span style="position: relative;left: 40%;">Map Columns with Assetcues fields</span>
+    <span class="example-spacer"></span>
+    <button mat-icon-button class="example-icon" aria-label="Example icon-button with close icon"
+      (click)="dialogRef.close(false)">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-toolbar><br><br>
+  <mat-dialog-content cdkDrag cdkDragRootElement=".cdk-overlay-pane" cdkDragHandle>
+    <span style="color: red;"> {{ValidationResult}} </span> <span style="color: red;"
+      *ngIf="tempCreateValidation.length > 0">{{message.Mandatory}}</span>
+    <form [formGroup]="AssetInfo">
+      <div fxLayout="row wrap" fxLayout.lt-sm="column" style="margin-left: 2%;">
+        <div fxFlex="25" class="pr-1" *ngFor="let c of columnExcelHeaderName">
+          <mat-form-field fxFlex="100" appearance="outline">
+            <mat-label class="label">{{c.name}}</mat-label>
+            <mat-select  [(ngModel)]="c.model" [ngModelOptions]="{standalone: true}">
+              <mat-option>
+                <ngx-mat-select-search [placeholderLabel]="'Search'"  [formControl]="colFilterCtrl" (keyup)="applyFilter(c)">
+                </ngx-mat-select-search>
+              </mat-option>
+              <mat-option [value]="" (click)="GetChangeValue(c)"> {{header.Select}} </mat-option>
+              <mat-option *ngFor="let column of c.ColumnHeaderName" [value]="column" [disabled]="column.disabled"
+              (click)="GetChangeValue(c)">{{column.HeaderName}}</mat-option>
+            </mat-select>
+          </mat-form-field>          
+          <!-- <mat-form-field fxFlex="100">
+              <mat-select disableOptionCentering placeholder="{{c.name}}" [(ngModel)]="c.model" [ngModelOptions]="{standalone: true}">
+                <mat-option>
+                  <ngx-mat-select-search [placeholderLabel]="'Search'" [(ngModel)]="c.nameModel"  [ngModelOptions]="{standalone: true}" (keyup)="onChange(c)" [showToggleAllCheckbox]="true" >
+                  </ngx-mat-select-search>
+                </mat-option>
+                <mat-option *ngFor="let column of c.ColumnHeaderName" [value]="column" [disabled]="column.disabled"  (click)="GetChangeValue(c)">{{column.HeaderName}}</mat-option>
+             </mat-select>
+            </mat-form-field>          -->
+        </div>
+      </div>
+    </form>
+    <button style="float:right;margin-right:2%;margin-bottom: 2%;" class="btn success" mat-raised-button
+      [disabled]="tempCreateValidation.length > 0" (click)="Submit()"><mat-icon>check</mat-icon> Submit</button>
+
+  </mat-dialog-content>
+</div>

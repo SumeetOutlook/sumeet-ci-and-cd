@@ -1,0 +1,171 @@
+<h3><strong style=" color:#008bd0 !important;"> Software Licenses</strong> </h3>
+<div fxLayout="row wrap" fxLayout.lt-sm="column">
+  <div fxFlex="100" fxFlex.gt-xs="12" class="pr-1">
+    <mat-form-field class="full-width">
+      <mat-label class="label">Manufacturer</mat-label>
+      <mat-select disableOptionCentering [(ngModel)]="ManufacturerCtrl"  [ngModelOptions]="{standalone: true}"  [multiple]="true" #multiSelect>
+        <mat-option>
+          <ngx-mat-select-search [placeholderLabel]="'Search'" noEntriesFoundLabel="{{header.NoRecordFound}}"
+            [formControl]="ManufacturerFilterCtrl"></ngx-mat-select-search>
+        </mat-option>
+        <mat-option value="" > {{header.All}} </mat-option>
+        <div class="select-all">
+          <mat-checkbox [checked]="ManufacturerCtrl.length === typeOfManufacturers.length ? true : false" [indeterminate]="ManufacturerCtrl.length < typeOfManufacturers.length ? true : false"
+                          (change)="toggleSelectAllManufacturer($event)">Select All</mat-checkbox>
+        </div>
+        <mat-option [disabled]="!ManufacturerCtrl" *ngFor="let type of  filteredManufacturersMulti  | async" [value]="type.ID">
+          {{type.Name}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div fxFlex="100" fxFlex.gt-xs="12" class="pr-1">
+    <mat-form-field class="full-width">
+      <mat-label class="label">License Type</mat-label>
+      <mat-select disableOptionCentering [(ngModel)]="LicenseTypeCtrl" [ngModelOptions]="{standalone: true}"  [multiple]="true" #multiSelect>
+        <mat-option>
+          <ngx-mat-select-search [placeholderLabel]="'Search'" noEntriesFoundLabel="{{header.NoRecordFound}}"
+            [formControl]="LicenseTypeFilterCtrl"></ngx-mat-select-search>
+        </mat-option>
+        <mat-option value="" > {{header.All}} </mat-option>
+        <div class="select-all">
+          <mat-checkbox [checked]="LicenseTypeCtrl.length === typeOfLicenseType.length ? true : false" [indeterminate]="LicenseTypeCtrl.length < typeOfLicenseType.length ? true : false"
+                          (change)="toggleSelectAllSoftwareType($event)">Select All</mat-checkbox>
+        </div>
+        <mat-option [disabled]="!LicenseTypeCtrl" *ngFor="let type of filteredLicenseTypeMulti | async" [value]="type.LicenseTypeID" (click)="onChangeLicenseType(type.LicenseTypeID)">
+          {{type.LicenseType}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div fxFlex="100" fxFlex.gt-xs="12" class="pr-1">
+    <mat-form-field class="full-width">
+      <mat-label class="label">License Option</mat-label>
+      <mat-select disableOptionCentering [(ngModel)]="LicenseOptionCtrl">
+        <mat-option>
+          <ngx-mat-select-search [placeholderLabel]="'Search'" noEntriesFoundLabel="{{header.NoRecordFound}}"
+            [formControl]="LicenseOptionFilterCtrl"></ngx-mat-select-search>
+        </mat-option>
+        <mat-option value="" > {{header.All}} </mat-option>
+        <mat-option *ngFor="let type of typeOfLicenseOption" [value]="type.id">
+          {{type.LicenseOption}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  <div fxFlex="100" fxFlex.gt-xs="12" class="pr-1">
+    <mat-form-field class="full-width">
+      <mat-label class="label">Software</mat-label>
+      <mat-select disableOptionCentering [(ngModel)]="SoftwareSuiteCtrl" [ngModelOptions]="{standalone: true}"  [multiple]="true" #multiSelect>
+        <mat-option>
+          <ngx-mat-select-search [placeholderLabel]="'Search'" noEntriesFoundLabel="{{header.NoRecordFound}}"
+            [formControl]="SoftwareSuiteFilterCtrl"></ngx-mat-select-search>
+        </mat-option>
+        <mat-option value="" > {{header.All}} </mat-option>
+        <div class="select-all">
+          <mat-checkbox [checked]="SoftwareSuiteCtrl.length === typeOfSoftwareSuite.length ? true : false" [indeterminate]="SoftwareSuiteCtrl.length < typeOfSoftwareSuite.length ? true : false"
+                          (change)="toggleSelectAllSoftwareSuite($event)">Select All</mat-checkbox>
+        </div>
+        <mat-option [disabled]="!SoftwareSuiteCtrl" *ngFor="let type of filteredSoftwareSuiteMulti | async" [value]="type.SoftwareName">
+          {{type.SoftwareName}}
+        </mat-option>
+      </mat-select>
+    </mat-form-field>
+  </div>
+  
+  <div fxFlex="100" fxFlex.gt-xs="52">
+    <button mat-raised-button class="submitbtn" (click)="getSoftwareLicenseList()">
+      <mat-icon class="matbtn">shortcut</mat-icon>Submit
+    </button>
+    <span style="margin-left: 32px !important;"></span>
+    <span matTooltip="Add Software Licenses" [matTooltipDisabled]="false" (click)="openCSIDialog()">
+      <button mat-raised-button class="minibtn" style="margin-left: 8px !important;margin-top: 10px;">
+        <mat-icon style="color: white;">add</mat-icon>
+      </button>
+    </span>
+    <span style="margin-left:2px !important;" matTooltip="Upgrade License" [matTooltipDisabled]="false">
+      <button mat-raised-button  class="minibtn" style="margin-left: 8px !important;"
+        [disabled]="selection.selected.length != 1">
+        <mat-icon style="color: white;">upgrade</mat-icon>
+      </button></span>
+    <span style="margin-left:2px !important;" matTooltip="Delete Software" [matTooltipDisabled]="false">
+      <button mat-raised-button  class="minibtn" style="margin-left: 8px !important;"
+        [disabled]="selection.selected.length != 1" (click)="deleteSoftwareLicense()">
+        <mat-icon style="color: white;">delete</mat-icon>
+      </button></span>
+      <!-- <span style="margin-left:2px !important;" matTooltip="Action" [matTooltipDisabled]="false">
+        <button mat-raised-button  class="minibtn" style="margin-left: 8px !important;"
+          [disabled]="selection.selected.length == 0" (click)="ChangeManufacturerAndCategory()">
+          <mat-icon style="color: white;">edit</mat-icon>
+        </button></span> -->
+
+
+    <span class="example-spacer"></span>
+    <mat-panel-description style="float: right;">
+      <mat-icon [matMenuTriggerFor]="msgMenu" (click)="$event.stopPropagation()" class="text-muted">
+        more_vert</mat-icon>
+      <mat-menu #msgMenu="matMenu">
+        <!-- <button mat-menu-item  style="height: 40px !important;" >
+        <mat-icon style="margin-right: 6px;color: #0c3057;"> filter_list
+        </mat-icon> Create Filter
+      </button>
+      <button mat-menu-item  style="height: 40px !important;">
+        <mat-icon style="margin-right: 6px;color: #0c3057;"> download
+        </mat-icon> Export
+      </button> -->
+        <button mat-menu-item style="height: 40px !important;">
+          <mat-icon style="margin-right: 6px;color: #0c3057;"> view_column
+          </mat-icon> Edit Grid Display
+        </button>
+      </mat-menu>
+    </mat-panel-description>
+  </div>
+</div>
+
+<div class=" example-container mat-elevation-z8">
+  <table mat-table #table [dataSource]="datasource" matSort>
+    <ng-container [matColumnDef]="column" *ngFor="let column of displayedColumns; index as i ">
+      <th mat-header-cell *matHeaderCellDef mat-sort-header>
+        <span *ngIf="displayedHeaders[i] === 'Select'">
+          <!-- <mat-checkbox (change)="$event ? masterToggle() : null" [checked]="selection.hasValue() && isAllSelected"
+                [indeterminate]="selection.hasValue() && !isAllSelected" style="background-color: white;" [disabled]="dataSource.data.length === 0">
+              </mat-checkbox> -->
+        </span>
+        <span *ngIf="displayedHeaders[i] === 'Icon'"> </span>
+        <span *ngIf="displayedHeaders[i] != 'Select' && displayedHeaders[i] != 'Icon'">
+          {{displayedHeaders[i]}}
+        </span>
+      </th>
+      <td mat-cell *matCellDef="let element; let i = index;">
+        <span *ngIf="column === 'Select'">
+          <mat-checkbox (click)="$event.stopPropagation()" (dblclick)="$event.stopPropagation()"
+            (change)="$event ? isSelected(element) : null" [checked]="getselectedIds.indexOf(element) > -1">
+          </mat-checkbox>
+        </span>
+        <span *ngIf="column === 'Icon'">
+          <mat-icon  matTooltip="Edit" (click)="EditDetails(element)" [style.fontSize]="'15px'" style="color: #008bd0 !important;font-weight: bold;cursor: pointer;height: 15px;padding-right: 12px;">edit</mat-icon>
+        </span>
+        <span *ngIf="column === 'Software'" (click)="GetLicenseDetails(element)">
+          {{element[column]}}
+        </span>
+        <span *ngIf="column === 'CreatedTime' || column === 'LastUpdatedTime'" style="margin-left: 20%;">
+          {{element[column] | date:'dd-MMM-yyyy'}}
+        </span>
+        <span *ngIf="column != 'Select' && column != 'Software' && column != 'CreatedTime' && column != 'LastUpdatedTime' && column != 'Icon'">
+          {{element[column]}}
+        </span>
+      </td>
+    </ng-container>
+    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+  <div style="text-align: center;" *ngIf="datasource?.data?.length === 0">{{message.NoDataAvailable}}</div>
+</div>
+<!-- <mat-paginator #paginator class="expedientes-paginator" [pageSizeOptions]="[50, 100, 200,500]" showFirstLastButtons>
+</mat-paginator> -->
+<div style="margin-top: 8px;">
+  <mat-paginator class="expedientes-paginator" [showFirstLastButtons]="true" [length]="paginationParams.totalCount"
+    [pageSize]="paginationParams.pageSize" [pageSizeOptions]="[50, 100, 200,500]" (page)="handlePage($event)">
+  </mat-paginator>
+</div>
+<!-- </div> -->

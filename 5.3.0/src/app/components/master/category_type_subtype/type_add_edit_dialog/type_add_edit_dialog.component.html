@@ -1,0 +1,36 @@
+<div class="md-dialog-container" cdkDrag cdkDragRootElement=".cdk-overlay-pane">
+  <mat-toolbar  cdkDragHandle class="mat-toolbar" style="background-color:rgb(12, 48, 87);color:white">
+    <span style="position: relative;left: 35%;">{{data.value==='insert'?'Add':'Edit'}} {{header.AssetType}}</span>
+    <span class="example-spacer"></span>
+    <button mat-icon-button class="example-icon" aria-label="Example icon-button with close icon"
+      (click)="onclosetab()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-toolbar>
+  <div mat-dialog-content class="p-1 m-0" >
+
+    <form [formGroup]="dialogTypeForm" (ngSubmit)="onSubmit()">
+      <div fxLayout="row wrap" fxLayout.lt-sm="column">
+
+        <div fxFlex="100" class="pr-1">
+          <mat-form-field class="full-width">
+            <mat-label class="label asterisk_input">{{header.AssetType}} Name</mat-label>
+            <input matInput typeName="typeName" [formControl]="dialogTypeForm.controls['typeName']"
+              placeholder="{{header.AssetType}} Name" autocomplete="off"  maxlength="50">
+            <mat-error *ngIf="submitted || f1.typeName.errors || f1.typeName.dirty || f1.typeName.touched || f1.typeName.hasError('whitespace')">
+              <span *ngIf="f1.typeName.errors?.required || f1.typeName.hasError('whitespace')">{{header.AssetType}} is required </span>
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div fxFlex="100" class="mt-1">
+          <button mat-raised-button class="success" style="float:right !important;" *ngIf="data.value =='insert'"
+            [disabled]="dialogTypeForm.invalid"><mat-icon>check</mat-icon> Add {{header.AssetType}}</button>
+          <button mat-raised-button class="success" style="float:right !important;" *ngIf="data.value !='insert'"
+            [disabled]="dialogTypeForm.invalid"><mat-icon>check</mat-icon> Save</button>
+
+        </div>
+      </div>
+    </form>
+  </div>
+</div>

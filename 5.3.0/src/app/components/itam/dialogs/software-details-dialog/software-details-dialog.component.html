@@ -1,0 +1,226 @@
+<div class="md-dialog-container" *ngIf="tabEnabled" cdkDrag cdkDragRootElement=".cdk-overlay-pane"> 
+    <mat-toolbar  cdkDragHandle class="mat-toolbar" style="background-color:rgb(12, 48, 87) !important;color:white">
+      <span>Software Details</span>
+      <span class="example-spacer"></span>
+      <button mat-icon-button class="example-icon" aria-label="Example icon-button with close icon"
+        (click)="onclosetab()">
+        <mat-icon>close</mat-icon>
+      </button>
+    </mat-toolbar><br><br>
+    <mat-dialog-content >
+      <div class="md-dialog-content">
+       <mat-tab-group animationDuration="200ms" [selectedIndex]="selectedIndex" (selectedTabChange)="tabChanged($event)" [disabled]="mattab">
+          <mat-tab label="Details">
+            <!-- <span style="font-weight: bold;">Compliance Type : {{complianceType}}</span> -->
+            <div class="md-label">              
+              <form [formGroup]="DetailsInfo">
+                
+                <div fxLayout="row wrap" fxLayout.lt-sm="column">
+                    <div fxFlex="25" class="pr-1 full" [ngClass]="{disabledDiv: !!disabledField}">
+                      <mat-form-field class="full-width" appearance="outline">
+                        <mat-label class="label" style="font-size: 15px !important;">SoftwareName</mat-label>
+                        <input matInput name="AssetNo" [formControl]="DetailsInfo.controls['SoftwareName']"
+                          class="bg-transparente">
+                          <mat-error *ngIf="submitted || s1.SoftwareName.errors || s1.SoftwareName.dirty || s1.SoftwareName.touched">
+                            <span *ngIf="s1.SoftwareName.errors?.required">Software Name is required</span>
+                          </mat-error>
+                      </mat-form-field>
+                    </div>
+                    <div fxFlex="25" class="pr-1 full" [ngClass]="{disabledDiv: !!disabledField}">
+                        <mat-form-field class="full-width" appearance="outline">
+                          <mat-label class="label" style="font-size: 15px !important;">Version</mat-label>
+                          <input matInput name="AssetNo" [formControl]="DetailsInfo.controls['Version']"
+                            class="bg-transparente">
+                        </mat-form-field>
+                      </div>                                        
+                      <div fxFlex="25" class="pr-1 full">
+                        <mat-form-field class="full-width" appearance="outline">
+                          <mat-label class="label asterisk_input">Manufacturer</mat-label>
+                          <mat-select disableOptionCentering [formControl]="DetailsInfo.controls['Manufacturer']">          
+                            <mat-option>
+                              <ngx-mat-select-search [placeholderLabel]="'Search'" noEntriesFoundLabel="{{Headers.NoRecordFound}}" [formControl]="DetailsInfo.controls['ManufacturerFilter']" (keyup)="applyManufactureFilter()"
+                                ></ngx-mat-select-search>
+                            </mat-option>
+                            <mat-option *ngFor="let type of typeOfManufacturers" [value]="type.ID"
+                              (click)="getSuiteComponentSoftware(type.ID)">
+                              {{type.Name}}
+                            </mat-option>
+                          </mat-select>                          
+                          <mat-error *ngIf="submitted || s1.Manufacturer.errors || s1.Manufacturer.dirty || s1.Manufacturer.touched">
+                            <span *ngIf="s1.Manufacturer.errors?.required">Manufacturer is required</span>
+                          </mat-error>
+                        </mat-form-field>
+                      </div>
+                      <div fxFlex="25" class="pr-1 full">
+                        <mat-form-field class="full-width" appearance="outline">
+                          <mat-label class="label asterisk_input">Software Category</mat-label>
+                          <mat-select disableOptionCentering [formControl]="DetailsInfo.controls['SoftwareCategory']">
+                            <mat-option>
+                              <ngx-mat-select-search [placeholderLabel]="'Search'" noEntriesFoundLabel="{{Headers.NoRecordFound}}"
+                                [formControl]="DetailsInfo.controls['SoftwareCategoryFilter']"></ngx-mat-select-search>
+                            </mat-option>
+                            <mat-option *ngFor="let type of typeOfCategorys" [value]="type.ID">
+                              {{type.SoftwareCategory}}
+                            </mat-option>
+                          </mat-select>
+                          <mat-error
+                            *ngIf="submitted || s1.SoftwareCategory.errors || s1.SoftwareCategory.dirty || s1.SoftwareCategory.touched">
+                            <span *ngIf="s1.SoftwareCategory.errors?.required">Software Category is required</span>
+                          </mat-error>
+                        </mat-form-field>
+                      </div>
+                      <div fxFlex="25" class="pr-1">
+                        <mat-form-field class="full-width" appearance="outline">
+                          <mat-label class="label asterisk_input">Type Of Software</mat-label>
+                          <mat-select disableOptionCentering [formControl]="DetailsInfo.controls['SoftwareType']">
+                            <mat-option>
+                              <ngx-mat-select-search [placeholderLabel]="'Search'" noEntriesFoundLabel="{{Headers.NoRecordFound}}"
+                                [formControl]="DetailsInfo.controls['SoftwareTypeFilter']"></ngx-mat-select-search>
+                            </mat-option>
+                            <mat-option *ngFor="let type of typeOfSoftwares" [value]="type.SoftwareTypeId" (click)="ChangeType(type)">
+                              {{type.SoftwareTypeName}}
+                            </mat-option>
+                          </mat-select>
+                          <mat-error *ngIf="submitted || s1.SoftwareType.errors || s1.SoftwareType.dirty || s1.SoftwareType.touched">
+                            <span *ngIf="s1.SoftwareType.errors?.required">Software Type is required</span>
+                          </mat-error>
+                        </mat-form-field>
+                      </div>
+                      <div fxFlex="25" class="pr-1" *ngIf="DetailsInfo.controls['SoftwareType'].value == '5'">
+                        <mat-form-field class="full-width" appearance="outline">
+                          <mat-label class="label asterisk_input">Software Package</mat-label>
+                          <mat-select disableOptionCentering [formControl]="DetailsInfo.controls['SoftwareSuite']">
+                            <mat-option>
+                              <ngx-mat-select-search [placeholderLabel]="'Search'" noEntriesFoundLabel="{{Headers.NoRecordFound}}"
+                                [formControl]="DetailsInfo.controls['SoftwareSuiteFilter']"></ngx-mat-select-search>
+                            </mat-option>
+                            <mat-option *ngFor="let type of typeOfSoftwareSuites" [value]="type.SoftwareSuiteID">
+                              {{type.SoftwareName}}
+                            </mat-option>
+                          </mat-select>
+                          <mat-error *ngIf="submitted || s1.SoftwareSuite.errors || s1.SoftwareSuite.dirty || s1.SoftwareSuite.touched">
+                            <span *ngIf="s1.SoftwareSuite.errors?.required">Software Suite is required</span>
+                          </mat-error>
+                        </mat-form-field>
+                      </div>
+                      <!-- <div fxFlex="25" class="pr-1" *ngIf="DetailsInfo.controls['SoftwareType'].value == '5'">
+                        <mat-form-field class="full-width" appearance="outline">
+                          <mat-label class="label asterisk_input">Software Manager Role</mat-label>
+                          <mat-select disableOptionCentering [formControl]="DetailsInfo.controls['Role']">                            
+                            <mat-option *ngFor="let type of roleList" [value]="type.RoleId">
+                              {{type.RoleName}}
+                            </mat-option>
+                          </mat-select>
+                          <mat-error *ngIf="submitted || s1.Role.errors || s1.Role.dirty || s1.Role.touched">
+                            <span *ngIf="s1.Role.errors?.required">Role is required</span>
+                          </mat-error>
+                        </mat-form-field>
+                      </div> -->
+                      
+                      <!-- <div fxFlex="33" class="pr-1 full" >
+                        <mat-form-field class="full-width" appearance="outline">
+                          <mat-label class="label" style="font-size: 15px !important;">ScanType</mat-label>
+                          <input matInput name="AssetNo" [formControl]="DetailsInfo.controls['ScanType']"
+                            class="bg-transparente">
+                        </mat-form-field>
+                      </div>
+                      <div fxFlex="33" class="pr-1 full" >
+                        <mat-form-field class="full-width" appearance="outline">
+                          <mat-label class="label" style="font-size: 15px !important;">ScanRulevalue</mat-label>
+                          <input matInput name="AssetNo" [formControl]="DetailsInfo.controls['ScanRulevalue']"
+                            class="bg-transparente">
+                        </mat-form-field>
+                      </div> -->
+                </div>
+                <div fxLayout="row wrap" fxLayout.lt-sm="column" style="float: right;">
+                                        
+                    <button (click)="updateDetails()" [disabled]="DetailsInfo.invalid" mat-raised-button class="success"
+                      style="float:right !important;"><span>Save</span>
+                    </button>
+                  
+                </div>                
+              </form>
+              <!-- <button style="float:right;margin-right:2%" class="btn" mat-raised-button color="primary"
+                (click)="nextStep(1)">Next</button> -->
+            </div>
+          </mat-tab>
+          <mat-tab label="License Agreements" *ngIf="hideTab == false">
+            <div class="md-label">
+              <form [formGroup]="LicenseAgreementInfo">
+                
+              </form>
+              <!-- <button class="btn" mat-raised-button color="warn" type="button" (click)="previousStep(0)">Previous</button>
+              <button style="float:right;margin-right:2%" class="btn" mat-raised-button color="primary"
+                (click)="nextStep(2)">Next</button> -->
+            </div>
+          </mat-tab>
+          <mat-tab label="Installations">
+            <div class="md-label">
+              <form [formGroup]="InstallationInfo">
+                <div fxLayout="row wrap" fxLayout.lt-sm="column"> 
+                  <div class=" example-container mat-elevation-z8">
+                    <table mat-table #table [dataSource]="datasourceI" matSort>
+                      <ng-container [matColumnDef]="column" *ngFor="let column of displayedColumnsI; index as i ">
+                        <th mat-header-cell *matHeaderCellDef mat-sort-header>                          
+                          <span>
+                            {{column}}
+                          </span>
+                        </th>
+                        <td mat-cell *matCellDef="let element; let i = index;">                         
+                          <span>
+                            {{element[column]}}
+                          </span>
+                        </td>
+                      </ng-container>
+                      <tr mat-header-row *matHeaderRowDef="displayedColumnsI; sticky: true"></tr>
+                      <tr mat-row *matRowDef="let row; columns: displayedColumnsI;"></tr>
+                    </table>
+                    <div style="text-align: center;" *ngIf="datasourceI?.data?.length === 0"></div>
+                  </div>
+                </div>
+               
+              </form>
+              <!-- <button class="btn" mat-raised-button color="warn" type="button" (click)="previousStep(1)">Previous</button>
+              <button style="float:right;margin-right:2%" class="btn" mat-raised-button color="primary"
+                (click)="nextStep(3)">Next</button> -->
+            </div>
+          </mat-tab>
+          <mat-tab label="License" *ngIf="hideTab == false">
+            <div class="md-label">
+              <form [formGroup]="LicenseInfo">
+               
+              </form>
+              <button class="btn" mat-raised-button color="warn" type="button" (click)="previousStep(2)">Previous</button>
+              <button style="float:right;margin-right:2%" class="btn" mat-raised-button color="primary"
+                (click)="nextStep(4)">Next</button>
+            </div>
+          </mat-tab>
+          <mat-tab label="Usages" *ngIf="hideTab == false">
+            <div class="md-label">
+              <form [formGroup]="UsagesInfo">
+               
+              </form>
+              <!-- <button class="btn" mat-raised-button color="warn" type="button" (click)="previousStep(3)">Previous</button>
+              <button style="float:right;margin-right:2%" class="btn" mat-raised-button color="primary"
+                (click)="nextStep(5)">Next</button> -->
+            </div>
+          </mat-tab>
+          <mat-tab label="History" *ngIf="hideTab == false">
+            <div class="md-label">
+              <form [formGroup]="HistoryInfo" >
+               
+              </form>
+              <!-- <button class="btn" mat-raised-button color="warn" type="button" (click)="previousStep(4)">Previous</button> -->
+              <!-- <button style="float:right;margin-right:2%" class="btn" mat-raised-button color="primary"
+                (click)="nextStep(4)">Next</button> -->
+            </div>
+          </mat-tab>
+          
+        </mat-tab-group>
+      
+       
+        
+      
+      </div>
+    </mat-dialog-content>
+  </div>

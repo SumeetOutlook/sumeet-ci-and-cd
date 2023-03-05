@@ -1,0 +1,93 @@
+.example-spacer {
+    flex: 1 1 auto;
+  }
+
+
+.md-dialog-container{
+    margin: -24px;
+    overflow: auto;
+}
+.example-icon{
+    background-color: none;
+}
+.example-section {
+  margin: 12px 0;
+}
+
+.example-margin {
+  margin: 0 12px;
+}
+
+
+.md-dialog-content{
+    max-height: 68vh;
+    height:auto;
+    overflow-y:auto;
+}
+
+
+.mat-dialog-content{
+    margin: -25px 0px 0px 0px;
+    padding:12px 12px;
+    overflow:auto;
+}  
+
+  .head{
+      color: blue;
+  }
+
+
+.md-label{
+    max-height:60vh;
+    min-height:30vh;
+    overflow: auto;
+    padding-bottom: 20px;
+}
+
+.full{
+    margin-top: 20px;
+}
+
+:host::ng-deep .mat-dialog-container {
+
+  padding:0px !important;
+  
+  }
+
+  mat-nav-list.list-horizontal {
+    padding: 0;
+    .mat-list-item {
+      display: inline-block;
+      height: auto;
+      width: 33%;
+    }
+  }
+  .success {
+    background-color: green;
+    color: white;
+  }
+
+  :host::ng-deep .mat-list-item-content{
+
+    width: 150px !important;
+  }
+
+  :host::ng-deep .mat-list-base .mat-list-item .mat-list-item-content
+  {
+
+    padding: 0 0 !important;
+    padding-left: 10px !important;
+   
+  }
+  .loginBtn {
+    width:75px;
+    height:36px;
+    box-shadow:0 1px 2px #5e5d5b;
+}
+
+.loginBtn span {
+    display: block;
+    padding-top: 22px;
+    text-align: center;
+    line-height: 1em;
+}

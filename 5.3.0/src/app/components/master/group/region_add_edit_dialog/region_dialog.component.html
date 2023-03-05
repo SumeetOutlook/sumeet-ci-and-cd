@@ -1,0 +1,120 @@
+
+<div class="md-dialog-container">
+  <mat-toolbar cdkDrag cdkDragRootElement=".cdk-overlay-pane" cdkDragHandle class="mat-toolbar"  style="background-color:rgb(12, 48, 87);color:white">
+    <span style="position: relative;left: 40%;">{{data.value==='insert'?'Add':'Edit'}} Region</span>
+    <span class="example-spacer"></span>
+    <button mat-icon-button class="example-icon" aria-label="Example icon-button with close icon" (click)="onclosetab()">
+      <mat-icon>close</mat-icon>
+    </button>
+  </mat-toolbar>
+  <div mat-dialog-content class="p-1 m-0"  cdkDrag cdkDragRootElement=".cdk-overlay-pane" cdkDragHandle>
+  
+    <form [formGroup]="dialogRegionForm" (ngSubmit)="onSubmit()">
+      <div fxLayout="row wrap" fxLayout.lt-sm="column">
+       
+        <div fxFlex="100" class="pr-1">
+          <div fxFlex="50" class="pr-1">
+
+            <mat-form-field class="full-width">
+              <mat-label class="label asterisk_input">Enter Region Name</mat-label>
+              <input matInput regionName="regionName" [formControl]="dialogRegionForm.controls['regionName']"  autocomplete="off" maxlength="30" >
+              <mat-error *ngIf="submitted || f1.regionName.errors || f1.regionName.dirty || f1.regionName.touched || f1.regionName.hasError('whitespace')">
+                <span *ngIf="f1.regionName.errors?.required || f1.regionName.hasError('whitespace')">Region Name is required </span>
+              </mat-error>
+            </mat-form-field>
+
+          </div>
+          <div fxFlex="50" class="pr-1">
+        
+            <mat-form-field class="full-width">
+              <input matInput faxNo="faxNo" [formControl]="dialogRegionForm.controls['faxNo']" placeholder="Enter Fax No" autocomplete="off" maxlength="10">
+            </mat-form-field>
+          </div>
+        </div>
+
+        <div fxFlex="100" class="pr-1">
+          <div fxFlex="50" class="pr-1">
+            <mat-form-field class="full-width">
+              <input matInput address1="address1" [formControl]="dialogRegionForm.controls['address1']" placeholder="Enter Address 1" autocomplete="off" maxlength="70" >
+            </mat-form-field>
+          </div>
+       
+          <div fxFlex="50" class="pr-1">
+            <mat-form-field class="full-width">
+              <input matInput address2="address2" [formControl]="dialogRegionForm.controls['address2']" placeholder="Enter Address 2" autocomplete="off" maxlength="70">
+            </mat-form-field>
+          </div>
+      </div>
+
+      <div fxFlex="100" class="pr-1">
+        <div fxFlex="50" class="pr-1">
+          <mat-form-field class="full-width">
+            <input matInput regionCode="regionCode" [formControl]="dialogRegionForm.controls['regionCode']" placeholder="Enter Region Code" autocomplete="off" maxlength="15">
+          </mat-form-field>
+        </div>
+
+        <div fxFlex="50" class="pr-1">
+          <mat-form-field class="full-width">
+            <mat-label class="label asterisk_input">Enter Contact No</mat-label>
+            <input matInput contactNo="contactNo" [formControl]="dialogRegionForm.controls['contactNo']"  autocomplete="off" maxlength="10" [pattern]="contactNumberPattern">
+            <mat-error *ngIf="submitted || f1.contactNo.errors || f1.contactNo.dirty || f1.contactNo.touched">
+              <span *ngIf="f1.contactNo.errors?.required">Contact No is required </span>
+              <span *ngIf="f1.contactNo.errors?.pattern">Contact No not valid </span>
+            </mat-error>
+          </mat-form-field>
+        </div>
+    </div>
+
+        <div fxFlex="100" class="pr-1">
+          <!-- <div fxFlex="50" class="pr-1">
+            <mat-form-field class="full-width">
+              <input matInput faxNo="faxNo" [formControl]="dialogRegionForm.controls['faxNo']" placeholder="Enter Fax No" autocomplete="off">
+            </mat-form-field>
+          </div> -->
+
+        <div fxFlex="50" class="pr-1">
+          <mat-form-field class="full-width">
+            <mat-label class="label asterisk_input">Select Currency</mat-label>
+            <mat-select disableOptionCentering  [formControl]="dialogRegionForm.controls['currency']"  >
+              <mat-option>
+                <ngx-mat-select-search [placeholderLabel]="'Search'" [formControl]="dialogRegionForm.controls['currencyFilter']" noEntriesFoundLabel="{{header.NoRecordFound}}"></ngx-mat-select-search>
+              </mat-option>
+              <mat-option *ngFor="let Currency of filteredCurrency  | async" [value]="Currency.CurrencyId">
+                {{Currency.Currency}}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="submitted && f1.currency.errors || f1.currency.dirty || f1.currency.touched">
+              <span *ngIf="f1.currency.errors?.required">currency is a required</span>
+            </mat-error>
+          </mat-form-field>
+        </div>
+
+        <div fxFlex="50" class="pr-1" *ngIf="data.value =='insert'">
+          <mat-form-field class="full-width">
+            <mat-label class="label asterisk_input">Select Employee</mat-label>
+            <mat-select disableOptionCentering  [formControl]="dialogRegionForm.controls['employee']"   (infiniteScroll)="getFilterEmployee()" [complete]="offset === employeeData.length" msInfiniteScroll>
+              <mat-option>
+                <ngx-mat-select-search [placeholderLabel]="'Search'" [formControl]="dialogRegionForm.controls['employeeFilter']" noEntriesFoundLabel="{{header.NoRecordFound}}"></ngx-mat-select-search>
+              </mat-option>
+              <mat-option *ngFor="let emp of filteredEmployee  | async" [value]="emp.EmployeeTableId">
+                {{emp.UserDetails}}
+              </mat-option>
+            </mat-select>
+            <mat-error *ngIf="submitted && f1.employee.errors || f1.employee.dirty || f1.employee.touched">
+              <span *ngIf="f1.employee.errors?.required">Employee is a required</span>
+            </mat-error>
+          </mat-form-field>
+        </div>
+      </div>
+   
+       
+        <div fxFlex="100" class="mt-1">
+          <button mat-raised-button class="success" *ngIf="data.value =='insert'" style="float:right !important;" [disabled]="dialogRegionForm.invalid"><mat-icon>check</mat-icon>Add Region</button>
+          <button mat-raised-button class="success" *ngIf="data.value !='insert'" style="float:right !important;" [disabled]="dialogRegionForm.invalid"><mat-icon>check</mat-icon>Save</button>
+         
+        </div>
+      </div>
+    </form>
+  </div>
+</div>
+
